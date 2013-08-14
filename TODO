@@ -1,3 +1,13 @@
+* other features (easy)
+** add ANOVA for dissimilarity in summary
+** init=pca
+** add a function graph2SOM that projects a graph on the grid
+   (use projectGraph), create a class and a plot method for it
+** add weights to observations
+** radius.type=gaussian
+** kaski lagus
+** implement weighted graphs projection
+
 * other features (hard)
 ** grid.topology: hexagonal
 ** repeat SOM and combine
@@ -5,19 +15,8 @@
 ** kacm
 ** batch version
 
-* other features (easy)
-** add weights to observations
-** init=pca
-** radius.type=gaussian
-** implement projectGraph
-** kaski lagus
-** add ANOVA for dissimilarity
-
 * implementation enhancement
 ** should maybe improve the distance handling and propagate it everywhere
-** colors handling in "names" seems to sometimes bug
+** colors handling in "names" seems to sometimes bugs
 ** make a function for initializing colors init.color(clustering, def.color)
-** dissimilarity algorithm requires a "dist" type input
-
-* misc
-** replace "arth800" by the mouse liver/gene dataset
+** dissimilarity should maybe algorithm requires a "dist" type input
