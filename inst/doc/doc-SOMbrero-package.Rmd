@@ -1,0 +1,61 @@
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{SOMbrero package}
+-->
+
+# SOMbrero package
+
+#### Laura BENDHAIBA, Madalina OLTEANU, Nathalie VILLA-VIALANEIX
+
+
+![logo](./sombrero.png)
+
+## Package description
+
+```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
+library(SOMbrero)
+```
+
+```SOMbrero```, which means 'Self Organizing Maps Bound to Realize Euclidean 
+and Relational Outputs', implements several variants of the stochastic
+Self-Organising Maps and is able to handle numeric and non numeric data sets.
+
+See ```help(SOMbrero)``` for further details.
+
+### Numeric SOM
+
+The numeric SOM is illustrated on the well-known ```iris``` data set. This data
+describe iris flowers with 4 numeric variables
+(```Sepal.Length```, ```Sepal.Width```, ```Petal.Length```
+and ```Petal.Width```) and a fifth variable (not used to train the SOM) is the
+flower's species. This example is performed in the
+[numeric SOM guide](./doc-numericSOM.html).
+
+
+### Contingency tables
+
+The SOM algorithm provided by the package ```SOMbrero``` can also handle some
+non numeric data. First, data described by contingency tables can processed 
+by using the 'korresp' algorithm (see Cottrell et al., 1993). This case is
+illustrated on the ```presidentielles2002``` data set which contains, for each 
+of the French administrative departments (row variables) and each of the
+candidates (column variables), the number of vote at the first round of the 2002 
+presidential election. This example can be found in the
+[korresp user guide](./doc-korrespSOM.html).
+
+
+### Dissimilarity matrices
+
+Data described by a dissimilarity matrix can also be processed by ```SOMbrero```
+as described in Olteanu et al., 2012. This case is illustrated on a data set
+extracted from the novel ```Les Miserables```, written by the French author 
+Victor Hugo and published during the 19th century. This data set provides a
+dissimilarity matrix between the characters of the novel, based on the length
+of shortest paths in a network defined from the novel. This example is provided
+in the [relational user guide](./doc-relationalSOM.html).
+
+
+For those who have an R developer soul, and who want to develop this package, 
+the following picture provides an overview the current arborescence of the
+package:
+![fw](./foodweb.png)

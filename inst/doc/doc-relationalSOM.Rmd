@@ -1,0 +1,248 @@
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{SOM for dissimilarity data}
+-->
+
+# Self-Organizing Map for dissimilarity matrices
+
+#### Laura BENDHAIBA, Madalina OLTEANU, Nathalie VILLA-VIALANEIX
+
+## Basic package description
+
+To be able to run the SOM algorithm, you have to load the package called 
+```SOMbrero```. The function used to run it is called ```trainSOM()``` and is 
+detailed below.
+
+__This documentation only considers the case of dissimilarity matrices.__
+
+```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
+library(SOMbrero)
+```
+
+### Arguments
+
+The ```trainSOM``` function has several arguments, but only the first one is
+required. This argument is ```x.data``` which is the dataset used to train the 
+SOM. In this documentation, it is passed to the function as a matrix or a data
+frame. This set must be a dissimilarity matrix, i.e., a symmetric matrix of
+positivenumbers, with zero entries on the diagonal.
+
+The other arguments are the same than the arguments passed to the ```initSOM```
+function (they are parameters defining the algorithm, see ```help(initSOM)```
+for further details).
+
+### Outputs
+
+The ```trainSOM``` function returns an object of class ```somRes``` (see 
+```help(trainSOM)``` for further details on this class).
+
+### Graphics
+
+The following table indicates which graphics are available for a relational SOM.
+
+Type        |   Energy  |   Obs |   Prototypes  |   Add   |   Super Cluster
+------------|:---------:|:-----:|:-------------:|:-------:|:----------------:
+no type     |   x       |       |               |         |
+hitmap      |           |   x   |               |         |         x
+color       |           |       |               |   x     |         
+lines       |           |       |       x       |   x     |         x2
+barplot     |           |       |       x       |   x     |         x2
+radar       |           |       |       x       |   x     |         x2
+pie         |           |       |               |   x     |         x2
+boxplot     |           |       |               |   x     |         
+3d          |           |       |               |         |
+poly.dist   |           |       |       x       |         |         x
+umatrix     |           |       |       x       |         |
+smooth.dist |           |       |       x       |         |
+words       |           |       |               |   x     |
+names       |           |   x   |               |   x     |
+graph       |           |       |               |   x     |         x
+mds         |           |       |       x       |         |         x
+grid.dist   |           |       |       x       |         |         
+grid        |           |       |               |         |         x
+dendrogram  |           |       |               |         |         x
+dendro3d    |           |       |               |         |         x
+
+In the "Super Cluster" column, a plot marked by "x2" means it is available for 
+both data set variables and additional variables.
+
+## Case study: the ```lesmis``` data set
+
+The ```lesmis``` data set provides the coappearance graph of the characters of 
+the novel Les Miserables (Victor Hugo). Each vertex stands for a character whose
+name is given by the vertex label. One edge means that the corresponding two
+characters appear in a common chapter in the book. Each edge also has a value
+indicating the number of coappearance. The ```lesmis``` data contain two
+objects: the first one ```lesmis``` is an ```igraph``` object (see [the igraph
+web page](http://igraph.sourceforge.net/)),
+with `r data(lesmis); vcount(lesmis)` nodes and `r ecount(lesmis)` edges.
+
+Further information on this data set is provided with ```help(lesmis)```.
+
+```{r lesmisDescr, fig.width=12, fig.height=12}
+data(lesmis)
+lesmis
+plot(lesmis, vertex.size=0)
+```
+
+The ```dissim.lesmis``` object is a matrix which entries are the length of the
+shortest paths between two characters (obtained with the
+function ```shortest.paths``` of the package ```igraph````). Note that its
+row and column names have been initialized to the characters' names to 
+ease the use of the graphical functions of ```SOMbrero```.
+
+### Training the SOM
+
+```{r lesmisTrain, cache=TRUE}
+set.seed(4031719)
+mis.som <- trainSOM(x.data=dissim.lesmis, type="relational", nb.save=10)
+plot(mis.som, what="energy")
+```
+The dissimilarity matrix ```dissim.lesmis``` is passed to the ```trainSOM``` 
+function as input. As the SOM intermediate backups have been registered
+(```nb.save=10```), the energy evolution can be plotted: it stabilized in the
+last 100 iterations.
+
+### Resulting clustering
+
+The clustering component provides the classification of each of the 77 
+characters. The ```table``` function is a simple way to view data distribution 
+on the map.
+```{r lesmisClustering}
+mis.som$clustering
+table(mis.som$clustering)
+plot(mis.som)
+```
+The clustering can be displayed using the ```plot``` function
+with ```type=names```.
+```{r lesmisPseudoNamesPlot, fig.height=12, fig.width=12, warning=FALSE}
+plot(mis.som, what="obs", type="names")
+```
+or by sur-imposing the original igraph object on the map:
+```{r lesmisProjGraph}
+plot(mis.som, what="add", type="graph", var=lesmis)
+```
+
+Clusters profile overviews can be plotted either with lines, barpot or radar.
+```{r lesmisProtoProfiles}
+plot(mis.som, what="prototypes", type="lines")
+plot(mis.som, what="prototypes", type="barplot")
+plot(mis.som, what="prototypes", type="radar")
+```
+One these graphics, one variable is represented respectively with a point, a 
+bar or a slice. It is therefore easy to see which variable affect which 
+cluster.
+
+To see how different are the clusters, some graphics show the distances between 
+prototypes. These graphics have exactly the same behaviour as in the other SOM 
+types.
+* ```"poly.dist"``` plots, for each neuron, a polygon that has vertex 
+coordinates representing the distance matrix between prototypes. The 
+colors indicates the number of observations in the neuron (white=empty);
+* ```"umatrix"``` fills the neurons of the grid using colors that represent
+the average distance between the current prototype and its neighbors;
+* ```"smooth.dist"``` plots the mean distance between the current prototype and 
+its neighbors with a color gradation;
+* ```"mds"``` plots the number of the neuron on a map according to a Multi
+Dimensional Scaling (MDS) projection;
+* ```"grid.dist"``` plots points which x coordinates are the distances between 
+all prototypes and which y coordinates are the distances between all neurons of 
+the grid.
+```{r lesmisProtoDist}
+plot(mis.som, what="prototypes", type="poly.dist", print.title=TRUE)
+plot(mis.som, what="prototypes", type="smooth.dist")
+plot(mis.som, what="prototypes", type="umatrix", print.title=TRUE)
+plot(mis.som, what="prototypes", type="mds")
+plot(mis.som, what="prototypes", type="grid.dist")
+```
+Here we can see that the prototypes 5 and 12 are far from the others.
+
+Finally, with a graphical overview of the clustering
+```{r lesmisColorOverview, fig.height=12, fig.width=12}
+plot(lesmis, vertex.label.color=rainbow(25)[mis.som$clustering], vertex.size=0)
+legend(x="left", legend=1:25, col=rainbow(25), pch=19)
+```
+We can see that cluster 5 is very well identified according to the story: as the
+characters of this cluster appear only in the sub-story of the
+Bishop ```Myriel```, he is the only connection for all other characters of
+cluster 5. The same kind of conclusion holds for cluster 25, among others.
+Most of the other clusters have a small number of observations: it thus seems
+relevant to compute super clusters.
+
+### Compute super clusters
+
+As the number of clusters is quite important with the SOM algorithm, it is 
+possible to perform a hierarchical clustering. First, let us have an overview of
+the dendrogram:
+```{r lesmisSCOverview}
+plot(superClass(mis.som))
+```
+According to the proportion of variance explained by super clusters, 6 groups 
+seem to be a good choice.
+```{r lesmisSC}
+sc.mis <- superClass(mis.som, k=6)
+summary(sc.mis)
+table(sc.mis$cluster)
+plot(sc.mis)
+plot(sc.mis, type="grid", plot.legend=TRUE)
+plot(sc.mis, type="lines", print.title=TRUE)
+plot(sc.mis, type="mds", plot.legend=TRUE)
+plot(sc.mis, type="dendro3d")
+```
+As we mentionned above, the cluster 5 is far away from the others, it is 
+therefore a super cluster itself (super cluster 2). 
+
+```{r lesmisSCColorOverview, fig.width=12, fig.height=12}
+plot(lesmis, vertex.size=0, vertex.label.color=
+       brewer.pal(6, "Set2")[sc.mis$cluster[mis.som$clustering]])
+legend(x="left", legend=paste("SC",1:6), col=brewer.pal(6, "Set2"), pch=19)
+```
+* cluster 1 contains 2 of the main characters: ```Javert``` and ```Valjean```.
+* cluster 3 countains ```Fantine``` and the characters involved in her 
+sub-story.
+* cluster 4 contains ```Marius``` and his family: his mother, 
+misses ```Pontmercy```, his father, lieutenant ```Gillenormand```, his 
+grandfather ```Gillenormand``` and his aunt miss ```Gillenormand``` ; it also 
+contains ```Cosette```, who will have an affair with him.
+* cluster 5 constains ```Gavroche```, the abandonned child of 
+the ```Thenardier```, and the characters of his sub-story.
+* cluster 6 countains the Thenardier family: mister and 
+misses ```Thenardier```, their daughter ```Eponine``` and also the characters 
+involved in their story.
+
+## Case study: the ```iris``` data set
+
+The ```iris``` data set has already been used in the user friendly guide 
+devoted to numeric data.
+To ensure the performance of the relational SOM, this section will compare the 
+results obtained with both numerical and relation SOM. In the last case, the 
+observation distance matrix between be used as entry data.
+Among all possibilities (see ```help(dist)```), we chose here to use 
+the ```"mikowski"``` distance of order 4 to enlarge large distances and reduce 
+small ones.
+
+```{r irisTrain}
+# run the numeric SOM
+set.seed(4031730)
+iris.som <- trainSOM(x.data=iris[,1:4])
+# run the relational SOM
+iris.dist <- dist(iris[,1:4], method="minkowski", diag=TRUE, upper=TRUE, p=4)
+set.seed(7071731)
+d.iris.som <- trainSOM(x.data=iris.dist, type="relational")
+```
+
+The most important thing is to separate correctly the 3 flower species. The next 
+2 plots show the results with both SOM types.
+```{r irisPies}
+plot(iris.som, what="add", type="pie", variable=iris$Species, 
+     main="species distribution with 'numeric' SOM")
+plot(d.iris.som, what="add", type="pie", variable=iris$Species, 
+     main="species distribution with 'relational' SOM")
+```
+
+As we chosed a higher distance order in the ```relational``` SOM 
+(argument ```p=4```, whereas the Euclidean distance corresponds to a Minkowski
+distance of order 2), the result from the ```relational``` SOM better separates
+'virginica' and 'versicolor' flowers: with the ```numeric``` SOM, these species 
+are mixed in 7 neurons whereas they are mixed in 3 neurons with 
+the ```relational``` SOM.

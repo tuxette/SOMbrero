@@ -1,0 +1,86 @@
+SOMbrero 0.4
+New features:
+  Implementation of the "dissimilarity" algorithm to handle dissimilarity data
+  Plots, quality functions and super-clustering have been updated to handle this
+case
+
+Code improvements:
+  New way to handle distance calculations
+  New way to handle the 'korresp' preprocessing (full matrix is now included)
+  Slightly changed default values for Letremy's radius and neighborhood: they
+are now exactly the same than in the original programs
+
+Fixed bugs:
+  Fixed bug with default options in korresp case
+  Fixed bug with affectation step in korresp case
+  Fixed bug for what="add" and type="graph" (node sizes were wrong)
+
+Misc:
+  Added markdown vignettes: one general and one for each case; hence, the
+package now depends on R version 3.0 or higher
+  Added citation file
+  Added demos
+  Removed unecessary tests and examples
+
+
+********************************************************************************
+SOMbrero 0.3
+New features:
+  Implementation of the "korresp" algorithm to handle contingency table
+  Plots, quality functions and super-clustering have been updated to handle this
+case
+
+Fixed bugs:
+  Bug fixed in the dendrogram of super-clustering (percentage of explained
+variance was incorrectly displayed)
+  Bug fixed in smooth.dist and umatrix (distances were reversed)
+
+
+********************************************************************************
+SOMbrero 0.2-2
+New options:
+  The argument 'the.titles' has been introduced in plot.somRes
+
+New features:
+  Implementation of a quality function for somRes object
+  Implementation of a super-clustering for the resulting prototypes
+  Implementation of a plot method for the results of the super-clustering
+
+
+********************************************************************************
+SOMbrero 0.2
+Name changes :
+  The argument 'scale' of 'somRes' object is now called 'scaling' (conflict with
+  a R base function)
+
+Argument changes :
+  The argument 'dist.type' has been transfered from 'somRes' to 'myGrid' objects.
+
+New options:
+  Distance type on the grid   :   maximum, euclidean, manhattan, canberra, 
+                                  binary or minkowski
+New plots:
+  Observations                :   color, lines, barplot, radar, boxplot and 
+                                  names
+  Prototypes                  :   lines, barplot, radar, 3d, poly.dist, umatrix 
+                                  and smooth.disy
+  Additional variable         :   pie, color, lines, barplot, radar, boxplot, 
+                                  words, names and graph
+
+
+********************************************************************************
+SOMbrero 0.1
+  The initial version of onlineSOM package considers only numerical data.
+
+Available parameters of the SOM algorithm:
+  Grid                        :   square topology
+  SOM type                    :   numeric
+  SOM mode                    :   online
+  Radius type                 :   letremy
+  Prototypes initialization   :   random or obs
+  Scale                       :   unitvar, center or none
+
+Available plots:
+  Observations                :   hitmap
+  Prototypes                  :   color
+  Energy

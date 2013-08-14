@@ -1,0 +1,311 @@
+<!--
+%\VignetteEngine{knitr}
+%\VignetteIndexEntry{SOM for contingency tables}
+-->
+
+# Self-Organizing Map for contingency tables
+
+#### Laura BENDHAIBA, Madalina OLTEANU, Nathalie VILLA-VIALANEIX
+
+## Basic package description
+
+To be able to run the SOM algorithm, you have to load the package called 
+```SOMbrero```. The function used to run it is called ```trainSOM()``` and is 
+detailed below.
+
+__This documentation only considers the case of contingency tables.__
+
+```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
+library(SOMbrero)
+```
+
+### Arguments
+
+The ```trainSOM``` function has several arguments, but only the first one is
+required. This argument is ```x.data``` which is the dataset used to train the 
+SOM. In this documentation, it is passed to the function as a matrix or a data
+frame. This set must be a contingency table, i.e., it must contain either 0 or 
+positive integers. Column and row names must be supplied.
+
+The other arguments are the same than the arguments passed to the ```initSOM```
+function (they are parameters defining the algorithm, see ```help(initSOM)```
+for further details).
+
+### Outputs
+
+The ```trainSOM``` function returns an object of class ```somRes``` (see 
+```help(trainSOM)``` for further details on this class).
+
+## Case study: the ```presidentielles2002``` data set
+
+The ```presidentielles2002``` data set provides the number of votes at the first
+round of the 2002 French presidential election for each of the 16 candidates in
+all of the 106 French administrative districts called "departements". Further
+details about this data set and the 2002 French presidential election are given
+with ```help(presidentielles2002)```.
+
+```{r loadData}
+data(presidentielles2002)
+apply(presidentielles2002,2,sum)
+```
+(the two candidates that ran the second round of the election were Jacques
+Chirac and the far-right candidate Jean-Marie Le Pen)
+
+### Training the SOM
+
+```{r presiTrain, cache=TRUE}
+set.seed(4031719)
+korresp.som <- trainSOM(x.data=presidentielles2002, dimension=c(8,8),
+                        type="korresp", scaling="chi2", nb.save=10)
+korresp.som
+```
+
+As the energy is registered during the intermediate backups, we can have a look
+at its evolution
+```{r energyPresi}
+plot(korresp.som, what="energy")
+```
+which is stabilized during the last 100 iterations.
+
+### Resulting clustering
+
+The clustering component contains the final classification of the dataset. As 
+both row and column variables are classified, the length of the resulting 
+vector is equal to the sum of the number of rows and the number of columns.
+
+__NB: The clustering component shows first the column variables (here, the 
+candidates) and then the row variables (here, the departements).__
+
+The following table indicates which graphics are available for a korresp SOM.
+
+Type        |   Energy  |   Obs |   Prototypes  |   Add   |   Super Cluster
+------------|:---------:|:-----:|:-------------:|:-------:|:----------------:
+no type     |   x       |       |               |         |
+hitmap      |           |   x   |               |         |         x
+color       |           |       |       x2      |         |         x2
+lines       |           |       |       x2      |         |         x2
+barplot     |           |       |       x       |         |
+radar       |           |       |       x       |         |
+pie         |           |       |               |         |
+boxplot     |           |       |               |         |
+3d          |           |       |       x2      |         |
+poly.dist   |           |       |       x       |         |         x
+umatrix     |           |       |       x       |         |
+smooth.dist |           |       |       x       |         |
+words       |           |       |               |         |
+names       |           |   x   |               |         |
+graph       |           |       |               |         |
+mds         |           |       |       x       |         |         x
+grid.dist   |           |       |       x       |         |         
+grid        |           |       |               |         |         x
+dendrogram  |           |       |               |         |         x
+dendro3d    |           |       |               |         |         x
+
+In the column "Prototypes", a plot marked "x2" means that this plot is 
+available for both row and column variables. In the "Super Cluster" column, a 
+"x2" cell means the plot is available for both data set variables and 
+additional variables. 
+
+```{r presiClusters}
+korresp.som$clustering
+```
+The resulting distribution of the clustering on the map can also be visualized
+by a hitmap:
+```{r presiHitmap}
+plot(korresp.som, what="obs", type="hitmap")
+```
+For a more precise view, ```"names"``` plot is implemented: it prints, 
+in each neuron, the names of the variables assigned to it ; in the korresp SOM, 
+both row and column variable names are printed.
+```{r presiGraphObs, warning=FALSE, fig.width=12, fig.height=12}
+plot(korresp.som, what="obs", type="names", scale=c(1.5,0.5))
+```
+
+The map is organized as follows: the bottom right side of the map is associated
+to the candidate "Taubira" who obtained her better vote scoring in the overseas
+departements "Guadeloupe", "Martinique" and "Guyane".
+
+These candidates are opposed to the top left hand side of the map which is 
+associated to the far-right candidates "Le Pen" and "Megret" who traditionnaly
+obtain higher voting scores in some South of France departments including 
+"Herault", "Vaucluse", "Gard". A little bit further on the right, we can notice 
+the candidate "Saint Josse" who was fighting for traditional living style and 
+hunting and who obtained his higher scores in the rural departements "Somme", 
+"Landes" and "Aude".
+
+In the center of the map are the most traditional candidates "Jospin", "Chirac",
+"Hue"... who obtained more uniform scores in the whole France. It has
+to be noted that "Le Pen", who is a far right-candidate, has a rather central 
+position also and actually succeeded for the first time to run the second round
+of the presidential election.
+
+### Clustering interpretation
+
+Some graphics from the numeric SOM algorithm are still available in the korresp 
+case. They are detailed below. As the resulting clustering provides the 
+classification for both rows and columns, a new argument ```view``` is used to 
+specify which one should be considered. Its possible values are either 
+```"r"``` for row variables (the default value) or ```"c"``` for column 
+variables.
+
+#### Graphics on prototype values
+
+Three representations are available:
+
+* with lines: either all row or column variabkes are plotted (```view``` 
+argument is used)
+```{r presiProtoL}
+# plot the line prototypes (106 French departements)
+plot(korresp.som, what="prototypes", type="lines", view="r", print.title=TRUE)
+# plot the column prototypes (16 candidates)
+plot(korresp.som, what="prototypes", type="lines", view="c", print.title=TRUE)
+```
+The peaks in neurons 49, 57 and 58 correspond, in the row view, to the 
+overseas departement and, in the column view, to the candidate "Taubira". In the
+column views, the two peaks clearly identified in the central clusters
+correspond to the two "main" tranditional candidates "Jospin" and "Chirac"
+(respectively, left and right candidates).
+
+A more precise individual view are given with the graphics "color" and "3d",
+here drawn, as an example for the candidate "Le Pen" and for the departement
+"Martinique".
+* in color: one of the row or column variable (the variable is chosen with the 
+argument ```variable```) is represented on the map;
+* in 3d, which handling is similar to ```"color"```.
+```{r presiProtoC3d, fig.width=12, fig.height=6}
+par(mfrow=c(1,2))
+plot(korresp.som, what="prototypes", type="color", variable="LE_PEN")
+plot(korresp.som, what="prototypes", type="3d", variable="martinique")
+```
+The first graphic shows that "Le Pen" obtained its best scores in the
+departements located in the top left hand side and in the top right hand side of
+the map and its lowest scores in the departements located in the bottom right
+side of the map (overseas departement).
+
+The second graphic shows that the candidates that obtained the higher scores in
+Martinique are located in the bottom right hand side of the map (mainly 
+Taubira).
+
+The graphics can also be drawn by giving the variable number and its type,
+either "r" or "c" (here, as an example, "Chirac" which is the 5th candidate):
+```{r presiProtoNumber, fig.width=12, fig.height=6}
+par(mfrow=c(1,2))
+plot(korresp.som, what="prototypes", type="color", variable=5, view="c")
+plot(korresp.som, what="prototypes", type="3d", variable=5, view="c")
+```
+Hence "Chirac" has a rather central position on the map which illustrates the
+fact that he is actually a "traditional" candidate with almost uniform votes
+in the whole country.
+
+#### Graphic on prototype distances
+
+These graphics are exactly the same as in the numerical case:
+* ```"poly.dist"``` plots, for each neuron, a polygon that has vertex 
+coordinates representing the distance matrix between prototypes. The 
+colors indicates the number of observations in the neuron (white=empty);
+* ```"umatrix"``` fills the neurons of the grid using colors that represent
+the average distance between the current prototype and its neighbors;
+* ```"smooth.dist"``` plots the mean distance between the current prototype and 
+its neighbors with a color gradation;
+* ```"mds"``` plots the number of the neuron on a map according to a Multi
+Dimensional Scaling (MDS) projection;
+* ```"grid.dist"``` plots points which x coordinates are the distances between 
+all prototypes and which y coordinates are the distances between all neurons of 
+the grid.
+```{r presiGraphProto2}
+plot(korresp.som, what="prototypes", type="poly.dist", print.title=TRUE)
+plot(korresp.som, what="prototypes", type="umatrix", print.title=TRUE)
+plot(korresp.som, what="prototypes", type="smooth.dist", print.title=TRUE)
+plot(korresp.som, what="prototypes", type="mds")
+plot(korresp.som, what="prototypes", type="grid.dist")
+```
+Three neurons (49, 57 and 58) have been already picked out in the 
+section __Clustering interpretation__ for having prototypes rather different
+than the rest of the map. The graphics just above confirm this hypothesis: there
+a noticeable peak in prototype distances around these 4 neurons. The MDS
+vizualisation also shows that these 4 prototypes are clearly different.
+
+### Analyze the projection quality
+
+```{r presiQuality}
+quality(korresp.som)
+```
+By default, the quality function calculates both quantization and topographic 
+errors. It is also possible to specify which one you want to obtain, by using
+the argument ```quality.type```.
+
+The topographic error value varies between 0 (good projection quality) and 1 
+(poor projection quality). Here, the topographic quality of the mapping is 
+quite good with a topographic error equal to 0.14.
+
+The quantization error is an unbounded positive number. The closest from 0 it
+is, the best the projection quality is.
+
+### Building super classes from the resulting SOM
+
+In the SOM algorithm, the number of clusters is necessarily close to the number
+of neurons of the grid. This - quite large - number may not suit the original
+data for a clustering purpose.
+
+A usual way to address clustering with SOM is to perform a hierarchical
+clustering on the prototypes. This clustering is directly available in the
+package ```SOMbrero``` using the function ```superClass```. To do so, you can
+first have a quick overview to decide the number of super clusters which suits
+your data.
+
+```{r presiSC1}
+plot(superClass(korresp.som))
+```
+By default, the function plots both a dendrogram and the evolution of the
+percentage of explained variance. Here, 3 super clusters seem to be a good
+choice. The output of ```superClass``` is a ```somSC``` class object.
+Basic functions have been defined for this class:
+```{r presiSC2}
+my.sc <- superClass(korresp.som, k=3)
+summary(my.sc)
+plot(my.sc, plot.var=FALSE)
+```
+
+Like ```plot.somRes```, the function ```plot.somSC``` has an 
+argument ```'type'``` which offers many different plots and can thus be 
+combined with most of the graphics produced by ```plot.somSC```:
+
+Case ```"grid"``` fills the grid with colors according to the super clustering 
+(and can provide a legend).
+Case ```"dendro3d"``` plots a 3d dendrogram.
+```{r presiSC3}
+plot(my.sc, type="grid", plot.legend=TRUE)
+plot(my.sc, type="dendro3d")
+```
+The 3 different neurons mentionned earlier have been gathered together in the 
+super cluster 3.
+
+
+A couple of plots from ```plot.somRes``` are also available for the super 
+clustering. Some identify the super clusters with colors:
+```{r presiSC4}
+plot(my.sc, type="hitmap", plot.legend=TRUE)
+plot(my.sc, type="lines", print.title=TRUE)
+plot(my.sc, type="lines", print.title=TRUE, view="c")
+plot(my.sc, type="mds", plot.legend=TRUE)
+```
+
+And some others identify the super clusters with titles:
+```{r presiSC5}
+plot(my.sc, type="color", view="r", variable="correze")
+plot(my.sc, type="color", view="c", variable="JOSPIN")
+plot(my.sc, type="poly.dist")
+```
+
+Let us consider the third super cluster. It contains 3 departments and 1 
+candidate:
+```{r DOM, echo=FALSE}
+names(korresp.som$clustering)[which(korresp.som$clustering %in%
+                                      which(my.sc$cluster==3))]
+```
+The departments are the 3 biggest overseas departements. These departements, 
+regarding history and culture, are different from metropolitan France thus they 
+also have a different but common election behaviour. Particularly, during the 
+2002 French presidential election, they strongly promoted Christine Taubira, 
+who is actually the candidate assigned to this super cluster, a woman 
+originated from one of the overseas departements.

@@ -1,0 +1,16 @@
+.onAttach <- function(libname, pkgname){
+  packageStartupMessage("")
+  packageStartupMessage("***********************************************************")
+  packageStartupMessage("")
+  packageStartupMessage("      This is 'SOMbrero' package, v 0.4")
+  packageStartupMessage("      url: http://sombrero.r-forge.r-project.org/")
+  packageStartupMessage("")
+  packageStartupMessage("Citation details with citation(SOMbrero)")
+  packageStartupMessage("")
+  packageStartupMessage("Further information with help(SOMbrero)...")
+  packageStartupMessage("")
+  packageStartupMessage("Warning! This package has been implemented by girls.")
+  packageStartupMessage("Default colors may not be suited for men.")
+  packageStartupMessage("")
+  packageStartupMessage("***********************************************************")
+}

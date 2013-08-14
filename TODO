@@ -1,0 +1,24 @@
+* other features (hard)
+** grid.topology: hexagonal
+** repeat SOM and combine
+** multiple dissimilarities
+** kacm
+** batch version
+
+* other features (easy)
+** add weights to observations
+** init=pca
+** radius.type=gaussian
+** implement projectGraph
+** kaski lagus
+** add ANOVA for dissimilarity
+** add original energy as a parameter
+
+* implementation enhancement
+** should maybe improve the distance handling and propagate it everywhere
+** colors handling in "names" seems to sometimes bug
+** make a function for initializing colors init.color(clustering, def.color)
+** dissimilarity algorithm requires a "dist" type input
+
+* misc
+** replace "arth800" by the mouse liver/gene dataset
