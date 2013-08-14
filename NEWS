@@ -1,3 +1,8 @@
+SOMbrero 0.4-2
+New features:
+  Added a parameter that tunes the gradient descent step
+
+********************************************************************************
 SOMbrero 0.4
 New features:
   Implementation of the "dissimilarity" algorithm to handle dissimilarity data

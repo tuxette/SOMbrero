@@ -12,17 +12,16 @@ contains the parameters needed to run the SOM algorithm.
 }
 \usage{
 initSOM(dimension=c(5,5), topo=c("square"),
-                    dist.type=c("letremy", "maximum","euclidean","manhattan",
-                    "canberra","binary","minkowski"),
-                    type=c("numeric", "relational", "korresp"), 
-                    mode=c("online"), 
-                    maxit=500, nb.save=0, verbose=FALSE, proto0=NULL, 
-                    init.proto=c("random","obs"), 
-                    scaling=switch(type,
-                                   "numeric"="unitvar",
-                                   "relational"="none",
-                                   "korresp"="chi2"), 
-                    radius.type=c("letremy"))
+        dist.type=c("letremy", "maximum","euclidean","manhattan","canberra",
+        "binary","minkowski"),
+        type=c("numeric", "relational", "korresp"), mode=c("online"), 
+        maxit=500, nb.save=0, verbose=FALSE, proto0=NULL, 
+        init.proto=c("random","obs"),
+        scaling=switch(type,
+                       "numeric"="unitvar",
+                       "relational"="none",
+                       "korresp"="chi2"), 
+        radius.type=c("letremy"), eps0=1)
 \method{print}{paramSOM}(x, \ldots)
 \method{summary}{paramSOM}(object, \ldots)
 }
@@ -43,8 +42,8 @@ initSOM(dimension=c(5,5), topo=c("square"),
   algorithm process. Default value is \code{500}.}
   \item{nb.save}{The number of intermediate back-ups to be done during the 
   algorithm process. Default value is \code{0}.}
-  \item{verbose}{The boolean value which control the printing during the SOM 
-  algorithm process. Default value is \code{FALSE}.}
+  \item{verbose}{The boolean value which activates the verbose mode during the
+  SOM algorithm process. Default value is \code{FALSE}.}
   \item{proto0}{The initial prototypes. Default value is \code{NULL}.}
   \item{init.proto}{The method to be used to initialize the prototypes, either 
   randomization or an observation sample. This 
@@ -57,6 +56,12 @@ initSOM(dimension=c(5,5), topo=c("square"),
   available for a \code{korresp} SOM and is also its default value).}
   \item{radius.type}{The neighbourhood type. Default value is \code{"letremy"},
   which corresponds to the original implementation from Patrick Letremy.}
+  \item{eps0}{The scaling value for the stochastic gradient descent step
+  in the prototypes' update. The scaling value for the stochastic gradient
+  descent step is equal to
+  \eqn{\frac{0.3\epsilon_0}{1+0.2t/\textrm{dim}}}{0.3*eps0/(1+0.2*t/dim)} where
+  \eqn{t}{t} is the current step number and \eqn{\textrm{dim}}{dim} is the grid
+  dimension (width multiplied by height).}
   \item{x, object}{an object of class \code{paramSOM}.}
   \item{\ldots}{not used}
 }

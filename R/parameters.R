@@ -10,7 +10,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
                                    "numeric"="unitvar",
                                    "relational"="none",
                                    "korresp"="chi2"), 
-                    radius.type=c("letremy")) {
+                    radius.type=c("letremy"), eps0=1) {
   type <- match.arg(type)
   # check scaling compatibility
   if (type=="korresp" && scaling!="chi2") {
@@ -54,7 +54,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
                  scaling=match.arg(scaling, c("unitvar", "none", "center", 
                                               "chi2")),
                  radius.type=match.arg(radius.type),
-                 verbose=verbose)
+                 verbose=verbose, eps0=eps0)
   
   ## TODO: to add later: other types, other modes (?), init=pca,
   # and radius.type=gaussian

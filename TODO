@@ -12,7 +12,6 @@
 ** implement projectGraph
 ** kaski lagus
 ** add ANOVA for dissimilarity
-** add original energy as a parameter
 
 * implementation enhancement
 ** should maybe improve the distance handling and propagate it everywhere
