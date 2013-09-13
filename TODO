@@ -1,4 +1,18 @@
+* WUI with shiny
+** make a simple user interface with shiny
+examples at: http://glimmer.rstudio.com/tuxette/niledam
+http://glimmer.rstudio.com/tuxette/fbs
+http://glimmer.rstudio.com/tuxette/wnaetw
+See: http://www.rstudio.com/shiny
+
 * other features (easy)
+** change default value for dissimilarity (initialization: obs)
+** make a test to test if dissimilarity SOM and standard SOM are equal for 
+Euclidean distance (they must be); create a directory test
+** add scaling for dissimilarity : division by the norm (Frobenius), cosine
+scaling, divide by standard deviation of the distances, divide by the max(?)
+** check whether the default option (size of the grid ...) are properly
+handled or at least documented. They do not seem to be...
 ** add ANOVA for dissimilarity in summary
 ** init=pca
 ** add a function graph2SOM that projects a graph on the grid
