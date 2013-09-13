@@ -5,7 +5,7 @@
   packageStartupMessage("      This is 'SOMbrero' package, v 0.4")
   packageStartupMessage("      url: http://sombrero.r-forge.r-project.org/")
   packageStartupMessage("")
-  packageStartupMessage("Citation details with citation(SOMbrero)")
+  packageStartupMessage("Citation details with citation('SOMbrero')")
   packageStartupMessage("")
   packageStartupMessage("Further information with help(SOMbrero)...")
   packageStartupMessage("")
