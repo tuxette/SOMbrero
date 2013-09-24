@@ -1,0 +1,97 @@
+## A faire
+
+** NV : fait tout en haut un lien vers une page d'aide (page HTML que tu
+places sur le serveur) expliquant chacun des paramètres disponibles et
+les valeurs conseillées (valeurs par défaut à regarder dans les scripts)
+; ce serait bien que tu utilises le CSS de shiny (qui est bootstrap)
+pour l'uniformité de la présentation
+
+** NV : dans les options : ajoute scaling, ajoute eps0, ajoute nb.save,
+ajoute init.proto, ajoute la possibilité de fixer une graine aléatoire
+(regarde sur niledam et explique dans l'aide)
+
+- pour le GIT : j'ai placé sur le git général ; fais un git pull puis
+FAIS LE TUTORIEL GIT et ensuite, quand tu auras compris, tu fais un test
+sur la version 0.2 de ton développement.
+La règle, pour l'instant : tu pushes sur mon serveur ; je repushe les
+versions stables sur github ; tu pourras aussi t'ajouter ton répertoire
+github pour pusher sur celui-ci ensuite (mais ça risque d'être compliqué
+pour toi de gérer plusieurs dépôts en même temps donc disons que dans un
+premier temps, tu pushes uniquement sur la branche dev de mon serveur
+(les scripts sont dans inst/shiny)
+
+- MO : l'onglet "Train SOM" (qu'il va falloir appeler différemment)
+- MO : la possibilité de normaliser les données (centrées, centrées et réduites pour les données numériques, etc)
+- MO : le type de voisinage sur la grille (pour l'instant, uniquement Letremy)
+- MO : le fait de fixer la graine aléatoire ou non (reproductibilité des résultats)
+- MO : l'initialisation des prototypes (parmi les observations, au hasard, dans le premier plan factoriel)
+- MO : la possibilité de faire des sauvegardes intermédiaires et si oui, combien (afin de pouvoir représenter, par exemple, la fonction énergie).
+
+- MO : je pense qu'il faut pouvoir avoir la possibilité d'importer en même temps des variables supplémentaires qui seront utilisées a posteriori pour des graphiques, par exemple
+
+- MO : ce serait bien de rajouter également l'erreur topographique dans les sorties, ainsi qu'un bouton qui permette de récupérer les résultats de la classification
+
+- MO : des légendes ou des mini-explications pour dire pour quel type de données est conçu chacun des trois algos
+
+- JB : adapter le choix des variables à Korresp et Relational
+
+##########################################################
+## Fait :
+
+- NV : À modifier dans le header (si tu peux) : ajouter le logo de sombrero
+en haut à gauche ; ajouter dessous "kindly provided by SAMM team under
+the GPL-2 licence" avec le logo du SAMM et le lien vers la licence GPL
+et vers le site web du SAMM
+
+- NV : À modifier dans la partie "Data Importation" :
+** dot -> period (je sais que l'erreur vient de moi ;-))
+** en haut, ajouter un petit texte disant que c'est l'interface
+graphique du package sombrero (lien vers la page du package), qu'elle
+est développée par toi (lien vers ton site web si tu as) et que le code
+est librement disponible à : https://github.com/tuxette/sombrero (je
+pusherai quand la première version finale (voir à la fin du mail pour
+les informations sur le git) avec la commande comme sur mes autres
+interfaces graphiques
+
+- NV : À modifier dans "Data preview"
+** exporte en csv les trois fichiers d'exemples et envoie les moi par
+email ; ensuite, mets une phrase disant que l'interface peut être testée
+avec ces fichiers (je te fournirai plus tard les liens vers les fichiers
+quand je les aurai placés sur mon cloud)
+** fais un lien vers chacun des fichiers d'exemples de sombrero
+** numeric, korresp ET RELATIONAL
+** ajoute les références : livre de Kohonen, article de Marie & Patrick,
+article de Mada et moi
+
+- NV : À modifier dans "Train SOM"
+** au niveau de l'organisation :
+HELP
+HIT BUTTON
+VERBATIM
+OPTIONS
+
+- NV : au niveau du code :
+** Coupe chaque ligne à 80 caractères au plus (voir recommandations de
+la R core team, notamment pour où couper et comment indenter) : R studio
+te permet de te placer une marque à 80 caractères et fait les
+indentations comme recommandé (regarde les options)
+** pas de "_" dans les noms de variables (je suis maniaque et j'ai
+commencé en S où c'était utilisé pour l'affectation : c'est purement
+personnel mais je n'aime pas) et utilise la convention :
+variable : ma.variable
+fonction : maFonction
+(qui est celle qui a été choisie dans sombrero ; plusieurs sont
+conseillées dans R mais celle-ci est valide)
+
+- NV : sur cet onglet, sur "developed by", ajoute nos deux noms (à
+Mada et moi) et un lien vers nos pages web : je sais que ça n'a l'air de
+rien à distance mais ce que l'on fait est aussi du travail...
+
+- NV : Sur les références, mets-le titre "Références" en <h2></h2> (ou <h3> si
+<h2> est trop gros). Pour les références elle-même, fais les formattages habituels (italique pour les titres d'ouvrage, ...)
+
+** NV : ajoute un bouton pour sauver le SOM (au format rda)
+
+** JB : Faire en sorte que le fichier rda à télécharger corresponde à la sortie dans
+summary (sans recalculer le SOM)
+
