@@ -36,8 +36,12 @@ shinyUI(pageWithSidebar(
                 table. When this is done, you can proceed to the next step: 
                 Train SOM")),
         p(HTML('The interface can be tested using example data files for the
-               <a href= "http://"> numeric</a>, <a href= "http://"> korresp</a> 
-               and <a href= "http://"> relational </a> algorithms.')),
+               <a href= 
+"http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=9d319bedf64098340ca9b094a527f70608e2d67c"> 
+               numeric</a>, <a href= 
+"http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=d824f59d7d934468de7f08b873f79d291aa129fd"> 
+               korresp</a> and <a href= 
+               "http://"> relational </a> algorithms.')),
         numericInput('nrow.preview', 'Number of rows in the preview:', 20),
         numericInput('ncol.preview', 'Number of columns in the preview:', 10),
         helpText("Note: while the preview will show only the specified number 
