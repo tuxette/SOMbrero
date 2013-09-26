@@ -90,7 +90,7 @@ shinyServer(function(input, output, session) {
                                       deleteFile= FALSE)
 
   # Output the SAMM logo :
-  output$samm.logo <- renderImage(list(src= "logo SAMM.png"), 
+  output$samm.logo <- renderImage(list(src= "samm.png"), 
                                   deleteFile= FALSE)
 
 })
