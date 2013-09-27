@@ -1,39 +1,22 @@
 ## A faire
 
+** JB : scaling "none" et "center" semblent donner la même chose
+
 ** NV : fait tout en haut un lien vers une page d'aide (page HTML que tu
 places sur le serveur) expliquant chacun des paramètres disponibles et
 les valeurs conseillées (valeurs par défaut à regarder dans les scripts)
 ; ce serait bien que tu utilises le CSS de shiny (qui est bootstrap)
 pour l'uniformité de la présentation
 
-** NV : dans les options : ajoute scaling, ajoute eps0, ajoute nb.save,
-ajoute init.proto, ajoute la possibilité de fixer une graine aléatoire
-(regarde sur niledam et explique dans l'aide)
-
-- pour le GIT : j'ai placé sur le git général ; fais un git pull puis
-FAIS LE TUTORIEL GIT et ensuite, quand tu auras compris, tu fais un test
-sur la version 0.2 de ton développement.
-La règle, pour l'instant : tu pushes sur mon serveur ; je repushe les
-versions stables sur github ; tu pourras aussi t'ajouter ton répertoire
-github pour pusher sur celui-ci ensuite (mais ça risque d'être compliqué
-pour toi de gérer plusieurs dépôts en même temps donc disons que dans un
-premier temps, tu pushes uniquement sur la branche dev de mon serveur
-(les scripts sont dans inst/shiny)
-
 - MO : l'onglet "Train SOM" (qu'il va falloir appeler différemment)
-- MO : la possibilité de normaliser les données (centrées, centrées et réduites pour les données numériques, etc)
-- MO : le type de voisinage sur la grille (pour l'instant, uniquement Letremy)
-- MO : le fait de fixer la graine aléatoire ou non (reproductibilité des résultats)
-- MO : l'initialisation des prototypes (parmi les observations, au hasard, dans le premier plan factoriel)
-- MO : la possibilité de faire des sauvegardes intermédiaires et si oui, combien (afin de pouvoir représenter, par exemple, la fonction énergie).
 
 - MO : je pense qu'il faut pouvoir avoir la possibilité d'importer en même temps des variables supplémentaires qui seront utilisées a posteriori pour des graphiques, par exemple
 
-- MO : ce serait bien de rajouter également l'erreur topographique dans les sorties, ainsi qu'un bouton qui permette de récupérer les résultats de la classification
+- MO : erreur topographique dans les sorties
+
+- MO : bouton qui permette de récupérer les résultats de la classification
 
 - MO : des légendes ou des mini-explications pour dire pour quel type de données est conçu chacun des trois algos
-
-- JB : adapter le choix des variables à Korresp et Relational
 
 ##########################################################
 ## Fait :
@@ -94,4 +77,16 @@ rien à distance mais ce que l'on fait est aussi du travail...
 
 ** JB : Faire en sorte que le fichier rda à télécharger corresponde à la sortie dans
 summary (sans recalculer le SOM)
+
+** NV : dans les options : ajoute scaling, ajoute eps0, ajoute nb.save,
+ajoute init.proto, ajoute la possibilité de fixer une graine aléatoire
+(regarde sur niledam et explique dans l'aide)
+
+- MO : la possibilité de normaliser les données (centrées, centrées et réduites pour les données numériques, etc)
+- MO : le type de voisinage sur la grille (pour l'instant, uniquement Letremy)
+- MO : le fait de fixer la graine aléatoire ou non (reproductibilité des résultats)
+- MO : l'initialisation des prototypes (parmi les observations, au hasard, dans le premier plan factoriel)
+- MO : la possibilité de faire des sauvegardes intermédiaires et si oui, combien (afin de pouvoir représenter, par exemple, la fonction énergie).
+
+** JB : adapter les dimensions selon la taille des données
 
