@@ -80,6 +80,7 @@ shinyUI(pageWithSidebar(
                     choices= c("random","obs"), "random")),
 
       tabPanel("Plot"),
+
       tabPanel("Superclass",
         h3("Group prototypes into superclasses"),
         selectInput("sc.cut.choice", "Choose clustering criterion:",
@@ -89,6 +90,7 @@ shinyUI(pageWithSidebar(
         uiOutput("sc.h.or.k"),
         actionButton("superclassbutton","Compute superclasses"),
         downloadButton("sc.download", "Download superclass classification"),
+        br(),
         verbatimTextOutput("sc.summary"),
         plotOutput("dendrogram")),
         

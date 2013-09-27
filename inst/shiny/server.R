@@ -7,7 +7,7 @@ trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames,
   if(type=="numeric")
     data= data[, varnames]
   trainSOM(data, dimension=c(dimx,dimy), dist.type= disttype, 
-           maxit= maxit, type= type, scaling= scaling, eps0= eps0, 
+           maxit= maxit, type= type, scaling= scaling, #eps0= eps0, 
            init.proto= init.proto, nb.save= nb.save)
 }
 
