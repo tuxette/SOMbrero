@@ -80,7 +80,18 @@ shinyUI(pageWithSidebar(
                     choices= c("random","obs"), "random")),
 
       tabPanel("Plot"),
-      tabPanel("Superclass"),
+      tabPanel("Superclass",
+        h3("Group prototypes into superclasses"),
+        selectInput("sc.cut.choice", "Choose clustering criterion:",
+                    choices= c("Number of superclasses"= "nclust", 
+                               "Height in dendrogram"=  "tree.height"),
+                    "Number of superclasses"),
+        uiOutput("sc.h.or.k"),
+        actionButton("superclassbutton","Compute superclasses"),
+        downloadButton("sc.download", "Download superclass classification"),
+        verbatimTextOutput("sc.summary"),
+        plotOutput("dendrogram")),
+        
 
       tabPanel("About",
         imageOutput("sombrero.logo", width= "200px", height= "200px"),

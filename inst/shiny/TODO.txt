@@ -1,5 +1,11 @@
 ## A faire
 
+** JB : laisser la possibilité de télécharger le clustering brut de SOM?
+
+** JB : l'actualisation des données ne se fait que quand on est sur l'onglet Data preview (c'est output$table qui appelle dInput()). Possible de changer?
+
+** JB : valeur standard pour le h de superClass?
+
 ** JB : scaling "none" et "center" semblent donner la même chose
 
 ** NV : fait tout en haut un lien vers une page d'aide (page HTML que tu

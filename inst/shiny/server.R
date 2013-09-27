@@ -59,22 +59,6 @@ shinyServer(function(input, output, session) {
     the.table
   })
 
-  # update the scaling option when the somtype is changed (not working)
-#  updateScaling <- reactive({
-#    input$trainbutton
-#    input$somtype
-#    updateSelectInput(session, inputId= "somtype",
-#                      choices= switch(input$somtype,
-#                                      "numeric"= list("unitvar", "none", 
-#                                                      "center", "chi2"),
-#                                      "Korresp"= list("chi2"),
-#                                      "relational"= list("none")),
-#                      selected= switch(input$somtype,
-#                                       "numeric"= "unitvar",
-#                                       "korresp"= "chi2",
-#                                       "relational"= "none"))
-#  })
-
   # update the scaling option when the somtype is changed
   output$scaling <- renderUI({
     selectInput(inputId= "scaling", label= "Data scaling:", 
@@ -100,6 +84,7 @@ shinyServer(function(input, output, session) {
   })
 
   current.som <- NULL # this variable will contain the current SOM
+  current.sc <- NULL #  this will contain the current superclass object
   server.env <- environment() # used to allocate to current.som in functions
 
   # Train the SOM when the button is hit
@@ -114,10 +99,12 @@ shinyServer(function(input, output, session) {
                                                   eps0= input$eps0, 
                                                   init.proto= input$init.proto, 
                                                   nb.save= input$nb.save))
+
+    # return the computed som
     server.env$current.som
   }
 
-  # This function renders the summary of the SOM
+  # Render the summary of the SOM
   output$summary <- renderPrint({
     if (is.null(input$file1))
       return("First import a dataset.")
@@ -152,6 +139,55 @@ shinyServer(function(input, output, session) {
     numericInput("rand.seed", "Set a random seed for reproducible results:",
                  sample(1:1e5, size= 1)))
                                             
+  # Input number of superclasses or cutting height
+  output$sc.h.or.k <- renderUI(
+    switch(input$sc.cut.choice, 
+           "nclust"= numericInput("sc.k", "Number of superclasses:", 2, 
+                                  min=1, max= input$dimx * input$dimy - 1), 
+           "tree.height"= numericInput("sc.h", "Height in dendrogram:", 10,
+                                       min= 0))
+  )
+
+  # Compute superclasses when the button is hit
+  computeSuperclasses <- function() {
+    input$superclassbutton
+    server.env$current.sc <- isolate(
+      switch(input$sc.cut.choice, 
+             "nclust"= superClass(sommap= current.som, k= input$sc.k),
+             "tree.height"= superClass(sommap= current.som, h= input$sc.h)))
+    server.env$current.sc
+  }
+
+  output$sc.summary <- renderPrint( {
+    if (input$superclassbutton==0) 
+      return("Hit the Compute superclasses button to show the results.")
+    summary(computeSuperclasses())
+  })
+
+  # Render the dendrogram
+  output$dendrogram <- renderPlot(expr= {
+    if (input$superclassbutton == 0) {
+      return(NULL)
+    } else {
+      plot(server.env$current.sc)
+    }
+  })
+
+  # Download the superclass classification
+  # TODO: output an error if map not trained
+  output$sc.download <- {
+    downloadHandler(
+      filename= function() {
+        paste("superclasses ", Sys.time(),".csv", sep="")
+      },
+      content= function(file) {
+        classes.export <- 
+          data.frame(obs= row.names(server.env$current.sc$som$data),
+                     cluster= server.env$current.sc$cluster[
+                                       server.env$current.sc$som$clustering])
+        write.csv(classes.export, file= file, row.names= FALSE)
+      })
+  }
 
 })
 
