@@ -12,7 +12,6 @@ shinyUI(pageWithSidebar(
     br(), br(), br(),
 
     fileInput('file1', 'Choose CSV/TXT File'),
-#              accept=c('text/csv', 'text/plain')),
     checkboxInput('header', ' Header?', TRUE),
     checkboxInput('rownames', ' Row names?', FALSE),
     selectInput('sep', 'Separator:', 
@@ -59,7 +58,6 @@ shinyUI(pageWithSidebar(
         br(),
 	downloadButton("som.download", "Download the SOM file"),
         br(), br(),
-#        checkboxGroupInput("varchoice", "Training variables:", choices= list("NoVariables")),
         h4("Options"),
         uiOutput("varchoice"),
         numericInput("dimx", "Map dimension X:", 5, min= 1),
@@ -79,7 +77,18 @@ shinyUI(pageWithSidebar(
         selectInput("init.proto", "Prototypes initialization method:", 
                     choices= c("random","obs"), "random")),
 
-      tabPanel("Plot"),
+      tabPanel("Plot",
+        selectInput("plotwhat", "Plot what?", 
+                    choices= list("Prototypes"= "prototypes",
+                                  "Observations"= "obs", 
+                                  "Additional variable"= "add",
+                                   "Super Classes"= "superclass")),
+
+        selectInput("plottype", "Type of plot:", 
+                    choices= list("color", "3d", 
+                                  "Polygon distances"= "poly.dist", "radar")),
+        selectInput("plotvar", "Variable:", choices= "NA"),
+        plotOutput("somplot")),
 
       tabPanel("Superclass",
         h3("Group prototypes into superclasses"),

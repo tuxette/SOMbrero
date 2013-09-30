@@ -13,6 +13,11 @@ trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames,
 
 # Server
 shinyServer(function(input, output, session) {
+  # server environment variables
+  server.env <- environment() # used to allocate in functions
+  current.som <- NULL # this variable will contain the current SOM
+  current.sc <- NULL #  this will contain the current superclass object
+  current.table <- NULL
 
   dInput <- reactive({
     in.file <- input$file1
@@ -34,7 +39,8 @@ shinyServer(function(input, output, session) {
       output$varchoice <- renderUI(
         checkboxGroupInput(inputId= "varchoice", label= "Input variables:",
                            choices= as.list(colnames(the.table)),
-                           selected= as.list(colnames(the.table)[sapply(the.table, class)== "numeric"])))
+                           selected= as.list(colnames(the.table)[sapply(
+                                             the.table, class) == "numeric"])))
     } else {
       output$varchoice <- renderText("")
     }
@@ -56,6 +62,7 @@ shinyServer(function(input, output, session) {
     })
 
     # return the table
+    server.env$current.table <- the.table
     the.table
   })
 
@@ -82,10 +89,6 @@ shinyServer(function(input, output, session) {
       d.input <- d.input[,1:input$ncol.preview]
     head(d.input, n=input$nrow.preview) 
   })
-
-  current.som <- NULL # this variable will contain the current SOM
-  current.sc <- NULL #  this will contain the current superclass object
-  server.env <- environment() # used to allocate to current.som in functions
 
   # Train the SOM when the button is hit
   theSom<- function() {
@@ -189,6 +192,76 @@ shinyServer(function(input, output, session) {
       })
   }
 
+  observe(updateSelectInput(session, "plottype", 
+          choices= switch(input$plotwhat,
+                          "superclass"= c("radar", "pie"),
+                          "prototypes"= list("color", "3d", "lines", "barplot",
+                                             "smooth distances"= "smooth.dist",
+                                             "polygon distances"= "poly.dist",
+                                             "grid distances"= "grid.dist",
+                                             "U matrix distances"= "umatrix",
+                                             "mds", "radar"),
+                          "obs"= c("hitmap", "color", "lines", "barplot", 
+                                   "names", "boxplot", "radar"),
+                          "add"= c("pie", "color", "lines", "boxplot", 
+                                   "barplot", "radar", "names", "words", 
+                                   "graph"))))
+                                            
+  # Adapt the variable choice to the "what" and "type" arguments
+  observe(output$plotoptions2 <- {
+    if (input$plotwhat != "prototypes" | is.null(server.env$current.table) |
+        !(input$plottype %in% c("color", "3d", "radar"))) {
+      return(NULL)
+    }
+    renderUI(selectInput("plot.var", "Variable to plot", 
+                         choices= colnames(server.env$current.table)[
+                                           sapply(server.env$current.table, 
+                                             class) == "numeric"]))
+  })
+
+  observe(updateSelectInput(session, "plotvar",
+    choices= if (input$plotwhat != "prototypes" | 
+                 is.null(server.env$current.table) |
+                 !(input$plottype %in% c("color", "3d", "radar"))) {
+               "NA"
+             } else {
+               colnames(server.env$current.table)[
+                 sapply(server.env$current.table, class) == "numeric"]
+             }))
+
+  # Render plot
+#  observe({output$the.plot <- 
+#    input$plotwhat
+#    print("entré plot")
+#    if (is.null(server.env$current.som)) {
+#      print("pense que null")
+#      return(NULL)
+#    }
+#    if (input$plotwhat == "superclass") {
+#      print("superclass")
+#      renderPlot(expr= plot(current.sc, type= input$plot.type))
+#    } else {
+#      print("pas superclass")
+#      return(renderPlot(expr= plot(current.som, type= input$plot.type)))
+#    })
+  observe(output$somplot <- {
+#    if (is.null(server.env$current.som)) {
+#      return(NULL)
+#    }
+    renderPlot(expr= plot(x= switch(input$plotwhat, superclass= current.sc,
+                                    current.som),
+                          what= input$plotwhat, type= input$plottype,
+                          variable= if(input$plotwhat == "prototypes" 
+                                       & input$plottype %in% 
+                                       c("color", "3d", "radar")) {
+                                      input$plotvar
+                                    } else {
+                                      NULL
+                                    }))
+  })
+
+  observe(output$plot.diagno <- renderPrint(paste(input$plotwhat,
+                                                   input$plottype)))
 })
 
 
