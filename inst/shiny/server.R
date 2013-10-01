@@ -11,6 +11,38 @@ trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames,
            init.proto= init.proto, nb.save= nb.save)
 }
 
+# List of plot types options per SOM type and "what" :
+all.plot.types= list("numeric"= 
+                   list("prototypes"= 
+                          list("color", "3d", "lines", 
+                               "barplot", "smooth distances"= "smooth.dist",
+                               "polygon distances"= "poly.dist",
+                               "grid distances"= "grid.dist",
+                               "U matrix distances"= "umatrix",
+                               "mds", "radar"),
+                        "obs"= c("hitmap", "color", "lines", "barplot", 
+                                 "names", "boxplot", "radar"),
+                        "add"= c("pie", "color", "lines", "boxplot", "barplot", 
+                                 "radar", "names", "words", "graph")),
+                 "korresp"= 
+                   list("prototypes"= 
+                          list("color", "3d", "lines", 
+                               "barplot", "polygon distances"= "poly.dist",
+                               "grid distances"= "grid.dist",
+                               "U matrix distances"= "umatrix",
+                               "mds", "radar"),
+                        "obs"= c("hitmap", "names"),
+                        "add"= "NA"),
+                 "relational"= 
+                   list("prototypes"=
+                          list("lines", "barplot",
+                               "polygon distances"= "poly.dist",
+                               "grid distances"= "grid.dist",
+                               "U matrix distances"= "umatrix",
+                               "mds", "radar"),
+                        "obs"= c("hitmap", "names"),
+                        "add"= c("pie", "color", "lines", "boxplot", "barplot", 
+                                 "radar", "names", "words", "graph")))
 # Server
 shinyServer(function(input, output, session) {
   # server environment variables
@@ -18,7 +50,7 @@ shinyServer(function(input, output, session) {
   current.som <- NULL # this variable will contain the current SOM
   current.sc <- NULL #  this will contain the current superclass object
   current.table <- NULL
-
+  
   dInput <- reactive({
     in.file <- input$file1
     
@@ -97,7 +129,7 @@ shinyServer(function(input, output, session) {
                                                   input$dimx, input$dimy, 
                                                   input$disttype, input$maxit, 
                                                   varnames= input$varchoice, 
-                                                  rand.seed= input$rand.seed, 
+                                                  rand.seed= input$randseed, 
                                                   scaling= input$scaling, 
                                                   eps0= input$eps0, 
                                                   init.proto= input$init.proto, 
@@ -137,13 +169,8 @@ shinyServer(function(input, output, session) {
   output$samm.logo <- renderImage(list(src= "samm.png"), 
                                   deleteFile= FALSE)
 
-  # Seed selector:
-  output$rand.seed <- renderUI(
-    numericInput("rand.seed", "Set a random seed for reproducible results:",
-                 sample(1:1e5, size= 1)))
-                                            
   # Input number of superclasses or cutting height
-  output$sc.h.or.k <- renderUI(
+  output$scHorK <- renderUI(
     switch(input$sc.cut.choice, 
            "nclust"= numericInput("sc.k", "Number of superclasses:", 2, 
                                   min=1, max= input$dimx * input$dimy - 1), 
@@ -192,32 +219,23 @@ shinyServer(function(input, output, session) {
       })
   }
 
-  observe(updateSelectInput(session, "plottype", 
-          choices= switch(input$plotwhat,
-                          "superclass"= c("radar", "pie"),
-                          "prototypes"= list("color", "3d", "lines", "barplot",
-                                             "smooth distances"= "smooth.dist",
-                                             "polygon distances"= "poly.dist",
-                                             "grid distances"= "grid.dist",
-                                             "U matrix distances"= "umatrix",
-                                             "mds", "radar"),
-                          "obs"= c("hitmap", "color", "lines", "barplot", 
-                                   "names", "boxplot", "radar"),
-                          "add"= c("pie", "color", "lines", "boxplot", 
-                                   "barplot", "radar", "names", "words", 
-                                   "graph"))))
+  # Adapt plottype to the somtype and the "what" arguments
+  observe({
+    updateSelectInput(session, "plottype", 
+                      choices= all.plot.types[[input$somtype]][[input$plotwhat]])
+  })
                                             
   # Adapt the variable choice to the "what" and "type" arguments
-  observe(output$plotoptions2 <- {
-    if (input$plotwhat != "prototypes" | is.null(server.env$current.table) |
-        !(input$plottype %in% c("color", "3d", "radar"))) {
-      return(NULL)
-    }
-    renderUI(selectInput("plot.var", "Variable to plot", 
-                         choices= colnames(server.env$current.table)[
-                                           sapply(server.env$current.table, 
-                                             class) == "numeric"]))
-  })
+#   observe(output$plotoptions2 <- {
+#     if (input$plotwhat != "prototypes" | is.null(server.env$current.table) |
+#         !(input$plottype %in% c("color", "3d", "radar"))) {
+#       return(NULL)
+#     }
+#     renderUI(selectInput("plot.var", "Variable to plot", 
+#                          choices= colnames(server.env$current.table)[
+#                                            sapply(server.env$current.table, 
+#                                              class) == "numeric"]))
+#   })
 
   observe(updateSelectInput(session, "plotvar",
     choices= if (input$plotwhat != "prototypes" | 
@@ -230,8 +248,9 @@ shinyServer(function(input, output, session) {
              }))
 
   # Render plot
-#  observe({output$the.plot <- 
+#   observe(output$somplot <- {
 #    input$plotwhat
+#    input$plottype
 #    print("entré plot")
 #    if (is.null(server.env$current.som)) {
 #      print("pense que null")
@@ -239,18 +258,22 @@ shinyServer(function(input, output, session) {
 #    }
 #    if (input$plotwhat == "superclass") {
 #      print("superclass")
-#      renderPlot(expr= plot(current.sc, type= input$plot.type))
+#      renderPlot(expr= plot(current.sc, type= input$plottype))
 #    } else {
 #      print("pas superclass")
-#      return(renderPlot(expr= plot(current.som, type= input$plot.type)))
-#    })
-  observe(output$somplot <- {
-#    if (is.null(server.env$current.som)) {
-#      return(NULL)
-#    }
-    renderPlot(expr= plot(x= switch(input$plotwhat, superclass= current.sc,
-                                    current.som),
-                          what= input$plotwhat, type= input$plottype,
+#      tmp.som <- current.som
+#      return(renderPlot(expr= plot(tmp.som, type= input$plottype)))
+#    }})
+##  observe(output$somplot <- {
+##    if (is.null(server.env$current.som)) {
+##      return(NULL)
+##    }
+#    observe(if(!is.null(server.env$current.som)){
+
+  observe(output$somplot <- renderPlot(
+        expr= plot(x= switch((!is.null(current.sc) & input$plotsc) + 1, 
+                             current.som, current.sc),
+                   what= input$plotwhat, type= input$plottype,
                           variable= if(input$plotwhat == "prototypes" 
                                        & input$plottype %in% 
                                        c("color", "3d", "radar")) {
@@ -258,11 +281,8 @@ shinyServer(function(input, output, session) {
                                     } else {
                                       NULL
                                     }))
-  })
+      )
 
-  observe(output$plot.diagno <- renderPrint(paste(input$plotwhat,
-                                                   input$plottype)))
+#    })
+  
 })
-
-
-

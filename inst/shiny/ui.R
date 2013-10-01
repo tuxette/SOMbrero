@@ -50,8 +50,8 @@ shinyUI(pageWithSidebar(
 
       tabPanel("Train SOM",
         h3("Second step: train the self-organizing map"),
-        p(HTML('<a href=help.html> Help page</a>: how to choose the right parameter
-               values')),
+        p(HTML('<a href=help.html> Help page</a>: how to choose the right 
+               parameter values')),
         actionButton("trainbutton","Train SOM"),
         br(), br(),
         verbatimTextOutput("summary"),
@@ -69,8 +69,9 @@ shinyUI(pageWithSidebar(
                       "euclidean"="euclidean", "manhattan"="manhattan",
                       "canberra"="canberra", "binary"="binary",
                       "minkowski"="minkowski")),
-	uiOutput("scaling"),
-        uiOutput("rand.seed"),
+        uiOutput("scaling"),
+        numericInput("randseed", "Set a random seed for reproducible results:",
+                     sample(1:1e5, size= 1)),
         numericInput("eps0", "Epsilon0: (scaling value for gradient descent)", 
                      1, min= 0, step= .1),
         numericInput("nb.save", "Number of intermediate back-ups:", 0, min= 0), 
@@ -81,12 +82,13 @@ shinyUI(pageWithSidebar(
         selectInput("plotwhat", "Plot what?", 
                     choices= list("Prototypes"= "prototypes",
                                   "Observations"= "obs", 
-                                  "Additional variable"= "add",
-                                   "Super Classes"= "superclass")),
+                                  "Additional variable"= "add")
+                    ),
 
         selectInput("plottype", "Type of plot:", 
                     choices= list("color", "3d", 
                                   "Polygon distances"= "poly.dist", "radar")),
+        checkboxInput("plotsc", "Show Superclasses"),
         selectInput("plotvar", "Variable:", choices= "NA"),
         plotOutput("somplot")),
 
@@ -96,7 +98,7 @@ shinyUI(pageWithSidebar(
                     choices= c("Number of superclasses"= "nclust", 
                                "Height in dendrogram"=  "tree.height"),
                     "Number of superclasses"),
-        uiOutput("sc.h.or.k"),
+        uiOutput("scHorK"), #  Superclass Height or K (nb of clusters)
         actionButton("superclassbutton","Compute superclasses"),
         downloadButton("sc.download", "Download superclass classification"),
         br(),

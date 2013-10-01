@@ -1,5 +1,11 @@
 ## A faire
 
+** NV : pour la help page, inclue un target="_blank" dans le lien
+
+** NV : erreur avec la graine "not valid integer" sur spark
+
+** NV : les données lesmis ne fonctionne pas sur spark
+
 ** JB : laisser la possibilité de télécharger le clustering brut de SOM?
 
 ** JB : l'actualisation des données ne se fait que quand on est sur l'onglet Data preview (c'est output$table qui appelle dInput()). Possible de changer?
