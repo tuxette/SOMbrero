@@ -89,7 +89,7 @@ shinyUI(pageWithSidebar(
                     choices= list("color", "3d", 
                                   "Polygon distances"= "poly.dist", "radar")),
         checkboxInput("plotsc", "Show Superclasses"),
-        selectInput("plotvar", "Variable:", choices= "NA"),
+        selectInput("plotvar", "Variable:", choices= "(Not Available)"),
         plotOutput("somplot")),
 
       tabPanel("Superclass",

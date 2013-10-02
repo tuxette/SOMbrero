@@ -1,5 +1,8 @@
 library(SOMbrero)
 
+# Max file input size :
+options(shiny.maxRequestSize=30*1024^2)
+
 # SOM training function
 trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames, 
                         rand.seed, scaling, eps0, init.proto, nb.save) {
@@ -72,7 +75,9 @@ shinyServer(function(input, output, session) {
         checkboxGroupInput(inputId= "varchoice", label= "Input variables:",
                            choices= as.list(colnames(the.table)),
                            selected= as.list(colnames(the.table)[sapply(
-                                             the.table, class) == "numeric"])))
+                                             the.table, class) %in% c("integer",
+                                                                      "numeric")
+                                                                 ])))
     } else {
       output$varchoice <- renderText("")
     }
@@ -238,14 +243,11 @@ shinyServer(function(input, output, session) {
 #   })
 
   observe(updateSelectInput(session, "plotvar",
-    choices= if (input$plotwhat != "prototypes" | 
+    choices= if (!(input$plotwhat %in% c("obs","prototypes")) | 
                  is.null(server.env$current.table) |
-                 !(input$plottype %in% c("color", "3d", "radar"))) {
-               "NA"
-             } else {
-               colnames(server.env$current.table)[
-                 sapply(server.env$current.table, class) == "numeric"]
-             }))
+                 !(input$plottype %in% c("color", "3d"))) {
+               "(Not Available)"
+             } else colnames(current.som$data)))
 
   # Render plot
 #   observe(output$somplot <- {
@@ -274,9 +276,10 @@ shinyServer(function(input, output, session) {
         expr= plot(x= switch((!is.null(current.sc) & input$plotsc) + 1, 
                              current.som, current.sc),
                    what= input$plotwhat, type= input$plottype,
-                          variable= if(input$plotwhat == "prototypes" 
+                          variable= if(input$plotwhat %in% c("prototypes",
+                                                             "obs")
                                        & input$plottype %in% 
-                                       c("color", "3d", "radar")) {
+                                       c("color", "3d")) {
                                       input$plotvar
                                     } else {
                                       NULL
