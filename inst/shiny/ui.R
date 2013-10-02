@@ -79,6 +79,7 @@ shinyUI(pageWithSidebar(
                     choices= c("random","obs"), "random")),
 
       tabPanel("Plot Map",
+        h4("Options"),
         selectInput("somplotwhat", "Plot what?", 
                     choices= list("Prototypes"= "prototypes",
                                   "Observations"= "obs", 
@@ -90,8 +91,30 @@ shinyUI(pageWithSidebar(
                                   "Polygon distances"= "poly.dist", "radar")),
         checkboxInput("somplottitle", "Show cluster names:"),
         selectInput("somplotvar", "Variable:", choices= "(Not Available)"),
-        plotOutput("somplot")),
-
+        plotOutput("somplot"),
+      
+        h4("Import file for additional variables"),
+        selectInput("addtype", "Type of file :", 
+                    choices= list("Text/csv table"= "table", 
+                                  "Graph"= "graph")),
+        fileInput('file2', 'Choose File'),
+#        conditionalPanel("input.addtype == 'table'",
+          checkboxInput('header2', ' Header?', TRUE),
+          checkboxInput('rownames2', ' Row names?', FALSE),
+          selectInput('sep2', 'Separator:', 
+                      c(Comma=',', Semicolon=';', Tab='\t', Space=' '),
+                      'Comma'),
+          selectInput('quote2', 'Quote:',  
+                      c(None='', 'Double Quote'='"', 'Single Quote'="'"), 
+                      'Double Quote'),
+          selectInput('dec2', 'Decimal mark', c(Period='.', Comma=','), 'Period'),
+          numericInput('nrow.preview.add', 'Number of rows in the preview:', 20),
+          numericInput('ncol.preview.add', 'Number of columns in the preview:', 
+                       10),
+          tableOutput("addview")
+#        )
+      ),
+               
       tabPanel("Superclasses",
         h3("Group prototypes into superclasses"),
         selectInput("sc.cut.choice", "Choose clustering criterion:",
