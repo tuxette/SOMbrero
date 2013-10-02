@@ -178,6 +178,7 @@ shinyServer(function(input, output, session) {
 
   # Render the summary of the SOM
   output$summary <- renderPrint({
+    dInput()
     if (is.null(input$file1))
       return("First import a dataset.")
     if (input$trainbutton==0) 

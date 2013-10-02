@@ -2,13 +2,7 @@
 
 ** NV : pour la help page, inclue un target="_blank" dans le lien
 
-** NV : erreur avec la graine "not valid integer" sur spark
-
-** NV : les données lesmis ne fonctionne pas sur spark
-
 ** JB : laisser la possibilité de télécharger le clustering brut de SOM?
-
-** JB : l'actualisation des données ne se fait que quand on est sur l'onglet Data preview (c'est output$table qui appelle dInput()). Possible de changer?
 
 ** JB : valeur standard pour le h de superClass?
 
@@ -20,13 +14,7 @@ les valeurs conseillées (valeurs par défaut à regarder dans les scripts)
 ; ce serait bien que tu utilises le CSS de shiny (qui est bootstrap)
 pour l'uniformité de la présentation
 
-- MO : l'onglet "Train SOM" (qu'il va falloir appeler différemment)
-
-- MO : je pense qu'il faut pouvoir avoir la possibilité d'importer en même temps des variables supplémentaires qui seront utilisées a posteriori pour des graphiques, par exemple
-
 - MO : erreur topographique dans les sorties
-
-- MO : bouton qui permette de récupérer les résultats de la classification
 
 - MO : des légendes ou des mini-explications pour dire pour quel type de données est conçu chacun des trois algos
 
@@ -102,3 +90,14 @@ ajoute init.proto, ajoute la possibilité de fixer une graine aléatoire
 
 ** JB : adapter les dimensions selon la taille des données
 
+** NV : erreur avec la graine "not valid integer" sur spark
+
+** NV : les données lesmis ne fonctionne pas sur spark
+
+- MO : l'onglet "Train SOM" (qu'il va falloir appeler différemment)
+
+- MO : je pense qu'il faut pouvoir avoir la possibilité d'importer en même temps des variables supplémentaires qui seront utilisées a posteriori pour des graphiques, par exemple
+
+- MO : bouton qui permette de récupérer les résultats de la classification
+
+** JB : l'actualisation des données ne se fait que quand on est sur l'onglet Data preview (c'est output$table qui appelle dInput()). Possible de changer?
