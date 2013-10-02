@@ -80,12 +80,14 @@ all.scplot.types <- list("numeric"=
 
 # Server
 shinyServer(function(input, output, session) {
+
   # server environment variables
   server.env <- environment() # used to allocate in functions
   current.som <- NULL # this variable will contain the current SOM
   current.sc <- NULL #  this will contain the current superclass object
   current.table <- NULL
   
+  # File input function
   dInput <- reactive({
     in.file <- input$file1
     
@@ -98,7 +100,7 @@ shinyServer(function(input, output, session) {
                               row.names=1, dec=input$dec)
     } else the.table <- read.table(in.file$datapath, header=input$header, 
                               sep=input$sep, quote=input$quote, dec=input$dec)
-
+    
     # update the "input variables" checkbox (if somtype is numeric or integer)
     if (input$somtype == "numeric") {
       output$varchoice <- renderUI(
@@ -127,6 +129,22 @@ shinyServer(function(input, output, session) {
     the.table
   })
 
+  #### Tab Preview Data
+  ##############################################################################
+  
+  # data preview table
+  output$view <- renderTable({
+    d.input <- dInput()
+    if (is.null(d.input)) 
+      return(NULL)
+    if (ncol(d.input)>input$ncol.preview) 
+      d.input <- d.input[,1:input$ncol.preview]
+    head(d.input, n=input$nrow.preview) 
+  })
+
+  #### Tab Self-organize
+  ##############################################################################
+
   # update the scaling option when the somtype is changed
   output$scaling <- renderUI({
     selectInput(inputId= "scaling", label= "Data scaling:", 
@@ -141,15 +159,6 @@ shinyServer(function(input, output, session) {
                                  "relational"= "none"))
   })
 
-  # data preview table
-  output$view <- renderTable({
-    d.input <- dInput()
-    if (is.null(d.input)) 
-      return(NULL)
-    if (ncol(d.input)>input$ncol.preview) 
-      d.input <- d.input[,1:input$ncol.preview]
-    head(d.input, n=input$nrow.preview) 
-  })
 
   # Train the SOM when the button is hit
   theSom<- function() {
@@ -190,15 +199,57 @@ shinyServer(function(input, output, session) {
         save(som.export, file= file)
       })
   }
+  
+  #### Tab Plot
+  ##############################################################################
+  
+  # Adapt plottype to the somtype and the "what" arguments
+  observe({
+    updateSelectInput(session, "somplottype", 
+                      choices= all.somplot.types[[input$somtype]][[
+                        input$somplotwhat]])
+  })
+  
+  # Adapt the variable choice to the "what" and "type" arguments
+  #   observe(output$plotoptions2 <- {
+  #     if (input$plotwhat != "prototypes" | is.null(server.env$current.table) |
+  #         !(input$plottype %in% c("color", "3d", "radar"))) {
+  #       return(NULL)
+  #     }
+  #     renderUI(selectInput("plot.var", "Variable to plot", 
+  #                          choices= colnames(server.env$current.table)[
+  #                                            sapply(server.env$current.table, 
+  #                                              class) == "numeric"]))
+  #   })
+  
+  observe(updateSelectInput(session, "somplotvar",
+                            choices= if (!(input$somplotwhat %in% c("obs","prototypes")) | 
+                                           is.null(server.env$current.table) |
+                                           !(input$somplottype %in% c("color", "3d"))) {
+                              "(Not Available)"
+                            } else colnames(current.som$data)))
+  
+  # Render SOM plot
+  observe(output$somplot <- {
+    #     if (is.null(current.som)) {
+    #       renderPlot(expr= plot(NULL, xlim= c(0,1), ylim= c(0,1)))
+    #     } else {
+    renderPlot(expr= plot(x= current.som, what= input$somplotwhat, 
+                          type= input$somplottype,
+                          variable= if(input$somplotwhat %in% 
+                                         c("prototypes","obs")
+                                       & input$somplottype %in% 
+                                         c("color", "3d")) {
+                            input$somplotvar
+                          } else NULL
+                          , print.title= input$somplottitle
+    )
+    ) 
+  })
 
-  # Output the sombrero logo :
-  output$sombrero.logo <- renderImage(list(src= "sombrero.png"), 
-                                      deleteFile= FALSE)
-
-  # Output the SAMM logo :
-  output$samm.logo <- renderImage(list(src= "samm.png"), 
-                                  deleteFile= FALSE)
-
+  
+  #### Tab Superclass
+  ##############################################################################
   # Input number of superclasses or cutting height
   output$scHorK <- renderUI(
     switch(input$sc.cut.choice, 
@@ -248,49 +299,6 @@ shinyServer(function(input, output, session) {
       })
   }
 
-  # Adapt plottype to the somtype and the "what" arguments
-  observe({
-    updateSelectInput(session, "somplottype", 
-                      choices= all.somplot.types[[input$somtype]][[
-                        input$somplotwhat]])
-  })
-                                            
-  # Adapt the variable choice to the "what" and "type" arguments
-#   observe(output$plotoptions2 <- {
-#     if (input$plotwhat != "prototypes" | is.null(server.env$current.table) |
-#         !(input$plottype %in% c("color", "3d", "radar"))) {
-#       return(NULL)
-#     }
-#     renderUI(selectInput("plot.var", "Variable to plot", 
-#                          choices= colnames(server.env$current.table)[
-#                                            sapply(server.env$current.table, 
-#                                              class) == "numeric"]))
-#   })
-
-  observe(updateSelectInput(session, "somplotvar",
-    choices= if (!(input$somplotwhat %in% c("obs","prototypes")) | 
-                 is.null(server.env$current.table) |
-                 !(input$somplottype %in% c("color", "3d"))) {
-               "(Not Available)"
-             } else colnames(current.som$data)))
-
-  # Render SOM plot
-  observe(output$somplot <- {
-#     if (is.null(current.som)) {
-#       renderPlot(expr= plot(NULL, xlim= c(0,1), ylim= c(0,1)))
-#     } else {
-    renderPlot(expr= plot(x= current.som, what= input$somplotwhat, 
-                          type= input$somplottype,
-                          variable= if(input$somplotwhat %in% 
-                                         c("prototypes","obs")
-                                       & input$somplottype %in% 
-                                         c("color", "3d")) {
-                                      input$somplotvar
-                                    } else NULL
-                          , print.title= input$somplottitle
-                          )
-               ) 
-    })
   
   # Adapt scplottype to the somtype and the "what" arguments
   observe({
@@ -317,5 +325,16 @@ shinyServer(function(input, output, session) {
                } else NULL
     )
   ))
+
+  #### Tab About
+  ##############################################################################
+  
+  # Output the sombrero logo :
+  output$sombrero.logo <- renderImage(list(src= "sombrero.png"), 
+                                      deleteFile= FALSE)
+  
+  # Output the SAMM logo :
+  output$samm.logo <- renderImage(list(src= "samm.png"), 
+                                  deleteFile= FALSE)
   
 })

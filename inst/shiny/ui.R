@@ -26,7 +26,7 @@ shinyUI(pageWithSidebar(
   mainPanel(
     tabsetPanel(
 
-      tabPanel("Data preview",
+      tabPanel("Preview Data",
         h3("First step: import data"),
         p(HTML("To run the application, import your data set using the 
                 import button on the left panel. Your data must be supplied 
@@ -48,7 +48,7 @@ shinyUI(pageWithSidebar(
         tableOutput("view")
       ),
 
-      tabPanel("Train SOM",
+      tabPanel("Self-Organize",
         h3("Second step: train the self-organizing map"),
         p(HTML('<a href=help.html> Help page</a>: how to choose the right 
                parameter values')),
@@ -78,7 +78,7 @@ shinyUI(pageWithSidebar(
         selectInput("init.proto", "Prototypes initialization method:", 
                     choices= c("random","obs"), "random")),
 
-      tabPanel("Plot",
+      tabPanel("Plot Map",
         selectInput("somplotwhat", "Plot what?", 
                     choices= list("Prototypes"= "prototypes",
                                   "Observations"= "obs", 
@@ -92,7 +92,7 @@ shinyUI(pageWithSidebar(
         selectInput("somplotvar", "Variable:", choices= "(Not Available)"),
         plotOutput("somplot")),
 
-      tabPanel("Superclass",
+      tabPanel("Superclasses",
         h3("Group prototypes into superclasses"),
         selectInput("sc.cut.choice", "Choose clustering criterion:",
                     choices= c("Number of superclasses"= "nclust", 
