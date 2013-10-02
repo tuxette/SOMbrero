@@ -158,7 +158,8 @@ shinyServer(function(input, output, session) {
   output$som.download <- {
     downloadHandler(
       filename= function() {
-        paste("som ", Sys.time(),".rda", sep="")
+        paste("som ", format(Sys.time(), format= "%Y-%m-%d_%H:%M"),
+              ".rda", sep="")
       },
       content= function(file) {
         som.export <- server.env$current.som
@@ -213,7 +214,8 @@ shinyServer(function(input, output, session) {
   output$sc.download <- {
     downloadHandler(
       filename= function() {
-        paste("superclasses ", Sys.time(),".csv", sep="")
+        paste("superclasses ", format(Sys.time(), format= "%Y-%m-%d_%H:%M"),
+              ".csv", sep="")
       },
       content= function(file) {
         classes.export <- 

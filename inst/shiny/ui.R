@@ -111,11 +111,12 @@ shinyUI(pageWithSidebar(
         p(HTML('This is the web interface of the 
                <a href= "http://sombrero.r-forge.r-project.org/"> 
                SOMbrero </a> R package, implementing self-organizing maps (aka
-               Kohonen maps) for various types of data. It is developed by J.
-               Boelaert, <a href= http://samm.univ-paris1.fr/-Madalina-Olteanu->
-               M. Olteanu</a> and <a href= http://www.nathalievilla.org/> N. 
-               Villa-Vialaneix</a>, using shiny, and its source code is freely 
-               available on github:
+               Kohonen maps) for various types of data. It is developed by 
+               Julien Boelaert, 
+               <a href= http://samm.univ-paris1.fr/-Madalina-Olteanu->
+               Madalina Olteanu</a> and <a href= http://www.nathalievilla.org/> 
+               Nathalie Villa-Vialaneix</a>, using shiny, and its source code is
+               freely available on github:
                <br> <span style="font-size:12px;font-family:courrier;
                background-color:#FADDF2;border:1px solid black;">
                <font color="#870500"><b>git clone 
