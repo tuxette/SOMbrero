@@ -79,17 +79,17 @@ shinyUI(pageWithSidebar(
                     choices= c("random","obs"), "random")),
 
       tabPanel("Plot",
-        selectInput("plotwhat", "Plot what?", 
+        selectInput("somplotwhat", "Plot what?", 
                     choices= list("Prototypes"= "prototypes",
                                   "Observations"= "obs", 
                                   "Additional variable"= "add")
                     ),
 
-        selectInput("plottype", "Type of plot:", 
+        selectInput("somplottype", "Type of plot:", 
                     choices= list("color", "3d", 
                                   "Polygon distances"= "poly.dist", "radar")),
-        checkboxInput("plotsc", "Show Superclasses"),
-        selectInput("plotvar", "Variable:", choices= "(Not Available)"),
+        checkboxInput("somplottitle", "Show cluster names:"),
+        selectInput("somplotvar", "Variable:", choices= "(Not Available)"),
         plotOutput("somplot")),
 
       tabPanel("Superclass",
@@ -101,9 +101,21 @@ shinyUI(pageWithSidebar(
         uiOutput("scHorK"), #  Superclass Height or K (nb of clusters)
         actionButton("superclassbutton","Compute superclasses"),
         downloadButton("sc.download", "Download superclass classification"),
-        br(),
+        br(), br(),
         verbatimTextOutput("sc.summary"),
-        plotOutput("dendrogram")),
+        plotOutput("dendrogram"),
+        br(), br(),
+         h4("Superclass plot :"),
+         selectInput("scplotwhat", "Plot what?", 
+                     choices= list("Prototypes"= "prototypes",
+                                   "Observations"= "obs", 
+                                   "Additional variable"= "add")
+         ),
+         selectInput("scplottype", "Type of plot:", 
+                     choices= list("color", "3d", 
+                                   "Polygon distances"= "poly.dist", "radar")),
+         selectInput("scplotvar", "Variable:", choices= "(Not Available)"),
+         plotOutput("scplot")),
         
 
       tabPanel("About",

@@ -14,8 +14,8 @@ trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames,
            init.proto= init.proto, nb.save= nb.save)
 }
 
-# List of plot types options per SOM type and "what" :
-all.plot.types <- list("numeric"= 
+# List of somplot types options per SOM type and "what" :
+all.somplot.types <- list("numeric"= 
                    list("prototypes"= 
                           list("color", "3d", "lines", 
                                "barplot", "smooth distances"= "smooth.dist",
@@ -46,6 +46,38 @@ all.plot.types <- list("numeric"=
                         "obs"= c("hitmap", "names"),
                         "add"= c("pie", "color", "lines", "boxplot", "barplot", 
                                  "radar", "names", "words", "graph")))
+
+all.scplot.types <- list("numeric"= 
+                            list("prototypes"= 
+                                   list("color", "lines", 
+                                        "barplot",
+                                        "polygon distances"= "poly.dist",
+                                        "mds", "radar"),
+                                 "obs"= c("hitmap", "color", "lines", "barplot", 
+                                          "boxplot", "radar"),
+                                 "add"= c("pie", "color", "lines", "boxplot", "barplot", 
+                                          "radar", "names", "words", "graph")),
+                          "korresp"= 
+                            list("prototypes"= 
+                                   list("color", "3d", "lines", 
+                                        "barplot", "polygon distances"= "poly.dist",
+                                        "grid distances"= "grid.dist",
+                                        "U matrix distances"= "umatrix",
+                                        "mds", "radar"),
+                                 "obs"= c("hitmap", "names"),
+                                 "add"= "NA"),
+                          "relational"= 
+                            list("prototypes"=
+                                   list("lines", "barplot",
+                                        "polygon distances"= "poly.dist",
+                                        "grid distances"= "grid.dist",
+                                        "U matrix distances"= "umatrix",
+                                        "mds", "radar"),
+                                 "obs"= c("hitmap", "names"),
+                                 "add"= c("pie", "color", "lines", "boxplot", "barplot", 
+                                          "radar", "names", "words", "graph")))
+
+
 # Server
 shinyServer(function(input, output, session) {
   # server environment variables
@@ -218,8 +250,9 @@ shinyServer(function(input, output, session) {
 
   # Adapt plottype to the somtype and the "what" arguments
   observe({
-    updateSelectInput(session, "plottype", 
-                      choices= all.plot.types[[input$somtype]][[input$plotwhat]])
+    updateSelectInput(session, "somplottype", 
+                      choices= all.somplot.types[[input$somtype]][[
+                        input$somplotwhat]])
   })
                                             
   # Adapt the variable choice to the "what" and "type" arguments
@@ -234,49 +267,55 @@ shinyServer(function(input, output, session) {
 #                                              class) == "numeric"]))
 #   })
 
-  observe(updateSelectInput(session, "plotvar",
-    choices= if (!(input$plotwhat %in% c("obs","prototypes")) | 
+  observe(updateSelectInput(session, "somplotvar",
+    choices= if (!(input$somplotwhat %in% c("obs","prototypes")) | 
                  is.null(server.env$current.table) |
-                 !(input$plottype %in% c("color", "3d"))) {
+                 !(input$somplottype %in% c("color", "3d"))) {
                "(Not Available)"
              } else colnames(current.som$data)))
 
-  # Render plot
-#   observe(output$somplot <- {
-#    input$plotwhat
-#    input$plottype
-#    print("entré plot")
-#    if (is.null(server.env$current.som)) {
-#      print("pense que null")
-#      return(NULL)
-#    }
-#    if (input$plotwhat == "superclass") {
-#      print("superclass")
-#      renderPlot(expr= plot(current.sc, type= input$plottype))
-#    } else {
-#      print("pas superclass")
-#      tmp.som <- current.som
-#      return(renderPlot(expr= plot(tmp.som, type= input$plottype)))
-#    }})
-##  observe(output$somplot <- {
-##    if (is.null(server.env$current.som)) {
-##      return(NULL)
-##    }
-#    observe(if(!is.null(server.env$current.som)){
-
-  observe(output$somplot <- renderPlot(
-        expr= plot(x= switch((!is.null(current.sc) & input$plotsc) + 1, 
-                             current.som, current.sc),
-                   what= input$plotwhat, type= input$plottype,
-                          variable= if(input$plotwhat %in% c("prototypes",
-                                                             "obs")
-                                       & input$plottype %in% 
-                                       c("color", "3d")) {
-                                      input$plotvar
+  # Render SOM plot
+  observe(output$somplot <- {
+#     if (is.null(current.som)) {
+#       renderPlot(expr= plot(NULL, xlim= c(0,1), ylim= c(0,1)))
+#     } else {
+    renderPlot(expr= plot(x= current.som, what= input$somplotwhat, 
+                          type= input$somplottype,
+                          variable= if(input$somplotwhat %in% 
+                                         c("prototypes","obs")
+                                       & input$somplottype %in% 
+                                         c("color", "3d")) {
+                                      input$somplotvar
                                     } else NULL
-                   )
+                          , print.title= input$somplottitle
+                          )
+               ) 
+    })
+  
+  # Adapt scplottype to the somtype and the "what" arguments
+  observe({
+    updateSelectInput(session, "scplottype", 
+                      choices= all.scplot.types[[input$somtype]][[
+                        input$scplotwhat]])
+  })
+  
+  observe(updateSelectInput(session, "scplotvar",
+                            choices= if (!(input$scplotwhat %in% 
+                                             c("obs","prototypes")) | 
+                                           is.null(server.env$current.table) |
+                                           !(input$scplottype %in% 
+                                               c("color", "3d"))) {
+                              "(Not Available)"
+                            } else colnames(current.som$data)))
+  # Render SuperClass plot
+  observe(output$scplot <- renderPlot(
+    expr= plot(x= current.sc,
+               what= input$scplotwhat, type= input$scplottype,
+               variable= if(input$scplotwhat %in% c("prototypes", "obs")
+                            & input$scplottype %in% c("color", "3d")) {
+                 input$scplotvar
+               } else NULL
+    )
   ))
-
-#    })
   
 })
