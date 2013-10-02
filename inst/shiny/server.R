@@ -1,21 +1,21 @@
-library(SOMbrero)
+library(SOMbrero) # Version 0.4
 
 # Max file input size :
-options(shiny.maxRequestSize=30*1024^2)
+options(shiny.maxRequestSize= 30*1024^2)
 
 # SOM training function
 trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames, 
                         rand.seed, scaling, eps0, init.proto, nb.save) {
   set.seed(rand.seed)
   if(type=="numeric")
-    data= data[, varnames]
+    data <- data[, varnames]
   trainSOM(data, dimension=c(dimx,dimy), dist.type= disttype, 
-           maxit= maxit, type= type, scaling= scaling, #eps0= eps0, 
+           maxit= maxit, type= type, scaling= scaling,
            init.proto= init.proto, nb.save= nb.save)
 }
 
 # List of plot types options per SOM type and "what" :
-all.plot.types= list("numeric"= 
+all.plot.types <- list("numeric"= 
                    list("prototypes"= 
                           list("color", "3d", "lines", 
                                "barplot", "smooth distances"= "smooth.dist",
@@ -64,12 +64,10 @@ shinyServer(function(input, output, session) {
       the.table <- read.table(in.file$datapath, header=input$header, 
                               sep=input$sep, quote=input$quote, 
                               row.names=1, dec=input$dec)
-    } else {
-      the.table <- read.table(in.file$datapath, header=input$header, 
+    } else the.table <- read.table(in.file$datapath, header=input$header, 
                               sep=input$sep, quote=input$quote, dec=input$dec)
-    }
 
-    # update the "input variables" checkbox (if somtype is numeric)
+    # update the "input variables" checkbox (if somtype is numeric or integer)
     if (input$somtype == "numeric") {
       output$varchoice <- renderUI(
         checkboxGroupInput(inputId= "varchoice", label= "Input variables:",
@@ -78,24 +76,18 @@ shinyServer(function(input, output, session) {
                                              the.table, class) %in% c("integer",
                                                                       "numeric")
                                                                  ])))
-    } else {
-      output$varchoice <- renderText("")
-    }
+    } else output$varchoice <- renderText("")
 
     # update the map dimensions
     updateNumericInput(session, inputId= "dimx", value= {
       if (input$somtype == "korresp") {
         max(5,min(10,ceiling(sqrt((nrow(the.table)+ncol(the.table))/10))))
-      } else {
-        max(5,min(10,ceiling(sqrt(nrow(the.table)/10))))
-      }
+      } else max(5,min(10,ceiling(sqrt(nrow(the.table)/10))))
     })
     updateNumericInput(session, inputId= "dimy", value= {
       if (input$somtype == "korresp") {
         max(5,min(10,ceiling(sqrt((nrow(the.table)+ncol(the.table))/10))))
-      } else {
-        max(5,min(10,ceiling(sqrt(nrow(the.table)/10))))
-      }
+      } else max(5,min(10,ceiling(sqrt(nrow(the.table)/10))))
     })
 
     # return the table
@@ -204,9 +196,7 @@ shinyServer(function(input, output, session) {
   output$dendrogram <- renderPlot(expr= {
     if (input$superclassbutton == 0) {
       return(NULL)
-    } else {
-      plot(server.env$current.sc)
-    }
+    } else plot(server.env$current.sc)
   })
 
   # Download the superclass classification
@@ -283,10 +273,9 @@ shinyServer(function(input, output, session) {
                                        & input$plottype %in% 
                                        c("color", "3d")) {
                                       input$plotvar
-                                    } else {
-                                      NULL
-                                    }))
-      )
+                                    } else NULL
+                   )
+  ))
 
 #    })
   
