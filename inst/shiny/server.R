@@ -46,36 +46,34 @@ all.somplot.types <- list("numeric"=
                         "obs"= c("hitmap", "names"),
                         "add"= c("pie", "color", "lines", "boxplot", "barplot", 
                                  "radar", "names", "words", "graph")))
-
+                                         
 all.scplot.types <- list("numeric"= 
                             list("prototypes"= 
-                                   list("color", "lines", 
-                                        "barplot",
+                                   list("color", "lines", "grid",
+                                        "barplot", "dendro3d",
                                         "polygon distances"= "poly.dist",
                                         "mds", "radar"),
                                  "obs"= c("hitmap", "color", "lines", "barplot", 
-                                          "boxplot", "radar"),
-                                 "add"= c("pie", "color", "lines", "boxplot", "barplot", 
-                                          "radar", "names", "words", "graph")),
+                                          "boxplot", "radar", "grid"),
+                                 "add"= c("pie", "color", "lines", "boxplot", 
+                                          "barplot", "radar", "names", "words", 
+                                          "graph")),
                           "korresp"= 
                             list("prototypes"= 
-                                   list("color", "3d", "lines", 
-                                        "barplot", "polygon distances"= "poly.dist",
-                                        "grid distances"= "grid.dist",
-                                        "U matrix distances"= "umatrix",
-                                        "mds", "radar"),
-                                 "obs"= c("hitmap", "names"),
+                                   list("color", "lines", "grid", "barplot", 
+                                        "polygon distances"= "poly.dist",
+                                        "mds", "radar", "dendro3d"),
+                                 "obs"= c("hitmap"),
                                  "add"= "NA"),
                           "relational"= 
                             list("prototypes"=
-                                   list("lines", "barplot",
+                                   list("lines", "barplot", "grid",
                                         "polygon distances"= "poly.dist",
-                                        "grid distances"= "grid.dist",
-                                        "U matrix distances"= "umatrix",
-                                        "mds", "radar"),
-                                 "obs"= c("hitmap", "names"),
-                                 "add"= c("pie", "color", "lines", "boxplot", "barplot", 
-                                          "radar", "names", "words", "graph")))
+                                        "mds", "radar", "dendro3d"),
+                                 "obs"= c("hitmap"),
+                                 "add"= c("pie", "color", "lines", "boxplot", 
+                                          "barplot", "radar", "names", "words", 
+                                          "graph")))
 
 
 # Server
