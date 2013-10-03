@@ -287,14 +287,10 @@ shinyServer(function(input, output, session) {
 
   # function to render SuperClass plot
   plotTheSc <- function() observe({
-    output$scplot <- renderPlot({
-      plot(x= current.sc,
-           what= input$scplotwhat, type= input$scplottype,
-           variable= if(input$scplotwhat %in% c("prototypes", "obs")
-                        & input$scplottype %in% c("color", "3d")) {
-             input$scplotvar
-           } else NULL)
-    })
+    output$scplot <- renderPlot(plot(x= current.sc,
+                                     what= input$scplotwhat,
+                                     type= input$scplottype,
+                                     variable= input$scplotvar))
   })
 
   #### Tab Combine with additional data
