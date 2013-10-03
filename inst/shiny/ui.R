@@ -81,16 +81,14 @@ shinyUI(pageWithSidebar(
       tabPanel("Plot Map",
         h4("Options"),
         selectInput("somplotwhat", "Plot what?", 
-                    choices= list("Prototypes"= "prototypes",
-                                  "Observations"= "obs"),
-                    selected= "obs"
-                    ),
-
+                    choices= list("Observations"= "obs",
+                                  "Prototypes"= "prototypes")),
         selectInput("somplottype", "Type of plot:", 
                     choices= c("hitmap", "color", "lines", "barplot", 
                                "names", "boxplot", "radar")),
         checkboxInput("somplottitle", "Show cluster names:"),
-        selectInput("somplotvar", "Variable:", choices= "(Not Available)"),
+        selectInput("somplotvar", "Variable: (only used for 'color' and '3d' 
+                    plots)", choices= "(Not Available)"),
         plotOutput("somplot")),
                
       tabPanel("Superclasses",
@@ -108,14 +106,13 @@ shinyUI(pageWithSidebar(
         br(), br(),
          h4("Superclass plot :"),
          selectInput("scplotwhat", "Plot what?", 
-                     choices= list("Prototypes"= "prototypes",
-                                   "Observations"= "obs"),
-                     selected= "obs"
-         ),
+                     choices= list("Observations"= "obs",
+                                   "Prototypes"= "prototypes")),
          selectInput("scplottype", "Type of plot:", 
                      choices= c("hitmap", "color", "lines", "barplot", 
                                 "names", "boxplot", "radar")),
-         selectInput("scplotvar", "Variable:", choices= "(Not Available)"),
+         selectInput("scplotvar", "Variable: (only used for 'color' plots)", 
+                     choices= "(Not Available)"),
          plotOutput("scplot")),
       
       tabPanel("Combine with external information",
