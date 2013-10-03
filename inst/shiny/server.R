@@ -345,7 +345,9 @@ shinyServer(function(input, output, session) {
              variable= current.addtable[,input$addplotvar])
       })
     } else {
-      tmpGraph <- graph.adjacency(Matrix(as.matrix(server.env$current.addtable)), 
+#      tmpGraph <- graph.adjacency(Matrix(as.matrix(server.env$current.addtable)), 
+#                                  mode= "undirected")
+      tmpGraph <- graph.adjacency(server.env$current.addtable!=0, 
                                   mode= "undirected")
       renderPlot(plot(lesmis.som, what= "add", type= "graph", 
                       variable= tmpGraph))

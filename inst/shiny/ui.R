@@ -87,8 +87,8 @@ shinyUI(pageWithSidebar(
                     choices= c("hitmap", "color", "lines", "barplot", 
                                "names", "boxplot", "radar")),
         checkboxInput("somplottitle", "Show cluster names:"),
-        selectInput("somplotvar", "Variable: (only used for 'color' and '3d' 
-                    plots)", choices= "(Not Available)"),
+        selectInput("somplotvar", "Variable: (only used for '3d', 'color' and
+                    'boxplot' plots)", choices= "(Not Available)"),
         plotOutput("somplot")),
                
       tabPanel("Superclasses",
@@ -111,7 +111,8 @@ shinyUI(pageWithSidebar(
          selectInput("scplottype", "Type of plot:", 
                      choices= c("hitmap", "color", "lines", "barplot", 
                                 "names", "boxplot", "radar")),
-         selectInput("scplotvar", "Variable: (only used for 'color' plots)", 
+         selectInput("scplotvar", "Variable: (only used for 'color' and
+                     'boxplot' plots)", 
                      choices= "(Not Available)"),
          plotOutput("scplot")),
       
