@@ -89,6 +89,8 @@ shinyUI(pageWithSidebar(
         checkboxInput("somplottitle", "Show cluster names:"),
         selectInput("somplotvar", "Variable: (only used for '3d', 'color' and
                     'boxplot' plots)", choices= "(Not Available)"),
+        selectInput("somplotrowcol", "Plot rows or columns (only for Korresp)",
+                    choices= list("columns"= "c", "rows"= "r")),
         plotOutput("somplot")),
                
       tabPanel("Superclasses",
@@ -114,6 +116,8 @@ shinyUI(pageWithSidebar(
          selectInput("scplotvar", "Variable: (only used for 'color' and
                      'boxplot' plots)", 
                      choices= "(Not Available)"),
+         selectInput("scplotrowcol", "Plot rows or columns (only for Korresp)",
+                     choices= list("columns"= "c", "rows"= "r")),
          plotOutput("scplot")),
       
       tabPanel("Combine with external information",

@@ -215,7 +215,9 @@ shinyServer(function(input, output, session) {
       plot(x= current.som, what= input$somplotwhat, 
            type= input$somplottype,
            variable= input$somplotvar,
-           print.title= input$somplottitle)})
+           print.title= input$somplottitle,
+           view= input$somplotrowcol, 
+           key.loc=c(-1,2), mar=c(0,10,2,0))})
   })
 
   
@@ -290,7 +292,9 @@ shinyServer(function(input, output, session) {
     output$scplot <- renderPlot(plot(x= current.sc,
                                      what= input$scplotwhat,
                                      type= input$scplottype,
-                                     variable= input$scplotvar))
+                                     variable= input$scplotvar,
+                                     view= input$scplotrowcol,
+                                     key.loc=c(-1,2), mar=c(0,10,2,0)))
   })
 
   #### Tab Combine with additional data
@@ -342,7 +346,8 @@ shinyServer(function(input, output, session) {
     if(input$addplottype != "graph") {
       output$addplot <- renderPlot({
         plot(x= current.som, what= "add", type= input$addplottype, 
-             variable= current.addtable[,input$addplotvar])
+             variable= current.addtable[,input$addplotvar], 
+             key.loc=c(-1,2), mar=c(0,10,2,0))
       })
     } else {
 #      tmpGraph <- graph.adjacency(Matrix(as.matrix(server.env$current.addtable)), 
