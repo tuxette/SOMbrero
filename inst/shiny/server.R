@@ -1,4 +1,5 @@
 library(SOMbrero) # Version 0.4
+library(Matrix)
 
 # Max file input size :
 options(shiny.maxRequestSize= 30*1024^2)
@@ -213,19 +214,8 @@ shinyServer(function(input, output, session) {
     output$somplot <- renderPlot({
       plot(x= current.som, what= input$somplotwhat, 
            type= input$somplottype,
-           variable= if((input$somplotwhat %in% c("prototypes","obs") 
-                         & input$somplottype %in% c("color", "3d"))) {
-             input$somplotvar
-             } else if (input$somplotwhat == "add" 
-                        & !is.null(current.addtable)
-                        & input$addfiletype == "table") { 
-               current.addtable[,input$somplotvar] 
-              } else if (input$somplotwhat == "add"
-                         & !is.null(current.addtable)
-                         & input$addfiletype == "graph") {
-                current.addtable
-                } else NULL
-           , print.title= input$somplottitle)})
+           variable= input$somplotvar,
+           print.title= input$somplottitle)})
   })
 
   
@@ -347,15 +337,24 @@ shinyServer(function(input, output, session) {
     if(is.null(current.addtable))
       return(NULL)
     updateSelectInput(session, "addplotvar",
-                      choices= colnames(current.addtable))
+                      choices= colnames(current.addtable), 
+                      selected= colnames(current.addtable)[1])
   })
   
   # function to render Additional data Plot
   plotTheAdd <- function() observe({
-    output$addplot <- renderPlot({
-      plot(x= current.som, what= "add", type= input$addplottype, 
-           variable= current.addtable[,input$addplotvar])
-    })
+    if(input$addplottype != "graph") {
+      output$addplot <- renderPlot({
+        plot(x= current.som, what= "add", type= input$addplottype, 
+             variable= current.addtable[,input$addplotvar])
+      })
+    } else {
+      tmpGraph <- graph.adjacency(Matrix(as.matrix(server.env$current.addtable)), 
+                                  mode= "undirected")
+      renderPlot(plot(lesmis.som, what= "add", type= "graph", 
+                      variable= tmpGraph))
+    }
+    
   })
   
   #### Tab About

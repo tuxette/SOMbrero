@@ -124,14 +124,13 @@ shinyUI(pageWithSidebar(
                              choices= c("pie", "color", "lines", "boxplot", 
                                         "barplot", "radar", "names", "words", 
                                         "graph")),
-                 selectInput("addplotvar", "Select variable:",
-                             choices= c("(first import file)")),
+                 selectInput("addplotvar", "Select variable: (hold ctrl to
+                             select multiple variables)",
+                             choices= c("(first import file)"),
+                             multiple= TRUE),
                  plotOutput("addplot"),
                                 
                  h4("Import file for additional variables"),
-                 selectInput("addfiletype", "Type of file :", 
-                             choices= list("Text/csv table"= "table", 
-                                           "Graph"= "graph")),
                  fileInput('file2', 'Choose File'),
                  checkboxInput('header2', ' Header?', TRUE),
                  checkboxInput('rownames2', ' Row names?', FALSE),

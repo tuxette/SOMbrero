@@ -1,5 +1,7 @@
 ## A faire
 
+** JB : enlever nom de variable pour somplot et scplot de Relational?
+
 ** NV : pour la help page, inclue un target="_blank" dans le lien
 
 ** JB : laisser la possibilité de télécharger le clustering brut de SOM?
