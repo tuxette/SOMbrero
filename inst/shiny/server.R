@@ -24,9 +24,7 @@ all.somplot.types <- list("numeric"=
                                "U matrix distances"= "umatrix",
                                "mds", "radar"),
                         "obs"= c("hitmap", "color", "lines", "barplot", 
-                                 "names", "boxplot", "radar"),
-                        "add"= c("pie", "color", "lines", "boxplot", "barplot", 
-                                 "radar", "names", "words", "graph")),
+                                 "names", "boxplot", "radar")),
                  "korresp"= 
                    list("prototypes"= 
                           list("color", "3d", "lines", 
@@ -34,8 +32,7 @@ all.somplot.types <- list("numeric"=
                                "grid distances"= "grid.dist",
                                "U matrix distances"= "umatrix",
                                "mds", "radar"),
-                        "obs"= c("hitmap", "names"),
-                        "add"= "NA"),
+                        "obs"= c("hitmap", "names")),
                  "relational"= 
                    list("prototypes"=
                           list("lines", "barplot",
@@ -43,9 +40,7 @@ all.somplot.types <- list("numeric"=
                                "grid distances"= "grid.dist",
                                "U matrix distances"= "umatrix",
                                "mds", "radar"),
-                        "obs"= c("hitmap", "names"),
-                        "add"= c("pie", "color", "lines", "boxplot", "barplot", 
-                                 "radar", "names", "words", "graph")))
+                        "obs"= c("hitmap", "names")))
                                          
 all.scplot.types <- list("numeric"= 
                             list("prototypes"= 
@@ -54,26 +49,19 @@ all.scplot.types <- list("numeric"=
                                         "polygon distances"= "poly.dist",
                                         "mds", "radar"),
                                  "obs"= c("hitmap", "color", "lines", "barplot", 
-                                          "boxplot", "radar", "grid"),
-                                 "add"= c("pie", "color", "lines", "boxplot", 
-                                          "barplot", "radar", "names", "words", 
-                                          "graph")),
+                                          "boxplot", "radar", "grid")),
                           "korresp"= 
                             list("prototypes"= 
                                    list("color", "lines", "grid", "barplot", 
                                         "polygon distances"= "poly.dist",
                                         "mds", "radar", "dendro3d"),
-                                 "obs"= c("hitmap"),
-                                 "add"= "NA"),
+                                 "obs"= c("hitmap")),
                           "relational"= 
                             list("prototypes"=
                                    list("lines", "barplot", "grid",
                                         "polygon distances"= "poly.dist",
                                         "mds", "radar", "dendro3d"),
-                                 "obs"= c("hitmap"),
-                                 "add"= c("pie", "color", "lines", "boxplot", 
-                                          "barplot", "radar", "names", "words", 
-                                          "graph")))
+                                 "obs"= c("hitmap")))
 
 
 # Server
@@ -172,8 +160,9 @@ shinyServer(function(input, output, session) {
                                                   init.proto= input$init.proto, 
                                                   nb.save= input$nb.save))
     
-    # render plot
-    plotTheSom()
+    updatePlotSomVar() # update variable choice for som plots
+    updatePlotScVar() # update variable choice for sc plots
+    plotTheSom() # render plot
 
     # return the computed som
     server.env$current.som
@@ -206,18 +195,6 @@ shinyServer(function(input, output, session) {
   #### Tab Plot
   ##############################################################################
   
-  # Adapt plotwhat to somtype
-  observe({
-    updateSelectInput(session, "somplotwhat",
-                      choices= switch(input$somtype, 
-                                      "korresp"= list("Observations"= "obs",
-                                                      "Prototypes"= 
-                                                        "prototypes"),
-                                      list("Observations"= "obs",
-                                           "Prototypes"= "prototypes",
-                                           "Additional variable"= "add")))
-  })
-  
   # Adapt plottype to the somtype and the "what" arguments
   observe({
     updateSelectInput(session, "somplottype", 
@@ -225,50 +202,15 @@ shinyServer(function(input, output, session) {
                         input$somplotwhat]])
   })
   
-  # Adapt the variable choice to the "what" and "type" arguments
-  #   observe(output$plotoptions2 <- {
-  #     if (input$plotwhat != "prototypes" | is.null(server.env$current.table) |
-  #         !(input$plottype %in% c("color", "3d", "radar"))) {
-  #       return(NULL)
-  #     }
-  #     renderUI(selectInput("plot.var", "Variable to plot", 
-  #                          choices= colnames(server.env$current.table)[
-  #                                            sapply(server.env$current.table, 
-  #                                              class) == "numeric"]))
-  #   })
-  
-  observe(updateSelectInput(session, "somplotvar",
-                            choices= {
-#                              if (is.null(server.env$current.table))
- #                               return("Not Available")
-                              if (!(is.null(current.som$data)) 
-                                  & input$somplotwhat %in% 
-                                    c("obs", "prototypes") 
-                                  & input$somplottype %in% c("color", "3d")) {
-                                colnames(current.som$data)
-                              } else if (input$somplotwhat == "add"
-                                         & is.null(current.addtable)) {
-                                "(First import file for additional variables)"
-                              } else if (input$somplotwhat == "add"
-                                         & input$somtype == "numeric"
-                                         & !is.null(current.addtable)) {
-                                colnames(current.addtable)
-                              } else if (input$somplotwhat == "add"
-                                         & input$somtype == "relational"
-                                         & !is.null(current.addtable)
-                                         & input$addtype == "graph") {
-                                "(imported graph)"
-                              } else "(Not Available)"
-                              }))
-#                               if (!(input$somplotwhat %in% c("obs","prototypes")) | 
-#                                            is.null(server.env$current.table) |
-#                                            !(input$somplottype %in% c("color", "3d"))) {
-#                               "(Not Available)"
-#                             } else colnames(current.som$data)))
+  # update variables available for plotting
+  updatePlotSomVar <- function() observe({
+    updateSelectInput(session, "somplotvar", 
+                      choices= colnames(current.som$data))
+  })
   
   # Render SOM plot
   plotTheSom <- function() observe({
-    output$trucplot <- renderPlot({
+    output$somplot <- renderPlot({
       plot(x= current.som, what= input$somplotwhat, 
            type= input$somplottype,
            variable= if((input$somplotwhat %in% c("prototypes","obs") 
@@ -276,43 +218,16 @@ shinyServer(function(input, output, session) {
              input$somplotvar
              } else if (input$somplotwhat == "add" 
                         & !is.null(current.addtable)
-                        & input$addtype == "table") { 
+                        & input$addfiletype == "table") { 
                current.addtable[,input$somplotvar] 
               } else if (input$somplotwhat == "add"
                          & !is.null(current.addtable)
-                         & input$addtype == "graph") {
+                         & input$addfiletype == "graph") {
                 current.addtable
                 } else NULL
            , print.title= input$somplottitle)})
   })
 
-  # File input for additional variables
-  dInputAdd <- reactive({
-    in.file <- input$file2
-    
-    if (is.null(in.file))
-      return(NULL)
-    
-    if (input$rownames2) {
-      the.table <- read.table(in.file$datapath, header=input$header2, 
-                              sep=input$sep2, quote=input$quote2, 
-                              row.names=1, dec=input$dec2)
-    } else the.table <- read.table(in.file$datapath, header=input$header2, 
-                                   sep=input$sep2, quote=input$quote2, 
-                                   dec=input$dec2)
-    server.env$current.addtable <- the.table
-    the.table
-  })
-
-  # additional data preview table
-  output$addview <- renderTable({
-    d.input <- dInputAdd()
-    if (is.null(d.input)) 
-      return(NULL)
-    if (ncol(d.input)>input$ncol.preview.add) 
-      d.input <- d.input[,1:input$ncol.preview.add]
-    head(d.input, n=input$nrow.preview.add) 
-  })
   
   #### Tab Superclass
   ##############################################################################
@@ -366,18 +281,6 @@ shinyServer(function(input, output, session) {
       })
   }
 
-  # Adapt plotwhat to somtype
-  observe({
-    updateSelectInput(session, "scplotwhat",
-                      choices= switch(input$somtype, 
-                                      "korresp"= list("Observations"= "obs",
-                                                      "Prototypes"= 
-                                                        "prototypes"),
-                                      list("Observations"= "obs",
-                                           "Prototypes"= "prototypes",
-                                           "Additional variable"= "add")))
-  })
-  
   # Adapt scplottype to the somtype and the "what" arguments
   observe({
     updateSelectInput(session, "scplottype", 
@@ -385,14 +288,12 @@ shinyServer(function(input, output, session) {
                         input$scplotwhat]])
   })
   
-  observe(updateSelectInput(session, "scplotvar",
-                            choices= if (!(input$scplotwhat %in% 
-                                             c("obs","prototypes")) | 
-                                           is.null(server.env$current.table) |
-                                           !(input$scplottype %in% 
-                                               c("color", "3d"))) {
-                              "(Not Available)"
-                            } else colnames(current.som$data)))
+  # update variables available for plotting
+  updatePlotScVar <- function() observe({
+    updateSelectInput(session, "scplotvar", 
+                      choices= colnames(current.som$data))
+  })
+  
 
   # function to render SuperClass plot
   plotTheSc <- function() observe({
@@ -406,6 +307,57 @@ shinyServer(function(input, output, session) {
     })
   })
 
+  #### Tab Combine with additional data
+  ##############################################################################
+  
+  # File input for additional variables
+  dInputAdd <- reactive({
+    in.file <- input$file2
+    
+    if (is.null(in.file))
+      return(NULL)
+    
+    if (input$rownames2) {
+      the.table <- read.table(in.file$datapath, header=input$header2, 
+                              sep=input$sep2, quote=input$quote2, 
+                              row.names=1, dec=input$dec2)
+    } else the.table <- read.table(in.file$datapath, header=input$header2, 
+                                   sep=input$sep2, quote=input$quote2, 
+                                   dec=input$dec2)
+    server.env$current.addtable <- the.table
+    
+    updateAddPlotVar() # update variable selector    
+    plotTheAdd() # launch the addplot
+    
+    the.table
+  })
+  
+  # additional data preview table
+  output$addview <- renderTable({
+    d.input <- dInputAdd()
+    if (is.null(d.input)) 
+      return(NULL)
+    if (ncol(d.input)>input$ncol.preview.add) 
+      d.input <- d.input[,1:input$ncol.preview.add]
+    head(d.input, n=input$nrow.preview.add) 
+  })
+  
+  # Adapt available variables from second file
+  updateAddPlotVar <- function() observe({
+    if(is.null(current.addtable))
+      return(NULL)
+    updateSelectInput(session, "addplotvar",
+                      choices= colnames(current.addtable))
+  })
+  
+  # function to render Additional data Plot
+  plotTheAdd <- function() observe({
+    output$addplot <- renderPlot({
+      plot(x= current.som, what= "add", type= input$addplottype, 
+           variable= current.addtable[,input$addplotvar])
+    })
+  })
+  
   #### Tab About
   ##############################################################################
   
