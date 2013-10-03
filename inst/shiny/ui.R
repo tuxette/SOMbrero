@@ -83,15 +83,17 @@ shinyUI(pageWithSidebar(
         selectInput("somplotwhat", "Plot what?", 
                     choices= list("Prototypes"= "prototypes",
                                   "Observations"= "obs", 
-                                  "Additional variable"= "add")
+                                  "Additional variable"= "add"),
+                    selected= "obs"
                     ),
 
         selectInput("somplottype", "Type of plot:", 
-                    choices= list("color", "3d", 
-                                  "Polygon distances"= "poly.dist", "radar")),
+                    choices= c("hitmap", "color", "lines", "barplot", 
+                               "names", "boxplot", "radar")),
         checkboxInput("somplottitle", "Show cluster names:"),
         selectInput("somplotvar", "Variable:", choices= "(Not Available)"),
-        plotOutput("somplot"),
+#        plotOutput("somplot"),
+        plotOutput("trucplot"),
       
         h4("Import file for additional variables"),
         selectInput("addtype", "Type of file :", 
@@ -132,11 +134,12 @@ shinyUI(pageWithSidebar(
          selectInput("scplotwhat", "Plot what?", 
                      choices= list("Prototypes"= "prototypes",
                                    "Observations"= "obs", 
-                                   "Additional variable"= "add")
+                                   "Additional variable"= "add"),
+                     selected= "obs"
          ),
          selectInput("scplottype", "Type of plot:", 
-                     choices= list("color", "3d", 
-                                   "Polygon distances"= "poly.dist", "radar")),
+                     choices= c("hitmap", "color", "lines", "barplot", 
+                                "names", "boxplot", "radar")),
          selectInput("scplotvar", "Variable:", choices= "(Not Available)"),
          plotOutput("scplot")),
         

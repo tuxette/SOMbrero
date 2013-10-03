@@ -171,6 +171,9 @@ shinyServer(function(input, output, session) {
                                                   eps0= input$eps0, 
                                                   init.proto= input$init.proto, 
                                                   nb.save= input$nb.save))
+    
+    # render plot
+    plotTheSom()
 
     # return the computed som
     server.env$current.som
@@ -207,11 +210,11 @@ shinyServer(function(input, output, session) {
   observe({
     updateSelectInput(session, "somplotwhat",
                       choices= switch(input$somtype, 
-                                      "korresp"= list("Prototypes"= 
-                                                        "prototypes",
-                                                      "Observations"= "obs"),
-                                      list("Prototypes"= "prototypes",
-                                           "Observations"= "obs",
+                                      "korresp"= list("Observations"= "obs",
+                                                      "Prototypes"= 
+                                                        "prototypes"),
+                                      list("Observations"= "obs",
+                                           "Prototypes"= "prototypes",
                                            "Additional variable"= "add")))
   })
   
@@ -264,29 +267,23 @@ shinyServer(function(input, output, session) {
 #                             } else colnames(current.som$data)))
   
   # Render SOM plot
-  observe(output$somplot <- {
-    #     if (is.null(current.som)) {
-    #       renderPlot(expr= plot(NULL, xlim= c(0,1), ylim= c(0,1)))
-    #     } else {
-    renderPlot(expr= plot(x= current.som, what= input$somplotwhat, 
-                          type= input$somplottype,
-                          variable= if((input$somplotwhat %in% 
-                                         c("prototypes","obs") 
-                                        & input$somplottype %in% 
-                                         c("color", "3d"))) {
-                            input$somplotvar
-                          } else if (input$somplotwhat == "add" 
-                                     & !is.null(current.addtable)
-                                     & input$addtype == "table") {
-                            current.addtable[,input$somplotvar]
-                          } else if (input$somplotwhat == "add" 
-                                     & !is.null(current.addtable)
-                                     & input$addtype == "graph") {
-                            current.addtable
-                          } else NULL
-                          , print.title= input$somplottitle
-    )
-    ) 
+  plotTheSom <- function() observe({
+    output$trucplot <- renderPlot({
+      plot(x= current.som, what= input$somplotwhat, 
+           type= input$somplottype,
+           variable= if((input$somplotwhat %in% c("prototypes","obs") 
+                         & input$somplottype %in% c("color", "3d"))) {
+             input$somplotvar
+             } else if (input$somplotwhat == "add" 
+                        & !is.null(current.addtable)
+                        & input$addtype == "table") { 
+               current.addtable[,input$somplotvar] 
+              } else if (input$somplotwhat == "add"
+                         & !is.null(current.addtable)
+                         & input$addtype == "graph") {
+                current.addtable
+                } else NULL
+           , print.title= input$somplottitle)})
   })
 
   # File input for additional variables
@@ -335,20 +332,21 @@ shinyServer(function(input, output, session) {
       switch(input$sc.cut.choice, 
              "nclust"= superClass(sommap= current.som, k= input$sc.k),
              "tree.height"= superClass(sommap= current.som, h= input$sc.h)))
+    
+    plotTheDendro() # plot the dendrogram
+    plotTheSc() # plot the SuperClass plot
     server.env$current.sc
   }
 
   output$sc.summary <- renderPrint( {
-    if (input$superclassbutton==0) 
+    if (input$superclassbutton==0)
       return("Hit the Compute superclasses button to show the results.")
     summary(computeSuperclasses())
   })
 
   # Render the dendrogram
-  output$dendrogram <- renderPlot(expr= {
-    if (input$superclassbutton == 0) {
-      return(NULL)
-    } else plot(server.env$current.sc)
+  plotTheDendro <- function() observe({
+    output$dendrogram <- renderPlot(plot(server.env$current.sc))
   })
 
   # Download the superclass classification
@@ -372,11 +370,11 @@ shinyServer(function(input, output, session) {
   observe({
     updateSelectInput(session, "scplotwhat",
                       choices= switch(input$somtype, 
-                                      "korresp"= list("Prototypes"= 
-                                                        "prototypes",
-                                                      "Observations"= "obs"),
-                                      list("Prototypes"= "prototypes",
-                                           "Observations"= "obs",
+                                      "korresp"= list("Observations"= "obs",
+                                                      "Prototypes"= 
+                                                        "prototypes"),
+                                      list("Observations"= "obs",
+                                           "Prototypes"= "prototypes",
                                            "Additional variable"= "add")))
   })
   
@@ -395,16 +393,18 @@ shinyServer(function(input, output, session) {
                                                c("color", "3d"))) {
                               "(Not Available)"
                             } else colnames(current.som$data)))
-  # Render SuperClass plot
-  observe(output$scplot <- renderPlot(
-    expr= plot(x= current.sc,
-               what= input$scplotwhat, type= input$scplottype,
-               variable= if(input$scplotwhat %in% c("prototypes", "obs")
-                            & input$scplottype %in% c("color", "3d")) {
-                 input$scplotvar
-               } else NULL
-    )
-  ))
+
+  # function to render SuperClass plot
+  plotTheSc <- function() observe({
+    output$scplot <- renderPlot({
+      plot(x= current.sc,
+           what= input$scplotwhat, type= input$scplottype,
+           variable= if(input$scplotwhat %in% c("prototypes", "obs")
+                        & input$scplottype %in% c("color", "3d")) {
+             input$scplotvar
+           } else NULL)
+    })
+  })
 
   #### Tab About
   ##############################################################################
