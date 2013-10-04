@@ -87,8 +87,17 @@ shinyUI(pageWithSidebar(
                     choices= c("hitmap", "color", "lines", "barplot", 
                                "names", "boxplot", "radar")),
         checkboxInput("somplottitle", "Show cluster names:"),
-        selectInput("somplotvar", "Variable: (only used for '3d', 'color' and
-                    'boxplot' plots)", choices= "(Not Available)"),
+        conditionalPanel("input.somplottype != 'boxplot'",
+                         selectInput("somplotvar", 
+                                     "Variable: (only used for '3d', 'color' 
+                                     and 'boxplot' plots)", 
+                                     choices= "(Not Available)")),
+        conditionalPanel("input.somplottype == 'boxplot'",
+                         selectInput("somplotvar2", 
+                                     "Variable: (hold Ctrl to select multiple
+                                     variables)", 
+                                     choices= "(Not Available)", 
+                                     multiple= TRUE)),
         selectInput("somplotrowcol", "Plot rows or columns (only for Korresp)",
                     choices= list("columns"= "c", "rows"= "r")),
         plotOutput("somplot")),
@@ -113,9 +122,17 @@ shinyUI(pageWithSidebar(
          selectInput("scplottype", "Type of plot:", 
                      choices= c("hitmap", "color", "lines", "barplot", 
                                 "names", "boxplot", "radar")),
-         selectInput("scplotvar", "Variable: (only used for 'color' and
-                     'boxplot' plots)", 
-                     choices= "(Not Available)"),
+        conditionalPanel("input.scplottype != 'boxplot'",
+                         selectInput("scplotvar", 
+                                     "Variable: (only used for '3d', 'color' 
+                                     and 'boxplot' plots)",
+                                     choices= "(Not Available)")),
+        conditionalPanel("input.scplottype == 'boxplot'",
+                         selectInput("scplotvar2", 
+                                     "Variable: (hold Ctrl to select multiple  
+                                     variables)", 
+                                     choices= "(Not Available)", 
+                                     multiple= TRUE)),
          selectInput("scplotrowcol", "Plot rows or columns (only for Korresp)",
                      choices= list("columns"= "c", "rows"= "r")),
          plotOutput("scplot")),
@@ -129,7 +146,7 @@ shinyUI(pageWithSidebar(
                              choices= c("pie", "color", "lines", "boxplot", 
                                         "barplot", "radar", "names", "words", 
                                         "graph")),
-                 selectInput("addplotvar", "Select variable: (hold ctrl to
+                 selectInput("addplotvar", "Select variable: (hold Ctrl to
                              select multiple variables)",
                              choices= c("(first import file)"),
                              multiple= TRUE),
@@ -145,10 +162,12 @@ shinyUI(pageWithSidebar(
                  selectInput('quote2', 'Quote:',  
                              c(None='', 'Double Quote'='"', 'Single Quote'="'"), 
                              'Double Quote'),
-                 selectInput('dec2', 'Decimal mark', c(Period='.', Comma=','), 'Period'),
-                 numericInput('nrow.preview.add', 'Number of rows in the preview:', 20),
-                 numericInput('ncol.preview.add', 'Number of columns in the preview:', 
-                              10),
+                 selectInput('dec2', 'Decimal mark', c(Period='.', Comma=','),
+                             'Period'),
+                 numericInput('nrow.preview.add', 
+                              'Number of rows in the preview:', 20),
+                 numericInput('ncol.preview.add', 
+                              'Number of columns in the preview:', 10),
                  tableOutput("addview")
                  )
                ),

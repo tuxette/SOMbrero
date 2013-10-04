@@ -208,19 +208,36 @@ shinyServer(function(input, output, session) {
   updatePlotSomVar <- function() observe({
     updateSelectInput(session, "somplotvar", 
                       choices= colnames(current.som$data))
+    updateSelectInput(session, "somplotvar2", 
+                      choices= colnames(current.som$data), 
+                      selected= colnames(current.som$data)[
+                        1:min(5,ncol(current.som$data))])
   })
   
   # Render SOM plot
   plotTheSom <- function() observe({
     output$somplot <- renderPlot({
-      plot(x= current.som, what= input$somplotwhat, 
-           type= input$somplottype,
-           variable= input$somplotvar,
-           print.title= input$somplottitle,
-           view= input$somplotrowcol, 
-           key.loc=c(-1,2), mar=c(0,10,2,0))})
+      switch(input$somplottype, 
+             "boxplot"= plot(x= current.som, what= input$somplotwhat, 
+                             type= input$somplottype,
+                             variable= (1:ncol(current.som$data))[ 
+                                       colnames(current.som$data) %in% 
+                                       input$somplotvar2],
+                             print.title= input$somplottitle,
+                             view= input$somplotrowcol),
+             "radar"= plot(x= current.som, what= input$somplotwhat, 
+                           type= input$somplottype,
+                           variable= input$somplotvar,
+                           print.title= input$somplottitle,
+                           view= input$somplotrowcol, 
+                           key.loc=c(-1,2), mar=c(0,10,2,0)),
+             plot(x= current.som, what= input$somplotwhat, 
+                  type= input$somplottype,
+                  variable= input$somplotvar,
+                  print.title= input$somplottitle,
+                  view= input$somplotrowcol))
+    })
   })
-
   
   #### Tab Superclass
   ##############################################################################
@@ -285,17 +302,35 @@ shinyServer(function(input, output, session) {
   updatePlotScVar <- function() observe({
     updateSelectInput(session, "scplotvar", 
                       choices= colnames(current.som$data))
+    updateSelectInput(session, "scplotvar2", 
+                      choices= colnames(current.som$data),
+                      selected= colnames(current.som$data)[
+                        1:min(5,ncol(current.som$data))])
   })
   
-
   # function to render SuperClass plot
   plotTheSc <- function() observe({
-    output$scplot <- renderPlot(plot(x= current.sc,
-                                     what= input$scplotwhat,
-                                     type= input$scplottype,
-                                     variable= input$scplotvar,
-                                     view= input$scplotrowcol,
-                                     key.loc=c(-1,2), mar=c(0,10,2,0)))
+    output$scplot <- renderPlot({
+      switch(input$scplottype, 
+             "dendrogram"= plot(x= current.sc, type= "dendrogram"),
+             "boxplot"= plot(x= current.sc, what= input$scplotwhat, 
+                             type= input$scplottype,
+                             variable= (1:ncol(current.som$data))[ 
+                                       colnames(current.som$data) %in% 
+                                       input$scplotvar2],
+                             view= input$scplotrowcol),
+             "radar"= plot(x= current.sc, what= input$scplotwhat, 
+                           type= input$scplottype,
+                           variable= input$scplotvar,
+                           print.title= input$scplottitle,
+                           view= input$scplotrowcol, 
+                           key.loc=c(-1,2), mar=c(0,10,2,0)),
+             plot(x= current.sc, what= input$scplotwhat, 
+                  type= input$scplottype,
+                  variable= input$scplotvar,
+                  print.title= input$scplottitle,
+                  view= input$scplotrowcol))
+    })
   })
 
   #### Tab Combine with additional data
