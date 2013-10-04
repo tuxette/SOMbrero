@@ -381,20 +381,28 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "addplotvar",
                       choices= colnames(current.addtable), 
                       selected= colnames(current.addtable)[1])
+    updateSelectInput(session, "addplotvar2",
+                      choices= colnames(current.addtable), 
+                      selected= colnames(current.addtable)[
+                                   1:min(5,ncol(current.addtable))])
   })
   
   # function to render Additional data Plot
   plotTheAdd <- function() observe({
-    if(input$addplottype != "graph") {
+    if (input$addplottype %in% c("pie", "color", "names")) {
+      tmp.var <- input$addplotvar
+    } else tmp.var <- input$addplotvar2
+
+    if (input$addplottype != "graph") {
       output$addplot <- renderPlot({
         plot(x= current.som, what= "add", type= input$addplottype, 
-             variable= current.addtable[,input$addplotvar], 
+             variable= current.addtable[,tmp.var], 
              key.loc=c(-1,2), mar=c(0,10,2,0))
       })
     } else {
 #      tmpGraph <- graph.adjacency(Matrix(as.matrix(server.env$current.addtable)), 
 #                                  mode= "undirected")
-      adjBin <- server.env$current.addtable!=0
+      adjBin <- as.matrix(server.env$current.addtable!=0)
       tmpGraph <- graph.adjacency(adjBin, 
                                   mode= "undirected")
       renderPlot(plot(lesmis.som, what= "add", type= "graph", 

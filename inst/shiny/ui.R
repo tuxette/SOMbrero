@@ -152,10 +152,20 @@ shinyUI(pageWithSidebar(
                              choices= c("pie", "color", "lines", "boxplot", 
                                         "barplot", "radar", "names", "words", 
                                         "graph")),
-                 selectInput("addplotvar", "Select variable: (hold Ctrl to
-                             select multiple variables)",
-                             choices= c("(first import file)"),
-                             multiple= TRUE),
+                 conditionalPanel("input.addplottype == 'pie' ||
+                                   input.addplottype == 'color' ||
+                                   input.addplottype == 'names'",
+                                  selectInput("addplotvar", "Select variable:",
+                                              choices= "(first import file)")),
+                 conditionalPanel("input.addplottype != 'pie' &&
+                                   input.addplottype != 'color' &&
+                                   input.addplottype != 'names' && 
+                                   input.addplottype != 'graph'",
+                                  selectInput("addplotvar2", "Select variables:
+                                               (hold Ctrl to select multiple
+                                               variables)",
+                                              choices= "(first import file)",
+                                              multiple= TRUE)),
                  plotOutput("addplot"),
                                 
                  h4("Import file for additional variables"),
