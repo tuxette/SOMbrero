@@ -206,16 +206,19 @@ shinyServer(function(input, output, session) {
   
   # update variables available for plotting
   updatePlotSomVar <- function() observe({
-    updateSelectInput(session, "somplotvar", 
-                      choices= colnames(current.som$data))
-    updateSelectInput(session, "somplotvar2", 
-                      choices= colnames(current.som$data), 
-                      selected= colnames(current.som$data)[
-                        1:min(5,ncol(current.som$data))])
+    tmp.names <- colnames(current.som$data)
+    if (input$somtype == "korresp")
+      tmp.names <- c(tmp.names, rownames(current.som$data))
+    updateSelectInput(session, "somplotvar", choices= tmp.names)
+    updateSelectInput(session, "somplotvar2", choices= tmp.names, 
+                      selected= tmp.names[1:min(5,length(tmp.names))])
   })
   
   # Render SOM plot
   plotTheSom <- function() observe({
+    tmp.view <- NULL
+    if(input$somtype == "korresp")
+      tmp.view <- input$somplotrowcol
     output$somplot <- renderPlot({
       switch(input$somplottype, 
              "boxplot"= plot(x= current.som, what= input$somplotwhat, 
@@ -224,18 +227,18 @@ shinyServer(function(input, output, session) {
                                        colnames(current.som$data) %in% 
                                        input$somplotvar2],
                              print.title= input$somplottitle,
-                             view= input$somplotrowcol),
+                             view= tmp.view),
              "radar"= plot(x= current.som, what= input$somplotwhat, 
                            type= input$somplottype,
                            variable= input$somplotvar,
                            print.title= input$somplottitle,
-                           view= input$somplotrowcol, 
+                           view= tmp.view, 
                            key.loc=c(-1,2), mar=c(0,10,2,0)),
              plot(x= current.som, what= input$somplotwhat, 
                   type= input$somplottype,
                   variable= input$somplotvar,
                   print.title= input$somplottitle,
-                  view= input$somplotrowcol))
+                  view= tmp.view))
     })
   })
   
@@ -300,16 +303,19 @@ shinyServer(function(input, output, session) {
   
   # update variables available for plotting
   updatePlotScVar <- function() observe({
-    updateSelectInput(session, "scplotvar", 
-                      choices= colnames(current.som$data))
-    updateSelectInput(session, "scplotvar2", 
-                      choices= colnames(current.som$data),
-                      selected= colnames(current.som$data)[
-                        1:min(5,ncol(current.som$data))])
+    tmp.names <- colnames(current.som$data)
+    if (input$somtype == "korresp")
+      tmp.names <- c(tmp.names, rownames(current.som$data))
+    updateSelectInput(session, "scplotvar", choices= tmp.names)
+    updateSelectInput(session, "scplotvar2", choices= tmp.names, 
+                      selected= tmp.names[1:min(5,length(tmp.names))])
   })
   
   # function to render SuperClass plot
   plotTheSc <- function() observe({
+    tmp.view <- NULL
+    if(input$somtype == "korresp")
+      tmp.view <- input$scplotrowcol
     output$scplot <- renderPlot({
       switch(input$scplottype, 
              "dendrogram"= plot(x= current.sc, type= "dendrogram"),
@@ -318,18 +324,18 @@ shinyServer(function(input, output, session) {
                              variable= (1:ncol(current.som$data))[ 
                                        colnames(current.som$data) %in% 
                                        input$scplotvar2],
-                             view= input$scplotrowcol),
+                             view= tmp.view),
              "radar"= plot(x= current.sc, what= input$scplotwhat, 
                            type= input$scplottype,
                            variable= input$scplotvar,
                            print.title= input$scplottitle,
-                           view= input$scplotrowcol, 
+                           view= tmp.view, 
                            key.loc=c(-1,2), mar=c(0,10,2,0)),
              plot(x= current.sc, what= input$scplotwhat, 
                   type= input$scplottype,
                   variable= input$scplotvar,
                   print.title= input$scplottitle,
-                  view= input$scplotrowcol))
+                  view= tmp.view))
     })
   })
 
@@ -388,7 +394,8 @@ shinyServer(function(input, output, session) {
     } else {
 #      tmpGraph <- graph.adjacency(Matrix(as.matrix(server.env$current.addtable)), 
 #                                  mode= "undirected")
-      tmpGraph <- graph.adjacency(server.env$current.addtable!=0, 
+      adjBin <- server.env$current.addtable!=0
+      tmpGraph <- graph.adjacency(adjBin, 
                                   mode= "undirected")
       renderPlot(plot(lesmis.som, what= "add", type= "graph", 
                       variable= tmpGraph))
