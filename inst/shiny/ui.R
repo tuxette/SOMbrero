@@ -50,6 +50,11 @@ shinyUI(pageWithSidebar(
 
       tabPanel("Self-Organize",
         h3("Second step: train the self-organizing map"),
+        p("Once you have imported a dataset you can train a self-organizing ",
+          "map, and tweak it using the options below. You can then download ",
+          "the resulting map in .rda format (you will need R and the SOMbrero ",
+          "package to open this file), or proceed to the next tabs to ",
+          "visualize the results."),
         p(HTML('<a href=help.html> Help page</a>: how to choose the right 
                parameter values')),
         actionButton("trainbutton","Train SOM"),
@@ -79,6 +84,10 @@ shinyUI(pageWithSidebar(
                     choices= c("random","obs"), "random")),
 
       tabPanel("Plot Map",
+        h3("Third step: plot the self-organizing map"),
+        p("In this tab and the next ones you can visualize the computed ",
+          "self-organizing map. This tab contains the standard plots used to ",
+          "analyze the map and the variables used to train it."),
         h4("Options"),
         selectInput("somplotwhat", "Plot what?", 
                     choices= list("Observations"= "obs",
@@ -107,6 +116,10 @@ shinyUI(pageWithSidebar(
                
       tabPanel("Superclasses",
         h3("Group prototypes into superclasses"),
+        p("In this tab you can group the prototypes found by the ",
+          "self-organizing map into superclasses (using hierarchical ",
+          "clustering) and visualize the results on plots. The 'dendrogram'",
+          "plot can help you determine the optimal number of superclasses."),
         selectInput("sc.cut.choice", "Choose clustering criterion:",
                     choices= c("Number of superclasses"= "nclust", 
                                "Height in dendrogram"=  "tree.height"),
@@ -118,7 +131,7 @@ shinyUI(pageWithSidebar(
         verbatimTextOutput("sc.summary"),
 #        plotOutput("dendrogram"),
         br(), br(),
-         h4("Superclass plot :"),
+         h4("Plot the superclasses:"),
          selectInput("scplotwhat", "Plot what?", 
                      choices= list("Prototypes"= "prototypes",
                                    "Observations"= "obs")),
@@ -132,7 +145,7 @@ shinyUI(pageWithSidebar(
                                      choices= "(Not Available)")),
         conditionalPanel("input.scplottype == 'boxplot'",
                          selectInput("scplotvar2", 
-                                     "Variable: (hold Ctrl to select multiple  
+                                     "Variables: (hold Ctrl to select multiple  
                                      variables)", 
                                      choices= "(Not Available)", 
                                      multiple= TRUE)),
@@ -144,6 +157,14 @@ shinyUI(pageWithSidebar(
          plotOutput("scplot")),
       
       tabPanel("Combine with external information",
+               h3("Combine the map with external information"),
+               p("In this tab you can combine the self-organizing map with ",
+                 "variables not used for the training. To do so you must first",
+                 "import a file, using the form at the bottom of this page.",
+                 "The file must either contain the same number of rows as the ",
+                 "file used for training (in the same order), or a (square)",
+                 "adjacency matrix for 'graph' plots."),
+               h4("Plot additional variables:"),
                conditionalPanel("input.somtype == 'korresp'",
                                 p("Option not available for 'Korresp' type of",
                                   "SOM")),
@@ -169,7 +190,7 @@ shinyUI(pageWithSidebar(
                  plotOutput("addplot"),
                                 
                  h4("Import file for additional variables"),
-                 fileInput('file2', 'Choose File'),
+                 fileInput('file2', 'Choose csv/text file'),
                  checkboxInput('header2', ' Header?', TRUE),
                  checkboxInput('rownames2', ' Row names?', FALSE),
                  selectInput('sep2', 'Separator:', 
