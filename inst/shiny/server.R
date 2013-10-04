@@ -45,7 +45,7 @@ all.somplot.types <- list("numeric"=
                                          
 all.scplot.types <- list("numeric"= 
                             list("prototypes"= 
-                                   list("color", "lines", "grid",
+                                   list("dendrogram", "color", "lines", "grid",
                                         "barplot", "dendro3d",
                                         "polygon distances"= "poly.dist",
                                         "mds", "radar"),
@@ -53,16 +53,17 @@ all.scplot.types <- list("numeric"=
                                           "boxplot", "radar", "grid")),
                           "korresp"= 
                             list("prototypes"= 
-                                   list("color", "lines", "grid", "barplot", 
+                                   list("dendrogram", "color", "lines", "grid", 
+                                        "barplot", 
                                         "polygon distances"= "poly.dist",
                                         "mds", "radar", "dendro3d"),
-                                 "obs"= c("hitmap")),
+                                 "obs"= "hitmap"),
                           "relational"= 
                             list("prototypes"=
-                                   list("lines", "barplot", "grid",
-                                        "polygon distances"= "poly.dist",
+                                   list("dendrogram", "lines", "barplot", 
+                                        "grid", "polygon distances"="poly.dist",
                                         "mds", "radar", "dendro3d"),
-                                 "obs"= c("hitmap")))
+                                 "obs"= "hitmap"))
 
 
 # Server
@@ -240,7 +241,7 @@ shinyServer(function(input, output, session) {
              "nclust"= superClass(sommap= current.som, k= input$sc.k),
              "tree.height"= superClass(sommap= current.som, h= input$sc.h)))
     
-    plotTheDendro() # plot the dendrogram
+#    plotTheDendro() # plot the dendrogram
     plotTheSc() # plot the SuperClass plot
     server.env$current.sc
   }

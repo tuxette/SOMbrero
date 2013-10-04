@@ -1,7 +1,5 @@
 ## A faire
 
-** JB : plot korresp - donner le choix row ou column
-
 ** JB : enlever nom de variable pour somplot et scplot de Relational?
 
 ** NV : pour la help page, inclue un target="_blank" dans le lien
@@ -105,3 +103,5 @@ ajoute init.proto, ajoute la possibilité de fixer une graine aléatoire
 - MO : bouton qui permette de récupérer les résultats de la classification
 
 ** JB : l'actualisation des données ne se fait que quand on est sur l'onglet Data preview (c'est output$table qui appelle dInput()). Possible de changer?
+
+** JB : plot korresp - donner le choix row ou column
