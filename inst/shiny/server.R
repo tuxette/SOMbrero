@@ -1,5 +1,4 @@
 library(SOMbrero) # Version 0.4
-library(Matrix)
 
 # Max file input size :
 options(shiny.maxRequestSize= 30*1024^2)
@@ -400,13 +399,11 @@ shinyServer(function(input, output, session) {
              key.loc=c(-1,2), mar=c(0,10,2,0))
       })
     } else {
-#      tmpGraph <- graph.adjacency(Matrix(as.matrix(server.env$current.addtable)), 
-#                                  mode= "undirected")
       adjBin <- as.matrix(server.env$current.addtable!=0)
       tmpGraph <- graph.adjacency(adjBin, 
                                   mode= "undirected")
-      renderPlot(plot(lesmis.som, what= "add", type= "graph", 
-                      variable= tmpGraph))
+      output$addplot <- renderPlot(plot(lesmis.som, what= "add", type= "graph", 
+                                        variable= tmpGraph))
     }
     
   })
