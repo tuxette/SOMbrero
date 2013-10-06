@@ -73,7 +73,6 @@ shinyServer(function(input, output, session) {
   current.som <- NULL # this variable will contain the current SOM
   current.sc <- NULL #  this will contain the current superclass object
   current.table <- NULL
-  current.addtable <- NULL # this will contain the table of additional variables
   
   # File input
   dInput <- reactive({
@@ -355,10 +354,9 @@ shinyServer(function(input, output, session) {
     } else the.table <- read.table(in.file$datapath, header=input$header2, 
                                    sep=input$sep2, quote=input$quote2, 
                                    dec=input$dec2)
-    server.env$current.addtable <- the.table
     
     updateAddPlotVar() # update variable selector    
-    plotTheAdd() # launch the addplot
+#     plotTheAdd() # launch the addplot
     
     the.table
   })
@@ -375,37 +373,33 @@ shinyServer(function(input, output, session) {
   
   # Adapt available variables from second file
   updateAddPlotVar <- function() observe({
-    if(is.null(current.addtable))
+    d.input <- dInputAdd()
+    if(is.null(d.input))
       return(NULL)
-    updateSelectInput(session, "addplotvar",
-                      choices= colnames(current.addtable), 
-                      selected= colnames(current.addtable)[1])
-    updateSelectInput(session, "addplotvar2",
-                      choices= colnames(current.addtable), 
-                      selected= colnames(current.addtable)[
-                                   1:min(5,ncol(current.addtable))])
+    updateSelectInput(session, "addplotvar", choices= colnames(d.input), 
+                      selected= colnames(d.input)[1])
+    updateSelectInput(session, "addplotvar2", choices= colnames(d.input), 
+                      selected= colnames(d.input)[1:min(5,ncol(d.input))])
   })
   
   # function to render Additional data Plot
-  plotTheAdd <- function() observe({
-    if (input$addplottype %in% c("pie", "color", "names")) {
+  output$addplot <- renderPlot({
+    d.input <- dInputAdd()
+    if (is.null(d.input)) return(NULL)
+    
+    if (input$addplottype %in% c("pie","color","names")) {
       tmp.var <- input$addplotvar
     } else tmp.var <- input$addplotvar2
-
-    if (input$addplottype != "graph") {
-      output$addplot <- renderPlot({
-        plot(x= current.som, what= "add", type= input$addplottype, 
-             variable= current.addtable[,tmp.var], 
-             key.loc=c(-1,2), mar=c(0,10,2,0))
-      })
-    } else {
-      adjBin <- as.matrix(server.env$current.addtable!=0)
-      tmpGraph <- graph.adjacency(adjBin, 
-                                  mode= "undirected")
-      output$addplot <- renderPlot(plot(lesmis.som, what= "add", type= "graph", 
-                                        variable= tmpGraph))
-    }
     
+    if (input$addplottype!="graph") {
+      plot(x= current.som, what= "add", type= input$addplottype, 
+           variable= d.input[,tmp.var], key.loc=c(-1,2),
+           mar=c(0,10,2,0))
+    } else {
+      adjBin <- as.matrix(d.input!=0)
+      tmpGraph <- graph.adjacency(adjBin, mode= "undirected")
+      plot(lesmis.som, what= "add", type= "graph", variable= tmpGraph)
+    }
   })
   
   #### Tab About
