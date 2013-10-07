@@ -97,21 +97,26 @@ shinyUI(pageWithSidebar(
                                "names", "boxplot", "radar")),
         checkboxInput("somplottitle", "Show cluster names:"),
         conditionalPanel("input.somplottype != 'boxplot'",
-                         selectInput("somplotvar", 
-                                     "Variable: (only used for '3d', 'color' 
-                                     and 'boxplot' plots if available)", 
-                                     choices= "(Not Available)")),
+#                          selectInput("somplotvar", 
+#                                      "Variable: (only used for '3d', 'color' 
+#                                      and 'boxplot' plots if available)", 
+#                                      choices= "(Not Available)")
+                         uiOutput("somplotvar")
+                         ),
         conditionalPanel("input.somplottype == 'boxplot'",
-                         selectInput("somplotvar2", 
-                                     "Variable: (hold Ctrl to select multiple
-                                     variables)", 
-                                     choices= "(Not Available)", 
-                                     multiple= TRUE)),
+#                          selectInput("somplotvar2", 
+#                                      "Variable: (hold Ctrl to select multiple
+#                                      variables)", 
+#                                      choices= "(Not Available)", 
+#                                      multiple= TRUE)
+                         uiOutput("somplotvar2")
+                         ),
         conditionalPanel("input.somtype == 'korresp'", 
                          selectInput("somplotrowcol", 
                                      "Plot rows or columns:",
                                      choices= list("columns"= "c", 
-                                                   "rows"= "r"))),
+                                                   "rows"= "r"))
+                         ),
         plotOutput("somplot")),
                
       tabPanel("Superclasses",
@@ -140,16 +145,20 @@ shinyUI(pageWithSidebar(
                      choices= c("hitmap", "color", "lines", "barplot", 
                                 "names", "boxplot", "radar")),
         conditionalPanel("input.scplottype != 'boxplot'",
-                         selectInput("scplotvar", 
-                                     "Variable: (only used for '3d', 'color' 
-                                     and 'boxplot' plots if available)",
-                                     choices= "(Not Available)")),
+#                          selectInput("scplotvar", 
+#                                      "Variable: (only used for '3d', 'color' 
+#                                      and 'boxplot' plots if available)",
+#                                      choices= "(Not Available)")
+                         uiOutput("scplotvar")
+                         ),
         conditionalPanel("input.scplottype == 'boxplot'",
-                         selectInput("scplotvar2", 
-                                     "Variables: (hold Ctrl to select multiple  
-                                     variables)", 
-                                     choices= "(Not Available)", 
-                                     multiple= TRUE)),
+#                          selectInput("scplotvar2", 
+#                                      "Variables: (hold Ctrl to select multiple  
+#                                      variables)", 
+#                                      choices= "(Not Available)", 
+#                                      multiple= TRUE)
+                         uiOutput("scplotvar2")
+                         ),
         conditionalPanel("input.somtype == 'korresp'", 
                          selectInput("scplotrowcol", 
                                      "Plot rows or columns:",
