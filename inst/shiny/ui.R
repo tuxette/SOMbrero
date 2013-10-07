@@ -99,7 +99,7 @@ shinyUI(pageWithSidebar(
         conditionalPanel("input.somplottype != 'boxplot'",
                          selectInput("somplotvar", 
                                      "Variable: (only used for '3d', 'color' 
-                                     and 'boxplot' plots)", 
+                                     and 'boxplot' plots if available)", 
                                      choices= "(Not Available)")),
         conditionalPanel("input.somplottype == 'boxplot'",
                          selectInput("somplotvar2", 
@@ -142,7 +142,7 @@ shinyUI(pageWithSidebar(
         conditionalPanel("input.scplottype != 'boxplot'",
                          selectInput("scplotvar", 
                                      "Variable: (only used for '3d', 'color' 
-                                     and 'boxplot' plots)",
+                                     and 'boxplot' plots if available)",
                                      choices= "(Not Available)")),
         conditionalPanel("input.scplottype == 'boxplot'",
                          selectInput("scplotvar2", 

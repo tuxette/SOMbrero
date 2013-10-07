@@ -22,7 +22,7 @@ all.somplot.types <- list("numeric"=
                                "polygon distances"= "poly.dist",
                                "grid distances"= "grid.dist",
                                "U matrix distances"= "umatrix",
-                               "mds", "radar"),
+                               "MDS"= "mds", "radar"),
                         "obs"= c("hitmap", "color", "lines", "barplot", 
                                  "names", "boxplot", "radar")),
                  "korresp"= 
@@ -31,7 +31,7 @@ all.somplot.types <- list("numeric"=
                                "barplot", "polygon distances"= "poly.dist",
                                "grid distances"= "grid.dist",
                                "U matrix distances"= "umatrix",
-                               "mds", "radar"),
+                               "MDS"= "mds", "radar"),
                         "obs"= c("hitmap", "names")),
                  "relational"= 
                    list("prototypes"=
@@ -39,15 +39,15 @@ all.somplot.types <- list("numeric"=
                                "polygon distances"= "poly.dist",
                                "grid distances"= "grid.dist",
                                "U matrix distances"= "umatrix",
-                               "mds", "radar"),
+                               "MDS"= "mds", "radar"),
                         "obs"= c("hitmap", "names")))
                                          
 all.scplot.types <- list("numeric"= 
                             list("prototypes"= 
-                                   list("dendrogram", "color", "lines", "grid",
-                                        "barplot", "dendro3d",
+                                   list("dendrogram", "dendro3d",
+                                        "color", "lines", "grid", "barplot", 
                                         "polygon distances"= "poly.dist",
-                                        "mds", "radar"),
+                                        "MDS"= "mds", "radar"),
                                  "obs"= c("hitmap", "color", "lines", "barplot", 
                                           "boxplot", "radar", "grid")),
                           "korresp"= 
@@ -55,13 +55,13 @@ all.scplot.types <- list("numeric"=
                                    list("dendrogram", "color", "lines", "grid", 
                                         "barplot", 
                                         "polygon distances"= "poly.dist",
-                                        "mds", "radar", "dendro3d"),
+                                        "MDS"= "mds", "radar", "dendro3d"),
                                  "obs"= "hitmap"),
                           "relational"= 
                             list("prototypes"=
                                    list("dendrogram", "lines", "barplot", 
                                         "grid", "polygon distances"="poly.dist",
-                                        "mds", "radar", "dendro3d"),
+                                        "MDS"= "mds", "radar", "dendro3d"),
                                  "obs"= "hitmap"))
 
 
@@ -326,13 +326,11 @@ shinyServer(function(input, output, session) {
              "radar"= plot(x= current.sc, what= input$scplotwhat, 
                            type= input$scplottype,
                            variable= input$scplotvar,
-                           print.title= input$scplottitle,
                            view= tmp.view, 
                            key.loc=c(-1,2), mar=c(0,10,2,0)),
              plot(x= current.sc, what= input$scplotwhat, 
                   type= input$scplottype,
                   variable= input$scplotvar,
-                  print.title= input$scplottitle,
                   view= tmp.view))
     })
   })
