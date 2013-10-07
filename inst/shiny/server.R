@@ -391,14 +391,17 @@ shinyServer(function(input, output, session) {
       tmp.var <- input$addplotvar
     } else tmp.var <- input$addplotvar2
     
-    if (input$addplottype!="graph") {
+    if(input$addplottype == "radar")
+      return(plot(x= current.som, what= "add", type= input$addplottype, 
+                  variable= d.input[,tmp.var], key.loc=c(-1,2),
+                  mar=c(0,10,2,0)))
+    if (input$addplottype != "graph") {
       plot(x= current.som, what= "add", type= input$addplottype, 
-           variable= d.input[,tmp.var], key.loc=c(-1,2),
-           mar=c(0,10,2,0))
+           variable= d.input[,tmp.var])
     } else {
       adjBin <- as.matrix(d.input!=0)
       tmpGraph <- graph.adjacency(adjBin, mode= "undirected")
-      plot(lesmis.som, what= "add", type= "graph", variable= tmpGraph)
+      plot(current.som, what= "add", type= "graph", variable= tmpGraph)
     }
   })
   
