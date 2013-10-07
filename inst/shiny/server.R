@@ -71,7 +71,6 @@ shinyServer(function(input, output, session) {
   # server environment variables
   server.env <- environment() # used to allocate in functions
   current.som <- NULL # this variable will contain the current SOM
-  current.sc <- NULL #  this will contain the current superclass object
   current.table <- NULL
   
   # File input
@@ -251,16 +250,20 @@ shinyServer(function(input, output, session) {
   )
 
   # Compute superclasses when the button is hit
-  computeSuperclasses <- function() {
-    input$superclassbutton
-    server.env$current.sc <- isolate(
-      switch(input$sc.cut.choice, 
-             "nclust"= superClass(sommap= current.som, k= input$sc.k),
-             "tree.height"= superClass(sommap= current.som, h= input$sc.h)))
+  computeSuperclasses <- reactive({
+    d.input <- dInput()
+    if (is.null(d.input))
+      return(NULL)
+    if (input$superclassbutton== 0)
+      return(NULL)
+    
+    isolate(switch(input$sc.cut.choice, 
+                   "nclust"= superClass(sommap= current.som, k= input$sc.k),
+                   "tree.height"= superClass(sommap= current.som, 
+                                             h= input$sc.h)))
     
 #    plotTheDendro() # plot the dendrogram
-    server.env$current.sc
-  }
+  })
 
   output$sc.summary <- renderPrint( {
     if (input$superclassbutton==0)
@@ -270,22 +273,23 @@ shinyServer(function(input, output, session) {
 
   # Render the dendrogram
   plotTheDendro <- function() observe({
-    output$dendrogram <- renderPlot(plot(server.env$current.sc))
+    output$dendrogram <- renderPlot(plot(computeSuperclasses()))
   })
 
   # Download the superclass classification
   # TODO: output an error if map not trained
   output$sc.download <- {
+    reactive(the.sc <- computeSuperclasses())
+    
     downloadHandler(
       filename= function() {
         paste("superclasses ", format(Sys.time(), format= "%Y-%m-%d_%H:%M"),
               ".csv", sep="")
       },
       content= function(file) {
-        classes.export <- 
-          data.frame(obs= row.names(server.env$current.sc$som$data),
-                     cluster= server.env$current.sc$cluster[
-                                       server.env$current.sc$som$clustering])
+        classes.export <- data.frame(obs= row.names(the.sc$som$data),
+                                     cluster= the.sc$cluster[
+                                       the.sc$som$clustering])
         write.csv(classes.export, file= file, row.names= FALSE)
       })
   }
@@ -312,18 +316,20 @@ shinyServer(function(input, output, session) {
     in.file <- dInput()
     if(is.null(in.file))
       return(NULL)
+    
+    the.sc <- computeSuperclasses()
     if(input$superclassbutton == 0)
       return(NULL)
 
     if (input$scplottype %in% c("grid", "dendrogram"))
-      return(plot(current.sc, type= input$scplottype))
+      return(plot(the.sc, type= input$scplottype))
 
     tmp.view <- NULL
     if (input$somtype == "korresp")
       tmp.view <- input$scplotrowcol
     
     if (input$scplottype == "radar")
-      return(plot(x= current.sc, what= input$scplotwhat, 
+      return(plot(x= the.sc, what= input$scplotwhat, 
                   type= input$scplottype, variable= input$scplotvar,
                   view= tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0)))
 
@@ -332,7 +338,7 @@ shinyServer(function(input, output, session) {
                                               input$scplotvar2]
     } else tmp.var <- input$scplotvar
     
-    plot(x= current.sc, what= input$scplotwhat, type= input$scplottype,
+    plot(x= the.sc, what= input$scplotwhat, type= input$scplottype,
          variable= tmp.var, view= tmp.view)
   })
 
