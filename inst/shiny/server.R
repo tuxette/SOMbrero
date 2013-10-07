@@ -162,7 +162,6 @@ shinyServer(function(input, output, session) {
     
     updatePlotSomVar() # update variable choice for som plots
     updatePlotScVar() # update variable choice for sc plots
-    plotTheSom() # render plot
 
     # return the computed som
     server.env$current.som
@@ -212,32 +211,32 @@ shinyServer(function(input, output, session) {
                       selected= tmp.names[1:min(5,length(tmp.names))])
   })
   
-  # Render SOM plot
-  plotTheSom <- function() observe({
+  # Plot the SOM
+  output$somplot <- renderPlot({
+    input.file <- dInput()
+    if(is.null(input.file))
+      return(NULL)
+    if(input$trainbutton == 0)
+      return(NULL)
+    
     tmp.view <- NULL
-    if(input$somtype == "korresp")
-      tmp.view <- input$somplotrowcol
-    output$somplot <- renderPlot({
-      switch(input$somplottype, 
-             "boxplot"= plot(x= current.som, what= input$somplotwhat, 
-                             type= input$somplottype,
-                             variable= (1:ncol(current.som$data))[ 
-                                       colnames(current.som$data) %in% 
-                                       input$somplotvar2],
-                             print.title= input$somplottitle,
-                             view= tmp.view),
-             "radar"= plot(x= current.som, what= input$somplotwhat, 
-                           type= input$somplottype,
-                           variable= input$somplotvar,
-                           print.title= input$somplottitle,
-                           view= tmp.view, 
-                           key.loc=c(-1,2), mar=c(0,10,2,0)),
-             plot(x= current.som, what= input$somplotwhat, 
-                  type= input$somplottype,
-                  variable= input$somplotvar,
-                  print.title= input$somplottitle,
-                  view= tmp.view))
-    })
+    if (input$somtype == "korresp")
+      tmp.view <- input$scplotrowcol
+    
+    if (input$somplottype == "radar")
+      return(plot(x= current.som, what= input$somplotwhat, 
+                  type= input$somplottype, variable= input$somplotvar,
+                  print.title= input$somplottitle, view= tmp.view, 
+                  key.loc=c(-1,2), mar=c(0,10,2,0)))
+    
+    if (input$somplottype == "boxplot") {
+      tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
+                                              input$somplotvar2]
+    } else tmp.var <- input$somplotvar
+    
+    plot(x= current.som, what= input$somplotwhat, type= input$somplottype,
+         variable= tmp.var, print.title= input$somplottitle,
+         view= tmp.view)
   })
   
   #### Tab Superclass
@@ -260,7 +259,6 @@ shinyServer(function(input, output, session) {
              "tree.height"= superClass(sommap= current.som, h= input$sc.h)))
     
 #    plotTheDendro() # plot the dendrogram
-    plotTheSc() # plot the SuperClass plot
     server.env$current.sc
   }
 
@@ -309,30 +307,33 @@ shinyServer(function(input, output, session) {
                       selected= tmp.names[1:min(5,length(tmp.names))])
   })
   
-  # function to render SuperClass plot
-  plotTheSc <- function() observe({
+  # Update SuperClass plot
+  output$scplot <- renderPlot({
+    in.file <- dInput()
+    if(is.null(in.file))
+      return(NULL)
+    if(input$superclassbutton == 0)
+      return(NULL)
+
+    if (input$scplottype %in% c("grid", "dendrogram"))
+      return(plot(current.sc, type= input$scplottype))
+
     tmp.view <- NULL
-    if(input$somtype == "korresp")
+    if (input$somtype == "korresp")
       tmp.view <- input$scplotrowcol
-    output$scplot <- renderPlot({
-      switch(input$scplottype, 
-             "dendrogram"= plot(x= current.sc, type= "dendrogram"),
-             "boxplot"= plot(x= current.sc, what= input$scplotwhat, 
-                             type= input$scplottype,
-                             variable= (1:ncol(current.som$data))[ 
-                                       colnames(current.som$data) %in% 
-                                       input$scplotvar2],
-                             view= tmp.view),
-             "radar"= plot(x= current.sc, what= input$scplotwhat, 
-                           type= input$scplottype,
-                           variable= input$scplotvar,
-                           view= tmp.view, 
-                           key.loc=c(-1,2), mar=c(0,10,2,0)),
-             plot(x= current.sc, what= input$scplotwhat, 
-                  type= input$scplottype,
-                  variable= input$scplotvar,
-                  view= tmp.view))
-    })
+    
+    if (input$scplottype == "radar")
+      return(plot(x= current.sc, what= input$scplotwhat, 
+                  type= input$scplottype, variable= input$scplotvar,
+                  view= tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0)))
+
+    if (input$scplottype == "boxplot") {
+      tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
+                                              input$scplotvar2]
+    } else tmp.var <- input$scplotvar
+    
+    plot(x= current.sc, what= input$scplotwhat, type= input$scplottype,
+         variable= tmp.var, view= tmp.view)
   })
 
   #### Tab Combine with additional data
