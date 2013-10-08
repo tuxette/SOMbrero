@@ -6,6 +6,7 @@ options(shiny.maxRequestSize= 30*1024^2)
 # SOM training function
 trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames, 
                         rand.seed, scaling, eps0, init.proto, nb.save) {
+  print("training")
   set.seed(rand.seed)
   if(type=="numeric")
     data <- data[, varnames]
@@ -68,11 +69,6 @@ all.scplot.types <- list("numeric"=
 # Server
 shinyServer(function(input, output, session) {
 
-  # server environment variables
-  server.env <- environment() # used to allocate in functions
-  current.som <- NULL # this variable will contain the current SOM
-  current.table <- NULL
-  
   # File input
   dInput <- reactive({
     in.file <- input$file1
@@ -110,8 +106,6 @@ shinyServer(function(input, output, session) {
       } else max(5,min(10,ceiling(sqrt(nrow(the.table)/10))))
     })
 
-    # return the table
-    server.env$current.table <- the.table
     the.table
   })
 
@@ -147,23 +141,24 @@ shinyServer(function(input, output, session) {
 
 
   # Train the SOM when the button is hit
-  theSom<- function() {
-    input$trainbutton
-    server.env$current.som <- isolate(trainTheSom(dInput(), input$somtype, 
-                                                  input$dimx, input$dimy, 
-                                                  input$disttype, input$maxit, 
-                                                  varnames= input$varchoice, 
-                                                  rand.seed= input$randseed, 
-                                                  scaling= input$scaling, 
-                                                  eps0= input$eps0, 
-                                                  init.proto= input$init.proto, 
-                                                  nb.save= input$nb.save))
-    
-    updatePlotSomVar() # update variable choice for som plots
-    updatePlotScVar() # update variable choice for sc plots
-
-    # return the computed som
-    server.env$current.som
+  computeSom<- function() {
+    if (input$trainbutton == 0)
+      return(NULL)
+    isolate({
+      d.input <- dInput()
+      if (is.null(d.input))
+        return(NULL)
+      the.som <- trainTheSom(d.input, input$somtype, 
+                             input$dimx, input$dimy, 
+                             input$disttype, input$maxit, 
+                             varnames= input$varchoice, 
+                             rand.seed= input$randseed, 
+                             scaling= input$scaling, 
+                             eps0= input$eps0, 
+                             init.proto= input$init.proto, 
+                             nb.save= input$nb.save)
+    })
+    the.som
   }
 
   # Render the summary of the SOM
@@ -173,7 +168,7 @@ shinyServer(function(input, output, session) {
       return("First import a dataset.")
     if (input$trainbutton==0) 
       return("Hit the Train button to train the map.")
-    summary(theSom())
+    summary(computeSom())
   })
 
   # Output the computed som object to be downloaded
@@ -185,7 +180,7 @@ shinyServer(function(input, output, session) {
               ".rda", sep="")
       },
       content= function(file) {
-        som.export <- server.env$current.som
+        som.export <- computeSom()
         save(som.export, file= file)
       })
   }
@@ -201,21 +196,40 @@ shinyServer(function(input, output, session) {
   })
   
   # update variables available for plotting
-  updatePlotSomVar <- function() observe({
-    tmp.names <- colnames(current.som$data)
+  observe({output$somplotvar <- {
+    the.som <- computeSom()
+    if (is.null(the.som))
+      return(NULL)
+    tmp.names <- colnames(the.som$data)
     if (input$somtype == "korresp")
-      tmp.names <- c(tmp.names, rownames(current.som$data))
-    updateSelectInput(session, "somplotvar", choices= tmp.names)
-    updateSelectInput(session, "somplotvar2", choices= tmp.names, 
-                      selected= tmp.names[1:min(5,length(tmp.names))])
-  })
+      tmp.names <- c(tmp.names, rownames(the.som$data))
+    
+    renderUI(selectInput("somplotvar", "Variable: (only used for '3d', 'color' 
+                                      and 'boxplot' plots if available)",
+                          choices= tmp.names))
+  }})
+             
+  observe({output$somplotvar2 <- {
+    the.som <- computeSom()
+    if (is.null(the.som))
+      return(NULL)
+    tmp.names <- colnames(the.som$data)
+    if (input$somtype == "korresp")
+      tmp.names <- c(tmp.names, rownames(the.som$data))
+    renderUI(selectInput("somplotvar2", 
+                         "Variable: (hold Ctrl to select multiple variables)",
+                         choices= tmp.names,
+                         selected= tmp.names[1:min(5,length(tmp.names))],
+                         multiple= TRUE))
+  }})
   
   # Plot the SOM
   output$somplot <- renderPlot({
     input.file <- dInput()
-    if(is.null(input.file))
+    if (is.null(input.file))
       return(NULL)
-    if(input$trainbutton == 0)
+    the.som <- computeSom()
+    if (is.null(the.som))
       return(NULL)
     
     tmp.view <- NULL
@@ -223,17 +237,17 @@ shinyServer(function(input, output, session) {
       tmp.view <- input$scplotrowcol
     
     if (input$somplottype == "radar")
-      return(plot(x= current.som, what= input$somplotwhat, 
+      return(plot(x= the.som, what= input$somplotwhat, 
                   type= input$somplottype, variable= input$somplotvar,
                   print.title= input$somplottitle, view= tmp.view, 
                   key.loc=c(-1,2), mar=c(0,10,2,0)))
     
     if (input$somplottype == "boxplot") {
-      tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
+      tmp.var <- (1:ncol(the.som$data))[colnames(the.som$data) %in% 
                                               input$somplotvar2]
     } else tmp.var <- input$somplotvar
     
-    plot(x= current.som, what= input$somplotwhat, type= input$somplottype,
+    plot(x= the.som, what= input$somplotwhat, type= input$somplottype,
          variable= tmp.var, print.title= input$somplottitle,
          view= tmp.view)
   })
@@ -251,15 +265,17 @@ shinyServer(function(input, output, session) {
 
   # Compute superclasses when the button is hit
   computeSuperclasses <- reactive({
+    input$superclassbutton
+    
     d.input <- dInput()
     if (is.null(d.input))
       return(NULL)
-    if (input$superclassbutton== 0)
+    the.som <- computeSom()
+    if (is.null(the.som))
       return(NULL)
-    
     isolate(switch(input$sc.cut.choice, 
-                   "nclust"= superClass(sommap= current.som, k= input$sc.k),
-                   "tree.height"= superClass(sommap= current.som, 
+                   "nclust"= superClass(sommap= the.som, k= input$sc.k),
+                   "tree.height"= superClass(sommap= the.som, 
                                              h= input$sc.h)))
     
 #    plotTheDendro() # plot the dendrogram
@@ -302,14 +318,32 @@ shinyServer(function(input, output, session) {
   })
   
   # update variables available for plotting
-  updatePlotScVar <- function() observe({
-    tmp.names <- colnames(current.som$data)
+  observe({output$scplotvar <- {
+    the.som <- computeSom()
+    if (is.null(the.som))
+      return(NULL)
+    tmp.names <- colnames(the.som$data)
     if (input$somtype == "korresp")
-      tmp.names <- c(tmp.names, rownames(current.som$data))
-    updateSelectInput(session, "scplotvar", choices= tmp.names)
-    updateSelectInput(session, "scplotvar2", choices= tmp.names, 
-                      selected= tmp.names[1:min(5,length(tmp.names))])
-  })
+      tmp.names <- c(tmp.names, rownames(the.som$data))
+    
+    renderUI(selectInput("scplotvar", "Variable: (only used for '3d', 'color' 
+                                      and 'boxplot' plots if available)",
+                         choices= tmp.names))
+  }})
+  
+  observe({output$scplotvar2 <- {
+    the.som <- computeSom()
+    if (is.null(the.som))
+      return(NULL)
+    tmp.names <- colnames(the.som$data)
+    if (input$somtype == "korresp")
+      tmp.names <- c(tmp.names, rownames(the.som$data))
+    renderUI(selectInput("scplotvar2", 
+                         "Variable: (hold Ctrl to select multiple variables)",
+                         choices= tmp.names,
+                         selected= tmp.names[1:min(5,length(tmp.names))],
+                         multiple= TRUE))
+  }})
   
   # Update SuperClass plot
   output$scplot <- renderPlot({
@@ -334,8 +368,8 @@ shinyServer(function(input, output, session) {
                   view= tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0)))
 
     if (input$scplottype == "boxplot") {
-      tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
-                                              input$scplotvar2]
+      tmp.var <- (1:ncol(the.sc$som$data))[colnames(the.sc$som$data) %in% 
+                                             input$scplotvar2]
     } else tmp.var <- input$scplotvar
     
     plot(x= the.sc, what= input$scplotwhat, type= input$scplottype,
@@ -361,8 +395,6 @@ shinyServer(function(input, output, session) {
                                    dec=input$dec2)
     
     updateAddPlotVar() # update variable selector    
-#     plotTheAdd() # launch the addplot
-    
     the.table
   })
   
@@ -391,22 +423,25 @@ shinyServer(function(input, output, session) {
   output$addplot <- renderPlot({
     d.input <- dInputAdd()
     if (is.null(d.input)) return(NULL)
+    the.som <- computeSom()
+    if (is.null(the.som))
+      return(NULL)
     
     if (input$addplottype %in% c("pie","color","names")) {
       tmp.var <- input$addplotvar
     } else tmp.var <- input$addplotvar2
     
     if(input$addplottype == "radar")
-      return(plot(x= current.som, what= "add", type= input$addplottype, 
+      return(plot(x= the.som, what= "add", type= input$addplottype, 
                   variable= d.input[,tmp.var], key.loc=c(-1,2),
                   mar=c(0,10,2,0)))
     if (input$addplottype != "graph") {
-      plot(x= current.som, what= "add", type= input$addplottype, 
+      plot(x= the.som, what= "add", type= input$addplottype, 
            variable= d.input[,tmp.var])
     } else {
       adjBin <- as.matrix(d.input!=0)
       tmpGraph <- graph.adjacency(adjBin, mode= "undirected")
-      plot(current.som, what= "add", type= "graph", variable= tmpGraph)
+      plot(the.som, what= "add", type= "graph", variable= tmpGraph)
     }
   })
   
