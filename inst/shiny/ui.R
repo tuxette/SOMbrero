@@ -13,8 +13,6 @@ shinyUI(pageWithSidebar(
            <a href= "http://sombrero.r-forge.r-project.org/"> 
            SOMbrero </a> R package, implementing self-organizing maps for 
            numeric, contingency, and relational data.')),
-    p(HTML('If you feel lost, take a look at the 
-           <a href=SOMbreroHelp.html>help page</a>.')),
     imageOutput("samm.logo", width= "100%", height= "100%"),
     p(HTML('It is kindly provided by the
            <a href= "http://samm.univ-paris1.fr/"> SAMM </a> team under the
@@ -100,7 +98,7 @@ shinyUI(pageWithSidebar(
           "the resulting map in .rda format (you will need R and the SOMbrero ",
           "package to open this file), or proceed to the next tabs to ",
           "visualize the results."),
-        p(HTML('<a href=SOMbreroHelp.html> Help page</a>: how to choose the 
+        p(HTML('Consult the help tab for information on how to choose the 
                right parameter values')),
         actionButton("trainbutton","Train SOM"),
         br(), br(),
@@ -256,6 +254,231 @@ shinyUI(pageWithSidebar(
                                               multiple= TRUE)),
                  plotOutput("addplot")
                  )
-      )
+      ),
+      tabPanel("Help",
+               p(HTML("<h4>Topics:</h4> 
+                      <a href= #somtype> Types of maps and data</a> <br />
+                      <a href= #importdata> Data importation</a> <br />
+                      <a href= #train> Training options</a> <br />
+                      <a href= #plots> Types of plots</a> <br />
+                      <a href= #superclasses> Regrouping prototypes
+                        into superclasses</a> <br />
+                      <a href= #externalinfo> Combine with external
+                        information</a> <br />
+                      ")),
+      p(HTML("<h3 id=somtype> Types of self-organizing maps</h3>")),
+      p(HTML("Different types of data require different types of maps
+             to analyze them correctly. SOMbrero offers three types of 
+             algorithms, all based on the online (as opposed to batch) SOM :
+             <li><b>Numeric</b> is the standard self-organizing map, which
+             is trained on numeric variables only. For correct data importation
+             the columns must contain the variables and the rows the 
+             observations. <br />
+             It can be applied, for instance, to the four
+             first variables of the supplied iris dataset. </li>
+             <li><b>Korresp</b> applies the self-organizing algorithm to
+             contingency tables of two qualitative variables.<br />
+             For instance, in the supplied presidentielles2002 dataset, 
+             which contains the regional
+             results for the first round of the 2002 French prensidential 
+             elections, columns represent presidential candidates and rows
+             represent regions (départements), so that each cell contains
+             the number of votes for a specific candidate in a specific 
+             region.
+             <li><b>Relational</b> is used for dissimilarity matrices, in which
+             each cell contains a measure of distance between two objects. For 
+             this method the data must be a square numeric matrix, in which rows  
+             and columns contain the same objects. <br />
+             For instance, the supplied lesmis dataset contains the distances 
+             between characters of Victor Hugo's novel <I>Les Misérables</I>.")),
+      br(), br(),
+      p(HTML("<h3 id=importdata> Data importation</h3>")),
+      p(HTML("Data must be imported as a table, in text or csv format (values are
+             separated by specific symbols such as spaces or semicolons,
+             and each line represents a row in the data).
+             Check at the bottom of the 'Import Data' tab to see if the data
+             have been properly imported. If not, change the file importation 
+             options above.")),
+      br(), br(),
+      p(HTML("<h3 id=train> Training options</h3>")),
+      p(HTML("The default options in the 'Self-Organize' tab
+             are set according to the type of map 
+             and the size of the dataset, but you can modify the options 
+             at will:
+             <li><b>Input variables:</b> choose on which variables the
+             map will be trained (only available for 'numeric' som).</li>
+             
+             <li><b>Map dimensions:</b> choose the number of rows (X) and 
+             columns (Y) of the map, thus setting the number of prototypes.</li>
+             
+             <li><b>Max. iterations:</b> the number of times a random observation
+             will be drawn during the algorithm to train the map.</li>
+             
+             <li><b>Distance type:</b> type of distance used to determine which
+             prototypes of the map are neighbors.</li>
+             
+             <li><b>Data scaling:</b> choose how the data must be scaled before 
+             training. Scaling is used to ensure all variables have the same 
+             importance during training, regardless of absolute magnitude.<br />
+             'none' means no scaling, 'center' means variables are shifted 
+             to have 0 mean, 'unitvar' means variables are centered and 
+             divided by their standard deviation to ensure they all have 
+             unit variance.</li>
+             
+             <li><b>Random seed:</b> Set the seed for the pseudorandom number
+             generator used during the training. Be sure to record the seed used
+             for a training if you want to reproduce your results exactly, 
+             because running the algorithm with
+             different seeds will result in different maps. By default the 
+             seed is set randomly when the interface is started.</li>
+             
+             <li><b>Epsilon0:</b> This is the 'step size' parameter used 
+             during training to determine in what proportion a winning prototype
+             is shifted towards an observation.
+             
+             <li><b>Number of intermediate backups:</b> Number of times 
+             during training a backup of the unfinished map will be saved.
+             This can be used to monitor the progress of the training.
+             
+             <li><b>Prototype initialization method:</b> choose how the 
+             prototypes of the map are initialized at the beginning of 
+             training algorithm.<br />
+             If 'random' is chosen, prototypes will be given random 
+             values in the range of the data. If 'obs', each prototype will 
+             be initialized to a random observation in the data."
+      )),
+      br(), br(),
+      
+      p(HTML("<h3 id=plots> Types of plots</h3>")),
+      p(HTML("Sombrero offers many different plots to analyze your
+             data's topology using the self-organizing map. <br />
+             There are two main choices of what to plot (in the plot and 
+             superclass tabs) : plotting <b> prototypes </b> will use 
+             the values of the prototypes (aka neurons) of the map, which are 
+             the representative vectors of the clusters. Plotting
+             <b> observations </b> will use the values of the observations 
+             within each cluster.")),
+      p(HTML("These are the standard types of plots:
+             <li><b>hitmap:</b> represents rectangles of areas proportional 
+             to the number of observations per neuron.</li>
+             
+             <li><b>color:</b> Neurons are filled with colors according to 
+             the prototype value or the average value level of the observations
+             for a chosen variable. Yellow represents low values, and
+             red high values.</li>
+             
+             <li><b>3d:</b> similar to the ‘color’ plot, but in 3
+             dimensions, with x and y the coordinates of the grid and z
+             the value of the prototypes or observations
+             for the considered variable.</li>
+             
+             <li><b>boxplot:</b>  plots boxplots for the observations in every
+             neuron. This plot can handle 5 variables at most.</li>
+             
+             <li><b>lines:</b>  plots, for each neuron, the prototype value or the
+             average value level of the observations, with lines. Each point on 
+             the line represents a variable. </li>
+             
+             <li><b>barplot:</b>  similar to lines, here each variable value is 
+             represented by a bar. </li>
+             
+             <li><b>radar:</b>  similar to lines, here each variable value is 
+             represented by a slice, and bigger slices represent 
+             higher values </li>
+             
+             <li><b>names:</b>  prints on the grid the names of the observations
+             in the neuron to which they belong.</li>
+             
+             <li><b>poly.dist:</b> represents the distances between
+             prototypes with polygons plotted for each neuron. The
+             closer the polygon point is to the border, the closer the
+             pairs of prototypes. The color used for filling the
+             polygon shows the number of observations in each neuron.  A 
+             red polygon means a high number of observations, a
+             white polygon means there are no observations.</li>
+             
+             <li><b>smooth.dist:</b>  depicts the average distance between a
+             prototype and its neighbors using smooth color changes,
+             on a map where x and y are the coordinates of the prototypes 
+             on the grid.</li>
+             
+             <li><b>umatrix:</b>  is another way of plotting distances
+             between prototypes. The grid is plotted and filled colors 
+             according to the mean distance between the current neuron 
+             and the neighboring neurons. Red indicates proximity.</li>
+             
+             <li><b>grid.dist:</b>   plots all distances on a two-dimensional map.
+             The number of points on this picture is equal to:
+             number of neurons * (number of neurons - 1) / 2. The x
+             axis corresponds to the prototype distances, the y
+             axis depicts the grid distances.</li>
+             
+             <li><b>MDS:</b>  plots the number of the neurons
+             according to a Multi Dimensional Scaling (MDS) projection on
+             a two-dimensional space, .</li>
+             
+             "
+             
+      )),
+      p(HTML("The plot options offered in the 'superclasses' and 'combine with 
+             external information' tabs are mostly the same as the ones listed 
+             above, but some are specific:
+             
+             <li><b>dendrogram:</b>  (in Superclasses tab) plots the dendrogram 
+             of the hierarchical clustering applied to the prototypes, along 
+             with the scree plot which shows the proportion of unexplained 
+             variance for incremental numbers of superclasses. 
+             These are helpful in determining the optimal number of 
+             superclasses.</li>
+             
+             <li><b>dendro3d:</b>  (in Superclasses tab) similar to 'dendrogram', 
+             but in three dimensions and without the scree plot.</li>
+             
+             <li><b>pie:</b>  (in Combine tab) requires the selected variable
+             to be a categorical variable, and plots one pie for each neuron,
+             corresponding to the values of this variable.</li>
+             
+             <li><b>words:</b>  (in Combine tab) needs the external data
+             to be a contingency table: names of the columns will be used as 
+             words and printed on the map with sizes proportional to their 
+             frequency in the neuron. </li>
+             
+             <li><b>graph:</b>  (in Combine tab) needs the external data
+             to be a table representing a graph. According to the
+             existing edges in the graph and to the clustering obtained
+             with the SOM algorithm, a clustered graph will be produced
+             where a vertex between two vertices represents a neuron and
+             the width of an edge is proportional to the number of edges
+             in the given graph between the vertices affected to the
+             corresponding neurons. 
+             "
+      )),
+    p(HTML("The <b>show cluster names</b> option in the 'Plot map' tab can
+           be selected to show the names of the neurons on the map.")),
+    br(), br(),
+    
+    p(HTML("<h3 id=superclasses> Regrouping prototypes into 
+           Superclasses</h3>")),
+    p(HTML("Use the options on the dedicated tab to regroup the prototypes
+           of a trained map into a determined number of superclasses, 
+           using hierarchical clustering. The 'dendrogram' plot can 
+           indicate the optimal number of superclasses (or equivalently
+           the optimal cutting height in the dendrogram).")),
+    br(), br(),
+    
+    p(HTML("<h3 id=externalinfo> Combine with external information</h3>")),
+    p(HTML("Plot external data on the trained map on the dedicated panel.
+           The external data importation process is similar to the 
+           one described in the 'Data importation' section, 
+           and the available plots are described in the 'types of plots'
+           section.<br />
+           Note that this is the only panel in which categorical variables
+           can be plotted on the self-organizing map. For instance, if
+           the map is trained on the four first variables of the iris 
+           dataset, you can import the dataset again as external information
+           and plot the iris species on the map."))
+               
     )
-)))
+    )
+  )
+))
