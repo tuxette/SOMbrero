@@ -154,7 +154,7 @@ shinyServer(function(input, output, session) {
   # Train the SOM when the button is hit
   theSom<- function() {
     input$trainbutton
-    server.env$current.som <- isolate(trainTheSom(dInput(), input$somtype, 
+    server.env$current.som <- isolate(trainTheSom(current.table, input$somtype, 
                                                   input$dimx, input$dimy, 
                                                   input$disttype, input$maxit, 
                                                   varnames= input$varchoice, 
@@ -173,7 +173,6 @@ shinyServer(function(input, output, session) {
 
   # Render the summary of the SOM
   output$summary <- renderPrint({
-    dInput()
     if (is.null(input$file1))
       return("First import a dataset.")
     if (input$trainbutton==0) 
@@ -215,8 +214,7 @@ shinyServer(function(input, output, session) {
   
   # Plot the SOM
   output$somplot <- renderPlot({
-    input.file <- dInput()
-    if(is.null(input.file))
+    if(is.null(current.table))
       return(NULL)
     if(input$trainbutton == 0)
       return(NULL)
@@ -254,8 +252,7 @@ shinyServer(function(input, output, session) {
 
   # Compute superclasses when the button is hit
   computeSuperclasses <- reactive({
-    d.input <- dInput()
-    if (is.null(d.input))
+    if (is.null(current.table))
       return(NULL)
     if (input$superclassbutton== 0)
       return(NULL)
@@ -316,8 +313,7 @@ shinyServer(function(input, output, session) {
   
   # Update SuperClass plot
   output$scplot <- renderPlot({
-    in.file <- dInput()
-    if(is.null(in.file))
+    if(is.null(current.table))
       return(NULL)
     
     the.sc <- computeSuperclasses()
