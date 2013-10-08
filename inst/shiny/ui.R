@@ -139,7 +139,8 @@ shinyUI(pageWithSidebar(
                     choices= c("hitmap", "color", "lines", "barplot", 
                                "names", "boxplot", "radar")),
         checkboxInput("somplottitle", "Show cluster names:"),
-        conditionalPanel("input.somplottype != 'boxplot'",
+        conditionalPanel("input.somplottype == 'color' ||
+                         input.somplottype == '3d'",
                          selectInput("somplotvar", 
                                      "Variable: (only used for '3d', 'color' 
                                      and 'boxplot' plots if available)", 
@@ -182,7 +183,8 @@ shinyUI(pageWithSidebar(
          selectInput("scplottype", "Type of plot:", 
                      choices= c("hitmap", "color", "lines", "barplot", 
                                 "names", "boxplot", "radar")),
-        conditionalPanel("input.scplottype != 'boxplot'",
+        conditionalPanel("input.scplottype == 'color' ||
+                         input.scplottype == '3d'",
                          selectInput("scplotvar", 
                                      "Variable: (only used for '3d', 'color' 
                                      and 'boxplot' plots if available)",
