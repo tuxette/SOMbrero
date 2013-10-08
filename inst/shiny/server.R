@@ -1,5 +1,8 @@
 library(SOMbrero) # Version 0.4
 
+###############################################################################
+## Global variables
+
 # Max file input size :
 options(shiny.maxRequestSize= 30*1024^2)
 
@@ -9,71 +12,76 @@ trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames,
   set.seed(rand.seed)
   if(type=="numeric")
     data <- data[, varnames]
-  trainSOM(data, dimension=c(dimx,dimy), dist.type= disttype, 
-           maxit= maxit, type= type, scaling= scaling,
-           init.proto= init.proto, nb.save= nb.save)
+  trainSOM(data, dimension=c(dimx,dimy), dist.type= disttype, maxit= maxit,
+           type= type, scaling= scaling, init.proto= init.proto,
+           nb.save= nb.save)
 }
 
 # List of somplot types options per SOM type and "what" :
 all.somplot.types <- list("numeric"= 
-                   list("prototypes"= 
-                          list("color", "3d", "lines", 
-                               "barplot", "smooth distances"= "smooth.dist",
-                               "polygon distances"= "poly.dist",
-                               "grid distances"= "grid.dist",
-                               "U matrix distances"= "umatrix",
-                               "MDS"= "mds", "radar"),
-                        "obs"= c("hitmap", "color", "lines", "barplot", 
-                                 "names", "boxplot", "radar")),
-                 "korresp"= 
-                   list("prototypes"= 
-                          list("color", "3d", "lines", 
-                               "barplot", "polygon distances"= "poly.dist",
-                               "grid distances"= "grid.dist",
-                               "U matrix distances"= "umatrix",
-                               "MDS"= "mds", "radar"),
-                        "obs"= c("hitmap", "names")),
-                 "relational"= 
-                   list("prototypes"=
-                          list("lines", "barplot",
-                               "polygon distances"= "poly.dist",
-                               "grid distances"= "grid.dist",
-                               "U matrix distances"= "umatrix",
-                               "MDS"= "mds", "radar"),
-                        "obs"= c("hitmap", "names")))
-                                         
-all.scplot.types <- list("numeric"= 
                             list("prototypes"= 
-                                   list("dendrogram", "dendro3d",
-                                        "color", "lines", "grid", "barplot", 
+                                   list("color", "3d", "lines", "barplot",
+                                        "smooth distances"= "smooth.dist",
                                         "polygon distances"= "poly.dist",
+                                        "grid distances"= "grid.dist",
+                                        "U matrix distances"= "umatrix",
                                         "MDS"= "mds", "radar"),
                                  "obs"= c("hitmap", "color", "lines", "barplot", 
-                                          "boxplot", "radar", "grid")),
+                                          "names", "boxplot", "radar")),
+                          
                           "korresp"= 
                             list("prototypes"= 
-                                   list("dendrogram", "color", "lines", "grid", 
-                                        "barplot", 
+                                   list("color", "3d", "lines", "barplot",
                                         "polygon distances"= "poly.dist",
-                                        "MDS"= "mds", "radar", "dendro3d"),
-                                 "obs"= "hitmap"),
+                                        "grid distances"= "grid.dist",
+                                        "U matrix distances"= "umatrix",
+                                        "MDS"= "mds", "radar"),
+                                 "obs"= c("hitmap", "names")),
+                          
                           "relational"= 
                             list("prototypes"=
-                                   list("dendrogram", "lines", "barplot", 
-                                        "grid", "polygon distances"="poly.dist",
-                                        "MDS"= "mds", "radar", "dendro3d"),
-                                 "obs"= "hitmap"))
+                                   list("lines", "barplot",
+                                        "polygon distances"= "poly.dist",
+                                        "grid distances"= "grid.dist",
+                                        "U matrix distances"= "umatrix",
+                                        "MDS"= "mds", "radar"),
+                                 "obs"= c("hitmap", "names")))
+                                         
+all.scplot.types <- list("numeric"= 
+                           list("prototypes"= 
+                                  list("dendrogram", "dendro3d", "color",
+                                       "lines", "grid", "barplot", 
+                                       "polygon distances"= "poly.dist",
+                                       "MDS"= "mds", "radar"),
+                                "obs"= c("hitmap", "color", "lines", "barplot", 
+                                         "boxplot", "radar", "grid")),
+                         "korresp"= 
+                           list("prototypes"= 
+                                  list("dendrogram", "color", "lines", "grid", 
+                                       "barplot", 
+                                       "polygon distances"= "poly.dist",
+                                       "MDS"= "mds", "radar", "dendro3d"),
+                                "obs"= "hitmap"),
+                         "relational"= 
+                           list("prototypes"=
+                                  list("dendrogram", "lines", "barplot", "grid",
+                                       "polygon distances"="poly.dist",
+                                       "MDS"= "mds", "radar", "dendro3d"),
+                                "obs"= "hitmap"))
 
+###############################################################################
 
 # Server
 shinyServer(function(input, output, session) {
 
-  # server environment variables
+  #############################################################################
+  ## Server variables
   server.env <- environment() # used to allocate in functions
   current.som <- NULL # this variable will contain the current SOM
   current.table <- NULL
+  #############################################################################
   
-  # File input
+  #### Right hand side panel
   dInput <- reactive({
     in.file <- input$file1
     
@@ -82,20 +90,21 @@ shinyServer(function(input, output, session) {
     
     if (input$rownames) {
       the.table <- read.table(in.file$datapath, header=input$header, 
-                              sep=input$sep, quote=input$quote, 
-                              row.names=1, dec=input$dec)
-    } else the.table <- read.table(in.file$datapath, header=input$header, 
+                              sep=input$sep, quote=input$quote, row.names=1,
+                              dec=input$dec)
+    } else {
+      the.table <- read.table(in.file$datapath, header=input$header, 
                               sep=input$sep, quote=input$quote, dec=input$dec)
+    }
     
     # update the "input variables" checkbox (if somtype is numeric or integer)
     if (input$somtype == "numeric") {
       output$varchoice <- renderUI(
         checkboxGroupInput(inputId= "varchoice", label= "Input variables:",
                            choices= as.list(colnames(the.table)),
-                           selected= as.list(colnames(the.table)[sapply(
-                                             the.table, class) %in% c("integer",
-                                                                      "numeric")
-                                                                 ])))
+                           selected= as.list(colnames(the.table)[
+                             sapply(the.table, class) %in%
+                               c("integer", "numeric")])))
     } else output$varchoice <- renderText("")
 
     # update the map dimensions
@@ -115,8 +124,8 @@ shinyServer(function(input, output, session) {
     the.table
   })
 
-  #### Tab Preview Data
-  ##############################################################################
+  #### Panel 'Preview Data'
+  #############################################################################
   
   # data preview table
   output$view <- renderTable({
@@ -128,23 +137,19 @@ shinyServer(function(input, output, session) {
     head(d.input, n=input$nrow.preview) 
   })
 
-  #### Tab Self-organize
-  ##############################################################################
+  #### Panel 'Self-organize'
+  #############################################################################
 
-  # update the scaling option when the somtype is changed
+  # update the scaling option when input$somtype is changed
   output$scaling <- renderUI({
     selectInput(inputId= "scaling", label= "Data scaling:", 
                 choices= switch(input$somtype,
-                               "numeric"= list("unitvar", "none", 
-                                               "center"),
-                               "korresp"= list("chi2"),
-                               "relational"= list("none")),
-                selected= switch(input$somtype,
-                                 "numeric"= "unitvar",
-                                 "korresp"= "chi2",
-                                 "relational"= "none"))
+                                "numeric"= list("unitvar", "none", "center"),
+                                "korresp"= list("chi2"),
+                                "relational"= list("none")),
+                selected= switch(input$somtype, "numeric"= "unitvar",
+                                 "korresp"= "chi2", "relational"= "none"))
   })
-
 
   # Train the SOM when the button is hit
   theSom<- function() {
@@ -179,10 +184,8 @@ shinyServer(function(input, output, session) {
   # Output the computed som object to be downloaded
   # TODO: output an error if map not trained
   output$som.download <- {
-    downloadHandler(
-      filename= function() {
-        paste("som ", format(Sys.time(), format= "%Y-%m-%d_%H:%M"),
-              ".rda", sep="")
+    downloadHandler(filename= function() {
+        paste("som ",format(Sys.time(),format="-%Y-%m-%d_%H:%M"),".rda",sep="")
       },
       content= function(file) {
         som.export <- server.env$current.som
