@@ -13,6 +13,8 @@ shinyUI(pageWithSidebar(
            <a href= "http://sombrero.r-forge.r-project.org/"> 
            SOMbrero </a> R package, implementing self-organizing maps for 
            numeric, contingency, and relational data.')),
+    p(HTML('If you feel lost, take a look at the 
+           <a href=SOMbreroHelp.html>help page</a>.')),
     imageOutput("samm.logo", width= "100%", height= "100%"),
     p(HTML('It is kindly provided by the
            <a href= "http://samm.univ-paris1.fr/"> SAMM </a> team under the
@@ -98,8 +100,8 @@ shinyUI(pageWithSidebar(
           "the resulting map in .rda format (you will need R and the SOMbrero ",
           "package to open this file), or proceed to the next tabs to ",
           "visualize the results."),
-        p(HTML('<a href=help.html> Help page</a>: how to choose the right 
-               parameter values')),
+        p(HTML('<a href=SOMbreroHelp.html> Help page</a>: how to choose the 
+               right parameter values')),
         actionButton("trainbutton","Train SOM"),
         br(), br(),
         verbatimTextOutput("summary"),
