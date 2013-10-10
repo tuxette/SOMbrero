@@ -11,7 +11,9 @@ trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames,
                         rand.seed, scaling, eps0, init.proto, nb.save,
                         radiustype) {
   set.seed(rand.seed)
-  if(type=="numeric")
+  if (nb.save == 1)
+    nb.save <- 2 # minimum working nb.save is 2 (if not 0)
+  if (type=="numeric")
     data <- data[, varnames]
   trainSOM(data, dimension=c(dimx,dimy), dist.type= disttype, maxit= maxit,
            type= type, scaling= scaling, init.proto= init.proto,
@@ -28,7 +30,8 @@ all.somplot.types <- list("numeric"=
                                         "U matrix distances"= "umatrix",
                                         "MDS"= "mds", "radar"),
                                  "obs"= c("hitmap", "color", "lines", "barplot", 
-                                          "names", "boxplot", "radar")),
+                                          "names", "boxplot", "radar"),
+                                 "energy"= "Energy of backups"),
                           
                           "korresp"= 
                             list("prototypes"= 
@@ -37,7 +40,8 @@ all.somplot.types <- list("numeric"=
                                         "grid distances"= "grid.dist",
                                         "U matrix distances"= "umatrix",
                                         "MDS"= "mds", "radar"),
-                                 "obs"= c("hitmap", "names")),
+                                 "obs"= c("hitmap", "names"),
+                                 "energy"= "Energy of backups"),
                           
                           "relational"= 
                             list("prototypes"=
@@ -46,7 +50,8 @@ all.somplot.types <- list("numeric"=
                                         "grid distances"= "grid.dist",
                                         "U matrix distances"= "umatrix",
                                         "MDS"= "mds", "radar"),
-                                 "obs"= c("hitmap", "names")))
+                                 "obs"= c("hitmap", "names"),
+                                 "energy"= "Energy of backups"))
                                          
 all.scplot.types <- list("numeric"= 
                            list("prototypes"= 
@@ -227,6 +232,14 @@ shinyServer(function(input, output, session) {
     tmp.view <- NULL
     if (input$somtype == "korresp")
       tmp.view <- input$scplotrowcol
+    
+    if (input$somplotwhat == "energy") {
+#       if (input$nb.save == 0) 
+#         return(NULL)
+#       plot(current.som$backup$steps, current.som$backup$energy, t="b",
+#            xlab= "iteration", ylab= "energy")
+      plot(current.som, what= input$somplotwhat)
+    }
     
     if (input$somplottype == "radar")
       return(plot(x= current.som, what= input$somplotwhat, 

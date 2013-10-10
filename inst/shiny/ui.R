@@ -136,7 +136,8 @@ shinyUI(pageWithSidebar(
         h4("Options"),
         selectInput("somplotwhat", "Plot what?", 
                     choices= list("Observations"= "obs",
-                                  "Prototypes"= "prototypes")),
+                                  "Prototypes"= "prototypes",
+                                  "Energy"= "energy")),
         selectInput("somplottype", "Type of plot:", 
                     choices= c("hitmap", "color", "lines", "barplot", 
                                "names", "boxplot", "radar")),
@@ -461,6 +462,13 @@ shinyUI(pageWithSidebar(
       )),
     p(HTML("The <b>show cluster names</b> option in the 'Plot map' tab can
            be selected to show the names of the neurons on the map.")),
+    p(HTML("The <b>energy</b> option in the 'Plot map' tab is used to 
+           plot the energy levels of the intermediate backups recorded
+           during training. This is helpful in determining whether the 
+           algorithm did converge. (This option only works if a positive 
+           'Number of intermediate backups' was chosen in the 'Self-Organize'
+           tab.)")),
+               
     br(), br(),
     
     p(HTML("<h3 id=superclasses> Regrouping prototypes into 
