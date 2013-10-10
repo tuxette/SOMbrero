@@ -286,7 +286,16 @@ shinyServer(function(input, output, session) {
   output$sc.summary <- renderPrint( {
     if (input$superclassbutton==0)
       return("Hit the Compute superclasses button to show the results.")
-    summary(computeSuperclasses())
+    tmp.sc <- computeSuperclasses()
+    summary(tmp.sc)
+
+    tmp.var <- round(cumsum(tmp.sc$tree$height/ 
+                              sum(tmp.sc$tree$height))[
+                                length(tmp.sc$tree$height):1],
+                     3)
+    names(tmp.var) <- 1:length(tmp.sc$tree$height)
+    cat("\n  Proportion of variance unexplained by successive superclasses:\n")
+    as.table(tmp.var)
   })
 
   # Render the dendrogram
