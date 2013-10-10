@@ -314,7 +314,8 @@ shinyUI(pageWithSidebar(
              columns (Y) of the map, thus setting the number of prototypes.</li>
              
              <li><b>Max. iterations:</b> the number of times a random observation
-             will be drawn during the algorithm to train the map.</li>
+             will be drawn during the algorithm to train the map. Default is
+             five times the number of observations.</li>
              
              <li><b>Distance type:</b> type of distance used to determine which
              prototypes of the map are neighbors.</li>

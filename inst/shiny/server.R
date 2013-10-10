@@ -119,6 +119,9 @@ shinyServer(function(input, output, session) {
         max(5,min(10,ceiling(sqrt((nrow(the.table)+ncol(the.table))/10))))
       } else max(5,min(10,ceiling(sqrt(nrow(the.table)/10))))
     })
+    
+    # update the max. iterations option
+    updateNumericInput(session, "maxit", value= 5 * nrow(the.table))
 
     # return the table
     server.env$current.table <- the.table
