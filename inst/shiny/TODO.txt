@@ -1,5 +1,21 @@
 ## A faire
 
+** MO : dans l'onglet d'importation, le lien vers les données relationnelles ne fonctionne pas (c'est peut-être normal et j'ai raté un mail)
+
+** MO : un commentaire plus global, je pense que ce serait bien de lier les superclasses aux graphiques et statistiques "additional information". Je pense, par exemple, à des graphiques qui permettent d'avoir des variables supplémentaires croisées avec le super classes sur la carte. Je ne sais pas si je suis très claire, dites-moi si vous voulez que je développe.
+
+** MO : quand on fait des sauvegardes intermédiaires, ce serait bien de rajouter un graphique avec l'évolution de la fonction énergie afin de vérifier la convergence.
+
+** MO : dans les super-classes, ce serait bien si on pouvait sortir dans une sorte de table le pourcentage de variance expliquée (le graphique devient rapidement illisible s'il y a beaucoup de prototypes)
+
+** MO : éventuellement, si l'information est facilement récupérable (mais c'est plus une question d'utilisation du package que de l'interface elle-même), rajouter une analyse de variance pour les super-classes. Cette remarque tient également pour le croisement a posteriori avec une variable catégorielle, de la carte ou des super-classes.
+
+** MO : dans l'onglet "combine with additional...", je pense qu'un filtre sur les graphiques serait utile afin d'éviter les erreurs. Le filtre porterait sur le type de variable supplémentaire : si "numeric" alors boxplots, etc., si "factor", alors "pie", etc.
+
+** MO : je pense qu'à un moment il va falloir lier l'onglet superclasses et l'onglet "additional" car, souvent, on préfère sortir les statistiques par superclasses. Dans ce sens, ce serait bien d'avoir les graphiques des variables supplémentaires avec une information sur les superclasses, etc...
+
+** MO : dans le plot des noms des observations après korresp, uniquement cinq observations par classe sont affichées. Est-ce que c'est une limitation du graphique? Dans ce cas, il faudra rajouter un warning en haut du graphique pour préciser que toutes les obs ne sont pas représentées.
+
 ** JB : enlever nom de variable pour somplot et scplot de Relational?
 
 ** NV : pour la help page, inclue un target="_blank" dans le lien
@@ -105,3 +121,5 @@ ajoute init.proto, ajoute la possibilité de fixer une graine aléatoire
 ** JB : l'actualisation des données ne se fait que quand on est sur l'onglet Data preview (c'est output$table qui appelle dInput()). Possible de changer?
 
 ** JB : plot korresp - donner le choix row ou column
+
+** MO : dans l'onglet "train", il manque le type de voisinage. C'est vrai que pour l'instant on ne fait que du "piecewise linear" (letremy), mais un jour on aura le gaussien également.

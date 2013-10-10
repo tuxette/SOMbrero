@@ -8,13 +8,14 @@ options(shiny.maxRequestSize= 30*1024^2)
 
 # SOM training function
 trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames, 
-                        rand.seed, scaling, eps0, init.proto, nb.save) {
+                        rand.seed, scaling, eps0, init.proto, nb.save,
+                        radiustype) {
   set.seed(rand.seed)
   if(type=="numeric")
     data <- data[, varnames]
   trainSOM(data, dimension=c(dimx,dimy), dist.type= disttype, maxit= maxit,
            type= type, scaling= scaling, init.proto= init.proto,
-           nb.save= nb.save)
+           nb.save= nb.save, radius.type= radiustype)
 }
 
 # List of somplot types options per SOM type and "what" :
@@ -162,7 +163,8 @@ shinyServer(function(input, output, session) {
                                                   scaling= input$scaling, 
                                                   eps0= input$eps0, 
                                                   init.proto= input$init.proto, 
-                                                  nb.save= input$nb.save))
+                                                  nb.save= input$nb.save,
+                                                  radiustype= input$radiustype))
     
     updatePlotSomVar() # update variable choice for som plots
     updatePlotScVar() # update variable choice for sc plots

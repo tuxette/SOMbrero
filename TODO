@@ -22,6 +22,7 @@ handled or at least documented. They do not seem to be...
 ** radius.type=gaussian
 ** kaski lagus
 ** implement weighted graphs projection
+** change information about maxit (default = 5*n.obs, not 500 as claimed)
 
 * other features (hard)
 ** grid.topology: hexagonal

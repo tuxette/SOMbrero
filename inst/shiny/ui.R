@@ -99,7 +99,7 @@ shinyUI(pageWithSidebar(
           "package to open this file), or proceed to the next tabs to ",
           "visualize the results."),
         p(HTML('Consult the help tab for information on how to choose the 
-               right parameter values')),
+               right parameter values.')),
         actionButton("trainbutton","Train SOM"),
         br(), br(),
         verbatimTextOutput("summary"),
@@ -117,6 +117,8 @@ shinyUI(pageWithSidebar(
                       "euclidean"="euclidean", "manhattan"="manhattan",
                       "canberra"="canberra", "binary"="binary",
                       "minkowski"="minkowski")),
+        selectInput("radiustype", "Radius type:", 
+                    list("Piecewise linear"= "letremy")),
         uiOutput("scaling"),
         numericInput("randseed", "Set a random seed for reproducible results:",
                      sample(1:1e5, size= 1)),
@@ -316,7 +318,10 @@ shinyUI(pageWithSidebar(
              
              <li><b>Distance type:</b> type of distance used to determine which
              prototypes of the map are neighbors.</li>
-             
+
+             <li><b>Radius type:</b> neighborhood type used to determine which
+             prototypes of the map are neighbors.</li>
+
              <li><b>Data scaling:</b> choose how the data must be scaled before 
              training. Scaling is used to ensure all variables have the same 
              importance during training, regardless of absolute magnitude.<br />
