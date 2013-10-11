@@ -1,7 +1,7 @@
 # Define UI for dataset viewer application
 shinyUI(pageWithSidebar(
   # Application title
-  headerPanel("SOMbrero Web User Interface"),
+  headerPanel("SOMbrero Web User Interface (v0.1)"),
 
   #### Panel 'About' (right hand side)
   ##############################################################################
@@ -14,9 +14,9 @@ shinyUI(pageWithSidebar(
     p(HTML("<h5>Welcome to SOMbrero, the open-source on-line interface for 
 self-organizing maps (SOM).</h5> This interface trains SOM for numerical data,
 contingency tables and dissimilarity data using the <strong>R</strong> package
-<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a>. Train a map on
-your data and visualize their topology in three simple steps using the panels on
-the right.")),
+<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v0.4). Train a
+map on your data and visualize their topology in three simple steps using the
+panels on the right.")),
     
     imageOutput("samm.logo", width= "100%", height= "100%"),
     p(HTML('It is kindly provided by the
@@ -360,8 +360,8 @@ Scaling is used to ensure all variables have the same importance during
 training, regardless of absolute magnitude.<br /> 'none' means no scaling,
 'center' means variables are shifted to have 0 mean, 'unitvar' means variables
 are centered and divided by their standard deviation to ensure they all have 
-unit variance. Only 'none' is available for 'Korresp' and 'Relational'
-algorithms.</li>
+unit variance and '&chi;<sup>2</sup>' is used by the 'Korresp' algorithm. Only
+'none' is available for the 'Relational' algorithm.</li>
 <li><b>Random seed:</b> Set the seed for the pseudorandom number generator used
 during the training. Be sure to remember the seed used for a training if you
 want to reproduce your results exactly, because running the algorithm with
@@ -407,7 +407,7 @@ by a bar. </li>
 <li><b>radar:</b>  similar to lines, here each variable value is represented by
 a slice, and bigger slices represent higher values. </li>
 <li><b>names:</b>  prints on the grid the names of the observations in the
-neuron to which they belong. <strong>Warning!</strong>If the number of
+neuron to which they belong. <strong>Warning!</strong> If the number of
 observations or the size of the names is too large, some names may not be
 represented.</li>
 <li><b>poly.dist:</b> represents the distances between prototypes with polygons
