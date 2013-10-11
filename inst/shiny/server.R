@@ -11,8 +11,7 @@ trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames,
                         rand.seed, scaling, eps0, init.proto, nb.save,
                         radiustype) {
   set.seed(rand.seed)
-  if (nb.save == 1)
-    nb.save <- 2 # minimum working nb.save is 2 (if not 0)
+  
   if (type=="numeric")
     data <- data[, varnames]
   trainSOM(data, dimension=c(dimx,dimy), dist.type= disttype, maxit= maxit,
@@ -87,7 +86,17 @@ shinyServer(function(input, output, session) {
   current.table <- NULL
   #############################################################################
   
-  #### Right hand side panel
+  #### Panel 'About' (left hand side)
+  ############################################################################## 
+  # Output the sombrero logo :
+  output$sombrero.logo <- renderImage(list(src= "sombrero.png"), 
+                                      deleteFile= FALSE)
+  
+  # Output the SAMM logo :
+  output$samm.logo <- renderImage(list(src= "samm.png"), deleteFile= FALSE)
+  
+  #### Panel 'Import data'
+  ##############################################################################
   dInput <- reactive({
     in.file <- input$file1
     
@@ -132,9 +141,6 @@ shinyServer(function(input, output, session) {
     server.env$current.table <- the.table
     the.table
   })
-
-  #### Panel 'Preview Data'
-  #############################################################################
   
   # data preview table
   output$view <- renderTable({
@@ -202,7 +208,7 @@ shinyServer(function(input, output, session) {
       })
   }
   
-  #### Tab Plot
+  #### Panel 'Plot'
   ##############################################################################
   
   # Adapt plottype to the somtype and the "what" arguments
@@ -231,39 +237,33 @@ shinyServer(function(input, output, session) {
     
     tmp.view <- NULL
     if (input$somtype == "korresp")
-      tmp.view <- input$scplotrowcol
+      tmp.view <- input$somplotrowcol
     
-    if (input$somplotwhat == "energy") {
-#       if (input$nb.save == 0) 
-#         return(NULL)
-#       plot(current.som$backup$steps, current.som$backup$energy, t="b",
-#            xlab= "iteration", ylab= "energy")
+    if (input$somplotwhat == "energy")
       plot(current.som, what= input$somplotwhat)
-    }
     
-    if (input$somplottype == "radar")
-      return(plot(x= current.som, what= input$somplotwhat, 
-                  type= input$somplottype, variable= input$somplotvar,
-                  print.title= input$somplottitle, view= tmp.view, 
-                  key.loc=c(-1,2), mar=c(0,10,2,0)))
-    
-    if (input$somplottype == "boxplot") {
-      tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
+    if (input$somplottype == "radar") {
+      plot(x= current.som, what= input$somplotwhat, type= input$somplottype,
+           variable= input$somplotvar, print.title= input$somplottitle,
+           view= tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0))
+    } else {
+      if (input$somplottype == "boxplot") {
+        tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
                                               input$somplotvar2]
-    } else tmp.var <- input$somplotvar
-    
+      } else tmp.var <- input$somplotvar
     plot(x= current.som, what= input$somplotwhat, type= input$somplottype,
          variable= tmp.var, print.title= input$somplottitle,
          view= tmp.view)
+    }
   })
   
-  #### Tab Superclass
+  #### Panel 'Superclass'
   ##############################################################################
   # Input number of superclasses or cutting height
   output$scHorK <- renderUI(
     switch(input$sc.cut.choice, 
-           "nclust"= numericInput("sc.k", "Number of superclasses:", 2, 
-                                  min=1, max= input$dimx * input$dimy - 1), 
+           "nclust"= numericInput("sc.k", "Number of superclasses:", 2, min=1,
+                                  max= input$dimx * input$dimy - 1), 
            "tree.height"= numericInput("sc.h", "Height in dendrogram:", 10,
                                        min= 0))
   )
@@ -279,28 +279,13 @@ shinyServer(function(input, output, session) {
                    "nclust"= superClass(sommap= current.som, k= input$sc.k),
                    "tree.height"= superClass(sommap= current.som, 
                                              h= input$sc.h)))
-    
-#    plotTheDendro() # plot the dendrogram
   })
 
-  output$sc.summary <- renderPrint( {
+  output$sc.summary <- renderPrint({
     if (input$superclassbutton==0)
-      return("Hit the Compute superclasses button to show the results.")
+      return("Hit the 'Compute superclasses' button to see the results.")
     tmp.sc <- computeSuperclasses()
     summary(tmp.sc)
-
-    tmp.var <- round(cumsum(tmp.sc$tree$height/ 
-                              sum(tmp.sc$tree$height))[
-                                length(tmp.sc$tree$height):1],
-                     3)
-    names(tmp.var) <- 1:length(tmp.sc$tree$height)
-    cat("\n  Proportion of variance unexplained by successive superclasses:\n")
-    as.table(tmp.var)
-  })
-
-  # Render the dendrogram
-  plotTheDendro <- function() observe({
-    output$dendrogram <- renderPlot(plot(computeSuperclasses()))
   })
 
   # Download the superclass classification
@@ -354,21 +339,22 @@ shinyServer(function(input, output, session) {
     if (input$somtype == "korresp")
       tmp.view <- input$scplotrowcol
     
-    if (input$scplottype == "radar")
-      return(plot(x= the.sc, what= input$scplotwhat, 
-                  type= input$scplottype, variable= input$scplotvar,
-                  view= tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0)))
-
-    if (input$scplottype == "boxplot") {
-      tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
-                                              input$scplotvar2]
-    } else tmp.var <- input$scplotvar
-    
-    plot(x= the.sc, what= input$scplotwhat, type= input$scplottype,
-         variable= tmp.var, view= tmp.view)
+    if (input$scplottype == "radar") {
+      plot(x= the.sc, what= input$scplotwhat, type= input$scplottype,
+                  variable= input$scplotvar, view= tmp.view, key.loc=c(-1,2),
+                  mar=c(0,10,2,0))
+    } else { 
+      if (input$scplottype == "boxplot") {
+        tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
+                                                input$scplotvar2]
+      } else tmp.var <- input$scplotvar
+      
+      plot(x= the.sc, what= input$scplotwhat, type= input$scplottype,
+           variable= tmp.var, view= tmp.view)
+    }
   })
 
-  #### Tab Combine with additional data
+  #### Panel 'Combine with additional data'
   ##############################################################################
   
   # File input for additional variables
@@ -387,7 +373,6 @@ shinyServer(function(input, output, session) {
                                    dec=input$dec2)
     
     updateAddPlotVar() # update variable selector    
-#     plotTheAdd() # launch the addplot
     
     the.table
   })
@@ -422,11 +407,10 @@ shinyServer(function(input, output, session) {
       tmp.var <- input$addplotvar
     } else tmp.var <- input$addplotvar2
     
-    if(input$addplottype == "radar")
-      return(plot(x= current.som, what= "add", type= input$addplottype, 
-                  variable= d.input[,tmp.var], key.loc=c(-1,2),
-                  mar=c(0,10,2,0)))
-    if (input$addplottype != "graph") {
+    if(input$addplottype == "radar") {
+      plot(x= current.som, what= "add", type= input$addplottype, 
+           variable= d.input[,tmp.var], key.loc=c(-1,2), mar=c(0,10,2,0))
+    } else if (input$addplottype != "graph") {
       plot(x= current.som, what= "add", type= input$addplottype, 
            variable= d.input[,tmp.var])
     } else {
@@ -435,16 +419,4 @@ shinyServer(function(input, output, session) {
       plot(current.som, what= "add", type= "graph", variable= tmpGraph)
     }
   })
-  
-  #### Tab About
-  ##############################################################################
-  
-  # Output the sombrero logo :
-  output$sombrero.logo <- renderImage(list(src= "sombrero.png"), 
-                                      deleteFile= FALSE)
-  
-  # Output the SAMM logo :
-  output$samm.logo <- renderImage(list(src= "samm.png"), 
-                                  deleteFile= FALSE)
-  
 })

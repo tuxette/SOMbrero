@@ -4,8 +4,14 @@ examples at: http://glimmer.rstudio.com/tuxette/niledam
 http://glimmer.rstudio.com/tuxette/fbs
 http://glimmer.rstudio.com/tuxette/wnaetw
 See: http://www.rstudio.com/shiny
+** add the shiny interface as a convenient add-on to the package; see if
+dependency to shiny can be avoided
+** add additional variables for superclasses plots
 
 * other features (easy)
+** add topographic error in outputs (summary)
+** improve the summary of SC with a better rendering of the clustering (as a
+table with neuron number/SC number)
 ** change default value for dissimilarity (initialization: obs)
 ** add topographic error to summary
 ** make a test to test if dissimilarity SOM and standard SOM are equal for 
@@ -15,6 +21,7 @@ scaling, divide by standard deviation of the distances, divide by the max(?)
 ** check whether the default option (size of the grid ...) are properly
 handled or at least documented. They do not seem to be...
 ** add ANOVA for dissimilarity in summary
+** add ANOVA for superclasses
 ** init=pca
 ** add a function graph2SOM that projects a graph on the grid
    (use projectGraph), create a class and a plot method for it
