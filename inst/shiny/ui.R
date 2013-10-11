@@ -54,8 +54,7 @@ Systems and Computing series</I>, Berlin/Heidelberg: Springer Verlag, 198,
       #########################################################################
       tabPanel("Import Data",
                h3("First step: import data"),
-        
-               br(), br(),
+
                p(HTML("To run the application, import your data set using the
 import button below. Your data must be supplied in the form of a text/csv file.
 If the importation is done properly, a preview of the data is displayed below.
@@ -162,7 +161,7 @@ map."),
                selectInput("somplottype", "Type of plot:", 
                            choices= c("hitmap", "color", "lines", "barplot", 
                                       "names", "boxplot", "radar")),
-               checkboxInput("somplottitle", "Show cluster names:"),
+               checkboxInput("somplottitle", "Show cluster names"),
                conditionalPanel("input.somplottype == 'color' ||
                          input.somplottype == '3d'",
                                 selectInput("somplotvar", 
