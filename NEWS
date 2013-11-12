@@ -1,11 +1,7 @@
-SOMbrero 0.4-3
-New features:
-  Added a graphical user interface, using shiny.
-
-********************************************************************************
 SOMbrero 0.4-2
 New features:
   Added a parameter that tunes the gradient descent step
+  Added a graphical user interface, using shiny
 
 ********************************************************************************
 SOMbrero 0.4
