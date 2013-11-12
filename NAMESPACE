@@ -6,6 +6,7 @@ export(trainSOM)
 export(quality)
 export(superClass)
 export(protoDist)
+export(sombreroGUI)
 
 # myGrid S3 functions
 S3method(print,myGrid)
