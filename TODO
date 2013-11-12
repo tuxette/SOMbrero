@@ -1,12 +1,3 @@
-* WUI with shiny
-** make a simple user interface with shiny
-examples at: http://glimmer.rstudio.com/tuxette/niledam
-http://glimmer.rstudio.com/tuxette/fbs
-http://glimmer.rstudio.com/tuxette/wnaetw
-See: http://www.rstudio.com/shiny
-** add the shiny interface as a convenient add-on to the package; see if
-dependency to shiny can be avoided
-** add additional variables for superclasses plots
 
 * other features (easy)
 ** add topographic error in outputs (summary)
@@ -32,6 +23,7 @@ handled or at least documented. They do not seem to be...
 ** change information about maxit (default = 5*n.obs, not 500 as claimed)
 ** change superclass scree plot ylab from "% of explained variance" to 
 "proportion of unexplained variance"
+** add additional variables for superclasses plots
 
 * other features (hard)
 ** grid.topology: hexagonal
