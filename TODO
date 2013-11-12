@@ -1,10 +1,8 @@
 
 * other features (easy)
-** add topographic error in outputs (summary)
 ** improve the summary of SC with a better rendering of the clustering (as a
 table with neuron number/SC number)
 ** change default value for dissimilarity (initialization: obs)
-** add topographic error to summary
 ** make a test to test if dissimilarity SOM and standard SOM are equal for 
 Euclidean distance (they must be); create a directory test
 ** add scaling for dissimilarity : division by the norm (Frobenius), cosine

@@ -2,6 +2,7 @@ SOMbrero 0.4-2
 New features:
   Added a parameter that tunes the gradient descent step
   Added a graphical user interface, using shiny
+  Added the topographic error to somRes.summary
 
 ********************************************************************************
 SOMbrero 0.4
