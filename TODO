@@ -1,6 +1,5 @@
 
 * other features (easy)
-** change default value for dissimilarity (initialization: obs)
 ** make a test to test if dissimilarity SOM and standard SOM are equal for 
 Euclidean distance (they must be); create a directory test
 ** add scaling for dissimilarity : division by the norm (Frobenius), cosine

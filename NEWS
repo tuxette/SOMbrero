@@ -5,6 +5,9 @@ New features:
   Added the topographic error to somRes.summary
   Improved the summary of somSC (table of neuron numbers and superclass numbers)
 
+Code improvements:
+  Changed default value of init.proto to "obs" for "relational" algorithm
+
 ********************************************************************************
 SOMbrero 0.4
 New features:

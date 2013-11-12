@@ -274,6 +274,10 @@ trainSOM <- function (x.data, ...) {
     else
       param.args$maxit <- round(nrow(x.data)*5)
   }
+  # Default init.proto : "obs" when type == "relational"
+  if (!is.null(param.args$type))
+    if (is.null(param.args$init.proto) && param.args$type == "relational")
+      param.args$init.proto <- "obs"
   # Check inputs
   if (!is.null(param.args$type) && param.args$type=="relational" && 
         (!(identical(x.data, t(x.data))) || (sum(diag(x.data)!=0)>0)))
