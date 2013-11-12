@@ -3,6 +3,7 @@ New features:
   Added a parameter that tunes the gradient descent step
   Added a graphical user interface, using shiny
   Added the topographic error to somRes.summary
+  Improved the summary of somSC (table of neuron numbers and superclass numbers)
 
 ********************************************************************************
 SOMbrero 0.4

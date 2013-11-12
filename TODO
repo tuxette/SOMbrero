@@ -1,7 +1,5 @@
 
 * other features (easy)
-** improve the summary of SC with a better rendering of the clustering (as a
-table with neuron number/SC number)
 ** change default value for dissimilarity (initialization: obs)
 ** make a test to test if dissimilarity SOM and standard SOM are equal for 
 Euclidean distance (they must be); create a directory test

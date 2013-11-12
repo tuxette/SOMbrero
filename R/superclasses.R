@@ -56,7 +56,8 @@ summary.somSC <- function(object, ...) {
     cat("\n  Frequency table")
     print(table(object$cluster))
     cat("\n  Clustering\n")
-    print(object$cluster)
+    print(t(data.frame("neuron"= 1:nrow(sc$som$prototypes), 
+                       "supercluster"= sc$cluster)))
     cat("\n")
   }
 }
