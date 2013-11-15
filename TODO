@@ -1,7 +1,5 @@
 
 * other features (easy)
-** make a test to test if dissimilarity SOM and standard SOM are equal for 
-Euclidean distance (they must be); create a directory test
 ** add scaling for dissimilarity : division by the norm (Frobenius), cosine
 scaling, divide by standard deviation of the distances, divide by the max(?)
 ** check whether the default option (size of the grid ...) are properly
