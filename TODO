@@ -16,8 +16,6 @@ handled or at least documented. They do not seem to be...
 ** kaski lagus
 ** implement weighted graphs projection
 ** change information about maxit (default = 5*n.obs, not 500 as claimed)
-** change superclass scree plot ylab from "% of explained variance" to 
-"proportion of unexplained variance"
 ** add additional variables for superclasses plots
 
 * other features (hard)

@@ -8,6 +8,9 @@ New features:
 Code improvements:
   Changed default value of init.proto to "obs" for "relational" algorithm
 
+Fixed bugs:
+  Changed scree plot title and ylabel to "proportion of unexplained variables"
+
 ********************************************************************************
 SOMbrero 0.4
 New features:
