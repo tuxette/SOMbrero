@@ -59,5 +59,5 @@ relational SOM. \emph{Neurocomputing}. Forthcoming.
 }
 \seealso{
 \code{\link{initGrid}}, \code{\link{trainSOM}}, \code{\link{plot.somRes}} and
-\code{\link{sombreroGUI()}}}.
+\code{\link{sombreroGUI()}}.
 }

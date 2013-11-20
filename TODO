@@ -2,8 +2,6 @@
 * other features (easy)
 ** add scaling for dissimilarity : division by the norm (Frobenius), cosine
 scaling, divide by standard deviation of the distances, divide by the max(?)
-** check whether the default option (size of the grid ...) are properly
-handled or at least documented. They do not seem to be...
 ** add ANOVA for dissimilarity in summary
 ** add ANOVA for superclasses
 ** init=pca

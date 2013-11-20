@@ -11,8 +11,9 @@ Create an empty Self-Organizing Map structure which is a list of 2-dimensional
 points.
 }
 \usage{
-initGrid(dimension=c(5,5), topo=c("square"), dist.type=c("letremy", "maximum",
-"euclidean","manhattan","canberra","binary","minkowski"))
+initGrid(dimension=c(5,5), topo=c("square"), 
+         dist.type=c("letremy", "maximum","euclidean","manhattan",
+                     "canberra","binary","minkowski"))
 \method{print}{myGrid}(x, \ldots)
 \method{summary}{myGrid}(object, \ldots)
 }
@@ -22,7 +23,8 @@ initGrid(dimension=c(5,5), topo=c("square"), dist.type=c("letremy", "maximum",
   \item{topo}{The topology to be used to build the grid. Default value is 
   \code{square}.}
   \item{dist.type}{The distance type to be used. Default value is 
-  \code{maximum}.}
+  \code{letremy}, which corresponds to the original implementation by 
+  Patrick Letremy.}
   \item{x, object}{an object of class \code{myGrid}}
   \item{\ldots}{not used}
 }
@@ -38,6 +40,11 @@ of the Self-Organizing Map structure,}
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa@univ-paris1.fr}
+}
+\references{
+Letremy, P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
+l'analyse des donnees. SAS/IML programs for 'korresp'.
+\url{http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme}.
 }
 \seealso{See \code{\link{plot.myGrid}} for plotting a \code{myGrid} class object
 in a graphical window.}
