@@ -5,9 +5,9 @@ data(presidentielles2002)
 ## default dimensions will be calculated by the algorithm (see 'help(trainSOM)')
 presi.som <- trainSOM(x.data=presidentielles2002, type="korresp", scaling="chi2", dimension=c(8,8))
 
-# prototype overview can either be plotted for row variables
+# prototypes overview can either be plotted for row variables
 plot(presi.som, what="prototypes", type="lines", view="r")
-# or columns variables
+# or for columns variables
 plot(presi.som, what="prototypes", type="lines", view="c")
 
 # the distances between prototypes can be displayed 

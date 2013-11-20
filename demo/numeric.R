@@ -6,7 +6,7 @@
 ## default number of intermediate savings is 0 (computational time increases when some are recorded)
 iris.som <- trainSOM(x.data=iris[,1:4])
 
-# plot the first prototypes values
+# plot the prototype values for the first variable
 ## either in color (2 equivalent ways to do so)
 plot(iris.som, what="prototypes", type="color", variable="Sepal.Length")
 plot(iris.som, what="prototypes", type="color", variable=1)
@@ -15,10 +15,10 @@ plot(iris.som, what="prototypes", type="3d", variable=1)
 
 # see the distances between prototypes
 ## distance between the vertices of the polygon and the grid borders 
-## are proportional to the distance between the neighbour prototypes
+## are proportional to the distance between the neighbouring prototypes
 plot(iris.som, what="prototypes", type="poly.dist", print.title=TRUE)
 
-# observation distribution on the map can be seen 
+# The distribution of observations on the map can be seen 
 ## either with a graphic
 plot(iris.som, what="obs", type="hitmap")
 ## or with a table

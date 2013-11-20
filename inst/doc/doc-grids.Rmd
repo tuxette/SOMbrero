@@ -1,6 +1,6 @@
 <!--
 %\VignetteEngine{knitr}
-%\VignetteIndexEntry{A basic vignettes on grids in SOMbrero}
+%\VignetteIndexEntry{A basic vignette on grids in SOMbrero}
 -->
 
 # Self-Organizing Maps with ```SOMbrero```
@@ -19,7 +19,7 @@ library(SOMbrero)
 ## Basic functions on a myGrid class object
 
 In this section, we will consider only the four basic functions that can be 
-applied on myGrid class object:
+applied on a myGrid class object:
 
 * initGrid,
 * print.myGrid,
@@ -30,16 +30,16 @@ applied on myGrid class object:
 
 The initGrid function initializes a new myGrid object. It has 3 parameters:
 
-* ```dimension```, which is vector of two integers. The first one is the x
+* ```dimension```, which is a vector of two integers. The first one is the x
 dimension, the second one is the y dimension. The __default dimensions__ are
 __x=5__ and  __y=5__,
 * ```topo```, which is the topology choosen. The value of this argument must be
 one of  these: ```square```. The__default value__ is __square__.
 * ```dist.type```, which is the distance type. The __default value__ is 
-__maximum__.
+__letremy__.
 
 The following **R** code initializes a new myGrid object of square topology, x 
-dimension 5 and y dimension 6.
+dimension 5 and y dimension 6, and distance dype ```maximum```.
 
 ```{r}
 my.first.grid <- initGrid(dimension=c(5,6), topo="square", dist.type="maximum")
@@ -48,7 +48,7 @@ my.first.grid <- initGrid(dimension=c(5,6), topo="square", dist.type="maximum")
 ### The print.myGrid function
 
 The myGrid object print function prints in the console the main features of the 
-choosen object. The only argument is the object to be printed.
+chosen object. The only argument is the object to be printed.
 
 Considering the previously initialized grid, the print command is:
 
@@ -59,7 +59,7 @@ print(my.first.grid)
 ### The summary.myGrid function
 
 The myGrid object summary function is quite simple. It only prints the class of 
-the object and then call the function print previously described. The only 
+the object and then calls the print function previously described. The only 
 argument is the object to be summarized.
 
 ```{r}
@@ -68,15 +68,15 @@ summary(my.first.grid)
 
 ### The plot.myGrid function
 
-The myGrid object plot function draws, in a new graphical window, the squared 
-area corresponding to the object. It has 2 parameters:
+The myGrid object plot function draws the squared area corresponding to the 
+object, in a new graphical window. It has 2 parameters:
 
 * the object to be plotted,
 * the color(s) to be used to fill the areas on the graph. The __default color__ 
 is __white__. If only one color is given, all the neurons will be filled with 
-this color. Yan can also give many colors: in this case, the number of colors 
+this color. One can also give many colors: in this case, the number of colors 
 must match the total number of squares. The map is filled from the bottom left
-corner, up in the column and then the same in the next right column.
+corner, up the column and then likewise in the next column to the right.
 
 ```{r plotRainbowGrid}
 # plot without any color specification: squares are filled in white color

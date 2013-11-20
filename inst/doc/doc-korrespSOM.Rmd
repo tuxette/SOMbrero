@@ -27,7 +27,7 @@ SOM. In this documentation, it is passed to the function as a matrix or a data
 frame. This set must be a contingency table, i.e., it must contain either 0 or 
 positive integers. Column and row names must be supplied.
 
-The other arguments are the same than the arguments passed to the ```initSOM```
+The other arguments are the same as the arguments passed to the ```initSOM```
 function (they are parameters defining the algorithm, see ```help(initSOM)```
 for further details).
 
@@ -126,7 +126,7 @@ to the candidate "Taubira" who obtained her better vote scoring in the overseas
 departements "Guadeloupe", "Martinique" and "Guyane".
 
 These candidates are opposed to the top left hand side of the map which is 
-associated to the far-right candidates "Le Pen" and "Megret" who traditionnaly
+associated to the far-right candidates "Le Pen" and "Megret" who traditionally
 obtain higher voting scores in some South of France departments including 
 "Herault", "Vaucluse", "Gard". A little bit further on the right, we can notice 
 the candidate "Saint Josse" who was fighting for traditional living style and 
@@ -134,7 +134,7 @@ hunting and who obtained his higher scores in the rural departements "Somme",
 "Landes" and "Aude".
 
 In the center of the map are the most traditional candidates "Jospin", "Chirac",
-"Hue"... who obtained more uniform scores in the whole France. It has
+"Hue"... who obtained more uniform scores in the whole of France. It has
 to be noted that "Le Pen", who is a far right-candidate, has a rather central 
 position also and actually succeeded for the first time to run the second round
 of the presidential election.
@@ -152,7 +152,7 @@ variables.
 
 Three representations are available:
 
-* with lines: either all row or column variabkes are plotted (```view``` 
+* with lines: either all row or all column variables are plotted (```view``` 
 argument is used)
 ```{r presiProtoL}
 # plot the line prototypes (106 French departements)
@@ -200,18 +200,20 @@ in the whole country.
 #### Graphic on prototype distances
 
 These graphics are exactly the same as in the numerical case:
-* ```"poly.dist"``` plots, for each neuron, a polygon that has vertex 
-coordinates representing the distance matrix between prototypes. The 
-colors indicates the number of observations in the neuron (white=empty);
+* ```"poly.dist"``` represents the distances between neighboring prototypes with
+polygons plotted for each cell of the grid. The smaller the distance between 
+a polygon's vertex and a cell border, the closer the pair of prototypes.
+The colors indicates the number of observations in the neuron (white=empty);
 * ```"umatrix"``` fills the neurons of the grid using colors that represent
 the average distance between the current prototype and its neighbors;
 * ```"smooth.dist"``` plots the mean distance between the current prototype and 
 its neighbors with a color gradation;
 * ```"mds"``` plots the number of the neuron on a map according to a Multi
 Dimensional Scaling (MDS) projection;
-* ```"grid.dist"``` plots points which x coordinates are the distances between 
-all prototypes and which y coordinates are the distances between all neurons of 
-the grid.
+* ```"grid.dist"``` plots a point for each pair of prototypes, with x 
+coordinates representing the distance between the prototypes in the 
+input space, and y coordinates representing the distance between the 
+corresponding neurons on the grid.
 ```{r presiGraphProto2}
 plot(korresp.som, what="prototypes", type="poly.dist", print.title=TRUE)
 plot(korresp.som, what="prototypes", type="umatrix", print.title=TRUE)
@@ -238,20 +240,20 @@ The topographic error value varies between 0 (good projection quality) and 1
 (poor projection quality). Here, the topographic quality of the mapping is 
 quite good with a topographic error equal to 0.14.
 
-The quantization error is an unbounded positive number. The closest from 0 it
-is, the best the projection quality is.
+The quantization error is an unbounded positive number. The closer from 0 it
+is, the better the projection quality is.
 
 ### Building super classes from the resulting SOM
 
-In the SOM algorithm, the number of clusters is necessarily close to the number
+In the SOM algorithm, the number of clusters is necessarily equal to the number
 of neurons of the grid. This - quite large - number may not suit the original
 data for a clustering purpose.
 
 A usual way to address clustering with SOM is to perform a hierarchical
 clustering on the prototypes. This clustering is directly available in the
 package ```SOMbrero``` using the function ```superClass```. To do so, you can
-first have a quick overview to decide the number of super clusters which suits
-your data.
+first have a quick overview to decide on the number of super clusters which 
+suits your data.
 
 ```{r presiSC1}
 plot(superClass(korresp.som))
