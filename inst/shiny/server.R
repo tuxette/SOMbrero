@@ -165,6 +165,16 @@ shinyServer(function(input, output, session) {
                 selected= switch(input$somtype, "numeric"= "unitvar",
                                  "korresp"= "chi2", "relational"= "none"))
   })
+  
+  # update the initialization method when input$somtype is changed
+  output$initproto <- renderUI({
+    selectInput("initproto", label= "Prototypes initialization method:", 
+                choices= c("random","obs"), 
+                selected= switch(input$somtype, 
+                                 "numeric"= "random",
+                                 "korresp"= "random",
+                                 "relational"= "obs"))
+  })
 
   # Train the SOM when the button is hit
   theSom<- function() {
@@ -176,7 +186,7 @@ shinyServer(function(input, output, session) {
                                                   rand.seed= input$randseed, 
                                                   scaling= input$scaling, 
                                                   eps0= input$eps0, 
-                                                  init.proto= input$init.proto, 
+                                                  init.proto= input$initproto, 
                                                   nb.save= input$nb.save,
                                                   radiustype= input$radiustype))
     
