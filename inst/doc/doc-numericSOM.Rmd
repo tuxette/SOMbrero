@@ -419,9 +419,10 @@ the better the projection quality.
 
 ### Building super classes from the resulting SOM
 
-In the SOM algorithm, the number of clusters is necessarily equal to the number
-of neurons of the grid. This - quite large - number may not suit the original
-data for a clustering purpose.
+In the SOM algorithm, the number of clusters is necessarily close to the number 
+of neurons on the grid (not necessarily equal as some neurons may have no 
+observations assigned to them). This - quite large - number may not suit the 
+original data for a clustering purpose.
 
 A usual way to address clustering with SOM is to perform a hierarchical
 clustering on the prototypes. This clustering is directly available in the
