@@ -134,8 +134,7 @@ adequate parameter values.')),
                             min= 0.01, step= .01),
                numericInput("nb.save", "Number of intermediate back-ups:", 0,
                             min= 0), 
-               selectInput("init.proto", "Prototypes initialization method:", 
-                           choices= c("random","obs"), "random"),
+               uiOutput("initproto"),
                p(HTML("<span style='font-size:10px'><a name='pseudor'><sup>(1)
 </sup></a> SOMbrero is based on a stochastic (on-line) version of the SOM
 algorithm and thus uses randomness. Setting a seed results in fixing the random

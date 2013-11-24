@@ -1,4 +1,4 @@
-citHeader("To cite the 'SOMbrero' package in publications use:")
+citHeader("To cite the 'SOMbrero' package in publications, use:")
 
 year = sub('.*(2[[:digit:]]{3})-.*', '\\1', meta$Date, perl = TRUE)
 vers = paste('R package version', meta$Version)
@@ -11,6 +11,19 @@ citEntry(
   note = vers,
   url = meta$URL,
   textVersion = paste('Villa-Vialaneix N., Bendhaiba L., Olteanu M. (', year, ') SOMbrero: ', meta$Title, '. ', vers, '.', sep = '')
+)
+
+citEntry(
+  entry = 'article',
+  title = 'On-line relational and multiple relational SOM',
+  author = personList(as.person("Madalina Olteanu"), as.person("Nathalie Villa-Vialaneix")),
+  journal = 'Neurocomputing',
+  year = '2013',
+  note = 'Forthcoming',
+
+  textVersion = paste('Olteanu M., Villa-Vialaneix N. (2013)',
+                'On-line relational and multiple relational SOM.',
+                'Neurocomputing. Forthcoming')
 )
 
 citEntry(

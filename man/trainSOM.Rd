@@ -18,7 +18,7 @@ trainSOM(x.data, \ldots)
 
 \arguments{
   \item{x.data}{a data frame or matrix containing the observations to be mapped 
-  on the grid by SOM algorithm.}
+  on the grid by the SOM algorithm.}
   \item{...}{Further arguments to be passed to the function
   \code{\link{initSOM}} for specifying the parameters of the algorithm. The 
   default values of the arguments \code{maxit} and \code{dimension} are 
@@ -29,8 +29,8 @@ trainSOM(x.data, \ldots)
     SOM types
     \item \code{dimension}: for a \code{korresp} SOM, is equal to maximum 
     between 5 and the minimum of 10 and the ceiling value of the square root 
-    of (number of rows+number of columns) ; in all other SOM types, the square 
-    root only considers the number of rows.
+    of (number of rows+number of columns)/10 ; in all other SOM types, the square 
+    root only considers the number of rows (divided by 10).
   }}
   \item{x, object}{an object of class \code{somRes}}
 }
@@ -57,7 +57,8 @@ version.
 
 Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
-in Cottrel et al., 1993.
+in Cottrel et al., 1993; \code{type="relational"} for dissimilarity matrices, 
+as described in Olteany et al., 2012.
 }
 \references{
 Kohonen T. (2001) \emph{Self-Organizing Maps}. Berlin/Heidelberg:

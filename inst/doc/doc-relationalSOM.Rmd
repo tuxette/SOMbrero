@@ -25,9 +25,9 @@ The ```trainSOM``` function has several arguments, but only the first one is
 required. This argument is ```x.data``` which is the dataset used to train the 
 SOM. In this documentation, it is passed to the function as a matrix or a data
 frame. This set must be a dissimilarity matrix, i.e., a symmetric matrix of
-positivenumbers, with zero entries on the diagonal.
+positive numbers, with zero entries on the diagonal.
 
-The other arguments are the same than the arguments passed to the ```initSOM```
+The other arguments are the same as the arguments passed to the ```initSOM```
 function (they are parameters defining the algorithm, see ```help(initSOM)```
 for further details).
 
@@ -72,7 +72,7 @@ The ```lesmis``` data set provides the coappearance graph of the characters of
 the novel Les Miserables (Victor Hugo). Each vertex stands for a character whose
 name is given by the vertex label. One edge means that the corresponding two
 characters appear in a common chapter in the book. Each edge also has a value
-indicating the number of coappearance. The ```lesmis``` data contain two
+indicating the number of coappearances. The ```lesmis``` data contain two
 objects: the first one ```lesmis``` is an ```igraph``` object (see [the igraph
 web page](http://igraph.sourceforge.net/)),
 with `r data(lesmis); vcount(lesmis)` nodes and `r ecount(lesmis)` edges.
@@ -85,9 +85,9 @@ lesmis
 plot(lesmis, vertex.size=0)
 ```
 
-The ```dissim.lesmis``` object is a matrix which entries are the length of the
-shortest paths between two characters (obtained with the
-function ```shortest.paths``` of the package ```igraph````). Note that its
+The ```dissim.lesmis``` object is a matrix with entries equal to the length of 
+the shortest path between two characters (obtained with the
+function ```shortest.paths``` of package ```igraph````). Note that its
 row and column names have been initialized to the characters' names to 
 ease the use of the graphical functions of ```SOMbrero```.
 
@@ -129,25 +129,27 @@ plot(mis.som, what="prototypes", type="lines")
 plot(mis.som, what="prototypes", type="barplot")
 plot(mis.som, what="prototypes", type="radar")
 ```
-One these graphics, one variable is represented respectively with a point, a 
-bar or a slice. It is therefore easy to see which variable affect which 
+On these graphics, one variable is represented respectively with a point, a 
+bar or a slice. It is therefore easy to see which variable affects which 
 cluster.
 
-To see how different are the clusters, some graphics show the distances between 
+To see how different the clusters are, some graphics show the distances between 
 prototypes. These graphics have exactly the same behaviour as in the other SOM 
 types.
-* ```"poly.dist"``` plots, for each neuron, a polygon that has vertex 
-coordinates representing the distance matrix between prototypes. The 
-colors indicates the number of observations in the neuron (white=empty);
+* ```"poly.dist"``` represents the distances between neighboring prototypes with
+polygons plotted for each cell of the grid. The smaller the distance between 
+a polygon's vertex and a cell border, the closer the pair of prototypes.
+The colors indicates the number of observations in the neuron (white=empty);
 * ```"umatrix"``` fills the neurons of the grid using colors that represent
 the average distance between the current prototype and its neighbors;
 * ```"smooth.dist"``` plots the mean distance between the current prototype and 
 its neighbors with a color gradation;
 * ```"mds"``` plots the number of the neuron on a map according to a Multi
 Dimensional Scaling (MDS) projection;
-* ```"grid.dist"``` plots points which x coordinates are the distances between 
-all prototypes and which y coordinates are the distances between all neurons of 
-the grid.
+* ```"grid.dist"``` plots a point for each pair of prototypes, with x 
+coordinates representing the distance between the prototypes in the 
+input space, and y coordinates representing the distance between the 
+corresponding neurons on the grid.
 ```{r lesmisProtoDist}
 plot(mis.som, what="prototypes", type="poly.dist", print.title=TRUE)
 plot(mis.som, what="prototypes", type="smooth.dist")
@@ -162,7 +164,7 @@ Finally, with a graphical overview of the clustering
 plot(lesmis, vertex.label.color=rainbow(25)[mis.som$clustering], vertex.size=0)
 legend(x="left", legend=1:25, col=rainbow(25), pch=19)
 ```
-We can see that cluster 5 is very well identified according to the story: as the
+We can see that cluster 5 is very relevant to the story: as the
 characters of this cluster appear only in the sub-story of the
 Bishop ```Myriel```, he is the only connection for all other characters of
 cluster 5. The same kind of conclusion holds for cluster 25, among others.
@@ -189,7 +191,7 @@ plot(sc.mis, type="lines", print.title=TRUE)
 plot(sc.mis, type="mds", plot.legend=TRUE)
 plot(sc.mis, type="dendro3d")
 ```
-As we mentionned above, the cluster 5 is far away from the others, it is 
+As we mentionned above, cluster 5 is far away from the others, it is 
 therefore a super cluster itself (super cluster 2). 
 
 ```{r lesmisSCColorOverview, fig.width=12, fig.height=12}
@@ -197,11 +199,11 @@ plot(lesmis, vertex.size=0, vertex.label.color=
        brewer.pal(6, "Set2")[sc.mis$cluster[mis.som$clustering]])
 legend(x="left", legend=paste("SC",1:6), col=brewer.pal(6, "Set2"), pch=19)
 ```
-* cluster 1 contains 2 of the main characters: ```Javert``` and ```Valjean```.
+* cluster 1 contains two of the main characters: ```Javert``` and ```Valjean```.
 * cluster 3 countains ```Fantine``` and the characters involved in her 
 sub-story.
 * cluster 4 contains ```Marius``` and his family: his mother, 
-misses ```Pontmercy```, his father, lieutenant ```Gillenormand```, his 
+Mrs. ```Pontmercy```, his father, lieutenant ```Gillenormand```, his 
 grandfather ```Gillenormand``` and his aunt miss ```Gillenormand``` ; it also 
 contains ```Cosette```, who will have an affair with him.
 * cluster 5 constains ```Gavroche```, the abandonned child of 
@@ -215,9 +217,9 @@ involved in their story.
 The ```iris``` data set has already been used in the user friendly guide 
 devoted to numeric data.
 To ensure the performance of the relational SOM, this section will compare the 
-results obtained with both numerical and relation SOM. In the last case, the 
-observation distance matrix between be used as entry data.
-Among all possibilities (see ```help(dist)```), we chose here to use 
+results obtained with both numerical and relational SOM. In the latter case, the 
+matrix of pairwise distances between the observations is used as input data.
+Among all possibilities (see ```help(dist)```), we here choose to use 
 the ```"mikowski"``` distance of order 4 to enlarge large distances and reduce 
 small ones.
 
@@ -231,7 +233,7 @@ set.seed(7071731)
 d.iris.som <- trainSOM(x.data=iris.dist, type="relational")
 ```
 
-The most important thing is to separate correctly the 3 flower species. The next 
+The most important thing is to correctly separate the 3 flower species. The next 
 2 plots show the results with both SOM types.
 ```{r irisPies}
 plot(iris.som, what="add", type="pie", variable=iris$Species, 
@@ -240,9 +242,9 @@ plot(d.iris.som, what="add", type="pie", variable=iris$Species,
      main="species distribution with 'relational' SOM")
 ```
 
-As we chosed a higher distance order in the ```relational``` SOM 
+As we chose a higher distance order in the ```relational``` SOM 
 (argument ```p=4```, whereas the Euclidean distance corresponds to a Minkowski
-distance of order 2), the result from the ```relational``` SOM better separates
-'virginica' and 'versicolor' flowers: with the ```numeric``` SOM, these species 
-are mixed in 7 neurons whereas they are mixed in 3 neurons with 
+distance of order 2), the result from the ```relational``` SOM show better
+separation of 'virginica' and 'versicolor' flowers: with the ```numeric``` SOM, 
+these species are mixed in 7 neurons whereas they are mixed in 3 neurons with 
 the ```relational``` SOM.

@@ -56,7 +56,9 @@ summary.somSC <- function(object, ...) {
     cat("\n  Frequency table")
     print(table(object$cluster))
     cat("\n  Clustering\n")
-    print(object$cluster)
+    output.clustering <- object$cluster
+    names(output.clustering) <- seq_along(object$cluster)
+    print(output.clustering)
     cat("\n")
   }
 }
@@ -81,8 +83,8 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
       layout(matrix(c(2,2,1),ncol=3))
       Rsq <- cumsum(x$tree$height/sum(x$tree$height))
       plot(length(x$tree$height):1, Rsq, type="b", pch="+",
-           xlab="Number of clusters", ylab="% of explained variance",
-           main="Proportion of variance\n explained by super-clusters")
+           xlab="Number of clusters", ylab="proportion of unexplained variance",
+           main="Proportion of variance\n not explained by\n super-clusters")
       do.call("plot", args)
     } else do.call("plot", args)
     if (length(x)>2) {

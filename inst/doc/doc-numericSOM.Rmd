@@ -27,7 +27,7 @@ SOM. In this documentation, it is passed to the function as a matrix or a data
 frame with numeric variables in columns and observations of these variables in
 rows.
 
-The other arguments are the same than the arguments passed to the ```initSOM```
+The other arguments are the same as the arguments passed to the ```initSOM```
 function (they are parameters defining the algorithm, see ```help(initSOM)```
 for further details).
 
@@ -173,7 +173,7 @@ each of 3 species of iris (setosa, versicolor, and virginica).
 ### Training the SOM
 
 The first four variables of the data set (that are the numeric variables) are 
-used to map the each flower on the SOM grid.
+used to map each flower on the SOM grid.
 ```{r irisTrain, cache=TRUE}
 set.seed(4031730)
 # run the SOM algorithm with verbose set to TRUE
@@ -192,7 +192,7 @@ which is stabilized during the last 100 iterations.
 ### Resulting clustering
 
 The clustering component contains the final classification of the dataset. It is 
-a vector having a length equal to the number of rows of the input dataset.
+a vector with length equal to the number of rows of the input dataset.
 ```{r irisClusters}
 iris.som$clustering
 table(iris.som$clustering)
@@ -204,7 +204,7 @@ plot(iris.som, what="obs", type="hitmap")
 
 To access the relevance of each explanatory variable in the definition of the 
 clusters, the function ```summary``` includes an ANOVA with the factor being the
-clustering, for each (numeric) input variables.
+clustering, for each (numeric) input variable.
 ```{r irisSummary}
 summary(iris.som)
 ```
@@ -212,7 +212,7 @@ Here, all variables have significantly different means among the different
 clusters and can thus be considered to be relevant for the clustering
 definition.
 
-Another usefull function is ```predict.somRes```. This function predicts the 
+Another useful function is ```predict.somRes```. This function predicts the 
 neuron to which a new observation would be assigned. The first argument must be 
 a ```somRes``` object and the second one the new observation.
 Let us have a try on the first observation of the iris data set:
@@ -226,14 +226,14 @@ iris.som$clustering[1]
 
 ### Clustering interpretation
 
-#### Common graphics to observations and prototypes
+#### Graphics common to observations and prototypes
 
 __NB: in all the following graphics, data are scaled in the preprocessing
 stage.__
 
 Some graphics are shared between observations and prototypes. They allow you 
 to plot the level values, either of the prototypes or of the observation means. 
-In this example these commun graphics are plotted for the mean observation 
+In this example these common graphics are plotted for the mean observation 
 values.
 
 ```{r irisGraphOP}
@@ -251,25 +251,25 @@ plot(iris.som, what="obs", type="barplot", print.title=TRUE)
 plot(iris.som, what="obs", type="radar", key.loc=c(-0.5,5), mar=c(0,10,2,0))
 ```
 
-The first thing that catch the attention is these 2 empty squares: none of the 
-observations is assigned neither to cluster 14 nor to cluster 19. 
+Two empty squares catch the attention: none of the 
+observations are assigned either to cluster 14 or to cluster 19. 
 
-Let us analyse more precisely the obtained results for cluster 5.
-On the ```"color"``` plots, the cluster 5 has the following results: middle 
+Let us analyse more the results for cluster 5 more precisely.
+On the ```"color"``` plots, cluster 5 has the following results: middle 
 level value for ```Sepal.Length```, high value for ```Sepal.Width``` and low 
 values for ```Petal.Length``` and ```Petal.Width```.
 These results are also noticeable in the other plots:
 
-* on the ```"lines"``` plot, the first point is quite in the middle, the second 
-one is very high and the 2 other are low;
-* on the ```"barplot"``` plot, you can observe again this evolution: first a 
+* on the ```"lines"``` plot, the first point is about in the middle, the second 
+one is very high and the two others are low;
+* on the ```"barplot"``` plot, this evolution is observed again: first a 
 peak and a fall to the minimum value;
 * on the ```"radar"``` plot, the slice corresponding to ```Sepal.Width``` is 
-very big whereas the 2 Petal slices are almost invisible.
+very big whereas the two Petal slices are almost invisible.
 
 Flowers with large and long petals and a long sepal are classified in the left
-bottom corner of the map. Flowers with a large sepal and a small petal (either
-length and width) are classified in the left upper corner of the map.
+bottom corner of the map. Flowers with a large sepal and a small petal 
+(length and width) are classified in the left upper corner of the map.
 
 #### More graphics on observations
 
@@ -280,10 +280,10 @@ plot(iris.som, what="obs", type="names", print.title=TRUE)
 ```
 
 * By default, the ```"boxplot"``` plot considers all numerical variables of the 
-data set. As we used in this example the 4 numerical variables of the iris data 
-set, 4 boxplots are plotted in each neuron.
-* The ```"names"``` plot prints, for one neuron, the names of the observations 
-which are assigned to this cluster. Here, the row names of iris data set are 
+data set. As this example used the four numerical variables of the iris data 
+set, four boxplots are plotted in each neuron.
+* The ```"names"``` plot prints, for each neuron, the names of the observations 
+which are assigned to its cluster. Here, the row names of iris data set are 
 simply the number of the lines.
 
 #### More graphics on prototypes
@@ -311,29 +311,31 @@ plot(iris.som, what="prototypes", type="smooth.dist")
 plot(iris.som, what="prototypes", type="mds")
 plot(iris.som, what="prototypes", type="grid.dist")
 ```
-* ```"poly.dist"``` plots, for each neuron, a polygon that has vertex 
-coordinates representing the distance matrix between prototypes. The 
-colors indicates the number of observations in the neuron;
+* ```"poly.dist"``` represents the distances between neighboring prototypes with
+polygons plotted for each cell of the grid. The smaller the distance between 
+a polygon's vertex and a cell border, the closer the pair of prototypes.
+The colors indicates the number of observations in the neuron (white=empty);
 * ```"umatrix"``` fills the neurons of the grid using colors that represent
 the average distance between the current prototype and its neighbors;
 * ```"smooth.dist"``` plots the mean distance between the current prototype and 
 its neighbors with a color gradation;
 * ```mds``` plots the number of the neuron on a map according to a Multi
 Dimensional Scaling (MDS) projection;
-* ```grid.dist``` plots points which x coordinates are the distances between 
-all prototypes and which y coordinates are the distances between all neurons of 
-the grid.
+* ```grid.dist``` plots a point for each pair of prototypes, with x 
+coordinates representing the distance between the prototypes in the 
+input space, and y coordinates representing the distance between the 
+corresponding neurons on the grid.
 
 These graphics show that there is a larger distance between the second and third
-lines (from the top of the map) that everywhere else in the map. Hence, for
+lines (from the top of the map) than everywhere else in the map. Hence, for
 instance, the flowers classified in cluster 3 are rather different from those
 classified in cluster 4, even if these two clusters are adjacent on the map.
 This is also emphasized on the MDS plot where clusters 3 and 4 are drawn far
 apart.
 
-#### Graphics according to an additional variable
+#### Graphics showing an additional variable
 
-##### To a factor
+##### additional factor
 
 Let us plot pies for all neurons according to the flower species of the 
 observations.
@@ -343,20 +345,20 @@ levels(iris$Species)
 plot(iris.som, what="add", type="pie", variable=iris$Species)
 ```
 This figure shows that the clustering produced by the SOM is indeed relevant
-to identify the three different species of iris: those are well separated on the
+to identify the three different species of iris: they are well separated on the
 map and almost all clusters only contain one species of iris.
 
-##### To a numerical vector
+##### additional numerical vector
 
 The ```"color"``` plot available for ```"add"``` is similar to the ```"obs"``` 
 or ```"prototypes"``` cases. Here we choose as an additional variable the first 
-variable of the iris data set, so we obtain the same graphic as above (cf. 
-section __Common graphics to observations and prototypes__).
+variable of the iris data set, so we obtain the same graphic as above (see 
+section __Graphics common to observations and prototypes__).
 ```{r irisAdd2}
 plot(iris.som, what="add", type="color", variable=iris$Sepal.Length)
 ```
 
-##### To a numerical matrix or data frame
+##### additional numerical matrix or data frame
 
 The ```"lines"```, ```"barplot"```, ```"radar"``` and ```"boxplot"``` plots 
 available for ```"add"``` are similar to the ```"obs"``` or ```"prototypes"``` 
@@ -379,11 +381,11 @@ my.cont.mat[1:5,]
 plot(iris.som, what="add", type="words", variable=my.cont.mat)
 ```
 
-##### To a non numerical vector
+##### additional non-numerical vector
 
 ```"names"``` is similar to the ```"names"``` case implemented for ```"obs"```. 
-Here we choose to give to the argument ```variable``` the row names of the iris 
-data set: so we obtain the same graphic as above (cf. 
+Here we choose to give the argument ```variable``` the row names of the iris 
+data set: so we obtain the same graphic as above (see 
 __More graphics on observations__).
 ```{r irisAdd5}
 plot(iris.som, what="add", type="names", variable=rownames(iris))
@@ -411,21 +413,22 @@ quite good with a topographic error equal to 0.05 that corresponds
 to `r nrow(iris)*0.05` samples for which the second best matching unit is not
 in the direct neighborhood of the best matching unit.
 
-The quantization error is an unbounded positive number. The closest from 0 it
-is, the best the projection quality is.
+The quantization error is an unbounded positive number. The closer it is from 0,
+the better the projection quality.
 
 
 ### Building super classes from the resulting SOM
 
-In the SOM algorithm, the number of clusters is necessarily close to the number
-of neurons of the grid. This - quite large - number may not suit the original
-data for a clustering purpose.
+In the SOM algorithm, the number of clusters is necessarily close to the number 
+of neurons on the grid (not necessarily equal as some neurons may have no 
+observations assigned to them). This - quite large - number may not suit the 
+original data for a clustering purpose.
 
 A usual way to address clustering with SOM is to perform a hierarchical
 clustering on the prototypes. This clustering is directly available in the
 package ```SOMbrero``` using the function ```superClass```. To do so, you can
-first have a quick overview to decide the number of super clusters which suits
-your data.
+first have a quick overview to decide on the number of super clusters which 
+suits your data.
 ```{r irisSC}
 plot(superClass(iris.som))
 ```

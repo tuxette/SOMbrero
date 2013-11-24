@@ -1,16 +1,7 @@
 
 * other features (easy)
-** add topographic error in outputs (summary)
-** improve the summary of SC with a better rendering of the clustering (as a
-table with neuron number/SC number)
-** change default value for dissimilarity (initialization: obs)
-** add topographic error to summary
-** make a test to test if dissimilarity SOM and standard SOM are equal for 
-Euclidean distance (they must be); create a directory test
 ** add scaling for dissimilarity : division by the norm (Frobenius), cosine
 scaling, divide by standard deviation of the distances, divide by the max(?)
-** check whether the default option (size of the grid ...) are properly
-handled or at least documented. They do not seem to be...
 ** add ANOVA for dissimilarity in summary
 ** add ANOVA for superclasses
 ** init=pca
@@ -21,8 +12,6 @@ handled or at least documented. They do not seem to be...
 ** kaski lagus
 ** implement weighted graphs projection
 ** change information about maxit (default = 5*n.obs, not 500 as claimed)
-** change superclass scree plot ylab from "% of explained variance" to 
-"proportion of unexplained variance"
 ** add additional variables for superclasses plots
 
 * other features (hard)
