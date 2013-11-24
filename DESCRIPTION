@@ -1,12 +1,12 @@
 Package: SOMbrero
 Title: SOM Bound to Realize Euclidean and Relational Outputs
 Version: 0.4-1
-Date: 2013-11-20
+Date: 2013-11-24
 Authors@R: c(person("Laura", "Bendhaiba", role = "aut", email="laurabendhaiba@gmail.com"),
              person("Julien", "Boelaert", role= "aut", email="julien.boelaert@gmail.com"),
              person("Madalina", "Olteanu", role = "aut", email="madalina.olteanu@univ-paris1.fr"),
              person("Nathalie", "Villa-Vialaneix", role = c("aut", "cre"), email="nathalie.villa@univ-paris1.fr"))
-Author: Nathalie Villa-Vialaneix
+Author: Laura Bendhaiba, Julien Boelaert, Madalina Olteanu, Nathalie Villa-Vialaneix
 Maintainer: Nathalie Villa-Vialaneix <nathalie.villa@univ-paris1.fr>
 Description: SOMbrero provides an implementation of the stochastic (also called
              on-line) Self-Organising Map (SOM) algorithm for numeric and
