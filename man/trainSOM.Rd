@@ -25,12 +25,11 @@ trainSOM(x.data, \ldots)
   calculated according to the SOM type if the user does not set them:
   \itemize{
     \item \code{maxit} is equal to (number of rows+number of columns)*5 if the 
-    SOM type is \code{korresp} ; it is equal to number of rows*5 in all other 
+    SOM type is \code{korresp}. It is equal to number of rows*5 in all other 
     SOM types
-    \item \code{dimension}: for a \code{korresp} SOM, is equal to maximum 
-    between 5 and the minimum of 10 and the ceiling value of the square root 
-    of (number of rows+number of columns)/10 ; in all other SOM types, the square 
-    root only considers the number of rows (divided by 10).
+    \item \code{dimension}: for a \code{korresp} SOM, is approximately equal to
+    the square root of the number of observations to be classified divided by
+    10 but it is never smaller than 5 or larger than 10.
   }}
   \item{x, object}{an object of class \code{somRes}}
 }
@@ -58,7 +57,7 @@ version.
 Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
 in Cottrel et al., 1993; \code{type="relational"} for dissimilarity matrices, 
-as described in Olteany et al., 2012.
+as described in Olteanu et al., 2013.
 }
 \references{
 Kohonen T. (2001) \emph{Self-Organizing Maps}. Berlin/Heidelberg:
@@ -69,11 +68,8 @@ Kohonen maps: a Factorial Correspondence Analysis. In: \emph{Proceedings of
 IWANN'93, J. Cabestany, J. Mary, A. Prieto (Eds.), Lecture Notes in Computer
 Science}, Springer-Verlag, 305--311.
 
-Olteanu, M., Villa-Vialaneix, N., Cottrell, M. (2012) On-line
-relational SOM for dissimilarity data. In: \emph{Advances in Self-Organizing
-Maps (Proceedings of WSOM 2012, Santiago, Chili, 12-14 decembre 2012), Estevez
-P., Principe J., Zegers P., Barreto G. (eds.), 'Advances in Intelligent Systems
-and Computing' series}, Berlin/Heidelberg: Springer Verlag, \bold{198}, 13--22.
+Olteanu, M., Villa-Vialaneix, N. (2013) On-line relational and multiple
+relational SOM. \emph{Neurocomputing}. Forthcoming.
 }
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr

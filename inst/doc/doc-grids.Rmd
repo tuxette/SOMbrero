@@ -39,7 +39,7 @@ one of  these: ```square```. The__default value__ is __square__.
 __letremy__.
 
 The following **R** code initializes a new myGrid object of square topology, x 
-dimension 5 and y dimension 6, and distance dype ```maximum```.
+dimension 5 and y dimension 6, and distance type ```maximum```.
 
 ```{r}
 my.first.grid <- initGrid(dimension=c(5,6), topo="square", dist.type="maximum")

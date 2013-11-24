@@ -251,19 +251,19 @@ plot(iris.som, what="obs", type="barplot", print.title=TRUE)
 plot(iris.som, what="obs", type="radar", key.loc=c(-0.5,5), mar=c(0,10,2,0))
 ```
 
-Two empty squares catch the attention: none of the 
-observations are assigned either to cluster 14 or to cluster 19. 
+Empty squares catch the attention: none of the  observations are assigned to
+clusters 4, 9, 14 and 19.
 
-Let us analyse more the results for cluster 5 more precisely.
-On the ```"color"``` plots, cluster 5 has the following results: middle 
-level value for ```Sepal.Length```, high value for ```Sepal.Width``` and low 
-values for ```Petal.Length``` and ```Petal.Width```.
+Let us analyse the results for cluster 5 more precisely. On the ```"color"```
+plots, cluster 5 has the following results: middle level value for
+```Sepal.Length```, high value for ```Sepal.Width``` and low  values for
+```Petal.Length``` and ```Petal.Width```.
 These results are also noticeable in the other plots:
 
 * on the ```"lines"``` plot, the first point is about in the middle, the second 
 one is very high and the two others are low;
-* on the ```"barplot"``` plot, this evolution is observed again: first a 
-peak and a fall to the minimum value;
+* on the ```"barplot"``` plot, this evolution is observed again: first a peak
+and a fall to the minimum value;
 * on the ```"radar"``` plot, the slice corresponding to ```Sepal.Width``` is 
 very big whereas the two Petal slices are almost invisible.
 
@@ -314,17 +314,18 @@ plot(iris.som, what="prototypes", type="grid.dist")
 * ```"poly.dist"``` represents the distances between neighboring prototypes with
 polygons plotted for each cell of the grid. The smaller the distance between 
 a polygon's vertex and a cell border, the closer the pair of prototypes.
-The colors indicates the number of observations in the neuron (white=empty);
+The colors indicates the number of observations in the neuron (white is used 
+for empty neurons);
 * ```"umatrix"``` fills the neurons of the grid using colors that represent
 the average distance between the current prototype and its neighbors;
 * ```"smooth.dist"``` plots the mean distance between the current prototype and 
 its neighbors with a color gradation;
 * ```mds``` plots the number of the neuron on a map according to a Multi
 Dimensional Scaling (MDS) projection;
-* ```grid.dist``` plots a point for each pair of prototypes, with x 
-coordinates representing the distance between the prototypes in the 
-input space, and y coordinates representing the distance between the 
-corresponding neurons on the grid.
+* ```grid.dist``` plots a point for each pair of prototypes, with x coordinates
+representing the distance between the prototypes in the input space, and y
+coordinates representing the distance between the corresponding neurons on the
+grid.
 
 These graphics show that there is a larger distance between the second and third
 lines (from the top of the map) than everywhere else in the map. Hence, for

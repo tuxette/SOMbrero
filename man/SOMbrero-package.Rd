@@ -28,7 +28,8 @@ version.
 
 Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
-in Cottrel et al., 1993.
+in Cottrel et al., 1993 and \code{type="relational"} for dissimilarity data, as
+described in Olteanu and Villa-Vialaneix, 2013.
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}
@@ -59,5 +60,5 @@ relational SOM. \emph{Neurocomputing}. Forthcoming.
 }
 \seealso{
 \code{\link{initGrid}}, \code{\link{trainSOM}}, \code{\link{plot.somRes}} and
-\code{\link{sombreroGUI()}}.
+\code{\link{sombreroGUI}}.
 }
