@@ -62,11 +62,11 @@ When this is done, choose the SOM type of the left hand side panel and proceed
 to the next step: self-organize a map.")),
                p(HTML('The interface can be tested using example data files for
 the <a href= 
-"http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=9d319bedf64098340ca9b094a527f70608e2d67c"> 
+"https://owncloud.nathalievilla.org/public.php?service=files&t=a4b83ca82bcfc740ee0700cb44324c47"> 
 numeric</a>, <a href= 
-"http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=d824f59d7d934468de7f08b873f79d291aa129fd"> 
+"https://owncloud.nathalievilla.org/public.php?service=files&t=7a7db6e0a17127d8fe8ec43c0f6b0afd"> 
 korresp</a> and <a href= 
-"http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=254fcf93f2e87ef71ac96eca03e661e659444921">
+"https://owncloud.nathalievilla.org/public.php?service=files&t=2bd5a14bbf636ab9afe495b46e0d523a">
 relational </a> algorithms (download these files on your computer and
 proceed).')),
                
