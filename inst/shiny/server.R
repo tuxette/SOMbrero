@@ -169,7 +169,7 @@ shinyServer(function(input, output, session) {
   # update the initialization method when input$somtype is changed
   output$initproto <- renderUI({
     selectInput("initproto", label= "Prototypes initialization method:", 
-                choices= c("random","obs"), 
+                choices= c("random","obs","pca"), 
                 selected= switch(input$somtype, 
                                  "numeric"= "random",
                                  "korresp"= "random",
