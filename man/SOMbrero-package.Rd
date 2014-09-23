@@ -18,8 +18,8 @@ parameters given to the algorithm (see \code{\link{initSOM}} and
 \tabular{ll}{
 Package: \tab SOMbrero\cr
 Type: \tab Package\cr
-Version: \tab 0.4-1\cr
-Date: \tab 2013-11-24\cr
+Version: \tab 0.4-2\cr
+Date: \tab 2014-09-23\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{http://sombrero.r-forge.r-project.org/} \cr
 }
@@ -38,9 +38,9 @@ Julien Boelaert \email{julien.boelaert@gmail.com}
 
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}
 
-Nathalie Villa-Vialaneix \email{nathalie.villa@univ-paris1.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 
-Maintainer: Nathalie Villa-Vialaneix \email{nathalie.villa@univ-paris1.fr}
+Maintainer: Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 \references{         
 Kohonen T. (2001) \emph{Self-Organizing Maps}. Berlin/Heidelberg:
@@ -55,8 +55,8 @@ Letremy, P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
 l'analyse des donnees. SAS/IML programs for 'korresp'.
 \url{http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme}.
 
-Olteanu, M., Villa-Vialaneix, N. (2013) On-line relational and multiple
-relational SOM. \emph{Neurocomputing}. Forthcoming.
+Olteanu, M., Villa-Vialaneix, N. (2015) On-line relational and multiple
+relational SOM. \emph{Neurocomputing}, \strong{147}, 15-30. 
 }
 \seealso{
 \code{\link{initGrid}}, \code{\link{trainSOM}}, \code{\link{plot.somRes}} and

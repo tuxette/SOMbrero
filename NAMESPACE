@@ -1,3 +1,11 @@
+## imports
+importFrom(scatterplot3d, scatterplot3d)
+importFrom(wordcloud, wordcloud)
+import(igraph)
+import(RColorBrewer)
+import(knitr)
+import(shiny)
+
 ## exports
 # standard functions
 export(initGrid)

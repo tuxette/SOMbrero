@@ -18,12 +18,13 @@ citEntry(
   title = 'On-line relational and multiple relational SOM',
   author = personList(as.person("Madalina Olteanu"), as.person("Nathalie Villa-Vialaneix")),
   journal = 'Neurocomputing',
-  year = '2013',
-  note = 'Forthcoming',
+  year = '2015',
+  volume = '147',
+  pages = '15--30',
 
   textVersion = paste('Olteanu M., Villa-Vialaneix N. (2013)',
                 'On-line relational and multiple relational SOM.',
-                'Neurocomputing. Forthcoming')
+                'Neurocomputing, 147, 15-30')
 )
 
 citEntry(
