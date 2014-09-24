@@ -4,11 +4,73 @@
 ##### Auxiliary functions
 ################################################################################
 
+# Cosine preprocessing (for "relational" case)
+cosinePreprocess <- function(diss.matrix, x.new= NULL, tolerance=10^(-10)) {
+  # tolerance is used to solve numeric instabilities
+  # similarity matrix by double centering
+  sim.matrix <- -.5* (diag(1, nrow(diss.matrix))- 1/nrow(diss.matrix)) %*%
+    diss.matrix %*% (diag(1, nrow(diss.matrix))-1/nrow(diss.matrix))
+  sim.matrix <- round(sim.matrix, -log10(tolerance))
+  
+  if (is.null(x.new)) {
+    # normalize the original dissimilarity matrix
+    scaled.ker <- sweep(sweep(sim.matrix,2,sqrt(diag(sim.matrix)),"/"),
+                        1,sqrt(diag(sim.matrix)),"/")
+    # came back to dissimilarity
+    # if cosine preprocess is useless it is the original dissimilarity
+    scaled.diss <- 2-2*scaled.ker
+    rownames(scaled.diss) <- rownames(diss.matrix)
+    colnames(scaled.diss) <- colnames(diss.matrix)
+    scaled.diss <- round(scaled.diss, -log10(tolerance))
+  } else {
+    # normalize additional dissimilarity lines like the similarity matrix
+    sim.x <- t(apply(x.new, 1, function(x) 
+      -.5*(x - mean(x) - colMeans(diss.matrix) + mean(diss.matrix))))
+    sim.x <- round(sim.x, -log10(tolerance))
+    auto.sim <- round(apply(x.new,1,mean) - mean(diss.matrix)/2,
+                      -log10(tolerance))
+    if (nrow(x.new)>1) {
+      scaled.ker <- sweep(sweep(sim.x, 2, sqrt(diag(sim.matrix)), "/"), 1,
+                          sqrt(auto.sim), "/")
+    } else {
+      scaled.ker <- sweep(sim.x, 2, sqrt(diag(sim.matrix)), "/")/
+        sqrt(auto.sim)
+    }
+    scaled.diss <- 2-2*scaled.ker
+    colnames(scaled.diss) <- colnames(diss.matrix)
+    rownames(scaled.diss) <- rownames(x.new)
+    scaled.diss <- round(scaled.diss, -log10(tolerance))
+  }
+  return(scaled.diss)
+}
+
+# Preprocess data or prototypes
+preprocessData <- function(x.data, scaling) {
+  switch(scaling,
+         "unitvar"=scale(x.data, center=TRUE, scale=TRUE),
+         "center"=scale(x.data, center=TRUE, scale=FALSE),
+         "none"=as.matrix(x.data),
+         "chi2"=korrespPreprocess(x.data),
+         "cosine"=cosinePreprocess(x.data))
+}
+
+preprocessProto <- function(prototypes, scaling, x.data) {
+  switch(scaling,
+         "unitvar"=scale(prototypes, 
+                         center=apply(x.data,2,mean),
+                         scale=apply(x.data,2,sd)),
+         "center"=scale(prototypes, 
+                        center=apply(x.data,2,mean),
+                        scale=FALSE),
+         "none"=prototypes,
+         "chi2"=prototypes,
+         "cosine"=prototypes)
+}
+
 calculateRadius <- function(the.grid, radius.type, ind.t, maxit) {
-  ## TODO: implement other radius types
   # ind.t: iteration index
   if (radius.type=="letremy") {
-    r0 <- max(c(floor(the.grid$dim[1]/2), floor(the.grid$dim[2]/2)))
+    r0 <- max(floor(the.grid$dim/2))
     k <- 4*(r0-1)/maxit
     a <- floor(maxit/2)
     b <- floor(maxit*3/4)
@@ -20,26 +82,39 @@ calculateRadius <- function(the.grid, radius.type, ind.t, maxit) {
     } else if (ind.t>=b) {
       r <- 0
     }
+  } else if (radius.type=="gaussian") {
+    if (the.grid$topo=="square")
+      r0 <- 1+(2/3)*sqrt(sum(the.grid$dim^2))
+    r <- r0*(1/r0)^((ind.t-1)/(maxit-1))-1 # power decrease 
   }
+
   r
 }
 
-selectNei <- function(the.neuron, the.grid, radius) {
-  if (the.grid$dist.type=="letremy") {
-    if (radius==0.5) {
-      the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
-                                        method="euclidean"))[the.neuron,]
-      the.nei <- which(the.dist<=1)
+selectNei <- function(the.neuron, the.grid, radius, radius.type) {
+  if (radius.type=="letremy") {
+    if (the.grid$dist.type=="letremy") {
+      if (radius==0.5) {
+        the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
+                                          method="euclidean"))[the.neuron,]
+        the.nei <- which(the.dist<=1)
+      } else {
+        the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
+                                 method="maximum"))[the.neuron,]
+        the.nei <- which(the.dist<=radius)
+      }
     } else {
       the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
-                               method="maximum"))[the.neuron,]
+                                 method=the.grid$dist.type))[the.neuron,]
       the.nei <- which(the.dist<=radius)
     }
-  } else {
-    the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
-                               method=the.grid$dist.type))[the.neuron,]
-    the.nei <- which(the.dist<=radius)
+  } else if (radius.type=="gaussian") {
+    proto.dist <- as.matrix(dist(the.grid$coord, upper=TRUE, 
+                                 diag=TRUE, method=dist.type))
+    sigma <- quantile(proto.dist[upper.tri(proto.dist)]^2, 0.5)
+    the.nei <- exp(-proto.dist[the.neuron,]^2/sigma/(radius+1)^2)
   }
+
   the.nei
 }
 
@@ -55,7 +130,8 @@ distRelationalProto <- function(proto1, proto2, x.data) {
 calculateProtoDist <- function(prototypes, the.grid, type, complete=FALSE,
                                x.data=NULL) {
   if (!complete) {
-    all.nei <- sapply(1:prod(the.grid$dim),selectNei,the.grid=the.grid,radius=1)
+    all.nei <- sapply(1:prod(the.grid$dim), selectNei, the.grid=the.grid,
+                      radius=1, radius.type="letremy")
     all.nei <- sapply(1:prod(the.grid$dim), function(neuron) 
       setdiff(all.nei[[neuron]],neuron))
     if (type!="relational") {# euclidean case
@@ -153,55 +229,50 @@ initProto <- function(parameters, norm.x.data, x.data) {
                          sample(1:ncol(prototypes),nrow(prototypes),
                                 replace=TRUE))] <- 1
       }
-    }
-  } else if (parameters$init.proto=="pca") {
-    # the most detailed grid axis is assigned to the first component
-    if (parameters$the.grid$dim[1]>=parameters$the.grid$dim[2]) {
-      x.ev <- 1
-      y.ev <- 2
-    } else {
-      x.ev <- 2
-      y.ev <- 1
-    }
-    if (parameters$type=="numeric") {
-      # perform PCA
-      data.pca <- princomp(norm.x.data)
-      x <- seq(from=quantile(data.pca$scores[,x.ev], .025), 
-               to=quantile(data.pca$scores[,x.ev], .975),
-               length.out=parameters$the.grid$dim[1])
-      y <- seq(from=quantile(data.pca$scores[,y.ev], .025), 
-               to=quantile(data.pca$scores[,y.ev], .975),
-               length.out=parameters$the.grid$dim[2])
-      base <- as.matrix(expand.grid(x=x, y=y))
-      # search for the closest observation
-      closest.obs <- apply(base, 1, function(point) 
-        which.min(colSums((t(data.pca$scores[,c(x.ev,y.ev)])-point)^2)))
-      prototypes <- norm.x.data[closest.obs,]
-    } else if (parameters$type=="relational") {
-      data.mds <- cmdscale(norm.x.data)
-      x <- seq(from=quantile(data.mds[,x.ev], .025), 
-               to=quantile(data.mds[,x.ev], .975),
-               length.out=parameters$the.grid$dim[1])
-      y <- seq(from=quantile(data.mds[,y.ev], .025), 
-               to=quantile(data.mds[,y.ev], .975),
-               length.out=parameters$the.grid$dim[2])
-      base <- as.matrix(expand.grid(x=x, y=y))
-      closest.obs <- apply(base, 1, function(point) 
-        which.min(colSums((t(data.mds[,1:2])-point)^2)))
-      prototypes <- matrix(0, ncol=nrow(norm.x.data), 
-                           nrow=prod(parameters$the.grid$dim))
-      prototypes[cbind(1:prod(parameters$the.grid$dim),closest.obs)] <- 1
+    } else if (parameters$init.proto=="pca") {
+      # the most detailed grid axis is assigned to the first component
+      if (parameters$the.grid$dim[1]>=parameters$the.grid$dim[2]) {
+        x.ev <- 1
+        y.ev <- 2
+      } else {
+        x.ev <- 2
+        y.ev <- 1
+      }
+      if (parameters$type=="numeric") {
+        # perform PCA
+        data.pca <- princomp(norm.x.data)
+        x <- seq(from=quantile(data.pca$scores[,x.ev], .025), 
+                 to=quantile(data.pca$scores[,x.ev], .975),
+                 length.out=parameters$the.grid$dim[1])
+        y <- seq(from=quantile(data.pca$scores[,y.ev], .025), 
+                 to=quantile(data.pca$scores[,y.ev], .975),
+                 length.out=parameters$the.grid$dim[2])
+        base <- as.matrix(expand.grid(x=x, y=y))
+        # search for the closest observation
+        closest.obs <- apply(base, 1, function(point) 
+          which.min(colSums((t(data.pca$scores[,c(x.ev,y.ev)])-point)^2)))
+        prototypes <- matrix(0, ncol=nrow(norm.x.data), 
+                             nrow=prod(parameters$the.grid$dim))
+        prototypes <- norm.x.data[closest.obs,]
+      } else if (parameters$type=="relational") {
+        data.mds <- cmdscale(norm.x.data)
+        x <- seq(from=quantile(data.mds[,x.ev], .025), 
+                 to=quantile(data.mds[,x.ev], .975),
+                 length.out=parameters$the.grid$dim[1])
+        y <- seq(from=quantile(data.mds[,y.ev], .025), 
+                 to=quantile(data.mds[,y.ev], .975),
+                 length.out=parameters$the.grid$dim[2])
+        base <- as.matrix(expand.grid(x=x, y=y))
+        closest.obs <- apply(base, 1, function(point) 
+          which.min(colSums((t(data.mds[,1:2])-point)^2)))
+        prototypes <- matrix(0, ncol=nrow(norm.x.data), 
+                             nrow=prod(parameters$the.grid$dim))
+        prototypes[cbind(1:prod(parameters$the.grid$dim),closest.obs)] <- 1
+      }
     }
   } else {
-    prototypes <- switch(parameters$scaling,
-                         "unitvar"=scale(parameters$proto0, 
-                                         center=apply(x.data,2,mean),
-                                         scale=apply(x.data,2,sd)),
-                         "center"=scale(parameters$proto0, 
-                                        center=apply(x.data,2,mean),
-                                        scale=FALSE),
-                         "none"=as.matrix(parameters$proto0),
-                         "chi2"=as.matrix(parameters$proto0))
+    prototypes <- preprocessProto(parameters$proto0, parameters$scaling,
+                                  x.data)
   }
   return(prototypes)
 }
@@ -229,63 +300,59 @@ oneObsAffectation <- function(x.new, prototypes, type, x.data=NULL) {
 
 # Step 7: Update of prototypes
 prototypeUpdate <- function(type, the.nei, epsilon, prototypes, rand.ind,
-                            sel.obs) {
-  if (type=="relational") {
-    indic <- matrix(0,nrow=length(the.nei),ncol=ncol(prototypes)) 
-    indic[,rand.ind] <- 1
-    prototypes[the.nei,] <- (1-epsilon)*prototypes[the.nei,] + epsilon*indic    
+                            sel.obs, radius.type) {
+  if (radius.type!="letremy") {
+    if (type=="relational") {
+      indic <- matrix(0, nrow=nrow(prototypes), ncol=ncol(prototypes)) 
+      indic[,rand.ind] <- 1
+      prototypes <- (1-epsilon*the.nei)*prototypes + epsilon*the.nei*indic    
+    } else {
+      prototypes <- (1-epsilon*the.nei)*prototypes + 
+        epsilon*the.nei*outer(rep(1,nrow(prototypes)), sel.obs)
+    }
   } else {
-    prototypes[the.nei,] <- (1-epsilon)*prototypes[the.nei,] +
-      epsilon*outer(rep(1,length(the.nei)), sel.obs)
+    if (type=="relational") {
+      indic <- matrix(0,nrow=length(the.nei),ncol=ncol(prototypes)) 
+      indic[,rand.ind] <- 1
+      prototypes[the.nei,] <- (1-epsilon)*prototypes[the.nei,] + epsilon*indic    
+    } else {
+      prototypes[the.nei,] <- (1-epsilon)*prototypes[the.nei,] +
+        epsilon*outer(rep(1,length(the.nei)), sel.obs)
+    }
   }
+  return(prototypes)
 }
 
 # Step 8: calculate intermediate energy
 # TODO: It would probably be better to implement a function 'distEltProto'
 calculateClusterEnergy <- function(cluster, x.data, clustering, prototypes,
                                    parameters, radius) {
+  the.nei <- selectNei(cluster, parameters$the.grid, radius, 
+                       parameters$radius.type)
+  if (parameters$radius.type=="letremy")
+    the.nei <- as.numeric((1:nrow(prototypes))%in%the.nei)
+  
   if (parameters$type=="numeric" || parameters$type=="korresp") {
-    if (parameters$radius.type=="letremy") {
-      the.nei <- selectNei(cluster, parameters$the.grid, radius)
-      if (sum(clustering%in%the.nei)>0) {
-        return(sum((x.data[which(clustering%in%the.nei),]-
-                      outer(rep(1,sum(clustering%in%the.nei)),
-                                 prototypes[cluster,]))^2))
-      }
-    }
+    return(sum(the.nei[clustering]*
+                 rowSums((x.data-outer(rep(1,nrow(x.data)), 
+                                       prototypes[cluster,]))^2)))
   } else if (parameters$type=="relational") {
-    if (parameters$radius.type=="letremy") {
-      the.nei <- selectNei(cluster, parameters$the.grid, radius)
-      if (sum(clustering%in%the.nei)>0) {
-        return(sum(prototypes%*%x.data[,which(clustering%in%the.nei)]-0.5*
-                     diag(prototypes%*%x.data%*%t(prototypes))))
-      }      
-    }
+    return(sum(the.nei[clustering]*
+                 (matrix(prototypes[cluster,], nrow=1)%*%x.data-
+                    as.numeric(0.5*matrix(prototypes[cluster,], nrow=1)%*%
+                                 x.data%*%matrix(prototypes[cluster,]))
+                 )))
   }
+    
 }
 
 calculateEnergy <- function(x.data, clustering, prototypes, parameters, ind.t) {
-  if (parameters$type=="numeric" || parameters$type=="korresp") {
-    if (parameters$radius.type=="letremy") {
-      radius <- calculateRadius(parameters$the.grid, parameters$radius.type,
-                                ind.t, parameters$maxit)
-      return(sum(unlist(sapply(1:nrow(prototypes), calculateClusterEnergy,
-                               x.data=x.data, clustering=clustering, 
-                               prototypes=prototypes, parameters=parameters,
-                               radius=radius)))/
-               nrow(x.data)/nrow(prototypes))
-    }
-  } else if (parameters$type=="relational") {
-    if (parameters$radius.type=="letremy") {
-      radius <- calculateRadius(parameters$the.grid, parameters$radius.type,
-                              ind.t, parameters$maxit)
-      return(sum(unlist(sapply(1:nrow(prototypes), calculateClusterEnergy,
-                             x.data=x.data, clustering=clustering, 
-                             prototypes=prototypes, parameters=parameters,
-                             radius=radius)))/
-             nrow(x.data)/nrow(prototypes))
-    }
-  }
+  radius <- calculateRadius(parameters$the.grid, parameters$radius.type,
+                            ind.t, parameters$maxit)
+  sum(unlist(sapply(1:nrow(prototypes), calculateClusterEnergy,
+                    x.data=x.data, clustering=clustering, 
+                    prototypes=prototypes, parameters=parameters,
+                    radius=radius)))/nrow(x.data)/nrow(prototypes)
 }
 
 ##### Main function
@@ -314,7 +381,7 @@ trainSOM <- function (x.data, ...) {
   }
   # Check inputs
   if (!is.null(param.args$type) && param.args$type=="relational" && 
-        (!(identical(x.data, t(x.data))) || (sum(diag(x.data)!=0)>0)))
+        (!identical(x.data, t(x.data)) || (sum(diag(x.data)!=0)>0)))
     stop("data do not match chosen SOM type ('relational')\n", call.=TRUE)
   
   # Initialize parameters and print
@@ -346,11 +413,7 @@ trainSOM <- function (x.data, ...) {
   
   ## Step 2: Preprocess the data
   # Scaling
-  norm.x.data <- switch(parameters$scaling,
-                        "unitvar"=scale(x.data, center=TRUE, scale=TRUE),
-                        "center"=scale(x.data, center=TRUE, scale=FALSE),
-                        "none"=as.matrix(x.data),
-                        "chi2"=korrespPreprocess(x.data))
+  norm.x.data <- preprocessData(x.data, parameters$scaling)
   
   ## Step 3: Initialize prototypes
   prototypes <- initProto(parameters, norm.x.data, x.data)
@@ -400,11 +463,14 @@ trainSOM <- function (x.data, ...) {
     # Radius value
     radius <- calculateRadius(parameters$the.grid, parameters$radius.type,
                               ind.t, parameters$maxit)
-    the.nei <- selectNei(winner, parameters$the.grid, radius)
+    the.nei <- selectNei(winner, parameters$the.grid, radius, 
+                         radius.type=parameters$radius.type)
+
     epsilon <- 0.3*parameters$eps0/(1+0.2*ind.t/prod(parameters$the.grid$dim))
     # Update
-    prototypes[the.nei,] <- prototypeUpdate(parameters$type, the.nei, epsilon, 
-                                            prototypes, rand.ind, sel.obs)
+    prototypes <- prototypeUpdate(parameters$type, the.nei, epsilon, 
+                                  prototypes, rand.ind, sel.obs,
+                                  parameters$radius.type)
     
     ## Step 8: Intermediate backups (if needed)
     if (parameters$nb.save==1) {
@@ -422,7 +488,8 @@ trainSOM <- function (x.data, ...) {
                                            center=-apply(x.data,2,mean),
                                            scale=FALSE),
                             "none"=prototypes,
-                            "chi2"=prototypes)
+                            "chi2"=prototypes,
+                            "cosine"=prototypes)
         colnames(out.proto) <- colnames(norm.x.data)
         rownames(out.proto) <- 1:prod(parameters$the.grid$dim)
         res <- list("parameters"=parameters, "prototypes"=out.proto, 
@@ -431,7 +498,7 @@ trainSOM <- function (x.data, ...) {
         
         ind.s <- match(ind.t,backup$steps)
         backup$prototypes[[ind.s]] <- out.proto
-        backup$clustering[,ind.s] <- predict.somRes(res, x.data)
+        backup$clustering[,ind.s] <- predict.somRes(res)
         backup$energy[ind.s] <- calculateEnergy(norm.x.data,
                                                 backup$clustering[,ind.s],
                                                 prototypes, parameters, ind.t)
@@ -453,12 +520,13 @@ trainSOM <- function (x.data, ...) {
                                          center=-apply(x.data,2,mean),
                                          scale=FALSE),
                           "none"=prototypes,
-                          "chi2"=prototypes)
+                          "chi2"=prototypes,
+                          "cosine"=prototypes)
       
       res <- list("parameters"=parameters, "prototypes"=out.proto,
                   "data"=x.data)
       class(res) <- "somRes"
-      clustering <- predict.somRes(res, x.data)
+      clustering <- predict.somRes(res)
       if (parameters$type=="korresp") {
         names(clustering) <- c(colnames(x.data), rownames(x.data))
       } else names(clustering) <- rownames(x.data)
@@ -532,37 +600,41 @@ summary.somRes <- function(object, ...) {
     cat("         Degrees of freedom      : ", chisq.res$parameter, "\n")
     cat("         p-value                 : ", chisq.res$p.value, "\n")
     cat("                 significativity : ", sig, "\n")
-  }
+  } else if (object$parameters$type=="relational") {
+    if (object$parameters$scaling=="cosine") {
+      norm.data <- preprocessData(object$data, object$parameters$scaling)
+    } else norm.data <- object$data
+    sse.total <- sum(norm.data)/(2*nrow(norm.data))
+    
+    sse.within <- sum(sapply(unique(object$clustering), function(clust)
+      sum(norm.data[object$clustering==clust,object$clustering==clust])/
+        (2*sum(object$clustering==clust))))
+    
+    n.clusters <- length(unique(object$clustering))
+    F.stat <- ((sse.total-sse.within)/sse.within) * 
+      ((nrow(norm.data)-n.clusters)/(n.clusters-1))
+    
+    p.value <- 1-pf(F.stat, n.clusters-1, nrow(norm.data)-n.clusters)
+    if (p.value<0.001) {
+      sig <- "***"
+    } else if (p.value<0.1) {
+      sig <- "**"
+    } else if (p.value<0.05) sig <- "*"
+    
+    cat("\n      ANOVA            : \n")
+    cat("         F                       : ", F.stat, "\n")
+    cat("         Degrees of freedom      : ", n.clusters-1, "\n")
+    cat("         p-value                 : ", p.value, "\n")
+    cat("                 significativity : ", sig, "\n")
+  } 
 }
 
-predict.somRes <- function(object, x.new, ...) {
-  if (is.null(dim(x.new))) x.new <- matrix(x.new,nrow=1,
-                                           dimnames=list(1,
-                                                         colnames(object$data)))
-  if(object$parameters$type!="korresp") {
-    norm.x.new <- switch(object$parameters$scaling,
-                         "unitvar"=scale(x.new,
-                                         center=apply(object$data,2,mean),
-                                         scale=apply(object$data,2,sd)),
-                         "center"=scale(x.new,
-                                        center=apply(object$data,2,mean),
-                                        scale=FALSE),
-                         "none"=as.matrix(x.new))
-    norm.proto <- switch(object$parameters$scaling,
-                         "unitvar"=scale(object$prototypes, 
-                                         center=apply(object$data,2,mean),
-                                         scale=apply(object$data,2,sd)),
-                         "center"=scale(object$prototypes, 
-                                        center=apply(object$data,2,mean),
-                                        scale=FALSE),
-                         "none"=object$prototypes)
-    winners <- apply(norm.x.new, 1, oneObsAffectation,
-                     prototypes=norm.proto, type=object$parameters$type,
-                     x.data=object$data)
-  } else {
-    if (!identical(as.matrix(x.new), object$data))
+predict.somRes <- function(object, x.new=NULL, ..., tolerance=10^(-10)) {
+  ## korresp
+  if(object$parameters$type=="korresp") {
+    if (!is.null(x.new)) 
       warning("For 'korresp' SOM, predict.somRes function can only be called on
-              the original data set\n'object' replaced", 
+              the original data set\n'object'. x.new not used!", 
               call.=TRUE)
     norm.x.data <- korrespPreprocess(object$data)
     winners.rows <- apply(norm.x.data[1:nrow(object$data),1:ncol(object$data)],
@@ -576,20 +648,70 @@ predict.somRes <- function(object, x.new, ...) {
                                                          ncol(norm.x.data)],
                           type=object$parameters$type)
     winners <- c(winners.cols,winners.rows)
-  }
-  winners
+  } else if (object$parameters$type=="numeric") { ## numeric
+    if (is.null(x.new)) {
+      x.new <- object$data
+    } else {
+      if (is.null(dim(x.new)))
+        x.new <- matrix(x.new, nrow=1, dimnames=list(1,colnames(object$data)))
+      if (!is.matrix(x.new)) x.new <- as.matrix(x.new)
+      # check data dimension
+      if (ncol(x.new)!=ncol(object$data))
+        stop("Number of columns of x.new does not correspond to number of 
+             columns of the original data")
+    }
+    norm.x.new <- switch(object$parameters$scaling,
+                         "unitvar"=scale(x.new,
+                                         center=apply(object$data,2,mean),
+                                         scale=apply(object$data,2,sd)),
+                         "center"=scale(x.new,
+                                        center=apply(object$data,2,mean),
+                                        scale=FALSE),
+                         "none"=x.new)
+    norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
+                                  object$data)
+    winners <- apply(norm.x.new, 1, oneObsAffectation, prototypes=norm.proto,
+                     type=object$parameters$type)
+    } else if (object$parameters$type=="relational") { ## relational
+      if (is.null(x.new)) {
+        x.new <- object$data
+      } else {
+        if (is.null(dim(x.new)))
+          x.new <- matrix(x.new, nrow=1, dimnames=list(1,colnames(object$data)))
+        if (!is.matrix(x.new)) x.new <- as.matrix(x.new)
+        # check data dimension
+        if (ncol(x.new)!=ncol(object$data))
+          stop("Number of columns of x.new does not correspond to number of 
+             columns of the original data")
+      }
+      
+      norm.x.new <- switch(object$parameters$scaling,
+                           "none"=x.new,
+                           "frobenius"=x.new/sqrt(sum(object$data^2)),
+                           "max"=x.new/max(abs(object$data)), 
+                           "sd"=x.new/
+                             sd(object$data[upper.tri(object$data, diag=FALSE)]),
+                           "cosine"=cosinePreprocess(object$data, x.new))
+      norm.x.data <- preprocessData(object$data, object$parameters$scaling)
+      norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
+                                    object$data)
+      winners <- apply(norm.x.new, 1, oneObsAffectation, prototypes=norm.proto,
+                       type=object$parameters$type, x.data=norm.x.data)
+    }
+  return(winners)
 }
   
 protoDist.somRes <- function(object, mode=c("complete","neighbors"), ...) {
   mode <- match.arg(mode)
   complete <- (mode=="complete")
+  norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling, 
+                                object$data)
   if (object$parameters$type=="relational") {
-    x.data <- object$data
+    x.data <- preprocessData(object$data, object$parameters$scaling)
   } else x.data <- NULL
-
-  distances <- calculateProtoDist(object$prototypes, object$parameters$the.grid,
-                                  object$parameters$type, complete, x.data)
   
+  distances <- calculateProtoDist(norm.proto, object$parameters$the.grid,
+                                  object$parameters$type, complete, x.data)
   return(distances)
 }
 

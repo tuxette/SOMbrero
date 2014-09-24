@@ -1,3 +1,9 @@
+mettre les require
+ajouter les options dist.type, radius.type
+vérifier les compatibilités : pas de pca pour korresp, dist.type="letremy" pas pour radius.type="gaussian"
+summary : type d'initialisation
+test
+
 
 * other features (easy)
 ** add scaling for dissimilarity : division by the norm (Frobenius), cosine

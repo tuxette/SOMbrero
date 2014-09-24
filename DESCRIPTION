@@ -10,8 +10,8 @@ Maintainer: Nathalie Villa-Vialaneix <nathalie.villa@toulouse.inra.fr>
 Description: SOMbrero provides an implementation of the stochastic (also called
              on-line) Self-Organising Map (SOM) algorithm for numeric and
              relational data
-Depends: R (>= 3.0), knitr
-Imports: wordcloud, scatterplot3d, igraph (>= 0.6), RColorBrewer, shiny
+Depends: R (>= 3.0), knitr, igraph (>= 0.6)
+Imports: wordcloud, scatterplot3d, RColorBrewer, shiny
 License: GPL (>= 2)
 URL: http://sombrero.r-forge.r-project.org/
 Repository: R-Forge

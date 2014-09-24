@@ -1,6 +1,8 @@
 SOMbrero 0.4-2
 New features:
   Added PCA initialization
+  Added Gaussian neighborhood (default parameters are still tentative)
+  Added cosinus normalization for dissimilarity
 
 ********************************************************************************
 SOMbrero 0.4-1
