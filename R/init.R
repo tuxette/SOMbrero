@@ -2,7 +2,7 @@
   packageStartupMessage("")
   packageStartupMessage("***********************************************************")
   packageStartupMessage("")
-  packageStartupMessage("      This is 'SOMbrero' package, v 0.4")
+  packageStartupMessage("      This is 'SOMbrero' package, v 0.4-2")
   packageStartupMessage("      url: http://sombrero.r-forge.r-project.org/")
   packageStartupMessage("")
   packageStartupMessage("Citation details with citation('SOMbrero')")

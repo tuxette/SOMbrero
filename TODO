@@ -1,20 +1,7 @@
-mettre les require
-ajouter les options dist.type, radius.type
-vérifier les compatibilités : pas de pca pour korresp, dist.type="letremy" pas pour radius.type="gaussian"
-summary : type d'initialisation
-test
-
-
 * other features (easy)
-** add scaling for dissimilarity : division by the norm (Frobenius), cosine
-scaling, divide by standard deviation of the distances, divide by the max(?)
-** add ANOVA for dissimilarity in summary
-** add ANOVA for superclasses
-** init=pca
 ** add a function graph2SOM that projects a graph on the grid
    (use projectGraph), create a class and a plot method for it
 ** add weights to observations
-** radius.type=gaussian
 ** kaski lagus
 ** implement weighted graphs projection
 ** change information about maxit (default = 5*n.obs, not 500 as claimed)
@@ -24,7 +11,7 @@ scaling, divide by standard deviation of the distances, divide by the max(?)
 ** grid.topology: hexagonal
 ** repeat SOM and combine
 ** multiple dissimilarities
-** kacm
+** kacm, kdij
 ** batch version
 
 * implementation enhancement

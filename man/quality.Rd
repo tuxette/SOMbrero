@@ -23,18 +23,19 @@ the result of a SOM algorithm.}
 \value{The \code{quality} function returns either a numeric value (if only one 
 type is computed) or a list a numeric values (if all types are computed)
 
-The quantization error calculates the mean distance between the sample vectors
-and their respective cluster prototypes. It is a decreasing function of the size
-of the map.
+The quantization error calculates the mean squared euclidean distance between
+the sample vectors and their respective cluster prototypes. It is a decreasing
+function of the size of the map.
 
 The topographic error is the simplest of the topology preservation measure: it
 calculates the ratio of sample vectors for which the second best matching unit
-is in the direct neighborhood of the best matching unit.
+is not in the direct neighborhood of the best matching unit.
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
+Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@univ-paris1.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 
 \references{

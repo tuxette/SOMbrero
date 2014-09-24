@@ -11,7 +11,7 @@
 Aggregate the resulting clustering of the SOM algorithm into super-clusters.}
 
 \usage{
-\method{superClass}{somRes}(sommap, method="ward", members=NULL, k=NULL, 
+\method{superClass}{somRes}(sommap, method="ward.D", members=NULL, k=NULL, 
 h=NULL, \ldots)
 \method{print}{somSC}(x, \ldots)
 \method{summary}{somSC}(object, \ldots)
@@ -61,6 +61,15 @@ these arguments.
 }
 The squared distance between prototypes is passed to the algorithm.
 
+\code{summary} on a \code{superClass} object produces a complete summary of the
+results that displays the number of clusters and super-clusters, the clustering
+itself and performs ANOVA analyses. For \code{type="numeric"} the ANOVA is
+performed for each input variable and test the difference of this variable
+accross the super-clusters of the map. For \code{type="relational"} a 
+dissimilarity ANOVA is performed (see (Anderson, 2001), except that in the 
+present version, a crude estimate of the p-value is used which is based on the
+Fisher distribution and not on a permutation test.
+
 The different super classes are identified in the following ways:
 \itemize{
 \item either with different color, when \code{type} is set among: 
@@ -74,6 +83,11 @@ In the list above, graphics available for a \code{korresp} SOM are marked with
 a * whereas those available for a \code{relational} SOM are marked with a #.
 }
 
+\references{
+Anderson, M. J. (2001). A new method for non-parametric multivariate analysis of
+variance. \emph{Austral Ecology}, \strong{26}, 32--46.
+}
+
 \value{The \code{superClass} function returns an object of class \code{somSC} 
 which is a list of the following elements:
 \item{cluster}{The super clustering of the prototypes (only if either \code{k} 
@@ -84,8 +98,9 @@ or \code{h} are given by user).}
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
+Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@univ-paris1.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 
 \seealso{\code{\link{hclust}}, \code{\link{cutree}}, \code{\link{trainSOM}}, 

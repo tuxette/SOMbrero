@@ -1,7 +1,8 @@
 ## These functions handle SOM learning
 initSOM <- function(dimension=c(5,5), topo=c("square"),
-                    dist.type=c("letremy","maximum","euclidean","manhattan",
-                                "canberra","binary","minkowski"),
+                    dist.type=switch(match.arg(radius.type), 
+                                     "letremy"="letremy", 
+                                     "gaussian"="euclidean"),
                     type=c("numeric", "relational", "korresp"), 
                     mode=c("online"), 
                     maxit=500, nb.save=0, verbose=FALSE, proto0=NULL, 
@@ -13,8 +14,22 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
                                    "numeric"="unitvar",
                                    "relational"="none",
                                    "korresp"="chi2"), 
-                    radius.type=c("letremy"), eps0=1) {
+                    radius.type=c("letremy", "gaussian"), eps0=1) {
   type <- match.arg(type)
+  radius.type <- match.arg(radius.type)
+  scaling <- match.arg(scaling,
+                       c("unitvar", "none", "center", "chi2", "cosine"))
+  dist.type <- match.arg(dist.type, c("letremy", "maximum", "euclidean",
+                                      "manhattan", "canberra", "binary",
+                                      "minkowski"))
+  
+  if (dist.type=="letremy" && radius.type=="gaussian") {
+    dist.type <- "euclidean"
+    warning("dist.type value replaced to 'euclidean' for Gaussian radius\n
+            ('letremy' is not allowed)\n", 
+            call.=TRUE, immediate.=TRUE)
+  }
+  
   init.proto <- match.arg(init.proto, c("random", "obs", "pca"))
   
   # check scaling compatibility
@@ -23,14 +38,18 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
     warning("scaling value replaced: must be 'chi2' for 'korresp' type\n", 
             call.=TRUE, immediate.=TRUE)
   }
-  if (type=="relational" && scaling!="none") {
+  if (type=="relational" && ! scaling %in% c("none", "cosine")) {
     scaling <- "none"
-    warning("No scaling for 'relational' SOM ; value ignored\n", call.=TRUE, 
+    warning("Wrong scaling for 'relational' SOM ; set to 'none'\n", call.=TRUE, 
             immediate.=TRUE)
   }
-  if (type=="numeric" && scaling=="chi2")
-    stop("scaling='chi2' is only implemented for 'korresp' type\n", 
-         call.=TRUE)
+  if (type=="numeric" && scaling %in% c("chi2", "cosine"))
+    stop(paste0("scaling='", scaling,
+                "' is only implemented for 'korresp' type\n"), call.=TRUE)
+  
+  # check init.proto compatibility
+  if (type=="korresp" && init.proto=="pca")
+    stop("'init.proto' cannot be 'pca' for 'korresp' type\n", call.= TRUE)
   
   # check proto0
   if (!is.null(proto0)) {
@@ -52,17 +71,17 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
   }
   
   params <- list("the.grid"=initGrid(dimension,match.arg(topo),
-                                     match.arg(dist.type)),
+                                     dist.type),
                  type=type, mode=match.arg(mode), maxit=maxit,
                  nb.save=nb.save, proto0=proto0,
                  init.proto=init.proto, 
                  scaling=match.arg(scaling, c("unitvar", "none", "center", 
                                               "chi2")),
-                 radius.type=match.arg(radius.type),
+                 radius.type=radius.type,
                  verbose=verbose, eps0=eps0)
   
-  ## TODO: to add later: other types, other modes (?), init=pca,
-  # and radius.type=gaussian
+  ## TODO: to add later: other types, other modes (?)
+  
   class(params) <- "paramSOM"
   
   return(params)

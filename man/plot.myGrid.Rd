@@ -24,7 +24,7 @@ Color filling process uses the coordinates of the object \code{x}, having class
 }
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@univ-paris1.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 \seealso{\code{\link{initGrid}} to define a \code{myGrid} class object.}
 \examples{

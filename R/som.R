@@ -91,7 +91,7 @@ calculateRadius <- function(the.grid, radius.type, ind.t, maxit) {
   r
 }
 
-selectNei <- function(the.neuron, the.grid, radius, radius.type) {
+selectNei <- function(the.neuron, the.grid, radius, radius.type, dist.type) {
   if (radius.type=="letremy") {
     if (the.grid$dist.type=="letremy") {
       if (radius==0.5) {

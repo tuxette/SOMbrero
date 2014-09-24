@@ -29,7 +29,7 @@ version.
 Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
 in Cottrel et al., 1993 and \code{type="relational"} for dissimilarity data, as
-described in Olteanu and Villa-Vialaneix, 2013.
+described in Olteanu and Villa-Vialaneix, 2015.
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}

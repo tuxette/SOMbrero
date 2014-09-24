@@ -12,19 +12,16 @@ contains the parameters needed to run the SOM algorithm.
 }
 \usage{
 initSOM(dimension=c(5,5), topo=c("square"),
-        dist.type=c("letremy", "maximum", "euclidean", "manhattan",
-                    "canberra", "binary", "minkowski"),
-        type=c("numeric", "relational", "korresp"), mode=c("online"), 
-        maxit=500, nb.save=0, verbose=FALSE, proto0=NULL, 
-        init.proto=switch(type, 
-                          "numeric"="random", 
-                          "relational"="obs",
-                          "korresp"="random"),
-        scaling=switch(type,
-                       "numeric"="unitvar",
-                       "relational"="none",
-                       "korresp"="chi2"), 
-        radius.type=c("letremy"), eps0=1)
+        dist.type=switch(match.arg(radius.type),
+                         "letremy"="letremy", "gaussian"="euclidean"),
+                    type=c("numeric", "relational", "korresp"), 
+                    mode=c("online"), maxit=500, nb.save=0, verbose=FALSE,
+                    proto0=NULL, init.proto=switch(type, "numeric"="random",
+                                                   "relational"="obs",
+                                                   "korresp"="random"),
+                    scaling=switch(type, "numeric"="unitvar", 
+                                   "relational"="none", "korresp"="chi2"), 
+                    radius.type=c("letremy", "gaussian"), eps0=1)
 \method{print}{paramSOM}(x, \ldots)
 \method{summary}{paramSOM}(object, \ldots)
 }
@@ -35,10 +32,14 @@ initSOM(dimension=c(5,5), topo=c("square"),
   \code{trainSOM}.}
   \item{topo}{The topology to be used to build the grid of the \code{myGrid} 
   class object. Default value is \code{square}.}
-  \item{dist.type}{The neighborhood relationship on the grid. Default value is
-  \code{"letremy"} which is the original implementation by Patrick Letremy.
-  The other possible values are the values passed to \code{method} in
-  function \code{\link[stats]{dist}}.}
+   \item{dist.type}{The neighborhood relationship on the grid. When 
+  \code{radius.type} is \code{letremy}, default value is \code{letremy} 
+  which is the original implementation by Patrick Letremy. When 
+  \code{radius.type} is \code{gaussian}, default value is \code{euclidean}. The
+  other possible values (\code{maximum}, \code{manhattan}, \code{canberra},
+  \code{binary}, \code{minkowski}) are passed to \code{method} in function
+  \code{\link[stats]{dist}}. \code{dist.type="letremy"} is not permitted with
+  \code{radius.type="gaussian"}.}
   \item{type}{The SOM algorithm type. Possible values are: \code{numeric} 
   (default value), \code{korresp} and \code{relational}.}
   \item{mode}{The SOM algorithm mode. Default value is \code{online}.}
@@ -61,11 +62,17 @@ initSOM(dimension=c(5,5), topo=c("square"),
   \code{relational} type. \code{pca} is not available for \code{korresp} SOM.}
   \item{scaling}{The type of data pre-processing. For \code{numeric} SOM, 
   possibilities are \code{unitvar} (data are centered and scaled; this 
-  is the default value for a  \code{numeric} SOM) and \code{none} (no 
-  pre-processing and this is the only value allowed for a \code{relational}
-  SOM), 
-  \code{center} (data are centered but not scaled). For \code{korresp} SOM, the 
-  only available value (and default) is \code{chi2}.}
+  is the default value for a \code{numeric} SOM), \code{none} (no 
+  pre-processing), and \code{center} (data are centered but not scaled).
+  For \code{korresp} SOM, the only available value is \code{chi2}.
+  For \code{relational} SOM, possibilities are \code{none} (no pre-processing, 
+  default value for \code{relational} SOM) and \code{cosine}. This last one 
+  first turns the dissimilarity into a similarity using the suggestion in
+  (Lee and Verleysen, 2007). Then, a cosine normalization as described in 
+  (Ben-Hur and Weston, 2010) is applied to the kernel, that is finally turned
+  back into its induced distance. For further details on this processing, have
+  a look at the corresponding documentation in the directory "doc" of the
+  package's installation directory.}
   \item{radius.type}{The neighbourhood type. Default value is \code{"letremy"},
   which corresponds to the original implementation by Patrick Letremy.}
   \item{eps0}{The scaling value for the stochastic gradient descent step
@@ -83,10 +90,17 @@ a list of the parameters passed to the \code{initSOM} function, plus the default
 parameters for the ones not specified by the user.
 }
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
+Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@univ-paris1.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 \references{
+Ben-Hur A., Weston J. (2010) A user's guide to support vector machine. In:
+\emph{Data Mining Techniques for the Life Sciences}, Springer-Verlag, 223-239.
+
+Lee J., Verleysen M. (2007) \emph{Nonlinear Dimensionality Reduction}.
+Information Science and Statistics series, Springer.
+
 Letremy, P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
 l'analyse des donnees. SAS/IML programs for 'korresp'.
 \url{http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme}.

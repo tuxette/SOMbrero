@@ -23,7 +23,9 @@ Compute distances between prototypes
 \details{
 When \code{mode="complete"}, distances between all prototypes are computed. 
 When \code{mode="neighbors"}, distances are computed only between the 
-prototypes and their neighbors.
+prototypes and their neighbors. If the data were preprocessed during the SOM
+training procedure, the distances are computed on the normalized values of the
+prototypes.
 }
 
 \value{
@@ -36,8 +38,9 @@ number of neighbors.
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
+Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@univ-paris1.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 
 \seealso{\code{\link{trainSOM}}}

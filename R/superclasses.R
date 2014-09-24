@@ -14,17 +14,15 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 }
 
 ########################## super classes V0.2 #################################
-superClass.somRes <- function(sommap, method="ward", members=NULL, k=NULL,
+superClass.somRes <- function(sommap, method="ward.D", members=NULL, k=NULL,
                               h=NULL, ...) {
   if (sommap$parameters$type=="relational") {
-    the.distances <- calculateProtoDist(sommap$prototypes,
-                       sommap$parameters$the.grid, 
-                       "relational", TRUE, sommap$data)
+    the.distances <- protoDist(sommap, "complete")
     if (sum(the.distances<0)>0) {
       stop("Impossible to make super clustering!", call.=TRUE)
     } else the.distances <- as.dist(the.distances)
   }
-  else the.distances <- dist(sommap$prototypes)^2
+  else the.distances <- as.dist(protoDist(sommap, "complete")^2)
   hc <- hclust(the.distances, method, members)
   if (!is.null(k) || !is.null(h)) {
     sc <- cutree(hc, k, h)
@@ -60,6 +58,55 @@ summary.somSC <- function(object, ...) {
     names(output.clustering) <- seq_along(object$cluster)
     print(output.clustering)
     cat("\n")
+  }
+  
+  if (object$som$parameters$type=="numeric") {
+    sc.clustering <- object$cluster[object$som$clustering]
+    cat("\n  ANOVA\n")
+    res.anova <- as.data.frame(t(sapply(1:ncol(object$som$data), function(ind) {
+      res.aov <- summary(aov(object$som$data[,ind]~as.factor(sc.clustering)))
+      c(round(res.aov[[1]][1,4],digits=3), round(res.aov[[1]][1,5],digits=8))
+    })))
+    names(res.anova) <- c("F", "pvalue")
+    res.anova$significativity <- rep("",ncol(object$som$data))
+    res.anova$significativity[res.anova$"pvalue"<0.05] <- "*"
+    res.anova$significativity[res.anova$"pvalue"<0.01] <- "**"
+    res.anova$significativity[res.anova$"pvalue"<0.001] <- "***"
+    rownames(res.anova) <- colnames(object$som$data)
+    
+    cat("\n        Degrees of freedom : ", 
+        summary(aov(object$som$data[,1]~as.factor(sc.clustering)))[[1]][1,1],
+        "\n\n")
+    print(res.anova)
+    cat("\n")
+  } else if (object$som$parameters$type=="relational") {
+    if (object$som$parameters$scaling=="cosine") {
+      norm.data <- preprocessData(object$som$data, object$parameters$scaling)
+    } else norm.data <- object$som$data
+    sse.total <- sum(norm.data)/(2*nrow(norm.data))
+    
+    sc.clustering <- object$cluster[object$som$clustering]
+    
+    sse.within <- sum(sapply(unique(sc.clustering), function(clust)
+      sum(norm.data[sc.clustering==clust,sc.clustering==clust])/
+        (2*sum(sc.clustering==clust))))
+    
+    n.clusters <- length(unique(sc.clustering))
+    F.stat <- ((sse.total-sse.within)/sse.within) * 
+      ((nrow(norm.data)-n.clusters)/(n.clusters-1))
+    
+    p.value <- 1-pf(F.stat, n.clusters-1, nrow(norm.data)-n.clusters)
+    if (p.value<0.001) {
+      sig <- "***"
+    } else if (p.value<0.1) {
+      sig <- "**"
+    } else if (p.value<0.05) sig <- "*"
+    
+    cat("\n  ANOVA\n")
+    cat("         F                       : ", F.stat, "\n")
+    cat("         Degrees of freedom      : ", n.clusters-1, "\n")
+    cat("         p-value                 : ", p.value, "\n")
+    cat("                 significativity : ", sig, "\n")
   }
 }
 

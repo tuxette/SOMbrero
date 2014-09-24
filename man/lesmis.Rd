@@ -13,7 +13,13 @@ Hugo).}
 \format{
 \code{lesmis} is an \code{\link[igraph]{igraph}} object. Its vertices are 
 the characters of the novel and an edge indicates that the two characters appear
-together in the same chapter of the novel, at least once.
+together in the same chapter of the novel, at least once. Vertex attributes for
+this graph are \option{id}, a vertex number between 1 and 77, and
+\option{label}, the character's name. The edge attribute \option{value} gives 
+the number of co-appearances between the two characters afferent to the edge
+(the \code{\link[igraph]{igraph}} can thus be made a weighted graph using this
+attribute).
+
 \code{dissim.lesmis} is a dissimilarity matrix computed with the function 
 \code{\link[igraph]{shortest.paths}} and containing the length of the shortest
 paths between pairs of nodes.
@@ -34,7 +40,9 @@ Computing}. Reading (MA): Addison-Wesley.
 
 \examples{
 data(lesmis)
-\dontrun{plot(lesmis,vertex.size=0)}
+\dontrun{
+summary(lesmis)
+plot(lesmis,vertex.size=0)}
 }
 
 \keyword{datasets}

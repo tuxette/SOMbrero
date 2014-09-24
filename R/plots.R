@@ -385,8 +385,8 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
       tmp.var <- variable
     plot3d(sommap$prototypes, sommap$parameters$the.grid, type, tmp.var, args)
   } else if (type=="poly.dist") {
-    values <- calculateProtoDist(sommap$prototypes, sommap$parameters$the.grid,
-                                 sommap$parameters$type, FALSE, sommap$data)
+    values <- protoDist(sommap, "neighbors")
+
     if (sommap$parameters$type=="relational") {
       if (sum(unlist(values)<0)>0) {
         stop("Impossible to plot 'poly.dist'!", call.=TRUE)
@@ -403,8 +403,8 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
            labels=the.titles, cex=0.7)
     }
   } else if (type=="umatrix" || type=="smooth.dist") {
-    values <- calculateProtoDist(sommap$prototypes, sommap$parameters$the.grid,
-                                 sommap$parameters$type, FALSE, sommap$data)
+    values <- protoDist(sommap, "neighbors")
+
     if (sommap$parameters$type=="relational") {
       if (sum(unlist(values)<0)>0) {
         stop("Impossible to plot 'smooth.dist'!", call.=TRUE)
@@ -428,9 +428,8 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     }
   } else if (type=="mds") {
     if (sommap$parameters$type=="relational") {
-      the.distances <- calculateProtoDist(sommap$prototypes,
-                                          sommap$parameters$the.grid, 
-                                          "relational", TRUE, sommap$data)
+      the.distances <- protoDist(sommap, "complete")
+
       if (sum(the.distances<0)>0) {
         stop("Impossible to plot 'MDS'!", call.=TRUE)
       } else the.distances <- sqrt(the.distances)
@@ -455,9 +454,8 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     text(proj.coord,the.labels,cex=args$cex,col=args$col)
   } else if (type=="grid.dist") {
     if (sommap$parameters$type=="relational") {
-      the.distances <- calculateProtoDist(sommap$prototypes,
-                                          sommap$parameters$the.grid, 
-                                          "relational", TRUE, sommap$data)
+      the.distances <- protoDist(sommap, "complete")
+
      if (sum(the.distances<0)>0) {
       stop("Impossible to plot 'grid.dist'!", call.=TRUE)
      } else {
