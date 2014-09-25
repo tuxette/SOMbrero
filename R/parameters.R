@@ -1,5 +1,6 @@
 ## These functions handle SOM learning
 initSOM <- function(dimension=c(5,5), topo=c("square"),
+                    radius.type=c("letremy", "gaussian"),
                     dist.type=switch(match.arg(radius.type), 
                                      "letremy"="letremy", 
                                      "gaussian"="euclidean"),
@@ -13,8 +14,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
                     scaling=switch(type,
                                    "numeric"="unitvar",
                                    "relational"="none",
-                                   "korresp"="chi2"), 
-                    radius.type=c("letremy", "gaussian"), eps0=1) {
+                                   "korresp"="chi2"), eps0=1) {
   type <- match.arg(type)
   radius.type <- match.arg(radius.type)
   scaling <- match.arg(scaling,

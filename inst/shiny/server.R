@@ -4,7 +4,7 @@ library(SOMbrero) # Version 0.4
 ## Global variables
 
 # Max file input size :
-options(shiny.maxRequestSize= 30*1024^2)
+options(shiny.maxRequestSize=30*1024^2)
 
 # SOM training function
 trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames, 
@@ -14,65 +14,65 @@ trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames,
   
   if (type=="numeric")
     data <- data[, varnames]
-  trainSOM(data, dimension=c(dimx,dimy), dist.type= disttype, maxit= maxit,
-           type= type, scaling= scaling, init.proto= init.proto,
-           nb.save= nb.save, radius.type= radiustype)
+  trainSOM(data, dimension=c(dimx,dimy), dist.type=disttype, maxit=maxit,
+           type=type, scaling=scaling, init.proto=init.proto,
+           nb.save=nb.save, radius.type=radiustype)
 }
 
 # List of somplot types options per SOM type and "what" :
-all.somplot.types <- list("numeric"= 
-                            list("prototypes"= 
+all.somplot.types <- list("numeric"=
+                            list("prototypes"=
                                    list("color", "3d", "lines", "barplot",
-                                        "smooth distances"= "smooth.dist",
-                                        "polygon distances"= "poly.dist",
-                                        "grid distances"= "grid.dist",
-                                        "U matrix distances"= "umatrix",
-                                        "MDS"= "mds", "radar"),
-                                 "obs"= c("hitmap", "color", "lines", "barplot", 
+                                        "smooth distances"="smooth.dist",
+                                        "polygon distances"="poly.dist",
+                                        "grid distances"="grid.dist",
+                                        "U matrix distances"="umatrix",
+                                        "MDS"="mds", "radar"),
+                                 "obs"=c("hitmap", "color", "lines", "barplot", 
                                           "names", "boxplot", "radar"),
-                                 "energy"= "Energy of backups"),
+                                 "energy"="Energy of backups"),
                           
-                          "korresp"= 
-                            list("prototypes"= 
+                          "korresp"=
+                            list("prototypes"=
                                    list("color", "3d", "lines", "barplot",
-                                        "polygon distances"= "poly.dist",
-                                        "grid distances"= "grid.dist",
-                                        "U matrix distances"= "umatrix",
-                                        "MDS"= "mds", "radar"),
-                                 "obs"= c("hitmap", "names"),
-                                 "energy"= "Energy of backups"),
+                                        "polygon distances"="poly.dist",
+                                        "grid distances"="grid.dist",
+                                        "U matrix distances"="umatrix",
+                                        "MDS"="mds", "radar"),
+                                 "obs"=c("hitmap", "names"),
+                                 "energy"="Energy of backups"),
                           
-                          "relational"= 
+                          "relational"=
                             list("prototypes"=
                                    list("lines", "barplot",
-                                        "polygon distances"= "poly.dist",
-                                        "grid distances"= "grid.dist",
-                                        "U matrix distances"= "umatrix",
-                                        "MDS"= "mds", "radar"),
-                                 "obs"= c("hitmap", "names"),
-                                 "energy"= "Energy of backups"))
+                                        "polygon distances"="poly.dist",
+                                        "grid distances"="grid.dist",
+                                        "U matrix distances"="umatrix",
+                                        "MDS"="mds", "radar"),
+                                 "obs"=c("hitmap", "names"),
+                                 "energy"="Energy of backups"))
                                          
-all.scplot.types <- list("numeric"= 
-                           list("prototypes"= 
+all.scplot.types <- list("numeric"=
+                           list("prototypes"=
                                   list("dendrogram", "dendro3d", "color",
                                        "lines", "grid", "barplot", 
-                                       "polygon distances"= "poly.dist",
-                                       "MDS"= "mds", "radar"),
-                                "obs"= c("hitmap", "color", "lines", "barplot", 
+                                       "polygon distances"="poly.dist",
+                                       "MDS"="mds", "radar"),
+                                "obs"=c("hitmap", "color", "lines", "barplot", 
                                          "boxplot", "radar", "grid")),
-                         "korresp"= 
-                           list("prototypes"= 
+                         "korresp"=
+                           list("prototypes"=
                                   list("dendrogram", "color", "lines", "grid", 
                                        "barplot", 
-                                       "polygon distances"= "poly.dist",
-                                       "MDS"= "mds", "radar", "dendro3d"),
-                                "obs"= "hitmap"),
-                         "relational"= 
+                                       "polygon distances"="poly.dist",
+                                       "MDS"="mds", "radar", "dendro3d"),
+                                "obs"="hitmap"),
+                         "relational"=
                            list("prototypes"=
                                   list("dendrogram", "lines", "barplot", "grid",
                                        "polygon distances"="poly.dist",
-                                       "MDS"= "mds", "radar", "dendro3d"),
-                                "obs"= "hitmap"))
+                                       "MDS"="mds", "radar", "dendro3d"),
+                                "obs"="hitmap"))
 
 ###############################################################################
 
@@ -89,11 +89,13 @@ shinyServer(function(input, output, session) {
   #### Panel 'About' (left hand side)
   ############################################################################## 
   # Output the sombrero logo :
-  output$sombrero.logo <- renderImage(list(src= "sombrero.png"), 
-                                      deleteFile= FALSE)
+  output$sombrero.logo <- renderImage(list(src="sombrero.png"), 
+                                      deleteFile=FALSE)
   
   # Output the SAMM logo :
-  output$samm.logo <- renderImage(list(src= "samm.png"), deleteFile= FALSE)
+  output$samm.logo <- renderImage(list(src="samm.png"), deleteFile=FALSE)
+  # Output the SAMM logo :
+  output$miat.logo <- renderImage(list(src="miat.png"), deleteFile=FALSE)
   
   #### Panel 'Import data'
   ##############################################################################
@@ -103,39 +105,44 @@ shinyServer(function(input, output, session) {
     if (is.null(in.file))
       return(NULL)
     
+    the.sep <- switch(input$sep, "Comma"=",", "Semicolon"=";", "Tab"="\t",
+                      "Space"="")
+    the.quote <- switch(input$quote, "None"="","Double Quote"='"',
+                        "Single Quote"="'")
+    the.dec <- switch(input$dec, "Period"=".", "Comma"=",")
     if (input$rownames) {
       the.table <- read.table(in.file$datapath, header=input$header, 
-                              sep=input$sep, quote=input$quote, row.names=1,
-                              dec=input$dec)
+                              sep=the.sep, quote=the.quote, row.names=1,
+                              dec=the.dec)
     } else {
       the.table <- read.table(in.file$datapath, header=input$header, 
-                              sep=input$sep, quote=input$quote, dec=input$dec)
+                              sep=the.sep, quote=the.quote, dec=the.dec)
     }
     
     # update the "input variables" checkbox (if somtype is numeric or integer)
-    if (input$somtype == "numeric") {
+    if (input$somtype =="numeric") {
       output$varchoice <- renderUI(
-        checkboxGroupInput(inputId= "varchoice", label= "Input variables:",
-                           choices= as.list(colnames(the.table)),
-                           selected= as.list(colnames(the.table)[
+        checkboxGroupInput(inputId="varchoice", label="Input variables:",
+                           choices=as.list(colnames(the.table)),
+                           selected=as.list(colnames(the.table)[
                              sapply(the.table, class) %in%
                                c("integer", "numeric")])))
     } else output$varchoice <- renderText("")
 
     # update the map dimensions
-    updateNumericInput(session, inputId= "dimx", value= {
-      if (input$somtype == "korresp") {
+    updateNumericInput(session, inputId="dimx", value={
+      if (input$somtype =="korresp") {
         max(5,min(10,ceiling(sqrt((nrow(the.table)+ncol(the.table))/10))))
       } else max(5,min(10,ceiling(sqrt(nrow(the.table)/10))))
     })
-    updateNumericInput(session, inputId= "dimy", value= {
-      if (input$somtype == "korresp") {
+    updateNumericInput(session, inputId="dimy", value={
+      if (input$somtype =="korresp") {
         max(5,min(10,ceiling(sqrt((nrow(the.table)+ncol(the.table))/10))))
       } else max(5,min(10,ceiling(sqrt(nrow(the.table)/10))))
     })
     
     # update the max. iterations option
-    updateNumericInput(session, "maxit", value= 5 * nrow(the.table))
+    updateNumericInput(session, "maxit", value=5 * nrow(the.table))
 
     # return the table
     server.env$current.table <- the.table
@@ -157,23 +164,37 @@ shinyServer(function(input, output, session) {
 
   # update the scaling option when input$somtype is changed
   output$scaling <- renderUI({
-    selectInput(inputId= "scaling", label= "Data scaling:", 
-                choices= switch(input$somtype,
-                                "numeric"= list("unitvar", "none", "center"),
-                                "korresp"= list("chi2"),
-                                "relational"= list("none")),
-                selected= switch(input$somtype, "numeric"= "unitvar",
-                                 "korresp"= "chi2", "relational"= "none"))
+    selectInput(inputId="scaling", label="Data scaling:", 
+                choices=switch(input$somtype,
+                                "numeric"=c("unitvar", "none", "center"),
+                                "korresp"=c("chi2"),
+                                "relational"=c("none","cosine")),
+                selected=switch(input$somtype, "numeric"="unitvar",
+                                 "korresp"="chi2", "relational"="none"))
+  })
+  
+  # update the scaling option when input$radiustype is changed
+  output$disttype <- renderUI({
+    selectInput(inputId="disttype", label="Distance scaling:", 
+                choices=switch(input$radiustype,
+                                "letremy"=c("letremy", "maximum", "euclidean",
+                                             "manhattan", "canberra", "binary",
+                                             "minkowski"),
+                                "gaussian"=c("maximum", "euclidean", 
+                                             "manhattan", "canberra", "binary",
+                                             "minkowski")),
+                selected=switch(input$radiustype, "letremy"="letremy",
+                                 "gaussian"="euclidean"))
   })
   
   # update the initialization method when input$somtype is changed
   output$initproto <- renderUI({
-    selectInput("initproto", label= "Prototypes initialization method:", 
-                choices= c("random","obs","pca"), 
-                selected= switch(input$somtype, 
-                                 "numeric"= "random",
-                                 "korresp"= "random",
-                                 "relational"= "obs"))
+    selectInput("initproto", label="Prototypes initialization method:", 
+                choices=c("random","obs","pca"), 
+                selected=switch(input$somtype, 
+                                 "numeric"="random",
+                                 "korresp"="random",
+                                 "relational"="obs"))
   })
 
   # Train the SOM when the button is hit
@@ -182,13 +203,13 @@ shinyServer(function(input, output, session) {
     server.env$current.som <- isolate(trainTheSom(current.table, input$somtype, 
                                                   input$dimx, input$dimy, 
                                                   input$disttype, input$maxit, 
-                                                  varnames= input$varchoice, 
-                                                  rand.seed= input$randseed, 
-                                                  scaling= input$scaling, 
-                                                  eps0= input$eps0, 
-                                                  init.proto= input$initproto, 
-                                                  nb.save= input$nb.save,
-                                                  radiustype= input$radiustype))
+                                                  varnames=input$varchoice, 
+                                                  rand.seed=input$randseed, 
+                                                  scaling=input$scaling, 
+                                                  eps0=input$eps0, 
+                                                  init.proto=input$initproto, 
+                                                  nb.save=input$nb.save,
+                                                  radiustype=input$radiustype))
     
     updatePlotSomVar() # update variable choice for som plots
     updatePlotScVar() # update variable choice for sc plots
@@ -201,20 +222,21 @@ shinyServer(function(input, output, session) {
   output$summary <- renderPrint({
     if (is.null(input$file1))
       return("First import a dataset.")
-    if (input$trainbutton==0) 
+    if (input$trainbutton==0) {
       return("Hit the Train button to train the map.")
+    }
     summary(theSom())
   })
 
   # Output the computed som object to be downloaded
   # TODO: output an error if map not trained
   output$som.download <- {
-    downloadHandler(filename= function() {
-        paste("som ",format(Sys.time(),format="-%Y-%m-%d_%H:%M"),".rda",sep="")
+    downloadHandler(filename=function() {
+        paste0("som ",format(Sys.time(),format="-%Y-%m-%d_%H:%M"),".rda",sep="")
       },
-      content= function(file) {
+      content=function(file) {
         som.export <- server.env$current.som
-        save(som.export, file= file)
+        save(som.export, file=file)
       })
   }
   
@@ -224,46 +246,46 @@ shinyServer(function(input, output, session) {
   # Adapt plottype to the somtype and the "what" arguments
   observe({
     updateSelectInput(session, "somplottype", 
-                      choices= all.somplot.types[[input$somtype]][[
+                      choices=all.somplot.types[[input$somtype]][[
                         input$somplotwhat]])
   })
   
   # update variables available for plotting
   updatePlotSomVar <- function() observe({
     tmp.names <- colnames(current.som$data)
-    if (input$somtype == "korresp")
+    if (input$somtype =="korresp")
       tmp.names <- c(tmp.names, rownames(current.som$data))
-    updateSelectInput(session, "somplotvar", choices= tmp.names)
-    updateSelectInput(session, "somplotvar2", choices= tmp.names, 
-                      selected= tmp.names[1:min(5,length(tmp.names))])
+    updateSelectInput(session, "somplotvar", choices=tmp.names)
+    updateSelectInput(session, "somplotvar2", choices=tmp.names, 
+                      selected=tmp.names[1:min(5,length(tmp.names))])
   })
   
   # Plot the SOM
   output$somplot <- renderPlot({
     if(is.null(current.table))
       return(NULL)
-    if(input$trainbutton == 0)
+    if(input$trainbutton ==0)
       return(NULL)
     
     tmp.view <- NULL
-    if (input$somtype == "korresp")
+    if (input$somtype =="korresp")
       tmp.view <- input$somplotrowcol
     
-    if (input$somplotwhat == "energy")
-      plot(current.som, what= input$somplotwhat)
+    if (input$somplotwhat =="energy")
+      plot(current.som, what=input$somplotwhat)
     
-    if (input$somplottype == "radar") {
-      plot(x= current.som, what= input$somplotwhat, type= input$somplottype,
-           variable= input$somplotvar, print.title= input$somplottitle,
-           view= tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0))
+    if (input$somplottype =="radar") {
+      plot(x=current.som, what=input$somplotwhat, type=input$somplottype,
+           variable=input$somplotvar, print.title=input$somplottitle,
+           view=tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0))
     } else {
-      if (input$somplottype == "boxplot") {
+      if (input$somplottype =="boxplot") {
         tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
                                               input$somplotvar2]
       } else tmp.var <- input$somplotvar
-    plot(x= current.som, what= input$somplotwhat, type= input$somplottype,
-         variable= tmp.var, print.title= input$somplottitle,
-         view= tmp.view)
+    plot(x=current.som, what=input$somplotwhat, type=input$somplottype,
+         variable=tmp.var, print.title=input$somplottitle,
+         view=tmp.view)
     }
   })
   
@@ -272,23 +294,25 @@ shinyServer(function(input, output, session) {
   # Input number of superclasses or cutting height
   output$scHorK <- renderUI(
     switch(input$sc.cut.choice, 
-           "nclust"= numericInput("sc.k", "Number of superclasses:", 2, min=1,
-                                  max= input$dimx * input$dimy - 1), 
-           "tree.height"= numericInput("sc.h", "Height in dendrogram:", 10,
-                                       min= 0))
+           "Number of superclasses"=
+             numericInput("sc.k", "Number of superclasses:", 2, min=1,
+                          max=input$dimx*input$dimy-1), 
+           "Height in dendrogram"=
+             numericInput("sc.h", "Height in dendrogram:", 10, min=0))
   )
 
   # Compute superclasses when the button is hit
   computeSuperclasses <- reactive({
     if (is.null(current.table))
       return(NULL)
-    if (input$superclassbutton== 0)
+    if (input$superclassbutton==0)
       return(NULL)
     
     isolate(switch(input$sc.cut.choice, 
-                   "nclust"= superClass(sommap= current.som, k= input$sc.k),
-                   "tree.height"= superClass(sommap= current.som, 
-                                             h= input$sc.h)))
+                   "Number of superclasses"=
+                     superClass(sommap=current.som, k=input$sc.k),
+                   "Height in dendrogram"=
+                     superClass(sommap=current.som, h=input$sc.h)))
   })
 
   output$sc.summary <- renderPrint({
@@ -301,36 +325,37 @@ shinyServer(function(input, output, session) {
   # Download the superclass classification
   # TODO: output an error if map not trained
   output$sc.download <- {
-    reactive(the.sc <- computeSuperclasses())
+    
     
     downloadHandler(
-      filename= function() {
-        paste("superclasses ", format(Sys.time(), format= "%Y-%m-%d_%H:%M"),
+      filename=function() {
+        paste0("superclasses ", format(Sys.time(), format="%Y-%m-%d_%H:%M"),
               ".csv", sep="")
       },
-      content= function(file) {
-        classes.export <- data.frame(obs= row.names(the.sc$som$data),
-                                     cluster= the.sc$cluster[
+      content=function(file) {
+        the.sc <- computeSuperclasses()
+        classes.export <- data.frame(obs=row.names(the.sc$som$data),
+                                     cluster=the.sc$cluster[
                                        the.sc$som$clustering])
-        write.csv(classes.export, file= file, row.names= FALSE)
+        write.csv(classes.export, file=file, row.names=FALSE)
       })
   }
 
   # Adapt scplottype to the somtype and the "what" arguments
   observe({
     updateSelectInput(session, "scplottype", 
-                      choices= all.scplot.types[[input$somtype]][[
+                      choices=all.scplot.types[[input$somtype]][[
                         input$scplotwhat]])
   })
   
   # update variables available for plotting
   updatePlotScVar <- function() observe({
     tmp.names <- colnames(current.som$data)
-    if (input$somtype == "korresp")
+    if (input$somtype =="korresp")
       tmp.names <- c(tmp.names, rownames(current.som$data))
-    updateSelectInput(session, "scplotvar", choices= tmp.names)
-    updateSelectInput(session, "scplotvar2", choices= tmp.names, 
-                      selected= tmp.names[1:min(5,length(tmp.names))])
+    updateSelectInput(session, "scplotvar", choices=tmp.names)
+    updateSelectInput(session, "scplotvar2", choices=tmp.names, 
+                      selected=tmp.names[1:min(5,length(tmp.names))])
   })
   
   # Update SuperClass plot
@@ -339,28 +364,28 @@ shinyServer(function(input, output, session) {
       return(NULL)
     
     the.sc <- computeSuperclasses()
-    if(input$superclassbutton == 0)
+    if(input$superclassbutton ==0)
       return(NULL)
 
     if (input$scplottype %in% c("grid", "dendrogram"))
-      return(plot(the.sc, type= input$scplottype))
+      return(plot(the.sc, type=input$scplottype))
 
     tmp.view <- NULL
-    if (input$somtype == "korresp")
+    if (input$somtype =="korresp")
       tmp.view <- input$scplotrowcol
     
-    if (input$scplottype == "radar") {
-      plot(x= the.sc, what= input$scplotwhat, type= input$scplottype,
-                  variable= input$scplotvar, view= tmp.view, key.loc=c(-1,2),
+    if (input$scplottype =="radar") {
+      plot(x=the.sc, what=input$scplotwhat, type=input$scplottype,
+                  variable=input$scplotvar, view=tmp.view, key.loc=c(-1,2),
                   mar=c(0,10,2,0))
     } else { 
-      if (input$scplottype == "boxplot") {
+      if (input$scplottype =="boxplot") {
         tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
                                                 input$scplotvar2]
       } else tmp.var <- input$scplotvar
       
-      plot(x= the.sc, what= input$scplotwhat, type= input$scplottype,
-           variable= tmp.var, view= tmp.view)
+      plot(x=the.sc, what=input$scplotwhat, type=input$scplottype,
+           variable=tmp.var, view=tmp.view)
     }
   })
 
@@ -374,13 +399,18 @@ shinyServer(function(input, output, session) {
     if (is.null(in.file))
       return(NULL)
     
+    the.sep <- switch(input$sep2, "Comma"=",", "Semicolon"=";", "Tab"="\t",
+                      "Space"="")
+    the.quote <- switch(input$quote2, "None"="","Double Quote"='"',
+                        "Single Quote"="'")
+    the.dec <- switch(input$dec2, "Period"=".", "Comma"=",")
+    
     if (input$rownames2) {
       the.table <- read.table(in.file$datapath, header=input$header2, 
-                              sep=input$sep2, quote=input$quote2, 
-                              row.names=1, dec=input$dec2)
+                              sep=the.sep, quote=the.quote, row.names=1,
+                              dec=the.dec)
     } else the.table <- read.table(in.file$datapath, header=input$header2, 
-                                   sep=input$sep2, quote=input$quote2, 
-                                   dec=input$dec2)
+                                   sep=the.sep, quote=the.quote, dec=the.dec)
     
     updateAddPlotVar() # update variable selector    
     
@@ -402,10 +432,10 @@ shinyServer(function(input, output, session) {
     d.input <- dInputAdd()
     if(is.null(d.input))
       return(NULL)
-    updateSelectInput(session, "addplotvar", choices= colnames(d.input), 
-                      selected= colnames(d.input)[1])
-    updateSelectInput(session, "addplotvar2", choices= colnames(d.input), 
-                      selected= colnames(d.input)[1:min(5,ncol(d.input))])
+    updateSelectInput(session, "addplotvar", choices=colnames(d.input), 
+                      selected=colnames(d.input)[1])
+    updateSelectInput(session, "addplotvar2", choices=colnames(d.input), 
+                      selected=colnames(d.input)[1:min(5,ncol(d.input))])
   })
   
   # function to render Additional data Plot
@@ -417,16 +447,16 @@ shinyServer(function(input, output, session) {
       tmp.var <- input$addplotvar
     } else tmp.var <- input$addplotvar2
     
-    if(input$addplottype == "radar") {
-      plot(x= current.som, what= "add", type= input$addplottype, 
-           variable= d.input[,tmp.var], key.loc=c(-1,2), mar=c(0,10,2,0))
-    } else if (input$addplottype != "graph") {
-      plot(x= current.som, what= "add", type= input$addplottype, 
-           variable= d.input[,tmp.var])
+    if(input$addplottype =="radar") {
+      plot(x=current.som, what="add", type=input$addplottype, 
+           variable=d.input[,tmp.var], key.loc=c(-1,2), mar=c(0,10,2,0))
+    } else if (input$addplottype !="graph") {
+      plot(x=current.som, what="add", type=input$addplottype, 
+           variable=d.input[,tmp.var])
     } else {
       adjBin <- as.matrix(d.input!=0)
-      tmpGraph <- graph.adjacency(adjBin, mode= "undirected")
-      plot(current.som, what= "add", type= "graph", variable= tmpGraph)
+      tmpGraph <- graph.adjacency(adjBin, mode="undirected")
+      plot(current.som, what="add", type="graph", variable=tmpGraph)
     }
   })
 })

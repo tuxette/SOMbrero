@@ -328,7 +328,7 @@ prototypeUpdate <- function(type, the.nei, epsilon, prototypes, rand.ind,
 calculateClusterEnergy <- function(cluster, x.data, clustering, prototypes,
                                    parameters, radius) {
   the.nei <- selectNei(cluster, parameters$the.grid, radius, 
-                       parameters$radius.type)
+                       parameters$radius.type, parameters$the.grid$dist.type)
   if (parameters$radius.type=="letremy")
     the.nei <- as.numeric((1:nrow(prototypes))%in%the.nei)
   
@@ -464,7 +464,8 @@ trainSOM <- function (x.data, ...) {
     radius <- calculateRadius(parameters$the.grid, parameters$radius.type,
                               ind.t, parameters$maxit)
     the.nei <- selectNei(winner, parameters$the.grid, radius, 
-                         radius.type=parameters$radius.type)
+                         radius.type=parameters$radius.type,
+                         dist.type=parameters$the.grid$dist.type)
 
     epsilon <- 0.3*parameters$eps0/(1+0.2*ind.t/prod(parameters$the.grid$dim))
     # Update
@@ -569,7 +570,8 @@ summary.somRes <- function(object, ...) {
   cat("      Class : ", class(object),"\n\n")
   print(object)
   cat("\n      Final energy     :", object$energy,"\n")
-  cat("      Topographic error:", topographicError(object), "\n")
+  error.topo <- quality(object, "topographic")
+  cat("      Topographic error:", error.topo, "\n")
   if (object$parameters$type=="numeric") {
     cat("\n      ANOVA                : \n")
     res.anova <- as.data.frame(t(sapply(1:ncol(object$data), function(ind) {

@@ -1,7 +1,7 @@
 # Define UI for dataset viewer application
 shinyUI(pageWithSidebar(
   # Application title
-  headerPanel("SOMbrero Web User Interface (v0.1)"),
+  headerPanel("SOMbrero Web User Interface (v0.2)"),
 
   #### Panel 'About' (right hand side)
   ##############################################################################
@@ -14,20 +14,27 @@ shinyUI(pageWithSidebar(
     p(HTML("<h5>Welcome to SOMbrero, the open-source on-line interface for 
 self-organizing maps (SOM).</h5> This interface trains SOM for numerical data,
 contingency tables and dissimilarity data using the <strong>R</strong> package
-<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v0.4). Train a
+<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v0.4-2). Train a
 map on your data and visualize their topology in three simple steps using the
 panels on the right.")),
     
-    imageOutput("samm.logo", width= "100%", height= "100%"),
+    imageOutput("samm.logo", width= "100px", height="80px"),
+    imageOutput("miat.logo", width= "100px", height="80px"),
+    br(),
+    br(),
     p(HTML('It is kindly provided by the
-<a href= "http://samm.univ-paris1.fr/">SAMM</a> team under the
+<a href= "http://samm.univ-paris1.fr/">SAMM</a> team and the 
+<a href= "carlit.toulouse.inra.fr">MIA-T</a> team under the
 <a href= "https://www.gnu.org/licenses/gpl-2.0.html">GPL-2.0</a>
 license, and was developed by Julien Boelaert, 
 <a href= http://samm.univ-paris1.fr/-Madalina-Olteanu->Madalina Olteanu</a> and
 <a href= http://www.nathalievilla.org/> Nathalie Villa-Vialaneix</a>, using
-<a href="http://www.rstudio.com/shiny/">Shiny</a>. Its source code is freely
-available on github: <br> <span style="font-size:12px;font-family:courrier;
-background-color:#FADDF2;border:1px solid black;"><font color="#870500"><b>
+<a href="http://www.rstudio.com/shiny/">Shiny</a>. It is also included in the 
+<strong>R</strong> package 
+<a href="http://sombrero.r-forge.r-project.org/">SOMbrero</a>. Its source code
+is freely available on github: <br> 
+<span style="font-size:12px;font-family:courrier; background-color:#FADDF2;
+border:1px solid black;"><font color="#870500"><b>
 git clone https://github.com/tuxette/sombrero.git</b></font></code></span>')),
     br(),
     
@@ -40,12 +47,8 @@ Correspondence Analysis. In: <I>Proceedings of IWANN’93</I>,
 <span style="font-variant: small-caps;">J. Cabestany, J. Mary, A. Prieto</span>
 (Eds.), <I>Lecture Notes in Computer Science, </I>Springer-Verlag, 305–311.</li>
 <li> <span style="font-variant: small-caps;">Olteanu M., Villa-Vialaneix N.,
-Cottrell M.</span> (2012) On-line relational SOM for dissimilarity data. 
-<i>Advances in Self-Organizing Maps (Proceedings of WSOM 2012, Santiago, Chili, 
-12-14 decembre 2012)</i>, <span style="font-variant: small-caps;">Estevez P.,
-Principe J., Zegers P., Barreto G.</span> (Eds.), <I>Advances in Intelligent 
-Systems and Computing series</I>, Berlin/Heidelberg: Springer Verlag, 198,
-13-22</li>'))
+Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
+<em>Neurocomputing</em>, <strong>147</strong>, 15-30.</li>'))
   ),
 
   mainPanel(
@@ -75,12 +78,11 @@ proceed).')),
                checkboxInput('header', ' Header?', TRUE),
                checkboxInput('rownames', ' Row names?', FALSE),
                selectInput('sep', 'Separator:',
-                           c(Comma=',', Semicolon=';', Tab='\t', Space=' '),
-                           'Comma'),
-               selectInput('quote', 'Quote:',  
-                           c(None='', 'Double Quote'='"', 'Single Quote'="'"), 
+                           c("Comma","Semicolon","Tab","Space"), 'Comma'),
+               selectInput('quote', 'Quote:',
+                           c("None","Double Quote","Single Quote"), 
                            'Double Quote'),
-               selectInput('dec', 'Decimal mark', c(Period='.', Comma=','),
+               selectInput('dec', 'Decimal mark', c("Period", "Comma"),
                            'Period'),
                numericInput('nrow.preview','Number of rows in the preview:',20),
                numericInput('ncol.preview', 'Number of columns in the preview:',
@@ -117,14 +119,11 @@ adequate parameter values.')),
                numericInput("dimx", "Map dimension X:", 5, min= 1),
                numericInput("dimy", "Map dimension Y:", 5, min= 1),
                h4("Advanced options"),
+               uiOutput("initproto"),
                numericInput("maxit", "Max. iterations:", 500),
-               selectInput("disttype", "Distance type:", 
-                           c("letremy"="letremy", "maximum"="maximum",
-                             "euclidean"="euclidean", "manhattan"="manhattan",
-                             "canberra"="canberra", "binary"="binary",
-                             "minkowski"="minkowski")),
+               uiOutput("disttype"),
                selectInput("radiustype", "Radius type:", 
-                           list("Piecewise linear"= "letremy")),
+                           c("letremy","gaussian")),
                uiOutput("scaling"),
                numericInput("randseed",
                             HTML("Set a random seed for reproducible results
@@ -134,7 +133,6 @@ adequate parameter values.')),
                             min= 0.01, step= .01),
                numericInput("nb.save", "Number of intermediate back-ups:", 0,
                             min= 0), 
-               uiOutput("initproto"),
                p(HTML("<span style='font-size:10px'><a name='pseudor'><sup>(1)
 </sup></a> SOMbrero is based on a stochastic (on-line) version of the SOM
 algorithm and thus uses randomness. Setting a seed results in fixing the random
@@ -191,8 +189,8 @@ resulting clustering in csv format and visualize it on charts. The 'dendrogram'
 plot can help you determine the adequate number of superclasses."),
                
                selectInput("sc.cut.choice", "Choose clustering criterion:",
-                           choices= c("Number of superclasses"= "nclust", 
-                                      "Height in dendrogram"=  "tree.height"),
+                           choices= c("Number of superclasses", 
+                                      "Height in dendrogram"),
                            "Number of superclasses"),
                uiOutput("scHorK"), #  Superclass Height or K (nb of clusters)
                actionButton("superclassbutton","Compute superclasses"),
@@ -246,12 +244,12 @@ to the number of rows ."),
                checkboxInput('header2', ' Header?', TRUE),
                checkboxInput('rownames2', ' Row names?', FALSE),
                selectInput('sep2', 'Separator:', 
-                           c(Comma=',', Semicolon=';', Tab='\t', Space=' '),
+                           c("Comma", "Semicolon", "Tab", "Space"),
                            'Comma'),
                selectInput('quote2', 'Quote:',  
-                           c(None='', 'Double Quote'='"', 'Single Quote'="'"), 
+                           c("None", "Double Quote", "Single Quote"), 
                            'Double Quote'),
-               selectInput('dec2', 'Decimal mark', c(Period='.', Comma=','),
+               selectInput('dec2', 'Decimal mark', c("Period", "Comma"),
                            'Period'),
                numericInput('nrow.preview.add', 
                             'Number of rows in the preview:', 20),
@@ -346,20 +344,22 @@ Default is five times the number of observations.</li>
 the map are neighbors. Default type is 'Letremy' that was originally proposed in
 the <a href='http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme'>SAS
 programs</a> by <a href='http://samm.univ-paris1.fr/-Patrick-Letremy-'> Patrick
-Letremy</a>.</li>
+Letremy</a> but all methods for 'dist' are also available.</li>
 <li><b>Radius type:</b> neighborhood type used to determine which prototypes of
-the map are neighbors. Default type is 'piecewise linear' as originally 
+the map are neighbors. Default type is 'letremy' as originally 
 implemented in the <a 
 href='http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme'>SAS
 programs</a> by <a href='http://samm.univ-paris1.fr/-Patrick-Letremy-'> Patrick
-Letremy</a>.</li>
+Letremy</a> (it combines square and star-like neighborhoods along the learning)
+but a Gaussian neighborhood can also be computed.</li>
 <li><b>Data scaling:</b> choose how the data must be scaled before training.
 Scaling is used to ensure all variables have the same importance during
-training, regardless of absolute magnitude.<br /> 'none' means no scaling,
+training, regardless of absolute magnitude. 'none' means no scaling,
 'center' means variables are shifted to have 0 mean, 'unitvar' means variables
 are centered and divided by their standard deviation to ensure they all have 
-unit variance and '&chi;<sup>2</sup>' is used by the 'Korresp' algorithm. Only
-'none' is available for the 'Relational' algorithm.</li>
+unit variance and '&chi;<sup>2</sup>' is used by the 'Korresp' algorithm and 
+'cosine' is the dissimilarity transposition of the 'cosine' transformation 
+performed on kernels.</li>
 <li><b>Random seed:</b> Set the seed for the pseudorandom number generator used
 during the training. Be sure to remember the seed used for a training if you
 want to reproduce your results exactly, because running the algorithm with
@@ -376,8 +376,9 @@ the energy plot is not available.</li>
 are initialized at the beginning of training algorithm.<br /> If 'random' is
 chosen, prototypes will be given random values in the range of the data. If
 'obs', each prototype will be initialized to a random observation in the data.
-Advised values are 'random' for the 'Numeric' and the 'Korresp' algorithm and
-'obs' for the 'Relational' algorithm.")),
+If 'pca', prototypes are chosen along the first two PC of a PCA. Advised values
+are 'random' for the 'Numeric' and the 'Korresp' algorithm and 'obs' for the 
+'Relational' algorithm.")),
       
                p(HTML("<h3 id=plots> Types of plots</h3>")),
                p(HTML("Sombrero offers many different plots to analyze your
