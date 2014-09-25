@@ -1,11 +1,12 @@
 <!--
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{SOM for contingency tables}
+%\VignettePackage{SOMbrero}
 -->
 
 # Self-Organizing Map for contingency tables
 
-#### Laura BENDHAIBA, Madalina OLTEANU, Nathalie VILLA-VIALANEIX
+#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
 
 ## Basic package description
 
@@ -65,6 +66,7 @@ at its evolution
 ```{r energyPresi}
 plot(korresp.som, what="energy")
 ```
+
 which is stabilized during the last 100 iterations.
 
 ### Resulting clustering
@@ -114,6 +116,7 @@ by a hitmap:
 ```{r presiHitmap}
 plot(korresp.som, what="obs", type="hitmap")
 ```
+
 For a more precise view, ```"names"``` plot is implemented: it prints, 
 in each neuron, the names of the variables assigned to it ; in the korresp SOM, 
 both row and column variable names are printed.
@@ -160,6 +163,7 @@ plot(korresp.som, what="prototypes", type="lines", view="r", print.title=TRUE)
 # plot the column prototypes (16 candidates)
 plot(korresp.som, what="prototypes", type="lines", view="c", print.title=TRUE)
 ```
+
 The peaks in neurons 49, 57 and 58 correspond, in the row view, to the 
 overseas departement and, in the column view, to the candidate "Taubira". In the
 column views, the two peaks clearly identified in the central clusters
@@ -177,6 +181,7 @@ par(mfrow=c(1,2))
 plot(korresp.som, what="prototypes", type="color", variable="LE_PEN")
 plot(korresp.som, what="prototypes", type="3d", variable="martinique")
 ```
+
 The first graphic shows that "Le Pen" obtained its best scores in the
 departements located in the top left hand side and in the top right hand side of
 the map and its lowest scores in the departements located in the bottom right
@@ -193,6 +198,7 @@ par(mfrow=c(1,2))
 plot(korresp.som, what="prototypes", type="color", variable=5, view="c")
 plot(korresp.som, what="prototypes", type="3d", variable=5, view="c")
 ```
+
 Hence "Chirac" has a rather central position on the map which illustrates the
 fact that he is actually a "traditional" candidate with almost uniform votes
 in the whole country.
@@ -204,12 +210,16 @@ These graphics are exactly the same as in the numerical case:
 polygons plotted for each cell of the grid. The smaller the distance between 
 a polygon's vertex and a cell border, the closer the pair of prototypes.
 The colors indicates the number of observations in the neuron (white=empty);
+
 * ```"umatrix"``` fills the neurons of the grid using colors that represent
 the average distance between the current prototype and its neighbors;
+
 * ```"smooth.dist"``` plots the mean distance between the current prototype and 
 its neighbors with a color gradation;
+
 * ```"mds"``` plots the number of the neuron on a map according to a Multi
 Dimensional Scaling (MDS) projection;
+
 * ```"grid.dist"``` plots a point for each pair of prototypes, with x 
 coordinates representing the distance between the prototypes in the 
 input space, and y coordinates representing the distance between the 
@@ -221,6 +231,7 @@ plot(korresp.som, what="prototypes", type="smooth.dist", print.title=TRUE)
 plot(korresp.som, what="prototypes", type="mds")
 plot(korresp.som, what="prototypes", type="grid.dist")
 ```
+
 Three neurons (49, 57 and 58) have been already picked out in the 
 section __Clustering interpretation__ for having prototypes rather different
 than the rest of the map. The graphics just above confirm this hypothesis: there
@@ -259,6 +270,7 @@ suits your data.
 ```{r presiSC1}
 plot(superClass(korresp.som))
 ```
+
 By default, the function plots both a dendrogram and the evolution of the
 percentage of explained variance. Here, 3 super clusters seem to be a good
 choice. The output of ```superClass``` is a ```somSC``` class object.
@@ -280,9 +292,9 @@ Case ```"dendro3d"``` plots a 3d dendrogram.
 plot(my.sc, type="grid", plot.legend=TRUE)
 plot(my.sc, type="dendro3d")
 ```
+
 The 3 different neurons mentionned earlier have been gathered together in the 
 super cluster 3.
-
 
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:

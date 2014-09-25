@@ -14,6 +14,7 @@ export(trainSOM)
 export(quality)
 export(superClass)
 export(protoDist)
+export(projectIGraph)
 export(sombreroGUI)
 
 # myGrid S3 functions
@@ -33,6 +34,7 @@ S3method(predict,somRes)
 S3method(quality,somRes)
 S3method(superClass,somRes)
 S3method(protoDist,somRes)
+S3method(projectIGraph,somRes)
 
 # somSC S3 functions
 S3method(print,somSC)

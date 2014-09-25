@@ -1,11 +1,12 @@
 <!--
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{SOMbrero package}
+%\VignettePackage{SOMbrero}
 -->
 
 # SOMbrero package
 
-#### Laura BENDHAIBA, Madalina OLTEANU, Nathalie VILLA-VIALANEIX
+#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
 
 
 ![logo](./sombrero.png)

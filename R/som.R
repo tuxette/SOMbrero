@@ -718,3 +718,19 @@ protoDist.somRes <- function(object, mode=c("complete","neighbors"), ...) {
 protoDist <- function(object, mode,...) {
   UseMethod("protoDist")
 }
+
+projectIGraph.somRes <- function(object, init.graph, ...) {
+  if (!is.igraph(init.graph)) {
+    stop("'init.graph' must be an igraph object\n", call.=TRUE)
+  }
+  if (vcount(init.graph)!=length(object$clustering)) {
+    stop("The number of vertexes of 'init.graph' does not match the clustering length\n", call.=TRUE)
+  }
+  proj.graph <- projectGraph(init.graph, object$clustering,
+                             object$parameters$the.grid)
+  return(proj.graph)
+}
+
+projectIGraph <- function(object, init.graph, ...) {
+  UseMethod("projectIGraph")
+}

@@ -1,11 +1,12 @@
 <!--
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{SOM for dissimilarity data}
+%\VignettePackage{SOMbrero}
 -->
 
 # Self-Organizing Map for dissimilarity matrices
 
-#### Laura BENDHAIBA, Madalina OLTEANU, Nathalie VILLA-VIALANEIX
+#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
 
 ## Basic package description
 
@@ -87,17 +88,18 @@ plot(lesmis, vertex.size=0)
 
 The ```dissim.lesmis``` object is a matrix with entries equal to the length of 
 the shortest path between two characters (obtained with the function
-```shortest.paths``` of package ```igraph````). Note that its row and column
+```shortest.paths``` of package ```igraph```). Note that its row and column
 names have been initialized to the characters' names to ease the use of the 
 graphical functions of ```SOMbrero```.
 
 ### Training the SOM
 
 ```{r lesmisTrain, cache=TRUE}
-set.seed(4031719)
+set.seed(7383)
 mis.som <- trainSOM(x.data=dissim.lesmis, type="relational", nb.save=10)
 plot(mis.som, what="energy")
 ```
+
 The dissimilarity matrix ```dissim.lesmis``` is passed to the ```trainSOM``` 
 function as input. As the SOM intermediate backups have been registered
 (```nb.save=10```), the energy evolution can be plotted: it stabilized in the
@@ -113,11 +115,13 @@ mis.som$clustering
 table(mis.som$clustering)
 plot(mis.som)
 ```
+
 The clustering can be displayed using the ```plot``` function
 with ```type=names```.
 ```{r lesmisPseudoNamesPlot, fig.height=12, fig.width=12, warning=FALSE}
 plot(mis.som, what="obs", type="names")
 ```
+
 or by sur-imposing the original igraph object on the map:
 ```{r lesmisProjGraph}
 plot(mis.som, what="add", type="graph", var=lesmis)
@@ -129,27 +133,34 @@ plot(mis.som, what="prototypes", type="lines")
 plot(mis.som, what="prototypes", type="barplot")
 plot(mis.som, what="prototypes", type="radar")
 ```
+
 On these graphics, one variable is represented respectively with a point, a bar
 or a slice. It is therefore easy to see which variable affects which cluster.
 
 To see how different the clusters are, some graphics show the distances between 
 prototypes. These graphics have exactly the same behaviour as in the other SOM 
 types.
+
 * ```"poly.dist"``` represents the distances between neighboring prototypes with
 polygons plotted for each cell of the grid. The smaller the distance between 
 a polygon's vertex and a cell border, the closer the pair of prototypes.
 The colors indicates the number of observations in the neuron (white is used
 for empty neurons);
+
 * ```"umatrix"``` fills the neurons of the grid using colors that represent
 the average distance between the current prototype and its neighbors;
+
 * ```"smooth.dist"``` plots the mean distance between the current prototype and 
 its neighbors with a color gradation;
+
 * ```"mds"``` plots the number of the neuron on a map according to a Multi
 Dimensional Scaling (MDS) projection;
+
 * ```"grid.dist"``` plots a point for each pair of prototypes, with x 
 coordinates representing the distance between the prototypes in the 
 input space, and y coordinates representing the distance between the 
 corresponding neurons on the grid.
+
 ```{r lesmisProtoDist}
 plot(mis.som, what="prototypes", type="poly.dist", print.title=TRUE)
 plot(mis.som, what="prototypes", type="smooth.dist")
@@ -157,17 +168,19 @@ plot(mis.som, what="prototypes", type="umatrix", print.title=TRUE)
 plot(mis.som, what="prototypes", type="mds")
 plot(mis.som, what="prototypes", type="grid.dist")
 ```
-Here we can see that the prototypes 5 and 12 are far from the others.
+
+Here we can see that the prototypes 21 and 22 are far from the others.
 
 Finally, with a graphical overview of the clustering
 ```{r lesmisColorOverview, fig.height=12, fig.width=12}
 plot(lesmis, vertex.label.color=rainbow(25)[mis.som$clustering], vertex.size=0)
 legend(x="left", legend=1:25, col=rainbow(25), pch=19)
 ```
-We can see that cluster 5 is very relevant to the story: as the characters of
+
+We can see that cluster 25 is very relevant to the story: as the characters of
 this cluster appear only in the sub-story of the Bishop ```Myriel```, he is the
-only connection for all other characters of cluster 5. The same kind of
-conclusion holds for cluster 25, among others. Most of the other clusters have a
+only connection for all other characters of cluster 21. The same kind of
+conclusion holds for cluster 1, among others. Most of the other clusters have a
 small number of observations: it thus seems relevant to compute super clusters.
 
 ### Compute super clusters
@@ -178,6 +191,7 @@ the dendrogram:
 ```{r lesmisSCOverview}
 plot(superClass(mis.som))
 ```
+
 According to the proportion of variance explained by super clusters, 6 groups 
 seem to be a good choice.
 ```{r lesmisSC}
@@ -190,26 +204,37 @@ plot(sc.mis, type="lines", print.title=TRUE)
 plot(sc.mis, type="mds", plot.legend=TRUE)
 plot(sc.mis, type="dendro3d")
 ```
-As we mentionned above, cluster 5 is far away from the others, it is 
-therefore a super cluster itself (super cluster 2). 
+
 
 ```{r lesmisSCColorOverview, fig.width=12, fig.height=12}
+library(RColorBrewer)
 plot(lesmis, vertex.size=0, vertex.label.color=
        brewer.pal(6, "Set2")[sc.mis$cluster[mis.som$clustering]])
 legend(x="left", legend=paste("SC",1:6), col=brewer.pal(6, "Set2"), pch=19)
 ```
-* cluster 1 contains two of the main characters: ```Javert``` and ```Valjean```.
-* cluster 3 countains ```Fantine``` and the characters involved in her 
-sub-story.
+
+* cluster 1 constains ```Valjean``` which has a central position in the MDS
+visualization;
+
+* cluster 2 countains the Thenardier family: mister and misses ```Thenardier```,
+their daughter ```Eponine``` and also the characters involved in their story. It
+also contains Javert who is seeking to find the main character of the story,
+Valjean;
+
+* cluster 3 contains ```Gavroche```, the abandonned child of the
+```Thenardier```, and the characters of his sub-story;
+
 * cluster 4 contains ```Marius``` and his family: his mother, 
 Mrs. ```Pontmercy```, his father, lieutenant ```Gillenormand```, his 
 grandfather ```Gillenormand``` and his aunt miss ```Gillenormand``` ; it also 
-contains ```Cosette```, who will have an affair with him.
-* cluster 5 constains ```Gavroche```, the abandonned child of 
-the ```Thenardier```, and the characters of his sub-story.
-* cluster 6 countains the Thenardier family: mister and 
-misses ```Thenardier```, their daughter ```Eponine``` and also the characters 
-involved in their story.
+contains ```Cosette```, who will have an affair with him;
+
+* cluster 5 contains ```Myrial``` and the characters involved in his 
+sub-story;
+
+* cluster 6 countains ```Fantine``` and the characters involved in her 
+sub-story.
+
 
 ## Case study: the ```iris``` data set
 

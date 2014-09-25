@@ -18,7 +18,10 @@ this graph are \option{id}, a vertex number between 1 and 77, and
 \option{label}, the character's name. The edge attribute \option{value} gives 
 the number of co-appearances between the two characters afferent to the edge
 (the \code{\link[igraph]{igraph}} can thus be made a weighted graph using this
-attribute).
+attribute). Finally, a graph attribute \option{layout} is used to provide a 
+layout (generated with the \code{\link[igraph]{igraph}} function 
+\code{\link[igraph:layout.fruchterman.reingold]{layout.fruchterman.reingold}})
+for visualizing the graph.
 
 \code{dissim.lesmis} is a dissimilarity matrix computed with the function 
 \code{\link[igraph]{shortest.paths}} and containing the length of the shortest

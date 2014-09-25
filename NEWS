@@ -3,10 +3,17 @@ New features:
   Added PCA initialization
   Added Gaussian neighborhood (default parameters are still tentative)
   Added cosinus normalization for dissimilarity
+  Added ANOVA like analyses for relational SOM interpretation
+  Included a function to project an 'igraph' object on the grid
+
+Fixed bugs:
+  Fixed a bug in the computation of projected graph. Only edges with non zero
+counts for the number of links are now listed in the edge list.
 
 Misc:
   Added tests: to check the equivalence between automatic and manual scaling and
 the equivalence between predicted clustering and the output of predict
+  Updated vignettes
 
 ********************************************************************************
 SOMbrero 0.4-1

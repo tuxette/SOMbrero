@@ -1,11 +1,12 @@
 <!--
-%\VignetteEngine{knitr}
+%\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{A basic vignette on grids in SOMbrero}
+%\VignettePackage{SOMbrero}
 -->
 
-# Self-Organizing Maps with ```SOMbrero```
+# A basic vignette on grids in SOMbrero
 
-#### Laura BENDHAIBA, Madalina OLTEANU, Nathalie VILLA-VIALANEIX
+#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
 
 ## Definition and purpose of a myGrid class object
 

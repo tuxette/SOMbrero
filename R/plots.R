@@ -44,16 +44,16 @@ projectGraph <- function(the.graph, clustering, the.grid) {
   nonempty.neurons <- sort(unique(clustering))
   p.edges <- NULL
   p.edges.weights <- NULL
-  v.sizes <- length(as.vector(V(the.graph)[which(clustering==
-                                                   nonempty.neurons[1])]))
-  for (neuron in nonempty.neurons[-1]) {
+  v.sizes <- as.vector(table(clustering))
+  for (neuron in nonempty.neurons) {
     v.neuron <- as.vector(V(the.graph)[which(clustering==neuron)])
-    v.sizes <- c(v.sizes,length(v.neuron))
     for (neuron2 in setdiff(nonempty.neurons,1:neuron)) {
-      p.edges <- c(p.edges, neuron, neuron2)
       v.neuron2 <- as.vector(V(the.graph)[which(clustering==neuron2)])
-      p.edges.weights <- c(p.edges.weights,
-                           length(E(the.graph)[from(v.neuron) & to(v.neuron2)]))
+      nb.edges <- length(E(the.graph)[from(v.neuron) & to(v.neuron2)])
+      if (nb.edges > 0) {
+        p.edges <- c(p.edges, neuron, neuron2)
+        p.edges.weights <- c(p.edges.weights, nb.edges)
+      }
     }
   }
   proj.graph <- graph.data.frame(matrix(p.edges, ncol=2, byrow=TRUE),
