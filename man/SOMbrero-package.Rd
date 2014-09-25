@@ -19,7 +19,7 @@ parameters given to the algorithm (see \code{\link{initSOM}} and
 Package: \tab SOMbrero\cr
 Type: \tab Package\cr
 Version: \tab 0.4-2\cr
-Date: \tab 2014-09-23\cr
+Date: \tab 2014-09-25\cr
 License: \tab GPL (>= 2)\cr
 URL: \tab \url{http://sombrero.r-forge.r-project.org/} \cr
 }

@@ -11,17 +11,16 @@ The \code{initSOM} function returns a \code{paramSOM} class object which
 contains the parameters needed to run the SOM algorithm.
 }
 \usage{
-initSOM(dimension=c(5,5), topo=c("square"),
+initSOM(dimension=c(5,5), topo=c("square"), 
+        radius.type=c("letremy", "gaussian"),
         dist.type=switch(match.arg(radius.type),
                          "letremy"="letremy", "gaussian"="euclidean"),
-                    type=c("numeric", "relational", "korresp"), 
-                    mode=c("online"), maxit=500, nb.save=0, verbose=FALSE,
-                    proto0=NULL, init.proto=switch(type, "numeric"="random",
-                                                   "relational"="obs",
-                                                   "korresp"="random"),
-                    scaling=switch(type, "numeric"="unitvar", 
-                                   "relational"="none", "korresp"="chi2"), 
-                    radius.type=c("letremy", "gaussian"), eps0=1)
+        type=c("numeric", "relational", "korresp"), mode=c("online"), 
+        maxit=500, nb.save=0, verbose=FALSE, proto0=NULL, 
+        init.proto=switch(type, "numeric"="random", "relational"="obs",
+                          "korresp"="random"),
+        scaling=switch(type, "numeric"="unitvar", "relational"="none",
+                       "korresp"="chi2"), eps0=1)
 \method{print}{paramSOM}(x, \ldots)
 \method{summary}{paramSOM}(object, \ldots)
 }
