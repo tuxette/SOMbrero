@@ -4,6 +4,10 @@ New features:
   Added Gaussian neighborhood (default parameters are still tentative)
   Added cosinus normalization for dissimilarity
 
+Misc:
+  Added tests: to check the equivalence between automatic and manual scaling and
+the equivalence between predicted clustering and the output of predict
+
 ********************************************************************************
 SOMbrero 0.4-1
 New features:
@@ -19,7 +23,7 @@ Fixed bugs:
   Changed scree plot title and ylabel to "proportion of unexplained variables"
 
 Misc:
-  Added test : equivalence of numeric SOM and relational SOM on squared 
+  Added test: equivalence of numeric SOM and relational SOM on squared 
 euclidian distance
 
 ********************************************************************************

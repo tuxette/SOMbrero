@@ -75,8 +75,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
                  type=type, mode=match.arg(mode), maxit=maxit,
                  nb.save=nb.save, proto0=proto0,
                  init.proto=init.proto, 
-                 scaling=match.arg(scaling, c("unitvar", "none", "center", 
-                                              "chi2")),
+                 scaling=scaling,
                  radius.type=radius.type,
                  verbose=verbose, eps0=eps0)
   
