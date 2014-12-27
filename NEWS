@@ -1,3 +1,15 @@
+SOMbrero 0.5
+New features:
+  Added an option for affectation type ("standard"/hard or "heskes"/soft
+affectation)
+  Updated shiny interface accordingly
+
+Fixed bugs:
+  Fixed a bug related to dist.type in selectNei. This bug did not affect the
+learning in previous versions but could provide false values for protoDist
+after the training.
+
+********************************************************************************
 SOMbrero 0.4-2
 New features:
   Added PCA initialization

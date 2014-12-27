@@ -16,7 +16,8 @@ initSOM(dimension=c(5,5), topo=c("square"),
         dist.type=switch(match.arg(radius.type),
                          "letremy"="letremy", "gaussian"="euclidean"),
         type=c("numeric", "relational", "korresp"), mode=c("online"), 
-        maxit=500, nb.save=0, verbose=FALSE, proto0=NULL, 
+        affectation=c("standard", "heskes"), maxit=500, nb.save=0,
+        verbose=FALSE, proto0=NULL, 
         init.proto=switch(type, "numeric"="random", "relational"="obs",
                           "korresp"="random"),
         scaling=switch(type, "numeric"="unitvar", "relational"="none",
@@ -42,6 +43,9 @@ initSOM(dimension=c(5,5), topo=c("square"),
   \item{type}{The SOM algorithm type. Possible values are: \code{numeric} 
   (default value), \code{korresp} and \code{relational}.}
   \item{mode}{The SOM algorithm mode. Default value is \code{online}.}
+  \item{affectation}{The SOM affectation type. Default value is \code{standard}
+  which corresponds to a hard affectation. Alternative is \code{heskes} which
+  corresponds to Heskes's soft affectation.}
   \item{maxit}{The maximum number of iterations to be done during the SOM 
   algorithm process. Default value is \code{500}. Other data-driven defaults
   are set by function \code{trainSOM}.}
@@ -96,6 +100,9 @@ Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 \references{
 Ben-Hur A., Weston J. (2010) A user's guide to support vector machine. In:
 \emph{Data Mining Techniques for the Life Sciences}, Springer-Verlag, 223-239.
+
+Heskes T. (1999) Energy functions for self-organizing maps. In: \emph{Kohonen
+Maps}, Oja E., Kaski S. (Eds.), Elsevier, 303-315.
 
 Lee J., Verleysen M. (2007) \emph{Nonlinear Dimensionality Reduction}.
 Information Science and Statistics series, Springer.

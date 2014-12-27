@@ -1,7 +1,7 @@
 # Define UI for dataset viewer application
 shinyUI(pageWithSidebar(
   # Application title
-  headerPanel("SOMbrero Web User Interface (v0.2)"),
+  headerPanel("SOMbrero Web User Interface (v0.2-2)"),
 
   #### Panel 'About' (right hand side)
   ##############################################################################
@@ -14,7 +14,7 @@ shinyUI(pageWithSidebar(
     p(HTML("<h5>Welcome to SOMbrero, the open-source on-line interface for 
 self-organizing maps (SOM).</h5> This interface trains SOM for numerical data,
 contingency tables and dissimilarity data using the <strong>R</strong> package
-<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v0.4-2). Train a
+<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v0.5). Train a
 map on your data and visualize their topology in three simple steps using the
 panels on the right.")),
     
@@ -65,11 +65,11 @@ When this is done, choose the SOM type of the left hand side panel and proceed
 to the next step: self-organize a map.")),
                p(HTML('The interface can be tested using example data files for
 the <a href= 
-"https://owncloud.nathalievilla.org/public.php?service=files&t=a4b83ca82bcfc740ee0700cb44324c47"> 
+"http://owncloud.nathalievilla.org/public.php?service=files&t=a4b83ca82bcfc740ee0700cb44324c47"> 
 numeric</a>, <a href= 
-"https://owncloud.nathalievilla.org/public.php?service=files&t=7a7db6e0a17127d8fe8ec43c0f6b0afd"> 
+"http://owncloud.nathalievilla.org/public.php?service=files&t=7a7db6e0a17127d8fe8ec43c0f6b0afd"> 
 korresp</a> and <a href= 
-"https://owncloud.nathalievilla.org/public.php?service=files&t=2bd5a14bbf636ab9afe495b46e0d523a">
+"http://owncloud.nathalievilla.org/public.php?service=files&t=2bd5a14bbf636ab9afe495b46e0d523a">
 relational </a> algorithms (download these files on your computer and
 proceed).')),
                
@@ -119,6 +119,8 @@ adequate parameter values.')),
                numericInput("dimx", "Map dimension X:", 5, min= 1),
                numericInput("dimy", "Map dimension Y:", 5, min= 1),
                h4("Advanced options"),
+               selectInput("affectation", "Affectation type:", 
+                           c("standard","heskes")),
                uiOutput("initproto"),
                numericInput("maxit", "Max. iterations:", 500),
                uiOutput("disttype"),
@@ -338,6 +340,10 @@ options at will:
 <li><b>Map dimensions:</b> choose the number of rows (X) and columns (Y) of the
 map, thus setting the number of prototypes. An advice value is to use the 
 square root of one tenth the number of observations.</li>
+<li><b>Affectation type:</b> type of affectation used during the training. 
+Default type is 'standard', which corresponds to a hard affectation, and
+the alternative is 'heskes', which is Heskes's soft affectation (see Heskes 
+(1999) for further details).</li>
 <li><b>Max. iterations:</b> the number of iterations of the training process.
 Default is five times the number of observations.</li>
 <li><b>Distance type:</b> type of distance used to determine which prototypes of

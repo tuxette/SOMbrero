@@ -7,16 +7,16 @@ library(SOMbrero) # Version 0.4
 options(shiny.maxRequestSize=30*1024^2)
 
 # SOM training function
-trainTheSom <- function(data, type, dimx, dimy, disttype, maxit, varnames, 
-                        rand.seed, scaling, eps0, init.proto, nb.save,
+trainTheSom <- function(data, type, dimx, dimy, affectation, disttype, maxit,
+                        varnames, rand.seed, scaling, eps0, init.proto, nb.save,
                         radiustype) {
   set.seed(rand.seed)
   
   if (type=="numeric")
     data <- data[, varnames]
-  trainSOM(data, dimension=c(dimx,dimy), dist.type=disttype, maxit=maxit,
-           type=type, scaling=scaling, init.proto=init.proto,
-           nb.save=nb.save, radius.type=radiustype)
+  trainSOM(data, dimension=c(dimx,dimy), affectation=affectation, 
+           dist.type=disttype, maxit=maxit, type=type, scaling=scaling, 
+           init.proto=init.proto, nb.save=nb.save, radius.type=radiustype)
 }
 
 # List of somplot types options per SOM type and "what" :
@@ -202,6 +202,7 @@ shinyServer(function(input, output, session) {
     input$trainbutton
     server.env$current.som <- isolate(trainTheSom(current.table, input$somtype, 
                                                   input$dimx, input$dimy, 
+                                                  input$affectation,
                                                   input$disttype, input$maxit, 
                                                   varnames=input$varchoice, 
                                                   rand.seed=input$randseed, 

@@ -8,7 +8,7 @@ Predict the classification of a new observation
 \description{Predict the neuron where a new observation is classified}
 
 \usage{
-\method{predict}{somRes}(object, x.new=NULL, ..., tolerance=10^(-10))
+\method{predict}{somRes}(object, x.new=NULL, ..., radius=0, tolerance=10^(-10))
 }
 
 \arguments{
@@ -16,6 +16,10 @@ Predict the classification of a new observation
 \item{x.new}{a new observation (optional). Default values is NULL which
 corresponds to performing prediction on the training dataset}
 \item{...}{not used}
+\item{radius}{current radius used to perform soft affectation (when 
+\code{affectation="heskes"}, see \code{\link{initSOM}} for further details
+about Heskes's soft affectation). Default value is \option{0}, which corresponds
+to a hard affectation.}
 \item{tolerance}{numeric tolerance (to avoid numeric instability during 'cosine'
 pre-processing). Default value is \option{10^(-10)}}
 }

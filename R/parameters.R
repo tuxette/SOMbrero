@@ -5,7 +5,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
                                      "letremy"="letremy", 
                                      "gaussian"="euclidean"),
                     type=c("numeric", "relational", "korresp"), 
-                    mode=c("online"), 
+                    mode=c("online"), affectation=c("standard", "heskes"),
                     maxit=500, nb.save=0, verbose=FALSE, proto0=NULL, 
                     init.proto=switch(type,
                                       "numeric"="random",
@@ -17,6 +17,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
                                    "korresp"="chi2"), eps0=1) {
   type <- match.arg(type)
   radius.type <- match.arg(radius.type)
+  affectation <- match.arg(affectation)
   scaling <- match.arg(scaling,
                        c("unitvar", "none", "center", "chi2", "cosine"))
   dist.type <- match.arg(dist.type, c("letremy", "maximum", "euclidean",
@@ -72,14 +73,10 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
   
   params <- list("the.grid"=initGrid(dimension,match.arg(topo),
                                      dist.type),
-                 type=type, mode=match.arg(mode), maxit=maxit,
-                 nb.save=nb.save, proto0=proto0,
-                 init.proto=init.proto, 
-                 scaling=scaling,
-                 radius.type=radius.type,
-                 verbose=verbose, eps0=eps0)
-  
-  ## TODO: to add later: other types, other modes (?)
+                 type=type, mode=match.arg(mode), affectation=affectation,
+                 maxit=maxit, nb.save=nb.save, proto0=proto0,
+                 init.proto=init.proto, scaling=scaling, 
+                 radius.type=radius.type, verbose=verbose, eps0=eps0)
   
   class(params) <- "paramSOM"
   
@@ -90,6 +87,7 @@ print.paramSOM <- function(x,...){
   cat("\n  Parameters of the SOM\n\n")
   cat("    SOM mode                       : ", x$mode, "\n")
   cat("    SOM type                       : ", x$type, "\n")
+  cat("    Affectation type               : ", x$affectation, "\n")
   cat("    Grid                           : ")
   print(x$the.grid)
   cat("    Number of iterations           : ", x$maxit, "\n")

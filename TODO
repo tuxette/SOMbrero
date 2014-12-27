@@ -1,6 +1,6 @@
 * other features (easy)
-** add a function graph2SOM that projects a graph on the grid
-   (use projectGraph), create a class and a plot method for it
+** superclusters : make projGraph and output super-clusters for observations
+** superclusters : allows to cut the super-classes afterward (method)
 ** add weights to observations
 ** kaski lagus
 ** implement weighted graphs projection

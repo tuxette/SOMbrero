@@ -47,7 +47,7 @@ with ```help(presidentielles2002)```.
 
 ```{r loadData}
 data(presidentielles2002)
-apply(presidentielles2002,2,sum)
+apply(presidentielles2002, 2, sum)
 ```
 (the two candidates that ran the second round of the election were Jacques
 Chirac and the far-right candidate Jean-Marie Le Pen)

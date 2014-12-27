@@ -8,20 +8,19 @@
 
 #### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
 
-
 ![logo](./sombrero.png)
 
 ## Package description
-
-```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-library(SOMbrero)
-```
 
 ```SOMbrero```, which means 'Self Organizing Maps Bound to Realize Euclidean 
 and Relational Outputs', implements several variants of the stochastic
 Self-Organising Maps and is able to handle numeric and non numeric data sets.
 
 See ```help(SOMbrero)``` for further details.
+
+```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
+library(SOMbrero)
+```
 
 ### Numeric SOM
 

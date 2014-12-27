@@ -91,9 +91,10 @@ calculateRadius <- function(the.grid, radius.type, ind.t, maxit) {
   r
 }
 
-selectNei <- function(the.neuron, the.grid, radius, radius.type, dist.type) {
+selectNei <- function(the.neuron, the.grid, radius, radius.type, 
+                      dist.type=the.grid$dist.type) {
   if (radius.type=="letremy") {
-    if (the.grid$dist.type=="letremy") {
+    if (dist.type=="letremy") {
       if (radius==0.5) {
         the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
                                           method="euclidean"))[the.neuron,]
@@ -105,7 +106,7 @@ selectNei <- function(the.neuron, the.grid, radius, radius.type, dist.type) {
       }
     } else {
       the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
-                                 method=the.grid$dist.type))[the.neuron,]
+                                 method=dist.type))[the.neuron,]
       the.nei <- which(the.dist<=radius)
     }
   } else if (radius.type=="gaussian") {
@@ -288,13 +289,56 @@ selectObs <- function(ind.t, ddim, type) {
 }
 
 # Step 6: Assignment step
-oneObsAffectation <- function(x.new, prototypes, type, x.data=NULL) {
-  if (type=="relational") {
-    the.neuron <- which.min(prototypes%*%x.new-
-                              0.5*diag(prototypes%*%x.data%*%
-                                         t(prototypes)))
-  } else the.neuron <- which.min(apply(prototypes, 1, distEuclidean, y=x.new))
-
+oneObsAffectation <- function(x.new, prototypes, type, affectation, x.data=NULL,
+                              radius.type=NULL, radius=NULL, the.grid=NULL) {
+  if (affectation=="standard") {
+    if (type=="relational") {
+      the.neuron <- which.min(prototypes%*%x.new-
+                                0.5*diag(prototypes%*%x.data%*%
+                                           t(prototypes)))
+    } else the.neuron <- which.min(apply(prototypes, 1, distEuclidean, y=x.new))
+  } else {# Heskes's soft affectation
+    if (type=="relational") {
+      if (radius.type!="letremy") {
+        the.dist <- prototypes%*%x.new-0.5*diag(prototypes%*%x.data%*%
+                                                  t(prototypes))
+        final.dist <- sapply(1:nrow(prototypes), function(a.neuron) {
+          the.nei <- selectNei(a.neuron, the.grid, radius, radius.type,
+                               the.grid$dist.type)
+          return(sum(the.dist*the.nei))
+        })
+        the.neuron <- which.min(final.dist)
+      } else {
+        the.dist <- prototypes%*%x.new-0.5*diag(prototypes%*%x.data%*%
+                                                  t(prototypes))
+        final.dist <- sapply(1:nrow(prototypes), function(a.neuron) {
+          the.nei <- selectNei(a.neuron, the.grid, radius, radius.type,
+                               the.grid$dist.type)
+          return(sum(the.dist[the.nei]))
+        })
+        the.neuron <- which.min(final.dist)
+      }
+    } else {
+      if (radius.type!="letremy") {
+        the.dist <- apply(prototypes, 1, distEuclidean, y=x.new)
+        final.dist <- sapply(1:nrow(prototypes), function(a.neuron) {
+          the.nei <- selectNei(a.neuron, the.grid, radius, radius.type,
+                               the.grid$dist.type)
+          return(sum(the.dist*the.nei))
+        })
+        the.neuron <- which.min(final.dist)
+      } else {
+        the.dist <- apply(prototypes, 1, distEuclidean, y=x.new)
+        final.dist <- sapply(1:nrow(prototypes), function(a.neuron) {
+          the.nei <- selectNei(a.neuron, the.grid, radius, radius.type,
+                               the.grid$dist.type)
+          return(sum(the.dist[the.nei]))
+        })
+        the.neuron <- which.min(final.dist)
+      }
+    }
+  }
+  
   the.neuron
 }
 
@@ -455,14 +499,16 @@ trainSOM <- function (x.data, ...) {
       cur.prototypes <- prototypes
       cur.obs <- sel.obs
     }
-    # Assign
-    winner <- oneObsAffectation(cur.obs, cur.prototypes, parameters$type,
-                                norm.x.data)
-    
-    ## Step 7: Representation step
     # Radius value
     radius <- calculateRadius(parameters$the.grid, parameters$radius.type,
                               ind.t, parameters$maxit)
+    # Assign
+    winner <- oneObsAffectation(cur.obs, cur.prototypes, parameters$type,
+                                parameters$affectation, norm.x.data, 
+                                parameters$radius.type, radius, 
+                                parameters$the.grid)
+    
+    ## Step 7: Representation step
     the.nei <- selectNei(winner, parameters$the.grid, radius, 
                          radius.type=parameters$radius.type,
                          dist.type=parameters$the.grid$dist.type)
@@ -499,7 +545,7 @@ trainSOM <- function (x.data, ...) {
         
         ind.s <- match(ind.t,backup$steps)
         backup$prototypes[[ind.s]] <- out.proto
-        backup$clustering[,ind.s] <- predict.somRes(res)
+        backup$clustering[,ind.s] <- predict.somRes(res, radius=radius)
         backup$energy[ind.s] <- calculateEnergy(norm.x.data,
                                                 backup$clustering[,ind.s],
                                                 prototypes, parameters, ind.t)
@@ -631,7 +677,8 @@ summary.somRes <- function(object, ...) {
   } 
 }
 
-predict.somRes <- function(object, x.new=NULL, ..., tolerance=10^(-10)) {
+predict.somRes <- function(object, x.new=NULL, ..., radius=0,
+                           tolerance=10^(-10)) {
   ## korresp
   if(object$parameters$type=="korresp") {
     if (!is.null(x.new)) 
@@ -639,17 +686,25 @@ predict.somRes <- function(object, x.new=NULL, ..., tolerance=10^(-10)) {
               the original data set\n'object'. x.new not used!", 
               call.=TRUE)
     norm.x.data <- korrespPreprocess(object$data)
-    winners.rows <- apply(norm.x.data[1:nrow(object$data),1:ncol(object$data)],
+    
+    winners.rows <- apply(norm.x.data[1:nrow(object$data), 1:ncol(object$data)],
                           1, oneObsAffectation,
                           prototypes=object$prototypes[,1:ncol(object$data)],
-                          type=object$parameters$type)
+                          type=object$parameters$type,
+                          affectation=object$parameters$affectation,
+                          radius.type=object$parameters$radius.type, 
+                          radius=radius, the.grid=object$parameters$the.grid)
+      
     winners.cols <- apply(norm.x.data[(nrow(object$data)+1):ncol(norm.x.data),
                                       (ncol(object$data)+1):ncol(norm.x.data)],
                           1, oneObsAffectation,
                           prototypes=object$prototypes[,(ncol(object$data)+1):
                                                          ncol(norm.x.data)],
-                          type=object$parameters$type)
-    winners <- c(winners.cols,winners.rows)
+                          type=object$parameters$type,
+                          affectation=object$parameters$affectation,
+                          radius.type=object$parameters$radius.type,
+                          radius=radius, the.grid=object$parameters$the.grid)
+    winners <- c(winners.cols, winners.rows)
   } else if (object$parameters$type=="numeric") { ## numeric
     if (is.null(x.new)) {
       x.new <- object$data
@@ -673,7 +728,10 @@ predict.somRes <- function(object, x.new=NULL, ..., tolerance=10^(-10)) {
     norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
                                   object$data)
     winners <- apply(norm.x.new, 1, oneObsAffectation, prototypes=norm.proto,
-                     type=object$parameters$type)
+                     type=object$parameters$type,
+                     affectation=object$parameters$affectation,
+                     radius.type=object$parameters$radius.type, radius=radius,
+                     the.grid=object$parameters$the.grid)
     } else if (object$parameters$type=="relational") { ## relational
       if (is.null(x.new)) {
         x.new <- object$data
@@ -698,7 +756,10 @@ predict.somRes <- function(object, x.new=NULL, ..., tolerance=10^(-10)) {
       norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
                                     object$data)
       winners <- apply(norm.x.new, 1, oneObsAffectation, prototypes=norm.proto,
-                       type=object$parameters$type, x.data=norm.x.data)
+                       type=object$parameters$type, x.data=norm.x.data,
+                       affectation=object$parameters$affectation,
+                       radius.type=object$parameters$radius.type, radius=radius,
+                       the.grid=object$parameters$the.grid)
     }
   return(winners)
 }
