@@ -38,34 +38,6 @@ words2Freq <- function(words, clustering, the.grid, type) {
   return(freq.words)
 }
 
-projectGraph <- function(the.graph, clustering, the.grid) {
-  # TODO: improve it to handle weighted graphs and directed graphs
-  all.neurons <- 1:prod(the.grid$dim)
-  nonempty.neurons <- sort(unique(clustering))
-  p.edges <- NULL
-  p.edges.weights <- NULL
-  v.sizes <- as.vector(table(clustering))
-  for (neuron in nonempty.neurons) {
-    v.neuron <- as.vector(V(the.graph)[which(clustering==neuron)])
-    for (neuron2 in setdiff(nonempty.neurons,1:neuron)) {
-      v.neuron2 <- as.vector(V(the.graph)[which(clustering==neuron2)])
-      nb.edges <- length(E(the.graph)[from(v.neuron) & to(v.neuron2)])
-      if (nb.edges > 0) {
-        p.edges <- c(p.edges, neuron, neuron2)
-        p.edges.weights <- c(p.edges.weights, nb.edges)
-      }
-    }
-  }
-  proj.graph <- graph.data.frame(matrix(p.edges, ncol=2, byrow=TRUE),
-                                 directed=FALSE,
-                                 vertices=data.frame("name"=nonempty.neurons,
-                                                     "sizes"=v.sizes))
-  E(proj.graph)$nb.edges <- p.edges.weights
-  proj.graph <- set.graph.attribute(proj.graph, "layout",
-                                    the.grid$coord[nonempty.neurons,])
-  return(proj.graph)
-}
-
 paramGraph <- function(the.grid, print.title, type) {
   if (print.title) {
     if(type%in%c("lines","pie","boxplot","names","words")) {
@@ -584,9 +556,50 @@ plotEnergy <- function(sommap, args) {
   }
 }
 
+projectFactor <- function(the.graph, clustering, the.factor, pie.color=NULL) {
+
+  if (!is.factor(the.factor)) the.factor <- as.factor(the.factor)
+  vertex.pie <- lapply(split(the.factor, factor(clustering)), table)
+  if (is.null(pie.color)) {
+    pie.color <- list(c(brewer.pal(8,"Set2"),
+                        brewer.pal(12,"Set3"))[1:nlevels(the.factor)])
+  }
+  return(list("vertex.pie"=vertex.pie, "vertex.pie.color"=pie.color))
+}
+
+plotProjGraph <- function(proj.graph, print.title=FALSE, the.titles=NULL, 
+                          s.radius=1, pie.graph=FALSE, pie.variable=NULL, ...) {
+  
+  args <- list(...)
+  args$x <- proj.graph
+  args$edge.width <- E(proj.graph)$weight/max(E(proj.graph)$weight)*10
+  if (is.null(s.radius)) s.radius <- 1
+  args$vertex.size <- s.radius*20*sqrt(V(proj.graph)$size)/
+    max(sqrt(V(proj.graph)$size))
+  if (is.null(args$vertex.label) & !print.title) args$vertex.label <- NA
+  if (print.title) {
+    if (is.null(args$vertex.label)) {
+      if (is.null(the.titles)) {
+        args$vertex.label <- V(proj.graph)$name
+      } else 
+        args$vertex.label <- the.titles[as.numeric(V(proj.graph)$name)]
+    }
+  }
+    
+  if (args$vertex.shape!="pie") {
+    if (is.null(args$vertex.color))
+      args$vertex.color <- brewer.pal(12,"Set3")[4]
+    if (is.null(args$vertex.frame.color))
+      args$vertex.frame.color <- brewer.pal(12,"Set3")[4]
+  }
+
+  par(bg="white")
+  do.call("plot.igraph", args)
+}
+
 plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     print.title, the.titles, is.scaled, s.radius, pie.graph,
-                    pie.variable, view, args) {
+                    pie.variable, args) {
   ## types : pie, color, lines, boxplot, names, words, graph, barplot, radar
   # to be implemented: graph
   
@@ -610,6 +623,8 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     stop("length of additional variable does not fit length of the original
          data", call.=TRUE)
   }
+  
+  # switch between different types
   if (type=="pie") {
     if (!is.factor(variable)) variable <- as.factor(variable)
     cluster.freq <- tapply(variable,sommap$clustering,table)
@@ -690,6 +705,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
                      print.title, the.titles, is.scaled,
                      sommap$parameters$the.grid, args)
   } else if (type=="graph") {
+    # controls
     if (!is.igraph(variable)){
       stop("for type='graph', argument 'variable' must be an igraph object\n", 
            call.=TRUE)
@@ -698,42 +714,35 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
       stop("length of additional variable does not fit length of the original
          data", call.=TRUE)
     }
-    proj.graph <- projectGraph(variable, sommap$clustering, 
-                               sommap$parameters$the.grid)
-    args$x <- proj.graph
-    args$edge.width <- E(proj.graph)$nb.edges/max(E(proj.graph)$nb.edges)*10
-    if (is.null(s.radius)) s.radius <- 1
-    args$vertex.size <- s.radius*20*sqrt(V(proj.graph)$sizes)/
-      max(sqrt(V(proj.graph)$sizes))
-    if (is.null(args$vertex.label) & !print.title) args$vertex.label <- NA
-    if (is.null(args$vertex.label) & print.title) 
-      args$vertex.label <- the.titles[as.numeric(V(proj.graph)$name)]
+    # case of pie
     if (pie.graph) {
-      if (is.null(pie.variable)) {
+      print("ok")
+      if (is.null(pie.variable)) 
         stop("pie.graph is TRUE, you must supply argument 'pie.variable'\n", 
              call.=TRUE)
-      }
-      if (nrow(as.matrix(pie.variable)) != nrow(sommap$data)){
+      
+      if (nrow(as.matrix(pie.variable)) != nrow(sommap$data)) {
         stop("length of argument 'pie.variable' does not fit length of the 
              original data", call.=TRUE)
       }
+      
       args$vertex.shape <- "pie"
-      if (!is.factor(pie.variable)) pie.variable <- as.factor(pie.variable)
-      args$vertex.pie <- lapply(split(pie.variable, factor(sommap$clustering)),
-                                table)
-      if (is.null(args$vertex.pie.color)) {
-        args$vertex.pie.color <- list(c(brewer.pal(8,"Set2"),
-                                      brewer.pal(12,"Set3")) 
-                                      [1:nlevels(pie.variable)])
-      }
-    } else {
-      if (is.null(args$vertex.color))
-        args$vertex.color <- brewer.pal(12,"Set3")[4]
-      if (is.null(args$vertex.frame.color))
-        args$vertex.frame.color <- brewer.pal(12,"Set3")[4]
-    }
-    par(bg="white")
-    do.call("plot.igraph", args)
+      if (is.null(args$vertex.pie.color)) args$vertex.pie.color <- NULL
+      proj.pie <- projectFactor(variable, sommap$clustering, pie.variable,
+                                pie.color=args$vertex.pie.color)
+      args$vertex.pie <- proj.pie$vertex.pie
+      args$vertex.pie.color <- proj.pie$vertex.pie.color
+    } else if (is.null(args$vertex.shape)) args$vertex.shape <- "circle"
+    
+    # create projected graph and plot
+    args$proj.graph <- projectGraph(variable, sommap$clustering, 
+                                    sommap$parameters$the.grid$coord)
+    args$print.title <- print.title
+    args$the.titles <- the.titles
+    args$s.radius <- s.radius
+    args$pie.graph <- pie.graph
+    args$pie.variable <- pie.variable
+    do.call("plotProjGraph", args)
   } else 
     stop("Sorry: this type is still to be implemented.", call.=TRUE)
 }
@@ -778,8 +787,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
          "energy"=plotEnergy(x, args),
          "add"=plotAdd(x, type, if (type!="graph") as.matrix(variable) else 
            variable, proportional, my.palette, print.title, the.titles, 
-                       is.scaled, s.radius, pie.graph, pie.variable, view, 
-                       args),
+                       is.scaled, s.radius, pie.graph, pie.variable, args),
          "obs"=plotObs(x, type, variable, my.palette, print.title, the.titles,
                        is.scaled, view, args))
 }

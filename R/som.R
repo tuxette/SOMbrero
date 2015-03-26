@@ -436,21 +436,21 @@ trainSOM <- function (x.data, ...) {
   }
   
   # Check proto0 also now that the parameters have been initialized
-  if (!is.null(param.args$proto0)) {
-    if ((param.args$type=="korresp")&&
-          (!identical(dim(param.args$proto0),
-                      as.integer(c(prod(param.args$dimension),
+  if (!is.null(parameters$proto0)) {
+    if ((parameters$type=="korresp")&&
+          (!identical(dim(parameters$proto0),
+                      as.integer(c(prod(parameters$dimension),
                                    ncol(x.data)+nrow(x.data)))))) {
       stop("initial prototypes dimensions do not match SOM parameters:
          in the current SOM, prototypes must have ", 
-           prod(param.args$dimension), " rows and ", 
+           prod(parameters$dimension), " rows and ", 
            ncol(x.data)+nrow(x.data), " columns\n", call.=TRUE)
-    } else if (!identical(dim(param.args$proto0),
-                          as.integer(c(prod(param.args$dimension),
+    } else if (!identical(dim(parameters$proto0),
+                          as.integer(c(prod(parameters$dimension),
                                        ncol(x.data))))) {
       stop("initial prototypes dimensions do not match SOM parameters:
          in the current SOM, prototypes must have ", 
-           prod(param.args$dimension), " rows and ", 
+           prod(parameters$dimension), " rows and ", 
            ncol(x.data), " columns\n", call.=TRUE)
     }
   }
@@ -599,6 +599,45 @@ trainSOM <- function (x.data, ...) {
   return(res)
 }
 
+projectGraph <- function(the.graph, clustering, coord.clustering) {
+  ## TODO: handle directed graph...
+  ## If directed, convert into undirected
+  if (is.directed(the.graph)) the.graph <- as.undirected(the.graph)
+  
+  all.neurons <- 1:nrow(coord.clustering)
+  nonempty.neurons <- sort(unique(clustering))
+  p.edges <- NULL # list of edges
+  p.edges.weights <- NULL # weights of the edges
+  if (is.null(V(the.graph)$size)) { # number of nodes
+    v.sizes <- as.vector(table(clustering))
+  } else {
+    v.sizes <- tapply(V(the.graph)$size, clustering, sum)
+  }
+  
+  for (neuron in nonempty.neurons) {
+    v.neuron <- as.vector(V(the.graph)[which(clustering==neuron)])
+    for (neuron2 in setdiff(nonempty.neurons, 1:neuron)) {
+      v.neuron2 <- as.vector(V(the.graph)[which(clustering==neuron2)])
+      if (is.null(E(the.graph)$weight)) {
+        nb.edges <- length(E(the.graph)[from(v.neuron) & to(v.neuron2)])
+      } else {
+        nb.edges <- sum(E(the.graph)[from(v.neuron) & to(v.neuron2)]$weight)
+      }
+      if (nb.edges > 0) {
+        p.edges <- c(p.edges, neuron, neuron2)
+        p.edges.weights <- c(p.edges.weights, nb.edges)
+      }
+    }
+  }
+  proj.graph <- graph.data.frame(matrix(p.edges, ncol=2, byrow=TRUE),
+                                 directed=FALSE, 
+                                 vertices=data.frame("name"=nonempty.neurons,
+                                                     "size"=v.sizes))
+  E(proj.graph)$weight <- p.edges.weights
+  proj.graph <- set.graph.attribute(proj.graph, "layout",
+                                    coord.clustering[nonempty.neurons,])
+  return(proj.graph)
+}
 
 ## S3 methods for somRes class objects
 ################################################################################
@@ -609,6 +648,7 @@ print.somRes <- function(x, ...) {
   cat("        ", x$parameters$the.grid$dim[1],"x",
       x$parameters$the.grid$dim[2],
       "grid with",x$parameters$the.grid$topo, "topology\n")
+  cat("         neighbourhood type:", x$parameters$radius.type,"\n")
 }
 
 summary.somRes <- function(object, ...) {
@@ -790,7 +830,7 @@ projectIGraph.somRes <- function(object, init.graph, ...) {
     stop("The number of vertexes of 'init.graph' does not match the clustering length\n", call.=TRUE)
   }
   proj.graph <- projectGraph(init.graph, object$clustering,
-                             object$parameters$the.grid)
+                             object$parameters$the.grid$coord)
   return(proj.graph)
 }
 

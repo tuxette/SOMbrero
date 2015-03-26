@@ -1,3 +1,10 @@
+* JSFdS
+** update de la documentation
+** update et vérification des vignettes
+** update et vérification de shiny
+** update fichiers de description
+** CRAN
+
 * other features (easy)
 ** superclusters : make projGraph and output super-clusters for observations
 ** superclusters : allows to cut the super-classes afterward (method)

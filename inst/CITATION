@@ -22,7 +22,7 @@ citEntry(
   volume = '147',
   pages = '15--30',
 
-  textVersion = paste('Olteanu M., Villa-Vialaneix N. (2013)',
+  textVersion = paste('Olteanu M., Villa-Vialaneix N. (2015)',
                 'On-line relational and multiple relational SOM.',
                 'Neurocomputing, 147, 15-30')
 )

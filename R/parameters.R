@@ -1,6 +1,6 @@
 ## These functions handle SOM learning
 initSOM <- function(dimension=c(5,5), topo=c("square"),
-                    radius.type=c("letremy", "gaussian"),
+                    radius.type=c("gaussian", "letremy"),
                     dist.type=switch(match.arg(radius.type), 
                                      "letremy"="letremy", 
                                      "gaussian"="euclidean"),

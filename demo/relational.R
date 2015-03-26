@@ -26,6 +26,6 @@ plot(lesmis.sc, type="barplot", print.title=TRUE)
 
 # projection quality indicators provide
 ## either the topographic error
-quality(lesmis.som, quality.type="t")
+quality(lesmis.som, quality.type="topographic")
 ## or the quantization error
-quality(lesmis.som, quality.type="q")
+quality(lesmis.som, quality.type="quantization")

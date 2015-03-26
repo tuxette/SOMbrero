@@ -1,3 +1,22 @@
+SOMbrero 1.0 (CRAN first release)
+New features:
+  projectIGraph now handles weighted graphs
+  added a type in plot.somSC that displays a projected graph based on 
+super-graph (see Olteanu & Villa-Vialaneix, Journal de la SFdS, 2015)
+
+Fixed bugs:
+  Fixed a bug related to proto0 when type was not set in trainSOM
+  Fixed a bug in summary.somSC when the number of clusters is not chosen yet
+  Removed parameter 'view' that was not used in internal function 'plotAdd'
+
+Misc:
+  Changed default neighbourhood to Gaussian. The default parameters for this
+neighbourhood are those already implemented in the R package 'yasomi'
+  Changed the internal function projGraph to handle projection for the SOM grid
+and for the super-clustering in a single function
+  Added the neighborhood type of the SOM in method print for the class somRes
+
+********************************************************************************
 SOMbrero 0.5
 New features:
   Added an option for affectation type ("standard"/hard or "heskes"/soft

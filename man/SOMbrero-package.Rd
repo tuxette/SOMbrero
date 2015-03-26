@@ -18,10 +18,9 @@ parameters given to the algorithm (see \code{\link{initSOM}} and
 \tabular{ll}{
 Package: \tab SOMbrero\cr
 Type: \tab Package\cr
-Version: \tab 0.5\cr
-Date: \tab 2014-12-27\cr
+Version: \tab 1.0\cr
+Date: \tab 2015-03-22\cr
 License: \tab GPL (>= 2)\cr
-URL: \tab \url{http://sombrero.r-forge.r-project.org/} \cr
 }
 The version of the SOM algorithm implemented in this package is the stochastic
 version.
@@ -57,6 +56,9 @@ l'analyse des donnees. SAS/IML programs for 'korresp'.
 
 Olteanu, M., Villa-Vialaneix, N. (2015) On-line relational and multiple
 relational SOM. \emph{Neurocomputing}, \strong{147}, 15-30. 
+
+Rossi, F. (2013) yasomi: Yet Another Self-Organising Map Implementation. R 
+package, version 0.3. \url{https://github.com/fabrice-rossi/yasomi}
 }
 \seealso{
 \code{\link{initGrid}}, \code{\link{trainSOM}}, \code{\link{plot.somRes}} and

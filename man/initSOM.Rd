@@ -12,7 +12,7 @@ contains the parameters needed to run the SOM algorithm.
 }
 \usage{
 initSOM(dimension=c(5,5), topo=c("square"), 
-        radius.type=c("letremy", "gaussian"),
+        radius.type=c("gaussian", "letremy"),
         dist.type=switch(match.arg(radius.type),
                          "letremy"="letremy", "gaussian"="euclidean"),
         type=c("numeric", "relational", "korresp"), mode=c("online"), 
@@ -32,6 +32,11 @@ initSOM(dimension=c(5,5), topo=c("square"),
   \code{trainSOM}.}
   \item{topo}{The topology to be used to build the grid of the \code{myGrid} 
   class object. Default value is \code{square}.}
+  \item{radius.type}{The neighbourhood type. Default value is \code{"gaussian"},
+  which corresponds to a Gaussian neighbourhood. Default parameters for this
+  neighbourhood are those implemented in the package \code{yasomi}. The 
+  alternative value corresponds to an piecewise linear neighbourhood as 
+  implementated by Patrick Letremy in his SAS programs.}
    \item{dist.type}{The neighborhood relationship on the grid. When 
   \code{radius.type} is \code{letremy}, default value is \code{letremy} 
   which is the original implementation by Patrick Letremy. When 
@@ -76,8 +81,6 @@ initSOM(dimension=c(5,5), topo=c("square"),
   back into its induced distance. For further details on this processing, have
   a look at the corresponding documentation in the directory "doc" of the
   package's installation directory.}
-  \item{radius.type}{The neighbourhood type. Default value is \code{"letremy"},
-  which corresponds to the original implementation by Patrick Letremy.}
   \item{eps0}{The scaling value for the stochastic gradient descent step
   in the prototypes' update. The scaling value for the stochastic gradient
   descent step is equal to
@@ -110,6 +113,9 @@ Information Science and Statistics series, Springer.
 Letremy, P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
 l'analyse des donnees. SAS/IML programs for 'korresp'.
 \url{http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme}.
+
+Rossi, F. (2013) yasomi: Yet Another Self-Organising Map Implementation. R 
+package, version 0.3. \url{https://github.com/fabrice-rossi/yasomi}
 }
 \seealso{
 See \link{initGrid} for creating a SOM prior structure (grid).

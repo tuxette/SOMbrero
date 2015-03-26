@@ -1,4 +1,4 @@
-############################### subfunctions ###################################
+############################### subfunctions ##################################
 dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
   if (tree$merge[ind,v.ind]<0) {
     res <- coord[abs(tree$merge[ind,v.ind]),]
@@ -13,7 +13,7 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
   return(res)
 }
 
-########################## super classes V0.2 #################################
+########################## super classes #####################################
 superClass.somRes <- function(sommap, method="ward.D", members=NULL, k=NULL,
                               h=NULL, ...) {
   if (sommap$parameters$type=="relational") {
@@ -58,62 +58,62 @@ summary.somSC <- function(object, ...) {
     names(output.clustering) <- seq_along(object$cluster)
     print(output.clustering)
     cat("\n")
-  }
   
-  if (object$som$parameters$type=="numeric") {
-    sc.clustering <- object$cluster[object$som$clustering]
-    cat("\n  ANOVA\n")
-    res.anova <- as.data.frame(t(sapply(1:ncol(object$som$data), function(ind) {
-      res.aov <- summary(aov(object$som$data[,ind]~as.factor(sc.clustering)))
-      c(round(res.aov[[1]][1,4],digits=3), round(res.aov[[1]][1,5],digits=8))
-    })))
-    names(res.anova) <- c("F", "pvalue")
-    res.anova$significativity <- rep("",ncol(object$som$data))
-    res.anova$significativity[res.anova$"pvalue"<0.05] <- "*"
-    res.anova$significativity[res.anova$"pvalue"<0.01] <- "**"
-    res.anova$significativity[res.anova$"pvalue"<0.001] <- "***"
-    rownames(res.anova) <- colnames(object$som$data)
-    
-    cat("\n        Degrees of freedom : ", 
-        summary(aov(object$som$data[,1]~as.factor(sc.clustering)))[[1]][1,1],
-        "\n\n")
-    print(res.anova)
-    cat("\n")
-  } else if (object$som$parameters$type=="relational") {
-    if (object$som$parameters$scaling=="cosine") {
-      norm.data <- preprocessData(object$som$data, object$parameters$scaling)
-    } else norm.data <- object$som$data
-    sse.total <- sum(norm.data)/(2*nrow(norm.data))
-    
-    sc.clustering <- object$cluster[object$som$clustering]
-    
-    sse.within <- sum(sapply(unique(sc.clustering), function(clust)
-      sum(norm.data[sc.clustering==clust,sc.clustering==clust])/
-        (2*sum(sc.clustering==clust))))
-    
-    n.clusters <- length(unique(sc.clustering))
-    F.stat <- ((sse.total-sse.within)/sse.within) * 
-      ((nrow(norm.data)-n.clusters)/(n.clusters-1))
-    
-    p.value <- 1-pf(F.stat, n.clusters-1, nrow(norm.data)-n.clusters)
-    if (p.value<0.001) {
-      sig <- "***"
-    } else if (p.value<0.1) {
-      sig <- "**"
-    } else if (p.value<0.05) sig <- "*"
-    
-    cat("\n  ANOVA\n")
-    cat("         F                       : ", F.stat, "\n")
-    cat("         Degrees of freedom      : ", n.clusters-1, "\n")
-    cat("         p-value                 : ", p.value, "\n")
-    cat("                 significativity : ", sig, "\n")
+    if (object$som$parameters$type=="numeric") {
+      sc.clustering <- object$cluster[object$som$clustering]
+      cat("\n  ANOVA\n")
+      res.anova <- as.data.frame(t(sapply(1:ncol(object$som$data), function(ind) {
+        res.aov <- summary(aov(object$som$data[,ind]~as.factor(sc.clustering)))
+        c(round(res.aov[[1]][1,4],digits=3), round(res.aov[[1]][1,5],digits=8))
+      })))
+      names(res.anova) <- c("F", "pvalue")
+      res.anova$significativity <- rep("",ncol(object$som$data))
+      res.anova$significativity[res.anova$"pvalue"<0.05] <- "*"
+      res.anova$significativity[res.anova$"pvalue"<0.01] <- "**"
+      res.anova$significativity[res.anova$"pvalue"<0.001] <- "***"
+      rownames(res.anova) <- colnames(object$som$data)
+      
+      cat("\n        Degrees of freedom : ", 
+          summary(aov(object$som$data[,1]~as.factor(sc.clustering)))[[1]][1,1],
+          "\n\n")
+      print(res.anova)
+      cat("\n")
+    } else if (object$som$parameters$type=="relational") {
+      if (object$som$parameters$scaling=="cosine") {
+        norm.data <- preprocessData(object$som$data, object$parameters$scaling)
+      } else norm.data <- object$som$data
+      sse.total <- sum(norm.data)/(2*nrow(norm.data))
+      
+      sc.clustering <- object$cluster[object$som$clustering]
+      
+      sse.within <- sum(sapply(unique(sc.clustering), function(clust)
+        sum(norm.data[sc.clustering==clust,sc.clustering==clust])/
+          (2*sum(sc.clustering==clust))))
+      
+      n.clusters <- length(unique(sc.clustering))
+      F.stat <- ((sse.total-sse.within)/sse.within) * 
+        ((nrow(norm.data)-n.clusters)/(n.clusters-1))
+      
+      p.value <- 1-pf(F.stat, n.clusters-1, nrow(norm.data)-n.clusters)
+      if (p.value<0.001) {
+        sig <- "***"
+      } else if (p.value<0.1) {
+        sig <- "**"
+      } else if (p.value<0.05) sig <- "*"
+      
+      cat("\n  ANOVA\n")
+      cat("         F                       : ", F.stat, "\n")
+      cat("         Degrees of freedom      : ", n.clusters-1, "\n")
+      cat("         p-value                 : ", p.value, "\n")
+      cat("                 significativity : ", sig, "\n")
+    }
   }
 }
 
 plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines", 
                                  "barplot", "boxplot", "mds", "color", 
                                  "poly.dist", "pie", "graph", "dendro3d", 
-                                 "radar"),
+                                 "radar", "projgraph"),
                        plot.var=TRUE, plot.legend=FALSE, add.type=FALSE, 
                        ...) {
   # TODO: add types "names" and "words"
@@ -251,7 +251,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         if (!add.type) {
           if (type %in% c("hitmap", "boxplot")) {
             args$what <- "obs"
-          } else if (type%in%c("graph","pie")) {
+          } else if (type%in%c("graph", "pie")) {
             args$what <- "add"
           } else args$what <- "prototypes"
         } else args$what <- "add"
@@ -260,7 +260,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         args$the.titles <- paste("SC",x$cluster)
         if (type%in%c("pie", "radar")) {
           args$print.title <- TRUE
-        } else if (type%in%c("color","poly.dist")) args$print.title <- FALSE
+        } else if (type%in%c("color", "poly.dist")) args$print.title <- FALSE
        do.call("plot.somRes", args)
        if (type=="color") 
          text(x=x$som$parameters$the.grid$coord[,1], 
@@ -271,7 +271,88 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
               y=x$som$parameters$the.grid$coord[,2]+0.1,
               labels=paste("SC",x$cluster) )
        par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
+      } else if (type=="projgraph") {
+        # check arguments
+        if (is.null(args$variable)) {
+          stop("for type='projgraph', the argument 'variable' must be supplied (igraph object)\n", 
+               call.=TRUE)
+        }
+        if (!is.igraph(args$variable)){
+          stop("for type='projgraph', argument 'variable' must be an igraph object\n", 
+               call.=TRUE)
+        }
+        if (length(V(args$variable)) != nrow(x$som$data)){
+          stop("number of nodes in graph does not fit length of the original data", call.=TRUE)
+        }
+        
+        # colors
+        if ((!is.null(args$col)) & (length(args$col)=max(x$cluster))) {
+          args$vertex.color <- args$col
+          args$vertex.frame.color <- args$col
+        } else {
+          if (!is.null(args$col))
+            warning("Incorrect number of colors 
+  (does not fit the number of super-clusters);
+  using the default palette.\n", call.=TRUE, immediate.=TRUE)
+          # create a color vector from RColorBrewer palette
+          args$vertex.color <- brewer.pal(max(x$cluster), "Set2")
+          args$vertex.frame.color <- brewer.pal(max(x$cluster), "Set2")
+        }
+        
+        if (plot.legend) {
+          layout(matrix(c(2,2,1),ncol=3))
+          plot.new()
+          legend(x="center", legend=paste("Super cluster", 1:max(x$cluster)), 
+                 col=args$vertex.color, pch=19)
+        }
+        
+        # case of pie
+        if (args$pie.graph) {
+          if (is.null(args$pie.variable)) 
+            stop("pie.graph is TRUE, you must supply argument 'pie.variable'\n", 
+               call.=TRUE)
+          if (nrow(as.matrix(args$pie.variable)) != nrow(x$som$data)) {
+            stop("length of argument 'pie.variable' does not fit length of the 
+             original data", call.=TRUE)
+          }
+          args$vertex.shape <- "pie"
+          if (is.null(args$vertex.pie.color)) args$vertex.pie.color <- NULL
+          proj.pie <- projectFactor(variable, x$cluster[x$som$clustering],
+                                    args$pie.variable,
+                                    pie.color=args$vertex.pie.color)
+          args$vertex.pie <- proj.pie$vertex.pie
+          args$vertex.pie.color <- proj.pie$vertex.pie.color
+        } else if (is.null(args$vertex.shape)) args$vertex.shape <- "circle"
+        
+        # find projected graph
+        proj.graph <- projectIGraph.somSC(x, args$variable)
+        args$proj.graph <- proj.graph
+        args$variable <- NULL
+        print(args)
+        do.call("plotProjGraph", args)
+        
       } else stop("Sorry, this type is not implemented yet\n", call.=TRUE) 
     }
+  }
+}
+
+projectIGraph.somSC <- function(object, init.graph, ...) {
+  if (length(object) <= 2) {
+    stop("The number of clusters has not been chosen yet. Cannot project the graph on super-clusters.\n", 
+         call.=TRUE)
+  } else {
+    # project the graph into the SOM grid
+    proj.graph <- projectIGraph.somRes(object$som, init.graph)
+    # clustering of the non empty clusters
+    induced.clustering <- object$cluster[as.numeric(V(proj.graph)$name)]
+    # search for the positions (center of gravity) of the superclusters
+    original.positions <- object$som$parameters$the.grid$coord
+    positions <- cbind(tapply(original.positions[,1], object$cluster, mean),
+                       tapply(original.positions[,2], object$cluster, mean))
+    
+    proj.graph.sc <- projectGraph(proj.graph, induced.clustering, positions)
+    
+    proj.graph.sc <- set.graph.attribute(proj.graph.sc, "layout", positions)
+    return(proj.graph.sc)
   }
 }
