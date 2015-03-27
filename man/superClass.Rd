@@ -40,10 +40,9 @@ h=NULL, \ldots)
   to plot the dendrogram of the clustering. Case \code{"grid"} plots the grid 
   in color according to the super clustering. Case \code{"projgraph"} uses an
   \link[igraph]{igraph} object passed to the argument \code{variable} and plots
-  the projected graph as defined by the function 
-  \link[projectIGraph.somSC]{projectIGraph.somSC}. All other cases are those 
-  available in the function \code{\link{plot.somRes}} and surimpose the 
-  super-clusters over these plots.}
+  the projected graph as defined by the function \code{projectIGraph.somSC}.
+  All other cases are those available in the function \code{\link{plot.somRes}} 
+  and surimpose the super-clusters over these plots.}
   \item{plot.var}{A boolean indicating whether a graph showing the evolution of 
   the explained variance should be plotted. This argument is only used when 
   \code{type="dendrogram"}, its default value is \code{TRUE}.}
@@ -96,7 +95,7 @@ a * whereas those available for a \code{relational} SOM are marked with a #.
 \link[igraph]{igraph} object passed to the argument \code{variable} as
 described in (Olteanu and Villa-Vialaneix, 2015). The attributes of this graph
 are the same than the ones obtained from the SOM map itself in the function
-\link[projectIGraph.somRes]{projectIGraph.somRes}. \code{plot.somSC} used with 
+\code{\link{projectIGraph.somRes}}. \code{plot.somSC} used with 
 \code{type="projgraph"} calculates this graph and represents it by positionning
 the super-vertexes at the center of gravity of the super-clusters. This feature
 can be combined with \code{pie.graph=TRUE} to super-impose the information 
@@ -114,7 +113,7 @@ visualizing graphs. \emph{Journal de la Societe Francaise de Statistique}.
 }
 
 \value{The \code{superClass} function returns an object of class 
-\code{\link{somSC}} which is a list of the following elements:
+\code{somSC} which is a list of the following elements:
 \item{cluster}{The super clustering of the prototypes (only if either \code{k} 
 or \code{h} are given by user).}
 \item{tree}{An \code{\link{hclust}} object.}

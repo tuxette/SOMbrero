@@ -13,5 +13,6 @@ Description: SOMbrero provides an implementation of the stochastic (also called
 Depends: R (>= 3.0), knitr, igraph (>= 0.6)
 Imports: wordcloud, scatterplot3d, RColorBrewer, shiny
 License: GPL (>= 2)
+Repository: CRAN
 URL: http://shiny.nathalievilla.org/sombrero
 VignetteBuilder: knitr

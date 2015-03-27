@@ -44,9 +44,9 @@ Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 
-\seealso{\code{projectIGraph.somSC} which uses the results of a super-clustering
-to obtain another projected graph. \code{\link{plot.somRes}} with the option
-\code{type="graph"} or \code{\link{plot.somSC}} with the option 
+\seealso{\code{\link{projectIGraph.somSC}} which uses the results of a 
+super-clustering to obtain another projected graph. \code{\link{plot.somRes}} 
+with the option \code{type="graph"} or \code{\link{plot.somSC}} with the option 
 \code{type="projgraph"}.}
 
 \examples{

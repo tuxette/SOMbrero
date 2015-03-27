@@ -321,7 +321,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
           }
           args$vertex.shape <- "pie"
           if (is.null(args$vertex.pie.color)) args$vertex.pie.color <- NULL
-          proj.pie <- projectFactor(variable, x$cluster[x$som$clustering],
+          proj.pie <- projectFactor(args$variable, x$cluster[x$som$clustering],
                                     args$pie.variable,
                                     pie.color=args$vertex.pie.color)
           args$vertex.pie <- proj.pie$vertex.pie

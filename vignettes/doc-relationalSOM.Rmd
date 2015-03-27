@@ -95,7 +95,6 @@ graphical functions of ```SOMbrero```.
 ### Training the SOM
 
 ```{r lesmisTrain, cache=TRUE}
-init.proto="random", radius.type="letremy")
 set.seed(622)
 mis.som <- trainSOM(x.data=dissim.lesmis, type="relational", nb.save=10,
                    init.proto="random", radius.type="letremy")

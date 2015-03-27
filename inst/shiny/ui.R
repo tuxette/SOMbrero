@@ -10,7 +10,7 @@ shinyUI(pageWithSidebar(
                 c(Numeric="numeric", Korresp="korresp",
                   Relational="relational")),
     
-    imageOutput("sombrero.logo", width= "200px", height= "200px"),
+    imageOutput("sombrero.logo", inline=TRUE),
     p(HTML("<h5>Welcome to SOMbrero, the open-source on-line interface for 
 self-organizing maps (SOM).</h5> This interface trains SOM for numerical data,
 contingency tables and dissimilarity data using the <strong>R</strong> package
@@ -18,8 +18,9 @@ contingency tables and dissimilarity data using the <strong>R</strong> package
 map on your data and visualize their topology in three simple steps using the
 panels on the right.")),
     
-    imageOutput("samm.logo", width= "100px", height="80px"),
-    imageOutput("miat.logo", width= "100px", height="80px"),
+    imageOutput("samm.logo", inline=TRUE),
+    br(),
+    imageOutput("miat.logo", inline=TRUE),
     br(),
     br(),
     p(HTML('It is kindly provided by the
@@ -65,12 +66,12 @@ When this is done, choose the SOM type of the left hand side panel and proceed
 to the next step: self-organize a map.")),
                p(HTML('The interface can be tested using example data files for
 the <a href= 
-"http://owncloud.nathalievilla.org/public.php?service=files&t=a4b83ca82bcfc740ee0700cb44324c47"> 
-numeric</a>, <a href= 
-"http://owncloud.nathalievilla.org/public.php?service=files&t=7a7db6e0a17127d8fe8ec43c0f6b0afd"> 
-korresp</a> and <a href= 
-"http://owncloud.nathalievilla.org/public.php?service=files&t=2bd5a14bbf636ab9afe495b46e0d523a">
-relational </a> algorithms (download these files on your computer and
+"http://owncloud.nathalievilla.org/public.php?service=files&t=a4b83ca82bcfc740ee0700cb44324c47"
+target="_blank">numeric</a>, <a href= 
+"http://owncloud.nathalievilla.org/public.php?service=files&t=7a7db6e0a17127d8fe8ec43c0f6b0afd"
+target="_blank">korresp</a> and <a href= 
+"http://owncloud.nathalievilla.org/public.php?service=files&t=2bd5a14bbf636ab9afe495b46e0d523a"
+target="_blank">relational </a> algorithms (download these files on your computer and
 proceed).')),
                
                br(), 

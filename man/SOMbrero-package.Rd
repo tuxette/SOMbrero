@@ -19,8 +19,9 @@ parameters given to the algorithm (see \code{\link{initSOM}} and
 Package: \tab SOMbrero\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
-Date: \tab 2015-03-22\cr
+Date: \tab 2015-03-27\cr
 License: \tab GPL (>= 2)\cr
+Shiny online interface: \url{http://shiny.nathalievilla.org}
 }
 The version of the SOM algorithm implemented in this package is the stochastic
 version.
