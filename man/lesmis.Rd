@@ -32,8 +32,6 @@ paths between pairs of nodes.
 and published in 1862. The co-appearance network has been extracted by D.E.
 Knuth (1993).}
 
-\source{\url{http://people.sc.fsu.edu/~jburkardt/datasets/sgb/jean.dat}}
-
 \references{
 Hugo, H. (1862) \emph{Les Miserables}.
 

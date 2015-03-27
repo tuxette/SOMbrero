@@ -619,9 +619,9 @@ projectGraph <- function(the.graph, clustering, coord.clustering) {
     for (neuron2 in setdiff(nonempty.neurons, 1:neuron)) {
       v.neuron2 <- as.vector(V(the.graph)[which(clustering==neuron2)])
       if (is.null(E(the.graph)$weight)) {
-        nb.edges <- length(E(the.graph)[from(v.neuron) & to(v.neuron2)])
+        nb.edges <- length(E(the.graph)[v.neuron %--% v.neuron2])
       } else {
-        nb.edges <- sum(E(the.graph)[from(v.neuron) & to(v.neuron2)]$weight)
+        nb.edges <- sum(E(the.graph)[v.neuron %--% v.neuron2]$weight)
       }
       if (nb.edges > 0) {
         p.edges <- c(p.edges, neuron, neuron2)

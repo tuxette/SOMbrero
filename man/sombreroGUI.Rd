@@ -14,7 +14,7 @@ sombreroGUI()
 \value{This function starts the graphical user interface with the default 
 system browser. This interface is more lickely to work properly with Firefox
 \url{http://www.mozilla.org/fr/firefox/new/}. In case Firefox is not your 
-default browser, copy/paste \url{http://localhost:8100/} into the address bar.
+default browser, copy/paste http://localhost:8100 into the address bar.
 }
 
 \author{Julien Boelaert \email{julien.boelaert@gmail.com}\cr

@@ -1,6 +1,3 @@
-* JSFdS
-** CRAN
-
 * other features (easy)
 ** calculateProtoDist: use other type of neighbors (but add a parameter for the
 radius because it should not affect the poly.dist plot)
