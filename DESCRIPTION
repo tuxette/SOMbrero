@@ -7,12 +7,13 @@ Authors@R: c(person("Laura", "Bendhaiba", role = "aut", email="laurabendhaiba@gm
              person("Madalina", "Olteanu", role = "aut", email="madalina.olteanu@univ-paris1.fr"),
              person("Nathalie", "Villa-Vialaneix", role = c("aut", "cre"), email="nathalie.villa@toulouse.inra.fr"))
 Maintainer: Nathalie Villa-Vialaneix <nathalie.villa@toulouse.inra.fr>
-Description: The R package SOMbrero provides an implementation of the stochastic
-             (also called on-line) Self-Organising Map (SOM) algorithm for 
-             numeric, relational data and contingency tables. It contains a
-             many plotting features to help the user interpret the results and
-             a graphical user interface based on shiny (which is also available
-             on-line at http://shiny.nathalievilla.org/sombrero).
+Description: The stochastic (also called on-line) version of the Self-Organising
+             Map (SOM) algorithm is provided. Different versions of the 
+             algorithm are implemented, for numeric and relational data and for
+             contingency tables. The package also contains many plotting 
+             features (to help the user interpret the results) and a graphical
+             user interface based on shiny (which is also available on-line at
+             http://shiny.nathalievilla.org/sombrero).
 Depends: R (>= 3.0), knitr, igraph (>= 0.6)
 Imports: wordcloud, scatterplot3d, RColorBrewer, shiny
 License: GPL (>= 2)
