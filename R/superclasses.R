@@ -332,7 +332,6 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         proj.graph <- projectIGraph.somSC(x, args$variable)
         args$proj.graph <- proj.graph
         args$variable <- NULL
-        print(args)
         do.call("plotProjGraph", args)
         
       } else stop("Sorry, this type is not implemented yet\n", call.=TRUE) 

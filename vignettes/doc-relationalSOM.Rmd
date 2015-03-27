@@ -95,8 +95,10 @@ graphical functions of ```SOMbrero```.
 ### Training the SOM
 
 ```{r lesmisTrain, cache=TRUE}
-set.seed(7383)
-mis.som <- trainSOM(x.data=dissim.lesmis, type="relational", nb.save=10)
+init.proto="random", radius.type="letremy")
+set.seed(622)
+mis.som <- trainSOM(x.data=dissim.lesmis, type="relational", nb.save=10,
+                   init.proto="random", radius.type="letremy")
 plot(mis.som, what="energy")
 ```
 
@@ -127,15 +129,14 @@ or by sur-imposing the original igraph object on the map:
 plot(mis.som, what="add", type="graph", var=lesmis)
 ```
 
-Clusters profile overviews can be plotted either with lines, barpot or radar.
+Clusters profile overviews can be plotted either with *e.g.*, lines or radar.
 ```{r lesmisProtoProfiles}
 plot(mis.som, what="prototypes", type="lines")
-plot(mis.som, what="prototypes", type="barplot")
 plot(mis.som, what="prototypes", type="radar")
 ```
 
-On these graphics, one variable is represented respectively with a point, a bar
-or a slice. It is therefore easy to see which variable affects which cluster.
+On these graphics, one variable is represented respectively with a point or a 
+slice. It is therefore easy to see which variable affects which cluster.
 
 To see how different the clusters are, some graphics show the distances between 
 prototypes. These graphics have exactly the same behaviour as in the other SOM 
@@ -169,7 +170,8 @@ plot(mis.som, what="prototypes", type="mds")
 plot(mis.som, what="prototypes", type="grid.dist")
 ```
 
-Here we can see that the prototypes 21 and 22 are far from the others.
+Here we can see that the prototypes located in the top left corner of the map
+(\emph{e.g.}, clusters 4 and 5) are far from the others.
 
 Finally, with a graphical overview of the clustering
 ```{r lesmisColorOverview, fig.height=12, fig.width=12}
@@ -177,10 +179,10 @@ plot(lesmis, vertex.label.color=rainbow(25)[mis.som$clustering], vertex.size=0)
 legend(x="left", legend=1:25, col=rainbow(25), pch=19)
 ```
 
-We can see that cluster 25 is very relevant to the story: as the characters of
+We can see that cluster 5 is very relevant to the story: as the characters of
 this cluster appear only in the sub-story of the Bishop ```Myriel```, he is the
-only connection for all other characters of cluster 21. The same kind of
-conclusion holds for cluster 1, among others. Most of the other clusters have a
+only connection for all other characters of cluster 5. The same kind of
+conclusion holds for cluster 11, among others. Most of the other clusters have a
 small number of observations: it thus seems relevant to compute super clusters.
 
 ### Compute super clusters
@@ -192,10 +194,10 @@ the dendrogram:
 plot(superClass(mis.som))
 ```
 
-According to the proportion of variance explained by super clusters, 6 groups 
+According to the proportion of variance explained by super clusters, 5 groups 
 seem to be a good choice.
 ```{r lesmisSC}
-sc.mis <- superClass(mis.som, k=6)
+sc.mis <- superClass(mis.som, k=5)
 summary(sc.mis)
 table(sc.mis$cluster)
 plot(sc.mis)
@@ -205,70 +207,37 @@ plot(sc.mis, type="mds", plot.legend=TRUE)
 plot(sc.mis, type="dendro3d")
 ```
 
-
 ```{r lesmisSCColorOverview, fig.width=12, fig.height=12}
 library(RColorBrewer)
 plot(lesmis, vertex.size=0, vertex.label.color=
        brewer.pal(6, "Set2")[sc.mis$cluster[mis.som$clustering]])
-legend(x="left", legend=paste("SC",1:6), col=brewer.pal(6, "Set2"), pch=19)
+legend(x="left", legend=paste("SC",1:5), col=brewer.pal(5, "Set2"), pch=19)
 ```
 
 * cluster 1 constains ```Valjean``` which has a central position in the MDS
 visualization;
 
-* cluster 2 countains the Thenardier family: mister and misses ```Thenardier```,
-their daughter ```Eponine``` and also the characters involved in their story. It
-also contains Javert who is seeking to find the main character of the story,
-Valjean;
+* cluster 2 contains ```Myrial``` and the characters involved in his 
+sub-story;
 
 * cluster 3 contains ```Gavroche```, the abandonned child of the
 ```Thenardier```, and the characters of his sub-story;
 
-* cluster 4 contains ```Marius``` and his family: his mother, 
-Mrs. ```Pontmercy```, his father, lieutenant ```Gillenormand```, his 
-grandfather ```Gillenormand``` and his aunt miss ```Gillenormand``` ; it also 
-contains ```Cosette```, who will have an affair with him;
+* cluster 4 countains the Thenardier family: mister and misses ```Thenardier```,
+their daughter ```Eponine``` and also the characters involved in their story. It
+also contains ```Javert``` who is seeking to find the main character of the 
+story, ```Valjean```, and ```Marius```. All these characters are strongly 
+related to ```Cosette``` who is ```Marius```'s lover and has lived in the
+```Thenardier``` family during her childhood;
 
-* cluster 5 contains ```Myrial``` and the characters involved in his 
-sub-story;
-
-* cluster 6 countains ```Fantine``` and the characters involved in her 
+* cluster 5 countains ```Fantine``` and the characters involved in her 
 sub-story.
 
+SOMbrero also contains functions to compute a projected graph based on the
+super-clusters and to display it:
 
-## Case study: the ```iris``` data set
-
-The ```iris``` data set has already been used in the user friendly guide 
-devoted to numeric data.
-To ensure the performance of the relational SOM, this section will compare the 
-results obtained with both numerical and relational SOM. In the latter case, the 
-matrix of pairwise distances between the observations is used as input data.
-Among all possibilities (see ```help(dist)```), we here choose to use 
-the ```"mikowski"``` distance of order 4 to enlarge large distances and reduce 
-small ones.
-
-```{r irisTrain}
-# run the numeric SOM
-set.seed(4031730)
-iris.som <- trainSOM(x.data=iris[,1:4])
-# run the relational SOM
-iris.dist <- dist(iris[,1:4], method="minkowski", diag=TRUE, upper=TRUE, p=4)
-set.seed(7071731)
-d.iris.som <- trainSOM(x.data=iris.dist, type="relational")
+```{r lesmisSCProjGraph}
+projectIGraph(sc.mis, lesmis)
+par(mar=rep(0,4))
+plot(sc.mis, type="projgraph", variable=lesmis, s.radius=2)
 ```
-
-The most important thing is to correctly separate the 3 flower species. The next 
-2 plots show the results with both SOM types.
-```{r irisPies}
-plot(iris.som, what="add", type="pie", variable=iris$Species, 
-     main="species distribution with 'numeric' SOM")
-plot(d.iris.som, what="add", type="pie", variable=iris$Species, 
-     main="species distribution with 'relational' SOM")
-```
-
-As we chose a higher distance order in the ```relational``` SOM 
-(argument ```p=4```, whereas the Euclidean distance corresponds to a Minkowski
-distance of order 2), the result from the ```relational``` SOM show better
-separation of 'virginica' and 'versicolor' flowers: with the ```numeric``` SOM, 
-these species are mixed in 7 neurons whereas they are mixed in 3 neurons with 
-the ```relational``` SOM.

@@ -649,6 +649,7 @@ print.somRes <- function(x, ...) {
       x$parameters$the.grid$dim[2],
       "grid with",x$parameters$the.grid$topo, "topology\n")
   cat("         neighbourhood type:", x$parameters$radius.type,"\n")
+  cat("         distance type:", x$parameters$the.grid$dist.type,"\n")
 }
 
 summary.somRes <- function(object, ...) {
