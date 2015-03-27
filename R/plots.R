@@ -247,7 +247,7 @@ plotOnePolygon <- function(ind, values, the.grid, col) {
   if (the.grid$topo=="square") {
     neighbors <- match(paste(rep((cur.coords[1]-1):(cur.coords[1]+1),c(3,3,3)),
                              rep((cur.coords[2]-1):(cur.coords[2]+1),3)), 
-                       paste(the.grid$coord[,1],the.grid$coord[,2]))
+                       paste(the.grid$coord[,1], the.grid$coord[,2]))
     neighbors <- neighbors[-5]
     poly.coord <- matrix(nrow=8, ncol=2)
     poly.coord[is.na(neighbors),] <- tcrossprod(rep(1,sum(is.na(neighbors))),
@@ -271,8 +271,7 @@ plotPolygon <- function(values, clustering, the.grid, my.palette, args) {
   plot.args <- c(list(x=the.grid),args)
   do.call("plot.myGrid",plot.args)
   if (is.null(my.palette)) {
-    nb.breaks <- min(c(floor(1 + (3.3*log(prod(the.grid$dim),
-                                         base=10))),9))
+    nb.breaks <- min(c(floor(1 + (3.3*log(prod(the.grid$dim), base=10))),9))
   } else nb.breaks <- length(my.palette)
   the.breaks <- seq(0,max(table(clustering)),length=nb.breaks+1)
   if (is.null(my.palette)) {
@@ -282,7 +281,7 @@ plotPolygon <- function(values, clustering, the.grid, my.palette, args) {
   vect.color <- my.colors[cut(freq.clust, the.breaks, labels=FALSE)]
   vect.color[is.na(vect.color)] <- "white"
   invisible(sapply(1:prod(the.grid$dim), function(ind) {
-    plotOnePolygon(ind,values[[ind]],the.grid,vect.color[ind])
+    plotOnePolygon(ind, values[[ind]], the.grid, vect.color[ind])
   }))
 }
 

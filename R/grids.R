@@ -1,8 +1,8 @@
 ## These functions handle grids (creation, description, display...)
 
 initGrid <- function(dimension=c(5,5), topo=c("square"),
-                     dist.type=c("letremy","maximum","euclidean","manhattan",
-                                 "canberra","binary","minkowski")) {
+                     dist.type=c("euclidean","maximum","manhattan",
+                                 "canberra","binary","minkowski","letremy")) {
   topo <- match.arg(topo)
   dist.type <- match.arg(dist.type)
   if(topo=="square") {

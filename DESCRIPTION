@@ -1,7 +1,7 @@
 Package: SOMbrero
 Title: SOM Bound to Realize Euclidean and Relational Outputs
-Version: 0.5
-Date: 2014-12-27
+Version: 1.0
+Date: 2015-03-27
 Authors@R: c(person("Laura", "Bendhaiba", role = "aut", email="laurabendhaiba@gmail.com"),
              person("Julien", "Boelaert", role= "aut", email="julien.boelaert@gmail.com"),
              person("Madalina", "Olteanu", role = "aut", email="madalina.olteanu@univ-paris1.fr"),
@@ -13,6 +13,5 @@ Description: SOMbrero provides an implementation of the stochastic (also called
 Depends: R (>= 3.0), knitr, igraph (>= 0.6)
 Imports: wordcloud, scatterplot3d, RColorBrewer, shiny
 License: GPL (>= 2)
-URL: http://sombrero.r-forge.r-project.org/
-Repository: R-Forge
+URL: http://shiny.nathalievilla.org/sombrero
 VignetteBuilder: knitr

@@ -80,10 +80,10 @@ plot(the.data, pch=19)
 ### Training the SOM
 The numeric SOM algorithm is used to cluster the data:
 ```{r dataTrain}
-set.seed(4031731)
+set.seed(593)
 # run the SOM algorithm with 10 intermediate backups and 2000 iterations
 my.som <- trainSOM(x.data=the.data, dimension=c(5,5), nb.save=10, maxit=2000, 
-                   scaling="none")
+                   scaling="none", radius.type="letremy")
 ```
 
 The energy evolves as described in the following graphic:
@@ -125,12 +125,11 @@ plot(my.som, what="prototypes", type="color", var=2, main="prototypes - x2")
 ```
 
 Here, the interpretation is simple enough: high values of the first variables x1
-are located at the bottom of the map and small values at the top of the map.
-Large values of x2 are located at the right hand side of the map, whereas, small
-values are located at the left hand side of the map.
+are located at the right side of the map and small values at the left side of 
+the map. Large values of x2 are located at the top of the map, whereas, small
+values are located at the bottom of the map.
 
-We obtain the same results with the same kind of graphic on the observation mean 
-values:
+We obtain the same results with a similar plot on the observation mean values:
 ```{r colorObs, fig.width=5, fig.height=2.5}
 par(mfrow=c(1,2))
 plot(my.som, what="obs", type="color", var=1, main="obs mean values - x1")
@@ -180,9 +179,9 @@ each of 3 species of iris (setosa, versicolor, and virginica).
 The first four variables of the data set (that are the numeric variables) are 
 used to map each flower on the SOM grid.
 ```{r irisTrain, cache=TRUE}
-set.seed(4031730)
+set.seed(255)
 # run the SOM algorithm with verbose set to TRUE
-iris.som <- trainSOM(x.data=iris[,1:4],verbose=TRUE, nb.save=5)
+iris.som <- trainSOM(x.data=iris[,1:4], verbose=TRUE, nb.save=5)
 iris.som
 ```
 
@@ -192,7 +191,9 @@ at its evolution.
 plot(iris.som, what="energy")
 ```
 
-which is stabilized during the last 100 iterations.
+Here the energy does not stabilize as in the case of ```dist.type="letremy"```
+because the Gaussian annealing of the neighbourhood is continuous and not 
+stepwise.
 
 
 ### Resulting clustering
@@ -260,28 +261,26 @@ Empty squares catch the attention: none of the  observations are assigned to
 clusters 4, 9, 14 and 19.
 
 Let us analyse the results for cluster 5 more precisely. On the ```"color"```
-plots, cluster 5 has the following results: middle level value for
-```Sepal.Length```, high value for ```Sepal.Width``` and low  values for
-```Petal.Length``` and ```Petal.Width```.
+plots, cluster 5 has the following results: high values for
+```Sepal.Width``` and low values for all the other variables.
 These results are also noticeable in the other plots:
 
-* on the ```"lines"``` plot, the first point is about in the middle, the second 
-one is very high and the two others are low;
-* on the ```"barplot"``` plot, this evolution is observed again: first a peak
-and a fall to the minimum value;
+* on the ```"lines"``` plot, the second point shows a peak;
+* on the ```"barplot"``` plot, this evolution is observed again;
 * on the ```"radar"``` plot, the slice corresponding to ```Sepal.Width``` is 
 very big whereas the two Petal slices are almost invisible.
 
-Flowers with large and long petals and a long sepal are classified in the left
-bottom corner of the map. Flowers with a large sepal and a small petal 
-(length and width) are classified in the left upper corner of the map.
+Flowers with a long sepal and all the other variables being small are classified
+in the top left corner of the map. Flowers with large sepals and petals (length
+and width) are classified in the bottom right corner of the map whereas flowers
+with small sepal length are classified in the top right corner of the map.
 
 #### More graphics on observations
 
 ```{r irisObs}
 plot(iris.som, what="obs", type="boxplot", print.title=TRUE)
 rownames(iris)
-plot(iris.som, what="obs", type="names", print.title=TRUE)
+plot(iris.som, what="obs", type="names", print.title=TRUE, scale=c(0.9,0.5))
 ```
 
 * By default, the ```"boxplot"``` plot considers all numerical variables of the 
@@ -289,7 +288,7 @@ data set. As this example used the four numerical variables of the iris data
 set, four boxplots are plotted in each neuron.
 * The ```"names"``` plot prints, for each neuron, the names of the observations 
 which are assigned to its cluster. Here, the row names of iris data set are 
-simply the number of the lines.
+simply the row numbers.
 
 #### More graphics on prototypes
 
@@ -338,12 +337,12 @@ representing the distance between the prototypes in the input space, and y
 coordinates representing the distance between the corresponding neurons on the
 grid.
 
-These graphics show that there is a larger distance between the second and third
-lines (from the top of the map) than everywhere else in the map. Hence, for
-instance, the flowers classified in cluster 3 are rather different from those
-classified in cluster 4, even if these two clusters are adjacent on the map.
-This is also emphasized on the MDS plot where clusters 3 and 4 are drawn far
-apart.
+These graphics show that there is a big gap (large distances) in the diagonal
+that goes from the bottom left part of the map to its top right corner. Hence,
+for instance, the flowers classified in cluster 15 are rather different from
+those classified in cluster 20, even if these two clusters are adjacent on the
+map. This is also emphasized on the MDS plot where clusters 15 and 20 are not
+very close.
 
 #### Graphics showing an additional variable
 
@@ -401,7 +400,8 @@ Here we choose to give the argument ```variable``` the row names of the iris
 data set: so we obtain the same graphic as above (see 
 __More graphics on observations__).
 ```{r irisAdd5}
-plot(iris.som, what="add", type="names", variable=rownames(iris))
+plot(iris.som, what="add", type="names", variable=rownames(iris),
+     scale=c(0.9,0.5))
 ```
 
 Then, we can try to call this plot again but on the variable ```iris$Species```.
@@ -423,9 +423,8 @@ argument ```quality.type```.
 
 The topographic error value varies between 0 (good projection quality) and 1 
 (poor projection quality). Here, the topographic quality of the mapping is 
-quite good with a topographic error equal to 0.05 that corresponds
-to `r nrow(iris)*0.05` samples for which the second best matching unit is not
-in the direct neighborhood of the best matching unit.
+equal to 0.05 which means that all observations have a second best unit which is
+in the neighborhood of the best matching unit.
 
 The quantization error is an unbounded positive number. The closer it is from 0,
 the better the projection quality.
@@ -500,9 +499,9 @@ argument ```add.variable```:
 plot(my.sc, type="color", add.type=TRUE, variable=iris$Sepal.Length)
 ```
 
-All these graphics help to see that super-cluster number 1 is found in the lower
-left corner of the map and contains only flowers of the "verginica" species. 
-Super cluster number 3, on the top of the map, contains mostly
-flowers of the "setosa" species. The last super-cluster is located in the
-half right part of the map and contains flowers of the species "versicolor" and
-"virginica".
+All these graphics help to see that super-cluster number 2 is found in the top
+right corner of the map and contains only flowers of the "setosa" species. 
+Super cluster number 3, at the bottom right corner of the map, contains mostly
+flowers of the "virginica" species. The last super-cluster is located at the
+top right corner of the map and mostly contains flowers of the species 
+"versicolor".

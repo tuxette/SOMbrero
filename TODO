@@ -1,11 +1,12 @@
 * JSFdS
-** update de la documentation
 ** update et vérification des vignettes
 ** update et vérification de shiny
 ** update fichiers de description
 ** CRAN
 
 * other features (easy)
+** calculateProtoDist: use other type of neighbors (but add a parameter for the
+radius because it should not affect the poly.dist plot)
 ** superclusters : make projGraph and output super-clusters for observations
 ** superclusters : allows to cut the super-classes afterward (method)
 ** add weights to observations

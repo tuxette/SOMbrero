@@ -34,7 +34,9 @@ dimensions are equal to the product of the grid dimensions.
 
 When \code{mode="neighbors"}, the function returns a list which length is equal 
 to the product of the grid dimensions; the length of each item is equal to the 
-number of neighbors.
+number of neighbors. Neurons are considered to have 8 neighbors at most 
+(\emph{i.e.}, two neurons are neighbors if they have a distance of type 
+'maximum' which is equal to 1).
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr

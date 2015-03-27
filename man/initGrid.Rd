@@ -12,8 +12,8 @@ points.
 }
 \usage{
 initGrid(dimension=c(5,5), topo=c("square"), 
-         dist.type=c("letremy", "maximum","euclidean","manhattan",
-                     "canberra","binary","minkowski"))
+         dist.type=c("euclidean", "maximum", "manhattan", "canberra", "binary",
+                     "minkowski", "letremy"))
 \method{print}{myGrid}(x, \ldots)
 \method{summary}{myGrid}(object, \ldots)
 }
@@ -23,7 +23,7 @@ initGrid(dimension=c(5,5), topo=c("square"),
   \item{topo}{The topology to be used to build the grid. Default value is 
   \code{square}.}
   \item{dist.type}{The distance type to be used. Default value is 
-  \code{letremy}, which corresponds to the original implementation by 
+  \code{euclidean}. Type 'letremy' corresponds to the original implementation by 
   Patrick Letremy.}
   \item{x, object}{an object of class \code{myGrid}}
   \item{\ldots}{not used}

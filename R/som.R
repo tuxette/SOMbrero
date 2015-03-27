@@ -132,9 +132,9 @@ calculateProtoDist <- function(prototypes, the.grid, type, complete=FALSE,
                                x.data=NULL) {
   if (!complete) {
     all.nei <- sapply(1:prod(the.grid$dim), selectNei, the.grid=the.grid,
-                      radius=1, radius.type="letremy")
+                      radius=1, radius.type="letremy", dist.type="letremy")
     all.nei <- sapply(1:prod(the.grid$dim), function(neuron) 
-      setdiff(all.nei[[neuron]],neuron))
+      setdiff(all.nei[[neuron]], neuron))
     if (type!="relational") {# euclidean case
       distances <- sapply(1:prod(the.grid$dim), function(one.neuron) {
         apply(prototypes[all.nei[[one.neuron]],],1,distEuclidean,

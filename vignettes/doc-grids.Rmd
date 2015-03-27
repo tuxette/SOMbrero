@@ -37,7 +37,7 @@ __x=5__ and  __y=5__,
 * ```topo```, which is the topology choosen. The value of this argument must be
 one of  these: ```square```. The__default value__ is __square__.
 * ```dist.type```, which is the distance type. The __default value__ is 
-__letremy__.
+__euclidean__.
 
 The following **R** code initializes a new myGrid object of square topology, x 
 dimension 5 and y dimension 6, and distance type ```maximum```.
@@ -85,6 +85,6 @@ plot(my.first.grid)
 
 # generating colors from the rainbow() function
 my.colors <- rainbow(5*6)
-plot(my.first.grid,neuron.col=my.colors)
+plot(my.first.grid, neuron.col=my.colors)
 ```
 
