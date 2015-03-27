@@ -33,10 +33,11 @@ initSOM(dimension=c(5,5), topo=c("square"),
   \item{topo}{The topology to be used to build the grid of the \code{myGrid} 
   class object. Default value is \code{square}.}
   \item{radius.type}{The neighbourhood type. Default value is \code{"gaussian"},
-  which corresponds to a Gaussian neighbourhood. Default parameters for this
-  neighbourhood are those implemented in the package \code{yasomi}. The 
-  alternative value corresponds to an piecewise linear neighbourhood as 
-  implementated by Patrick Letremy in his SAS programs.}
+  which corresponds to a Gaussian neighbourhood. The annealing of the 
+  neighbourhood during the training step is similar to the one implemented in 
+  \href{https://github.com/fabrice-rossi/yasomi}{yasomi}. The alternative value 
+  corresponds to an piecewise linear neighbourhood as implementated by Patrick 
+  Letremy in his SAS programs.}
    \item{dist.type}{The neighborhood relationship on the grid. When 
   \code{radius.type} is \code{letremy}, default value is \code{letremy} 
   which is the original implementation by Patrick Letremy. When 

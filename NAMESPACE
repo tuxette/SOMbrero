@@ -39,4 +39,5 @@ S3method(projectIGraph,somRes)
 # somSC S3 functions
 S3method(print,somSC)
 S3method(summary,somSC)
+S3method(projectIGraph,somSC)
 S3method(plot,somSC)

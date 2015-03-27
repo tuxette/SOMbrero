@@ -273,6 +273,9 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
        par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
       } else if (type=="projgraph") {
         # check arguments
+        if (x$som$parameters$type=="korresp")
+          stop(type, " plot is not available for 'korresp' super classes\n", 
+               call.=TRUE)
         if (is.null(args$variable)) {
           stop("for type='projgraph', the argument 'variable' must be supplied (igraph object)\n", 
                call.=TRUE)
@@ -307,6 +310,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         }
         
         # case of pie
+        if (is.null(args$pie.graph)) args$pie.graph <- FALSE
         if (args$pie.graph) {
           if (is.null(args$pie.variable)) 
             stop("pie.graph is TRUE, you must supply argument 'pie.variable'\n", 
@@ -337,22 +341,23 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
 }
 
 projectIGraph.somSC <- function(object, init.graph, ...) {
-  if (length(object) <= 2) {
+  if (length(object) <= 2) 
     stop("The number of clusters has not been chosen yet. Cannot project the graph on super-clusters.\n", 
          call.=TRUE)
-  } else {
-    # project the graph into the SOM grid
-    proj.graph <- projectIGraph.somRes(object$som, init.graph)
-    # clustering of the non empty clusters
-    induced.clustering <- object$cluster[as.numeric(V(proj.graph)$name)]
-    # search for the positions (center of gravity) of the superclusters
-    original.positions <- object$som$parameters$the.grid$coord
-    positions <- cbind(tapply(original.positions[,1], object$cluster, mean),
-                       tapply(original.positions[,2], object$cluster, mean))
-    
-    proj.graph.sc <- projectGraph(proj.graph, induced.clustering, positions)
-    
-    proj.graph.sc <- set.graph.attribute(proj.graph.sc, "layout", positions)
-    return(proj.graph.sc)
-  }
+  if (object$som$parameters$type=="korresp")
+    stop("projectIGraph is not available for 'korresp' super classes\n", 
+         call.=TRUE)
+  # project the graph into the SOM grid
+  proj.graph <- projectIGraph.somRes(object$som, init.graph)
+  # clustering of the non empty clusters
+  induced.clustering <- object$cluster[as.numeric(V(proj.graph)$name)]
+  # search for the positions (center of gravity) of the superclusters
+  original.positions <- object$som$parameters$the.grid$coord
+  positions <- cbind(tapply(original.positions[,1], object$cluster, mean),
+                     tapply(original.positions[,2], object$cluster, mean))
+  
+  proj.graph.sc <- projectGraph(proj.graph, induced.clustering, positions)
+  
+  proj.graph.sc <- set.graph.attribute(proj.graph.sc, "layout", positions)
+  return(proj.graph.sc)
 }

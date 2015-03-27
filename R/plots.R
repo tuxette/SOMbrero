@@ -758,15 +758,13 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                         my.palette=NULL, 
                         is.scaled = if (x$parameters$type=="numeric") TRUE else
                           FALSE,
-                        proportional=TRUE, print.title=FALSE, s.radius=1, 
-                        pie.graph=FALSE, pie.variable=NULL,
-                        the.titles=if (what!="energy") 
-                          switch(type,
-                                          "graph"=
-                                            1:prod(x$parameters$the.grid$dim),
-                                          paste("Cluster",
-                                                1:prod(x$parameters$
-                                                         the.grid$dim))),
+                        print.title=FALSE, the.titles=if (what!="energy") 
+                          switch(type, 
+                                 "graph"=1:prod(x$parameters$the.grid$dim),
+                                 paste("Cluster",
+                                       1:prod(x$parameters$the.grid$dim))),
+                        proportional=TRUE, s.radius=1, pie.graph=FALSE, 
+                        pie.variable=NULL,
                         view = if (x$parameters$type=="korresp") "r" else NULL,
                         ...) {
   args <- list(...)

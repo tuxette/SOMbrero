@@ -25,16 +25,18 @@ Compute the projection of a graph on a grid
 The result is an \code{\link[igraph]{igraph}} which vertexes are the clusters
 (the clustering is thus understood as a vertex clustering) and the edges are the
 counts of edges in the original graph between two vertices corresponding to the
-two clusters in the projected graph.
+two clusters in the projected graph or, if \code{init.graph} is a weighted 
+graph, the sum of the weights between the pairs of vertices corresponding to the
+two clusters.
 
-The resulting igraph object's attribute are: \itemize{
+The resulting igraph object's attributes are: \itemize{
 \item the graph attribute \code{layout} which provides the layout of the 
 projected graph according to the grid of the SOM;
-\item the vertex attributes \code{name} and \code{sizes} which, respectively 
+\item the vertex attributes \code{name} and \code{size} which, respectively 
 are the vertex number on the grid and the number of vertexes included in the
 corresponding cluster;
-\item the edge attribute \code{nb.edges} which gives the number of edges 
-between the vertexes of the two corresponding clusters.}
+\item the edge attribute \code{weight} which gives the number of edges (or the
+sum of the weights) between the vertexes of the two corresponding clusters.}
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
@@ -42,7 +44,10 @@ Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 
-\seealso{\code{\link{plot.somRes}} with the option \code{type="graph"}.}
+\seealso{\code{projectIGraph.somSC} which uses the results of a super-clustering
+to obtain another projected graph. \code{\link{plot.somRes}} with the option
+\code{type="graph"} or \code{\link{plot.somSC}} with the option 
+\code{type="projgraph"}.}
 
 \examples{
 data(lesmis)
