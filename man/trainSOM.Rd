@@ -56,8 +56,9 @@ version.
 
 Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
-in Cottrel et al., 1993; \code{type="relational"} for dissimilarity matrices, 
-as described in Olteanu et al., 2015.
+in Cottrel et al., 1993 (with weights as in Cottrel and Letremy, 2005); 
+\code{type="relational"} for dissimilarity matrices, as described in Olteanu et 
+al., 2015.
 
 \code{summary} produces a complete summary of the results that displays the 
 parameters of the SOM, quality criteria and ANOVA. For \code{type="numeric"}
@@ -74,6 +75,10 @@ variance. \emph{Austral Ecology}, \strong{26}, 32--46.
 
 Kohonen T. (2001) \emph{Self-Organizing Maps}. Berlin/Heidelberg:
 Springer-Verlag, 3rd edition.
+
+Cottrell, M., Letremy, P. (2005) How to use the Kohonen algorithm to 
+simultaneously analyse individuals in a survey. \emph{Neurocomputing}, 
+\strong{21}, 119--138.
 
 Cottrell, M., Letremy, P., Roy, E. (1993) Analyzing a contingency table with
 Kohonen maps: a Factorial Correspondence Analysis. In: \emph{Proceedings of

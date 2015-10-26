@@ -28,9 +28,10 @@ version.
 
 Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
-in Cottrel et al., 1993 and \code{type="relational"} for dissimilarity data, as
-described in Olteanu and Villa-Vialaneix, 2015a. A special focus has been put
-on representing graphs, as described in Olteanu and Villa-Vialaneix, 2015b.
+in Cottrel et al., 1993 (with the observation weights defined in Cottrel and
+Letremy, 2005) and \code{type="relational"} for dissimilarity data, as described
+in Olteanu and Villa-Vialaneix, 2015a. A special focus has been put on 
+representing graphs, as described in Olteanu and Villa-Vialaneix, 2015b.
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}
@@ -51,6 +52,10 @@ Cottrell, M., Letremy, P., Roy, E. (1993) Analyzing a contingency table with
 Kohonen maps: a Factorial Correspondence Analysis. In: \emph{Proceedings of
 IWANN'93, J. Cabestany, J. Mary, A. Prieto (Eds.), Lecture Notes in Computer
 Science}, Springer-Verlag, 305--311.
+
+Cottrell, M., Letremy, P. (2005) How to use the Kohonen algorithm to 
+simultaneously analyse individuals in a survey. \emph{Neurocomputing}, 
+\strong{21}, 119--138.
 
 Letremy, P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
 l'analyse des donnees. SAS/IML programs for 'korresp'.

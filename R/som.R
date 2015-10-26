@@ -173,12 +173,12 @@ korrespPreprocess <- function(cont.table) {
                           ncol=ncol(cont.table)+nrow(cont.table))
   # row profiles
   both.profiles[1:nrow(cont.table), 1:ncol(cont.table)] <-
-    cont.table/outer(rowSums(cont.table), 
+    cont.table/outer(sqrt(rowSums(cont.table)), 
                      sqrt(colSums(cont.table)/sum(cont.table)))  
   # column profiles
   both.profiles[(nrow(cont.table)+1):(nrow(cont.table)+ncol(cont.table)),
                 (ncol(cont.table)+1):(ncol(cont.table)+nrow(cont.table))] <- 
-    t(cont.table)/outer(colSums(cont.table), 
+    t(cont.table)/outer(sqrt(colSums(cont.table)), 
                         sqrt(rowSums(cont.table)/sum(cont.table)))
   # Best column to complete row profiles
   best.col <- apply(both.profiles[1:nrow(cont.table), 1:ncol(cont.table)],
