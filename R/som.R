@@ -342,6 +342,54 @@ oneObsAffectation <- function(x.new, prototypes, type, affectation, x.data=NULL,
   the.neuron
 }
 
+obsAffectation <- function(x.new, prototypes, type, affectation, x.data=NULL,
+                           radius.type=NULL, radius=NULL, the.grid=NULL) {
+  if (is.null(dim(x.new))) {
+    the.neuron <- oneObsAffectation(x.new, prototypes, type, affectation, 
+                                    x.data, radius.type, radius, the.grid)
+  } else {
+    # distance between all prototypes and all data
+    if (type=="relational") {
+      dist.1 <- -0.5*diag(prototypes%*%x.data%*%t(prototypes))
+      dist.2 <- tcrossprod(prototypes, x.new)
+      all.dist <- sweep(dist.2, 1, dist.1, "+")
+    } else {
+      # Euclidean distance
+      dist.1 <- -2*tcrossprod(prototypes, x.new)
+      dist.2 <- diag(tcrossprod(prototypes, prototypes))
+      all.dist <- sweep(dist.1, 1, dist.2, "+")
+    }
+    
+    # affectation to the closest prototype
+    if (affectation=="standard") {
+      the.neuron <- apply(all.dist, 2, which.min)
+    } else {
+      # Heskes's soft affectation
+      u.weights <- sapply(1:nrow(prototypes), function(a.neuron) {
+        the.nei <- selectNei(a.neuron, the.grid, radius, radius.type,
+                             the.grid$dist.type)
+        return(the.nei)
+      })
+      if (type != "relational")
+        all.dist <- all.dist + apply(x.new^2, 1, sum)
+      if (radius.type != "letremy") {
+        w.dist <- t(apply(u.weights, 1, function(awproto) {
+          apply(sweep(all.dist, 1, awproto, "*"), 2, sum)
+        }))
+        
+      } else {
+        w.dist <- lapply(u.weights, function(awproto) {
+          apply(all.dist[awproto, ], 2, sum)
+        })
+        w.dist <- matrix(unlist(w.dist), nrow=25, byrow=TRUE)
+      }
+      the.neuron <- apply(w.dist, 2, which.min)
+    }
+  }
+  
+  the.neuron
+}
+
 # Step 7: Update of prototypes
 prototypeUpdate <- function(type, the.nei, epsilon, prototypes, rand.ind,
                             sel.obs, radius.type) {
@@ -728,23 +776,26 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0,
               call.=TRUE)
     norm.x.data <- korrespPreprocess(object$data)
     
-    winners.rows <- apply(norm.x.data[1:nrow(object$data), 1:ncol(object$data)],
-                          1, oneObsAffectation,
-                          prototypes=object$prototypes[,1:ncol(object$data)],
-                          type=object$parameters$type,
-                          affectation=object$parameters$affectation,
-                          radius.type=object$parameters$radius.type, 
-                          radius=radius, the.grid=object$parameters$the.grid)
-      
-    winners.cols <- apply(norm.x.data[(nrow(object$data)+1):ncol(norm.x.data),
-                                      (ncol(object$data)+1):ncol(norm.x.data)],
-                          1, oneObsAffectation,
-                          prototypes=object$prototypes[,(ncol(object$data)+1):
-                                                         ncol(norm.x.data)],
-                          type=object$parameters$type,
-                          affectation=object$parameters$affectation,
-                          radius.type=object$parameters$radius.type,
-                          radius=radius, the.grid=object$parameters$the.grid)
+    winners.rows <- obsAffectation(norm.x.data[1:nrow(object$data),
+                                               1:ncol(object$data)],
+                                   object$prototypes[,1:ncol(object$data)],
+                                   type=object$parameters$type,
+                                   affectation=object$parameters$affectation,
+                                   radius.type=object$parameters$radius.type, 
+                                   radius=radius, 
+                                   the.grid=object$parameters$the.grid)
+    
+    winners.cols <- 
+      obsAffectation(norm.x.data[(nrow(object$data)+1):ncol(norm.x.data),
+                                 (ncol(object$data)+1):ncol(norm.x.data)],
+                     object$prototypes[,(ncol(object$data)+1):
+                                         ncol(norm.x.data)],
+                     type=object$parameters$type,
+                     affectation=object$parameters$affectation,
+                     radius.type=object$parameters$radius.type, 
+                     radius=radius, 
+                     the.grid=object$parameters$the.grid)
+
     winners <- c(winners.cols, winners.rows)
   } else if (object$parameters$type=="numeric") { ## numeric
     if (is.null(x.new)) {
@@ -768,11 +819,13 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0,
                          "none"=x.new)
     norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
                                   object$data)
-    winners <- apply(norm.x.new, 1, oneObsAffectation, prototypes=norm.proto,
-                     type=object$parameters$type,
-                     affectation=object$parameters$affectation,
-                     radius.type=object$parameters$radius.type, radius=radius,
-                     the.grid=object$parameters$the.grid)
+    winners <- obsAffectation(norm.x.new, prototypes=norm.proto,
+                              type=object$parameters$type,
+                              affectation=object$parameters$affectation,
+                              radius.type=object$parameters$radius.type,
+                              radius=radius, 
+                              the.grid=object$parameters$the.grid)
+
     } else if (object$parameters$type=="relational") { ## relational
       if (is.null(x.new)) {
         x.new <- object$data
@@ -796,11 +849,13 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0,
       norm.x.data <- preprocessData(object$data, object$parameters$scaling)
       norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
                                     object$data)
-      winners <- apply(norm.x.new, 1, oneObsAffectation, prototypes=norm.proto,
-                       type=object$parameters$type, x.data=norm.x.data,
-                       affectation=object$parameters$affectation,
-                       radius.type=object$parameters$radius.type, radius=radius,
-                       the.grid=object$parameters$the.grid)
+      
+      winners <- obsAffectation(norm.x.new, prototypes=norm.proto,
+                                type=object$parameters$type, x.data=norm.x.data,
+                                affectation=object$parameters$affectation,
+                                radius.type=object$parameters$radius.type,
+                                radius=radius, 
+                                the.grid=object$parameters$the.grid)
     }
   return(winners)
 }

@@ -2,7 +2,9 @@ SOMbrero 1.1
 Fixed bugs:
   Changed observation weights in KORRESP: they now correspond to the 2005 KDISJ
 version and not to the 1993 version
-
+  changed the function predict.somRes to speed it up
+  
+********************************************************************************
 SOMbrero 1.0 (CRAN first release)
 New features:
   projectIGraph now handles weighted graphs

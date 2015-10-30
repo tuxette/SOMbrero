@@ -21,11 +21,10 @@ topographicError <- function (sommap) {
     ind.winner2 <- c(apply(all.dist.col,2,function(x) order(x)[2]),
                      apply(all.dist.row,2,function(x) order(x)[2]))
   } else if (sommap$parameters$type=="relational") {
-    all.dist <- sapply(1:ncol(norm.proto), function(ind) {
-      norm.proto%*%norm.data[ind,]-
-        0.5*diag(norm.proto%*%norm.data%*%t(norm.proto))
-    })
-    ind.winner2 <- apply(all.dist,2,function(x) order(x)[2])
+    dist.1 <- -0.5*diag(norm.proto%*%norm.data%*%t(norm.proto))
+    dist.2 <- norm.proto%*%norm.data
+    all.dist <- sweep(dist.2, 1, dist.1, "+")
+    ind.winner2 <- apply(all.dist, 2, function(x) order(x)[2])
   }
   res.error <- mean(!sapply(1:nrow(sommap$data), function(x) {
       is.element(ind.winner2[x], selectNei(sommap$clustering[x],
