@@ -487,18 +487,18 @@ trainSOM <- function (x.data, ...) {
   if (!is.null(parameters$proto0)) {
     if ((parameters$type=="korresp")&&
           (!identical(dim(parameters$proto0),
-                      as.integer(c(prod(parameters$dimension),
+                      as.integer(c(prod(parameters$the.grid$dimension),
                                    ncol(x.data)+nrow(x.data)))))) {
       stop("initial prototypes dimensions do not match SOM parameters:
          in the current SOM, prototypes must have ", 
-           prod(parameters$dimension), " rows and ", 
+           prod(parameters$the.grid$dimension), " rows and ", 
            ncol(x.data)+nrow(x.data), " columns\n", call.=TRUE)
     } else if (!identical(dim(parameters$proto0),
-                          as.integer(c(prod(parameters$dimension),
+                          as.integer(c(prod(parameters$the.grid$dimension),
                                        ncol(x.data))))) {
       stop("initial prototypes dimensions do not match SOM parameters:
          in the current SOM, prototypes must have ", 
-           prod(parameters$dimension), " rows and ", 
+           prod(parameters$the.grid$dimension), " rows and ", 
            ncol(x.data), " columns\n", call.=TRUE)
     }
   }
