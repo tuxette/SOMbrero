@@ -371,7 +371,7 @@ obsAffectation <- function(x.new, prototypes, type, affectation, x.data=NULL,
         return(the.nei)
       })
       if (type != "relational")
-        all.dist <- all.dist + apply(x.new^2, 1, sum)
+        all.dist <- sweep(all.dist, 2, apply(x.new^2, 1, sum), "+")
       if (radius.type != "letremy") {
         w.dist <- t(apply(u.weights, 1, function(awproto) {
           apply(sweep(all.dist, 1, awproto, "*"), 2, sum)
