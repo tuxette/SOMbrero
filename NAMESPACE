@@ -1,3 +1,11 @@
+## imports from base packages
+importFrom(grDevices, cm.colors, heat.colors, rainbow)
+importFrom(graphics, abline, box, layout, legend, par,
+           plot, plot.new, polygon, rect, text, title)
+importFrom(stats, aov, as.dist, chisq.test, cmdscale,
+           cutree, dist, hclust, pf, princomp, quantile,
+           rect.hclust, runif, sd)
+
 ## imports
 importFrom(scatterplot3d, scatterplot3d)
 importFrom(wordcloud, wordcloud)

@@ -15,7 +15,7 @@ Description: The stochastic (also called on-line) version of the Self-Organising
              user interface based on shiny (which is also available on-line at
              http://shiny.nathalievilla.org/sombrero).
 Depends: R (>= 3.1.0), knitr, igraph (>= 0.6)
-Imports: wordcloud, scatterplot3d, RColorBrewer, shiny
+Imports: wordcloud, scatterplot3d, RColorBrewer, shiny, grDevices, graphics, stats
 License: GPL (>= 2)
 Repository: CRAN
 VignetteBuilder: knitr
