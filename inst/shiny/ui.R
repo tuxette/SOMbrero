@@ -14,7 +14,7 @@ shinyUI(pageWithSidebar(
     p(HTML("<h5>Welcome to SOMbrero, the open-source on-line interface for 
 self-organizing maps (SOM).</h5> This interface trains SOM for numerical data,
 contingency tables and dissimilarity data using the <strong>R</strong> package
-<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v1.0). Train a
+<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v1.1). Train a
 map on your data and visualize their topology in three simple steps using the
 panels on the right.")),
     
