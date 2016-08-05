@@ -23,12 +23,30 @@ stopifnot(identical(predict(nsom), nsom$clustering))
 rsom <- trainSOM(dissim.lesmis, type="relational", maxit=10, scaling= "none")
 stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
 stopifnot(predict(rsom, dissim.lesmis[1,])==rsom$clustering[1])
-stopifnot(identical(predict(nsom), nsom$clustering))
+stopifnot(identical(predict(rsom), rsom$clustering))
 
 rsom <- trainSOM(dissim.lesmis, type="relational", maxit=10, scaling= "cosine")
 stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
 stopifnot(predict(rsom, dissim.lesmis[1,])==rsom$clustering[1])
-stopifnot(identical(predict(nsom), nsom$clustering))
+stopifnot(identical(predict(rsom), rsom$clustering))
+
+rsom <- trainSOM(dissim.lesmis, type="relational", maxit=10, 
+                 radius.type="letremy")
+stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
+stopifnot(predict(rsom, dissim.lesmis[1,])==rsom$clustering[1])
+stopifnot(identical(predict(rsom), rsom$clustering))
+
+rsom <- trainSOM(dissim.lesmis, type="relational", maxit=10, 
+                 affectation="heskes")
+stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
+stopifnot(predict(rsom, dissim.lesmis[1,])==rsom$clustering[1])
+stopifnot(identical(predict(rsom), rsom$clustering))
+
+rsom <- trainSOM(dissim.lesmis, type="relational", maxit=10, 
+                 affectation="heskes", radius.type="letremy")
+stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
+stopifnot(predict(rsom, dissim.lesmis[1,])==rsom$clustering[1])
+stopifnot(identical(predict(rsom), rsom$clustering))
 
 korr <- trainSOM(presidentielles2002, type= "korresp", maxit= 10)
 stopifnot(identical(predict(nsom), nsom$clustering))

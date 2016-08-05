@@ -344,7 +344,8 @@ oneObsAffectation <- function(x.new, prototypes, type, affectation, x.data=NULL,
 
 obsAffectation <- function(x.new, prototypes, type, affectation, x.data=NULL,
                            radius.type=NULL, radius=NULL, the.grid=NULL) {
-  if (is.null(dim(x.new))) {
+  if (is.null(dim(x.new)) || nrow(x.new) == 1) {
+    if (!is.null(dim(x.new))) x.new <- x.new[1, ]
     the.neuron <- oneObsAffectation(x.new, prototypes, type, affectation, 
                                     x.data, radius.type, radius, the.grid)
   } else {
@@ -376,12 +377,15 @@ obsAffectation <- function(x.new, prototypes, type, affectation, x.data=NULL,
         w.dist <- t(apply(u.weights, 1, function(awproto) {
           apply(sweep(all.dist, 1, awproto, "*"), 2, sum)
         }))
-        
       } else {
-        w.dist <- lapply(u.weights, function(awproto) {
-          apply(all.dist[awproto, ], 2, sum)
-        })
-        w.dist <- matrix(unlist(w.dist), nrow=25, byrow=TRUE)
+        if (radius == 0) {
+          w.dist <- all.dist
+        } else {
+          w.dist <- lapply(u.weights, function(awproto) {
+            apply(all.dist[awproto, ], 2, sum)
+          })
+          w.dist <- matrix(unlist(w.dist), nrow=25, byrow=TRUE)
+        }
       }
       the.neuron <- apply(w.dist, 2, which.min)
     }
