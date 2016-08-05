@@ -681,13 +681,13 @@ projectGraph <- function(the.graph, clustering, coord.clustering) {
       }
     }
   }
-  proj.graph <- graph.data.frame(matrix(p.edges, ncol=2, byrow=TRUE),
-                                 directed=FALSE, 
-                                 vertices=data.frame("name"=nonempty.neurons,
-                                                     "size"=v.sizes))
+  proj.graph <- 
+    graph_from_data_frame(matrix(p.edges, ncol=2, byrow=TRUE), directed=FALSE, 
+                          vertices=data.frame("name"=nonempty.neurons,
+                                              "size"=v.sizes))
   E(proj.graph)$weight <- p.edges.weights
-  proj.graph <- set.graph.attribute(proj.graph, "layout",
-                                    coord.clustering[nonempty.neurons,])
+  proj.graph <- set_graph_attr(proj.graph, "layout",
+                               coord.clustering[nonempty.neurons,])
   return(proj.graph)
 }
 
@@ -883,10 +883,10 @@ protoDist <- function(object, mode,...) {
 }
 
 projectIGraph.somRes <- function(object, init.graph, ...) {
-  if (!is.igraph(init.graph)) {
+  if (!is_igraph(init.graph)) {
     stop("'init.graph' must be an igraph object\n", call.=TRUE)
   }
-  if (vcount(init.graph)!=length(object$clustering)) {
+  if (gorder(init.graph)!=length(object$clustering)) {
     stop("The number of vertexes of 'init.graph' does not match the clustering length\n", call.=TRUE)
   }
   proj.graph <- projectGraph(init.graph, object$clustering,

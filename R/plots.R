@@ -705,7 +705,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
                      sommap$parameters$the.grid, args)
   } else if (type=="graph") {
     # controls
-    if (!is.igraph(variable)){
+    if (!is_igraph(variable)){
       stop("for type='graph', argument 'variable' must be an igraph object\n", 
            call.=TRUE)
     }
