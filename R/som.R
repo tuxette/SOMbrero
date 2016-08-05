@@ -647,7 +647,9 @@ trainSOM <- function (x.data, ...) {
         
         ind.s <- match(ind.t,backup$steps)
         backup$prototypes[[ind.s]] <- out.proto
-        backup$clustering[,ind.s] <- predict.somRes(res, radius=radius, A=A)
+        if (parameters$type=="relational") {
+          backup$clustering[,ind.s] <- predict.somRes(res, radius=radius, A=A)
+        } else backup$clustering[,ind.s] <- predict.somRes(res, radius=radius)
         backup$energy[ind.s] <- calculateEnergy(norm.x.data,
                                                 backup$clustering[,ind.s],
                                                 prototypes, parameters, ind.t)
@@ -675,7 +677,9 @@ trainSOM <- function (x.data, ...) {
       res <- list("parameters"=parameters, "prototypes"=out.proto,
                   "data"=x.data)
       class(res) <- "somRes"
-      clustering <- predict.somRes(res, A=A)
+      if (parameters$type=="relational") {
+        clustering <- predict.somRes(res, A=A)
+      } else clustering <- predict.somRes(res)
       if (parameters$type=="korresp") {
         names(clustering) <- c(colnames(x.data), rownames(x.data))
       } else names(clustering) <- rownames(x.data)
@@ -895,7 +899,6 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0, tolerance=10^(-10)
       }
       
       if (is.null(A)) {
-
         norm.x.new <- switch(object$parameters$scaling,
                              "none"=x.new,
                              "frobenius"=x.new/sqrt(sum(object$data^2)),

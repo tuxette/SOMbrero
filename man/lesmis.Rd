@@ -20,11 +20,11 @@ the number of co-appearances between the two characters afferent to the edge
 (the \code{\link[igraph]{igraph}} can thus be made a weighted graph using this
 attribute). Finally, a graph attribute \option{layout} is used to provide a 
 layout (generated with the \code{\link[igraph]{igraph}} function 
-\code{\link[igraph:layout.fruchterman.reingold]{layout.fruchterman.reingold}})
+\code{\link[igraph:layout.fruchterman.reingold]{layout_with_fr}})
 for visualizing the graph.
 
 \code{dissim.lesmis} is a dissimilarity matrix computed with the function 
-\code{\link[igraph]{shortest.paths}} and containing the length of the shortest
+\code{\link[igraph]{shortest_paths}} and containing the length of the shortest
 paths between pairs of nodes.
 }
 

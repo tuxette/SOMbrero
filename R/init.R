@@ -2,7 +2,7 @@
   packageStartupMessage("")
   packageStartupMessage("***********************************************************")
   packageStartupMessage("")
-  packageStartupMessage("      This is 'SOMbrero' package, v 1.1")
+  packageStartupMessage("      This is 'SOMbrero' package, v 1.2")
   packageStartupMessage("")
   packageStartupMessage("Citation details with citation('SOMbrero')")
   packageStartupMessage("")

@@ -1,9 +1,10 @@
 Package: SOMbrero
 Title: SOM Bound to Realize Euclidean and Relational Outputs
-Version: 1.1
-Date: 2015-11-04
+Version: 1.2
+Date: 2016-08-05
 Authors@R: c(person("Laura", "Bendhaiba", role = "aut", email="laurabendhaiba@gmail.com"),
              person("Julien", "Boelaert", role= "aut", email="julien.boelaert@gmail.com"),
+             person("Jerome", "Mariette", role= "aut", email="jerome.mariette@toulouse.inra.fr"),
              person("Madalina", "Olteanu", role = "aut", email="madalina.olteanu@univ-paris1.fr"),
              person("Nathalie", "Villa-Vialaneix", role = c("aut", "cre"), email="nathalie.villa@toulouse.inra.fr"))
 Maintainer: Nathalie Villa-Vialaneix <nathalie.villa@toulouse.inra.fr>
@@ -14,7 +15,7 @@ Description: The stochastic (also called on-line) version of the Self-Organising
              features (to help the user interpret the results) and a graphical
              user interface based on shiny (which is also available on-line at
              http://shiny.nathalievilla.org/sombrero).
-Depends: R (>= 3.1.0), knitr, igraph (>= 0.6)
+Depends: R (>= 3.1.0), knitr, igraph (>= 1.0)
 Imports: wordcloud, scatterplot3d, RColorBrewer, shiny, grDevices, graphics, stats
 License: GPL (>= 2)
 Repository: CRAN

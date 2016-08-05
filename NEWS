@@ -1,3 +1,12 @@
+SOMbrero 1.2
+Fixed bugs:
+  fixed heskes predictions for relation SOM
+  updated scripts for latest igraph version
+
+Code improvements:
+  faster version of dissimilarity SOM
+  
+********************************************************************************
 SOMbrero 1.1
 Fixed bugs:
   Changed observation weights in KORRESP: they now correspond to the 2005 KDISJ

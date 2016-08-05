@@ -18,8 +18,8 @@ parameters given to the algorithm (see \code{\link{initSOM}} and
 \tabular{ll}{
 Package: \tab SOMbrero\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2015-03-27\cr
+Version: \tab 1.2\cr
+Date: \tab 2016-08-05\cr
 License: \tab GPL (>= 2)\cr
 Shiny online interface: \url{http://shiny.nathalievilla.org}
 }
@@ -37,6 +37,8 @@ representing graphs, as described in Olteanu and Villa-Vialaneix, 2015b.
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}
 
 Julien Boelaert \email{julien.boelaert@gmail.com}
+
+Jerome Mariette \email{jerome.mariette@toulouse.inra.fr}
 
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}
 
