@@ -6,8 +6,6 @@
 
 # Self-Organizing Map for contingency tables
 
-#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
-
 ## Basic package description
 
 To be able to run the SOM algorithm, you have to load the package called 
@@ -55,9 +53,10 @@ Chirac and the far-right candidate Jean-Marie Le Pen)
 ### Training the SOM
 
 ```{r presiTrain, cache=TRUE}
-set.seed(4031719)
+set.seed(01091407)
 korresp.som <- trainSOM(x.data=presidentielles2002, dimension=c(8,8),
-                        type="korresp", scaling="chi2", nb.save=10)
+                        type="korresp", scaling="chi2", nb.save=10,
+                        radius.type="letremy")
 korresp.som
 ```
 
@@ -124,24 +123,22 @@ both row and column variable names are printed.
 plot(korresp.som, what="obs", type="names", scale=c(0.9,0.5))
 ```
 
-The map is organized as follows: the bottom left side of the map is associated
-to the candidate "Taubira" who obtained her better vote scoring in the overseas
-departements "Guadeloupe", "Martinique" and "Guyane".
+The map is divided into two main parts: minor candidates are classified at its 
+top left hand side whereas the first main candidates CHIRAC, LE PEN and JOSPIN
+are classified at the bottom right hand side of the map, in three different 
+parts of this corner. Some strinking facts are:
 
-These candidates are opposed to the top left hand side of the map (cluster 8) 
-which is associated to the far-right candidates "Le Pen" and "Megret" who 
-traditionally obtain higher voting scores in some South of France departements 
-"Vaucluse" and some North Est departements as "Haut Rhin". The top right hand
-side of the map is composed of clustered characterized by far-left candidates
-("HUE", "LAGUILLER", "BESANCENOT") and progressively goes to the traditionnal
-left candidates in the right part of the map ("JOSPIN") and finally to the
-traditional right candidates in the bottom right corner of the map ("CHIRAC",
-"BAYROU"). It is to be noted that the vote for far-right candidates is more
-similar to the vote for far-left candidates than for traditional right 
-candidates. The cluster with the largest number of departement classified inside
-is cluster 8 at the top left corner of the map, which is also Le Pen's cluster:
-in this election, the far-right candidate actually succeeded for the first time
-to run the second round of the presidential election.
+* the position of TAUBIRA, opposed to that of JOSPIN from who she is very close
+from a political point of view. She is associated with Guyane, Guadeloupe and 
+Martinique, overseas departements;
+
+* the position of HUE, LAGUILLER and BESANCENOT, far left candidates, all 
+associated in the same cluster and close to traditional departements voting for
+far left candidates: Nord, Pas de Calais and Seine Maritime ;
+
+* the fact that most departement are classified at the bottom right hand side of
+the map with the three main candidates.
+
 
 ### Clustering interpretation
 
@@ -165,11 +162,11 @@ plot(korresp.som, what="prototypes", type="lines", view="r", print.title=TRUE)
 plot(korresp.som, what="prototypes", type="lines", view="c", print.title=TRUE)
 ```
 
-The peaks in neurons 1, 2 and 9 correspond, in the row view, to the overseas 
-departements and, in the column view, to the candidate "Taubira". In the column
-views, the two peaks clearly identified in the right side clusters correspond to 
-the two "main" tranditional candidates "Jospin" and "Chirac" (respectively, 
-left and right candidates).
+The peaks in neurons 5 and 6 correspond, in the row view, to the overseas 
+departements and, in the column view, to the candidate TAUBIRA. In the column
+views, the two peaks clearly identified in the bottom right side clusters 
+correspond to the two "main" tranditional candidates JOSPIN and CHIRAC 
+(respectively, left and right candidates).
 
 A more precise individual view are given with the graphics "color" and "3d",
 here drawn, as an example for the candidate "Le Pen" and for the departement
@@ -179,30 +176,26 @@ argument ```variable```) is represented on the map;
 * in 3d, which handling is similar to ```"color"```.
 ```{r presiProtoC3d, fig.width=12, fig.height=6}
 par(mfrow=c(1,2))
-plot(korresp.som, what="prototypes", type="color", variable="LE_PEN")
+plot(korresp.som, what="prototypes", type="color", variable="TAUBIRA")
 plot(korresp.som, what="prototypes", type="3d", variable="martinique")
 ```
 
-The first graphic shows that "Le Pen" obtained its best scores in the
-departements located in the top left hand side of the map and its lowest scores
-in the departements located in the bottom left side of the map (overseas 
-departement).
-
-The second graphic shows that the candidates that obtained the higher scores in
-Martinique are located in the bottom right hand side of the map (mainly 
-Taubira).
+The first graphic shows that TAUBIRA obtained her best scores in the 
+departements located at the left hand side of the map. The second graphic shows
+that the candidates that obtained the higher scores in Martinique are located in
+the bottom right hand side of the map.
 
 The graphics can also be drawn by giving the variable number and its type,
-either "r" or "c" (here, as an example, "Chirac" which is the 5th candidate):
+either "r" or "c" (here, as an example, CHIRAC who is the 5th candidate):
 ```{r presiProtoNumber, fig.width=12, fig.height=6}
 par(mfrow=c(1,2))
 plot(korresp.som, what="prototypes", type="color", variable=5, view="c")
 plot(korresp.som, what="prototypes", type="3d", variable=5, view="c")
 ```
 
-Hence "Chirac" is located at the bottom right corner the map and more generally
-in the bottom of the map (he traditionnally also have high votes in the overseas
-departements).
+Hence CHIRAC obtained more votes in departement located at the top of the map
+and has his lowest scores in departements Jura, Aubde, Haute Saone, Ardennes, 
+Alpes de Haute Provence, Ariege, ... located at the bottom (middle) of the map.
 
 #### Graphic on prototype distances
 
@@ -214,7 +207,8 @@ a polygon's vertex and a cell border, the closer the pair of prototypes.
 The colors indicates the number of observations in the neuron (white=empty);
 
 * ```"umatrix"``` fills the neurons of the grid using colors that represent
-the average distance between the current prototype and its neighbors;
+the average distance between the current prototype and its neighbors (darker
+colors for prototypes that are farther from their neighbors);
 
 * ```"smooth.dist"``` plots the mean distance between the current prototype and 
 its neighbors with a color gradation;
@@ -234,11 +228,10 @@ plot(korresp.som, what="prototypes", type="mds")
 plot(korresp.som, what="prototypes", type="grid.dist")
 ```
 
-Three neurons (1, 9 and 2) have been already picked out in the section 
+Neuron 6 which has been already picked out in the section 
 __Clustering interpretation__ for having prototypes rather different than the 
-rest of the map. The graphics just above confirm this hypothesis: there a 
-noticeable peak in prototype distances around these three neurons. The MDS
-vizualisation also shows that these three prototypes are clearly different.
+rest of the map shows a larger distance to the others. 
+
 
 ### Analyze the projection quality
 
@@ -251,7 +244,8 @@ the argument ```quality.type```.
 
 The topographic error value varies between 0 (good projection quality) and 1 
 (poor projection quality). Here, the topographic quality of the mapping is 
-quite good with a topographic error equal to 0.009.
+rather good with a topographic error equal to 
+`r round(quality(korresp.som)$topographic, 3)`.
 
 The quantization error is an unbounded positive number. The closer from 0 it
 is, the better the projection quality is.
@@ -295,10 +289,8 @@ plot(my.sc, type="grid", plot.legend=TRUE)
 plot(my.sc, type="dendro3d")
 ```
 
-The three super-clusters correspond to overseas votes (super-cluster 1),
-traditional votes (super-cluster 2) and far-left/right votes (super-cluster 2).
-The 3 different neurons mentionned earlier have been gathered together in the 
-super cluster 1.
+The three super-clusters correspond to traditional votes (blue), far right votes
+(green) and votes for minor candidates (orange).
 
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:
@@ -316,15 +308,11 @@ plot(my.sc, type="color", view="c", variable="JOSPIN")
 plot(my.sc, type="poly.dist")
 ```
 
-Let us consider the first super cluster. It contains 3 departements and 1 
-candidate:
+Let us consider the first super cluster. It contains departements which were 
+crucial in promoting the far right candidate LE PEN, unexpected winner of the
+first round:
 ```{r DOM, echo=FALSE}
 names(korresp.som$clustering)[which(korresp.som$clustering %in%
                                       which(my.sc$cluster==1))]
 ```
-The departments are the 3 biggest overseas departements. These departements, 
-regarding history and culture, are different from metropolitan France thus they 
-also have a different but common election behaviour. Particularly, during the 
-2002 French presidential election, they strongly promoted Christine Taubira, 
-who is actually the candidate assigned to this super cluster, a woman 
-originated from one of the overseas departements.
+

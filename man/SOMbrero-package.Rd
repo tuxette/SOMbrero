@@ -19,9 +19,8 @@ parameters given to the algorithm (see \code{\link{initSOM}} and
 Package: \tab SOMbrero\cr
 Type: \tab Package\cr
 Version: \tab 1.2\cr
-Date: \tab 2016-08-05\cr
-License: \tab GPL (>= 2)\cr
-Shiny online interface: \url{http://shiny.nathalievilla.org}
+Date: \tab 2016-09-02\cr
+License: \tab GPL (>= 2)
 }
 The version of the SOM algorithm implemented in this package is the stochastic
 version.
@@ -30,8 +29,9 @@ Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
 in Cottrel et al., 1993 (with the observation weights defined in Cottrel and
 Letremy, 2005) and \code{type="relational"} for dissimilarity data, as described
-in Olteanu and Villa-Vialaneix, 2015a. A special focus has been put on 
-representing graphs, as described in Olteanu and Villa-Vialaneix, 2015b.
+in Olteanu and Villa-Vialaneix, 2015a with the fast implementation of Mariette
+\emph{et al.}, 2016. A special focus has been put on representing graphs, as 
+described in Olteanu and Villa-Vialaneix, 2015b.
 }
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}
@@ -41,6 +41,8 @@ Julien Boelaert \email{julien.boelaert@gmail.com}
 Jerome Mariette \email{jerome.mariette@toulouse.inra.fr}
 
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}
+
+Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}
 
 Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 
@@ -62,6 +64,9 @@ simultaneously analyse individuals in a survey. \emph{Neurocomputing},
 Letremy, P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
 l'analyse des donnees. SAS/IML programs for 'korresp'.
 \url{http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme}.
+
+Mariette, J. and Rossi, F. and Olteanu, M. and Mariette, J. (2016) Fast 
+implementation of on-line relation SOM. \emph{Technical report}.
 
 Olteanu, M., Villa-Vialaneix, N. (2015a) On-line relational and multiple
 relational SOM. \emph{Neurocomputing}, \strong{147}, 15-30. 

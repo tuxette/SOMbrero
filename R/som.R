@@ -648,7 +648,7 @@ trainSOM <- function (x.data, ...) {
         ind.s <- match(ind.t,backup$steps)
         backup$prototypes[[ind.s]] <- out.proto
         if (parameters$type=="relational") {
-          backup$clustering[,ind.s] <- predict.somRes(res, radius=radius, A=A, B=B)
+          backup$clustering[,ind.s] <- predictRSOM(res, radius=radius, A=A, B=B)
         } else backup$clustering[,ind.s] <- predict.somRes(res, radius=radius)
         backup$energy[ind.s] <- calculateEnergy(norm.x.data,
                                                 backup$clustering[,ind.s],
@@ -678,7 +678,7 @@ trainSOM <- function (x.data, ...) {
                   "data"=x.data)
       class(res) <- "somRes"
       if (parameters$type=="relational") {
-        clustering <- predict.somRes(res, A=A, B=B)
+        clustering <- predictRSOM(res, A=A, B=B)
       } else clustering <- predict.somRes(res)
       if (parameters$type=="korresp") {
         names(clustering) <- c(colnames(x.data), rownames(x.data))
@@ -824,8 +824,48 @@ summary.somRes <- function(object, ...) {
   } 
 }
 
-predict.somRes <- function(object, x.new=NULL, ..., radius=0, tolerance=10^(-10),
-                           A=NULL, B=NULL) {
+predictRSOM <- function(object, x.new=NULL, radius=0, tolerance=10^(-10), 
+                        A=NULL, B=NULL) {
+  if (is.null(A) || is.null(B)) {
+    winners <- predict.somRes(object, x.new=x.new, radius=radius,
+                              tolerance=tolerance)
+  } else {
+    # distance between all prototypes and all data
+    all.dist <- sweep(t(B), 1, -0.5*A, "+")
+    # affectation to the closest prototype
+    if (object$parameters$affectation=="standard") {
+      winners <- apply(all.dist, 2, which.min)
+    } else {
+      # Heskes's soft affectation
+      u.weights <- sapply(1:nrow(object$prototypes), function(a.neuron) {
+        the.nei <- selectNei(a.neuron, object$parameters$the.grid, radius, 
+                             object$parameters$radius.type,
+                             object$parameters$the.grid$dist.type)
+        return(the.nei)
+      })
+      if (object$parameters$radius.type != "letremy") {
+        w.dist <- t(apply(u.weights, 1, function(awproto) {
+          apply(sweep(all.dist, 1, awproto, "*"), 2, sum)
+        }))
+        
+      } else {
+        if (radius == 0) {
+          w.dist <- all.dist
+        } else {
+          w.dist <- lapply(u.weights, function(awproto) {
+            apply(all.dist[awproto, ], 2, sum)
+          })
+          w.dist <- matrix(unlist(w.dist), nrow=25, byrow=TRUE)
+        }
+      }
+      winners <- apply(w.dist, 2, which.min)
+    }
+  }
+  return(winners)
+}
+
+predict.somRes <- function(object, x.new=NULL, ..., radius=0, 
+                           tolerance=10^(-10)) {
   ## korresp
   if(object$parameters$type=="korresp") {
     if (!is.null(x.new)) 
@@ -885,67 +925,36 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0, tolerance=10^(-10)
                               the.grid=object$parameters$the.grid)
     
     } else if (object$parameters$type=="relational") { ## relational
-      if (is.null(A) || is.null(B)) {
-        if (is.null(x.new)) {
-          x.new <- object$data
-        } else {
-          if (is.null(dim(x.new)))
-            x.new <- matrix(x.new, nrow=1, dimnames=list(1,colnames(object$data)))
-          if (!is.matrix(x.new)) x.new <- as.matrix(x.new)
-          # check data dimension
-          if (ncol(x.new)!=ncol(object$data))
-            stop("Number of columns of x.new does not correspond to number of 
-                 columns of the original data")
-        }
-        norm.x.new <- switch(object$parameters$scaling,
-                             "none"=x.new,
-                             "frobenius"=x.new/sqrt(sum(object$data^2)),
-                             "max"=x.new/max(abs(object$data)), 
-                             "sd"=x.new/
-                               sd(object$data[upper.tri(object$data, diag=FALSE)]),
-                             "cosine"=cosinePreprocess(object$data, x.new))
-        norm.x.data <- preprocessData(object$data, object$parameters$scaling)
-        norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
-                                      object$data)
+      if (object$parameters$scaling == "cosine") 
+        stop("'predict' is not implemented for cosine datasets")
+      if (is.null(x.new)) {
+        x.new <- object$data
+      } else {
+        if (is.null(dim(x.new)))
+          x.new <- matrix(x.new, nrow=1, dimnames=list(1,colnames(object$data)))
+        if (!is.matrix(x.new)) x.new <- as.matrix(x.new)
+        # check data dimension
+        if (ncol(x.new)!=ncol(object$data))
+          stop("Number of columns of x.new does not correspond to number of 
+               columns of the original data")
+      }
+      norm.x.new <- switch(object$parameters$scaling,
+                           "none"=x.new,
+                           "frobenius"=x.new/sqrt(sum(object$data^2)),
+                           "max"=x.new/max(abs(object$data)), 
+                           "sd"=x.new/
+                             sd(object$data[upper.tri(object$data, diag=FALSE)]))
+      norm.x.data <- preprocessData(object$data, object$parameters$scaling)
+      norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
+                                    object$data)
+      
+      winners <- obsAffectation(norm.x.new, prototypes=norm.proto,
+                                type=object$parameters$type, x.data=norm.x.data,
+                                affectation=object$parameters$affectation,
+                                radius.type=object$parameters$radius.type,
+                                radius=radius, 
+                                the.grid=object$parameters$the.grid)
         
-        winners <- obsAffectation(norm.x.new, prototypes=norm.proto,
-                                  type=object$parameters$type, x.data=norm.x.data,
-                                  affectation=object$parameters$affectation,
-                                  radius.type=object$parameters$radius.type,
-                                  radius=radius, 
-                                  the.grid=object$parameters$the.grid)
-        } else {
-          # distance between all prototypes and all data
-          all.dist <- sweep(t(B), 1, -0.5*A, "+")
-          # affectation to the closest prototype
-          if (object$parameters$affectation=="standard") {
-            winners <- apply(all.dist, 2, which.min)
-          } else {
-            # Heskes's soft affectation
-            u.weights <- sapply(1:nrow(object$prototypes), function(a.neuron) {
-              the.nei <- selectNei(a.neuron, object$parameters$the.grid, radius, 
-                                   object$parameters$radius.type,
-                                   object$parameters$the.grid$dist.type)
-              return(the.nei)
-            })
-            if (object$parameters$radius.type != "letremy") {
-              w.dist <- t(apply(u.weights, 1, function(awproto) {
-                apply(sweep(all.dist, 1, awproto, "*"), 2, sum)
-              }))
-              
-            } else {
-              if (radius == 0) {
-                w.dist <- all.dist
-              } else {
-                w.dist <- lapply(u.weights, function(awproto) {
-                  apply(all.dist[awproto, ], 2, sum)
-                })
-                w.dist <- matrix(unlist(w.dist), nrow=25, byrow=TRUE)
-              }
-            }
-            winners <- apply(w.dist, 2, which.min)
-          }
-        }
     }
   return(winners)
 }

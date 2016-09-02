@@ -6,8 +6,6 @@
 
 # SOMbrero package
 
-#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
-
 ![logo](./sombrero.png)
 
 ## Package description

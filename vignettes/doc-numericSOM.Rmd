@@ -6,8 +6,6 @@
 
 # Using Self-Organizing Maps with ```SOMbrero``` to cluster a numeric dataset
 
-#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
-
 ## Basic package description
 
 To be able to run the SOM algorithm, you have to load the package called 

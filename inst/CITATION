@@ -41,3 +41,15 @@ citEntry(
                       'On-line relational SOM for dissimilarity data.',
                       'Advances in Self-Organizing Maps (Proceedings of WSOM 2012, Santiago, Chili, 12-14 decembre 2012), Estevez P., Principe J., Zegers P., Barreto G. (eds.), Advances in Intelligent Systems and Computing series, Berlin/Heidelberg: Springer Verlag, 198, 13-22')
 )
+
+citEntry(
+  entry = 'techreport',
+  title = ' Fast implementation of on-line relational SOM',
+  author = personList(as.person("Jerome Mariette"), as.person("Fabrice Rossi"), as.person("Madalina Olteanu"), as.person("Nathalie Villa-Vialaneix")),
+  year = '2016',
+  institution = 'SAMM, Universite Paris 1 and INRA, UR875 MIAT, Universite de Toulouse',
+
+  textVersion = paste('Mariette J., Rossi F., Olteanu M., Villa-Vialaneix N. (2016)',
+                'Fast implementation of on-line relational SOM.',
+                'Technical report')
+)

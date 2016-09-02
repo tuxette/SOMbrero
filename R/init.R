@@ -10,7 +10,7 @@
   packageStartupMessage("")
   packageStartupMessage("Use sombreroGUI() to start the Graphical Interface.")
   packageStartupMessage("")
-  packageStartupMessage("Warning! This package has been implemented by girls.")
+  packageStartupMessage("Warning! This package has been implemented (mostly) by girls.")
   packageStartupMessage("Default colors may not be suited for men.")
   packageStartupMessage("")
   packageStartupMessage("***********************************************************")

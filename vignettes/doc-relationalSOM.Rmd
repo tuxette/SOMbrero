@@ -6,8 +6,6 @@
 
 # Self-Organizing Map for dissimilarity matrices
 
-#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
-
 ## Basic package description
 
 To be able to run the SOM algorithm, you have to load the package called 
@@ -170,7 +168,7 @@ plot(mis.som, what="prototypes", type="grid.dist")
 ```
 
 Here we can see that the prototypes located in the top left corner of the map
-(\emph{e.g.}, clusters 4 and 5) are far from the others.
+(*e.g.*, clusters 4 and 5) are far from the others.
 
 Finally, with a graphical overview of the clustering
 ```{r lesmisColorOverview, fig.height=12, fig.width=12}
@@ -216,7 +214,7 @@ legend(x="left", legend=paste("SC",1:5), col=brewer.pal(5, "Set2"), pch=19)
 * cluster 1 constains ```Valjean``` which has a central position in the MDS
 visualization;
 
-* cluster 2 contains ```Myrial``` and the characters involved in his 
+* cluster 2 contains ```Myriel``` and the characters involved in his 
 sub-story;
 
 * cluster 3 contains ```Gavroche```, the abandonned child of the

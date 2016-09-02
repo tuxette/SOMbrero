@@ -25,12 +25,6 @@ stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
 stopifnot(predict(rsom, dissim.lesmis[1,])==rsom$clustering[1])
 stopifnot(identical(predict(rsom), rsom$clustering))
 
-# does not pass
-rsom <- trainSOM(dissim.lesmis, type="relational", maxit=10, scaling= "cosine")
-stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
-stopifnot(predict(rsom, dissim.lesmis[1,])==rsom$clustering[1])
-stopifnot(identical(predict(rsom), rsom$clustering))
-
 rsom <- trainSOM(dissim.lesmis, type="relational", maxit=10, 
                  radius.type="letremy")
 stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
@@ -43,7 +37,6 @@ stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))
 stopifnot(predict(rsom, dissim.lesmis[1,])==rsom$clustering[1])
 stopifnot(identical(predict(rsom), rsom$clustering))
 
-# does not pass
 rsom <- trainSOM(dissim.lesmis, type="relational", maxit=10, 
                  affectation="heskes", radius.type="letremy")
 stopifnot(identical(predict(rsom, dissim.lesmis), rsom$clustering))

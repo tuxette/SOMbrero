@@ -2,9 +2,10 @@ SOMbrero 1.2
 Fixed bugs:
   fixed heskes predictions for relation SOM
   updated scripts for latest igraph version
+  removed predict.somRes for cosine preprocessing (relational)
 
 Code improvements:
-  faster version of dissimilarity SOM
+  faster version of dissimilarity SOM as in Mariette et al., 2016
   
 ********************************************************************************
 SOMbrero 1.1

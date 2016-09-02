@@ -1,11 +1,12 @@
 Package: SOMbrero
 Title: SOM Bound to Realize Euclidean and Relational Outputs
 Version: 1.2
-Date: 2016-08-05
+Date: 2016-09-02
 Authors@R: c(person("Laura", "Bendhaiba", role = "aut", email="laurabendhaiba@gmail.com"),
              person("Julien", "Boelaert", role= "aut", email="julien.boelaert@gmail.com"),
              person("Jerome", "Mariette", role= "aut", email="jerome.mariette@toulouse.inra.fr"),
              person("Madalina", "Olteanu", role = "aut", email="madalina.olteanu@univ-paris1.fr"),
+             person("Fabrice", "Rossi", role = "aut", email="fabrice.rossi@univ-paris1.fr"),
              person("Nathalie", "Villa-Vialaneix", role = c("aut", "cre"), email="nathalie.villa@toulouse.inra.fr"))
 Maintainer: Nathalie Villa-Vialaneix <nathalie.villa@toulouse.inra.fr>
 Description: The stochastic (also called on-line) version of the Self-Organising

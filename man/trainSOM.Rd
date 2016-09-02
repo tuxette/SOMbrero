@@ -58,7 +58,8 @@ Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
 in Cottrel et al., 1993 (with weights as in Cottrel and Letremy, 2005); 
 \code{type="relational"} for dissimilarity matrices, as described in Olteanu et 
-al., 2015.
+al., 2015, with the fast implementation introduced in Mariette \emph{et al.}, 
+2016.
 
 \code{summary} produces a complete summary of the results that displays the 
 parameters of the SOM, quality criteria and ANOVA. For \code{type="numeric"}
@@ -85,12 +86,16 @@ Kohonen maps: a Factorial Correspondence Analysis. In: \emph{Proceedings of
 IWANN'93, J. Cabestany, J. Mary, A. Prieto (Eds.), Lecture Notes in Computer
 Science}, Springer-Verlag, 305--311.
 
-Olteanu, M., Villa-Vialaneix, N. (2015) On-line relational and multiple
-relational SOM. \emph{Neurocomputing}. Forthcoming.
+Olteanu, M., Villa-Vialaneix, N. (2015a) On-line relational and multiple
+relational SOM. \emph{Neurocomputing}, \strong{147}, 15-30. 
+
+Mariette, J. and Rossi, F. and Olteanu, M. and Mariette, J. (2016) Fast 
+implementation of on-line relation SOM. \emph{Technical report}.
 }
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
 Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
 }
 \note{Warning! Recording intermediate backups with the argument \code{nb.save}
