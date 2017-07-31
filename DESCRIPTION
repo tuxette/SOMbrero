@@ -14,8 +14,7 @@ Description: The stochastic (also called on-line) version of the Self-Organising
              algorithm are implemented, for numeric and relational data and for
              contingency tables. The package also contains many plotting 
              features (to help the user interpret the results) and a graphical
-             user interface based on shiny (which is also available on-line at
-             http://shiny.nathalievilla.org/sombrero).
+             user interface based on shiny.
 Depends: R (>= 3.1.0), knitr, igraph (>= 1.0)
 Imports: wordcloud, scatterplot3d, RColorBrewer, shiny, grDevices, graphics, stats
 License: GPL (>= 2)

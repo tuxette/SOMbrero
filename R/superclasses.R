@@ -141,7 +141,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
     par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
   } else  if (type=="dendro3d") {
     if (length(x)==3) {
-      if ((!is.null(args$col))&(length(args$col)=max(x$cluster))) {
+      if ((!is.null(args$col))&(length(args$col)==max(x$cluster))) {
         clust.col.pal <- args$col
         clust.col <- args$col[x$cluster]
       } else {
@@ -179,7 +179,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
     if (length(x)<3) {
       stop("No super clusters: plot unavailable.\n")
     } else {
-      if ((!is.null(args$col)) & (length(args$col)=max(x$cluster))) {
+      if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
         clust.col.pal <- args$col
         clust.col <- args$col[x$cluster]
       } else {
@@ -289,7 +289,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         }
         
         # colors
-        if ((!is.null(args$col)) & (length(args$col)=max(x$cluster))) {
+        if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
           args$vertex.color <- args$col
           args$vertex.frame.color <- args$col
         } else {
