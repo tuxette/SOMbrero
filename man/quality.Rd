@@ -35,11 +35,11 @@ is not in the direct neighborhood of the best matching unit.
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
 Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
 
 \references{
-Polzlbauer, G. (2004) Survey and comparison of quality measures for
+Polzlbauer G. (2004) Survey and comparison of quality measures for
 self-organizing maps. In: \emph{Proceedings of the Fifth Workshop on Data
 Analysis (WDA'04), Paralic, J., Polzlbauer, G., Rauber, A. (eds)} Sliezsky dom,
 Vysoke Tatry, Slovakia: Elfa Academic Press, 67--82.

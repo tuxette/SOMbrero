@@ -19,15 +19,15 @@ default browser, copy/paste http://localhost:8100 into the address bar.
 
 \author{Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
 
 \references{
-Boelaert J., Bendhaiba L., Olteanu M., Villa-Vialaneix N. (2014) SOMbrero: an R
-package for numeric and non-numeric self-organizing maps. In: T. Villmann, 
-F.M. Schleif, M. Kaden & M. Lange (Eds.), \emph{Advances in Self-Organizing Maps
-and Learning Vector Quantization} (Proceedings of WSOM 2014) (Vol. 295,
-219-228). Mittweida, Germany: Berlin Springer Verlag. 
+Villa-Vialaneix N. (2017) Stochastic self-organizing map variants with the R
+package SOMbrero. In: J.C. Lamirel, M. Cottrell, M. Olteanu, \emph{12th 
+International Workshop on Self-Organizing Maps and Learning Vector Quantization,
+Clustering and Data Visualization (Proceedings of WSOM 2017)}, IEEE, Nancy,
+France.
 
 RStudio and Inc. (2013). shiny: Web Application Framework for R. R package
 version 0.7.0. \url{http://cran.r-project.org/package=shiny}

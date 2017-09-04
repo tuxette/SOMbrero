@@ -33,9 +33,9 @@ and published in 1862. The co-appearance network has been extracted by D.E.
 Knuth (1993).}
 
 \references{
-Hugo, H. (1862) \emph{Les Miserables}.
+Hugo V. (1862) \emph{Les Miserables}.
 
-Knuth, D.E. (1993) \emph{The Stanford GraphBase: A Platform for Combinatorial 
+Knuth D.E. (1993) \emph{The Stanford GraphBase: A Platform for Combinatorial 
 Computing}. Reading (MA): Addison-Wesley.
 }
 

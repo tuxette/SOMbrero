@@ -41,7 +41,13 @@ sum of the weights) between the vertexes of the two corresponding clusters.}
 
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
+}
+
+\references{
+Olteanu M., Villa-Vialaneix N. (2015) Using SOMbrero for clustering and 
+visualizing graphs. \emph{Journal de la Societe Francaise de Statistique},
+\strong{156}, 95-119.
 }
 
 \seealso{\code{\link{projectIGraph.somSC}} which uses the results of a 

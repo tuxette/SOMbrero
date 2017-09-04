@@ -27,57 +27,59 @@ version.
 
 Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
-in Cottrel et al., 1993 (with the observation weights defined in Cottrel and
+in Cottrell et al., 2004 (with the observation weights defined in Cottrel and
 Letremy, 2005) and \code{type="relational"} for dissimilarity data, as described
 in Olteanu and Villa-Vialaneix, 2015a with the fast implementation of Mariette
-\emph{et al.}, 2016. A special focus has been put on representing graphs, as 
+\emph{et al.}, 2017. A special focus has been put on representing graphs, as 
 described in Olteanu and Villa-Vialaneix, 2015b.
 }
 
-\author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}
-
-Julien Boelaert \email{julien.boelaert@gmail.com}
-
-Jerome Mariette \email{jerome.mariette@toulouse.inra.fr}
-
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}
-
-Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}
-
-Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
-
-Maintainer: Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
+\author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
+Julien Boelaert \email{julien.boelaert@gmail.com}\cr
+Jerome Mariette \email{jerome.mariette@inra.fr}\cr
+Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
+Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}\cr \cr
+Maintainer: Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
+
 \references{         
 Kohonen T. (2001) \emph{Self-Organizing Maps}. Berlin/Heidelberg:
 Springer-Verlag, 3rd edition.
 
-Cottrell, M., Letremy, P., Roy, E. (1993) Analyzing a contingency table with
-Kohonen maps: a Factorial Correspondence Analysis. In: \emph{Proceedings of
-IWANN'93, J. Cabestany, J. Mary, A. Prieto (Eds.), Lecture Notes in Computer
-Science}, Springer-Verlag, 305--311.
+Cottrell M., Ibbou S., Letremy P. (2004) SOM-based algorithms for qualitative
+variables. \emph{Neural Networks}, \strong{17}, 1149-1167.
 
-Cottrell, M., Letremy, P. (2005) How to use the Kohonen algorithm to 
+Cottrell M., Letremy P. (2005) How to use the Kohonen algorithm to 
 simultaneously analyse individuals in a survey. \emph{Neurocomputing}, 
-\strong{21}, 119--138.
+\strong{21}, 119-138.
 
-Letremy, P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
+Letremy P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
 l'analyse des donnees. SAS/IML programs for 'korresp'.
 \url{http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme}.
 
-Mariette, J. and Rossi, F. and Olteanu, M. and Mariette, J. (2016) Fast 
-implementation of on-line relation SOM. \emph{Technical report}.
+Mariette J., Rossi F., Olteanu M., Mariette J. (2017) Accelerating stochastic 
+kernel SOM. In: M. Verleysen, \emph{XXVth European Symposium on Artificial 
+Neural Networks, Computational Intelligence and Machine Learning (ESANN 2017)},
+i6doc, Bruges, Belgium, 269-274.
 
-Olteanu, M., Villa-Vialaneix, N. (2015a) On-line relational and multiple
+Olteanu M., Villa-Vialaneix N. (2015a) On-line relational and multiple 
 relational SOM. \emph{Neurocomputing}, \strong{147}, 15-30. 
 
-Olteanu, M., Villa-Vialaneix, N. (2015b) Using SOMbrero for clustering and 
-visualizing graphs. \emph{Journal de la Societe Francaise de Statistique}.
-\emph{Under revision}.
+Olteanu M., Villa-Vialaneix N. (2015b) Using SOMbrero for clustering and 
+visualizing graphs. \emph{Journal de la Societe Francaise de Statistique},
+\strong{156}, 95-119.
 
-Rossi, F. (2013) yasomi: Yet Another Self-Organising Map Implementation. R 
+Rossi F. (2013) yasomi: Yet Another Self-Organising Map Implementation. R 
 package, version 0.3. \url{https://github.com/fabrice-rossi/yasomi}
+
+Villa-Vialaneix N. (2017) Stochastic self-organizing map variants with the R
+package SOMbrero. In: J.C. Lamirel, M. Cottrell, M. Olteanu, \emph{12th 
+International Workshop on Self-Organizing Maps and Learning Vector Quantization,
+Clustering and Data Visualization (Proceedings of WSOM 2017)}, IEEE, Nancy,
+France.
 }
+
 \seealso{
 \code{\link{initGrid}}, \code{\link{trainSOM}}, \code{\link{plot.somRes}} and
 \code{\link{sombreroGUI}}.

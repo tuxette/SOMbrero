@@ -4,11 +4,11 @@ Version: 1.2
 Date: 2016-09-02
 Authors@R: c(person("Laura", "Bendhaiba", role = "aut", email="laurabendhaiba@gmail.com"),
              person("Julien", "Boelaert", role= "aut", email="julien.boelaert@gmail.com"),
-             person("Jerome", "Mariette", role= "aut", email="jerome.mariette@toulouse.inra.fr"),
+             person("Jerome", "Mariette", role= "aut", email="jerome.mariette@inra.fr"),
              person("Madalina", "Olteanu", role = "aut", email="madalina.olteanu@univ-paris1.fr"),
              person("Fabrice", "Rossi", role = "aut", email="fabrice.rossi@univ-paris1.fr"),
-             person("Nathalie", "Villa-Vialaneix", role = c("aut", "cre"), email="nathalie.villa@toulouse.inra.fr"))
-Maintainer: Nathalie Villa-Vialaneix <nathalie.villa@toulouse.inra.fr>
+             person("Nathalie", "Villa-Vialaneix", role = c("aut", "cre"), email="nathalie.villa-vialaneix@inra.fr"))
+Maintainer: Nathalie Villa-Vialaneix <nathalie.villa-vialaneix@inra.fr>
 Description: The stochastic (also called on-line) version of the Self-Organising
              Map (SOM) algorithm is provided. Different versions of the 
              algorithm are implemented, for numeric and relational data and for

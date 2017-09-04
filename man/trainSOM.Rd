@@ -56,10 +56,10 @@ version.
 
 Several variants able to handle non-vectorial data are also implemented in their
 stochastic versions: \code{type="korresp"} for contingency tables, as described
-in Cottrel et al., 1993 (with weights as in Cottrel and Letremy, 2005); 
+in Cottrell et al., 2004 (with weights as in Cottrel and Letremy, 2005); 
 \code{type="relational"} for dissimilarity matrices, as described in Olteanu et 
 al., 2015, with the fast implementation introduced in Mariette \emph{et al.}, 
-2016.
+2017.
 
 \code{summary} produces a complete summary of the results that displays the 
 parameters of the SOM, quality criteria and ANOVA. For \code{type="numeric"}
@@ -71,33 +71,36 @@ Fisher distribution and not on a permutation test.
 }
 
 \references{
-Anderson, M. J. (2001). A new method for non-parametric multivariate analysis of
-variance. \emph{Austral Ecology}, \strong{26}, 32--46. 
+Anderson M.J. (2001). A new method for non-parametric multivariate analysis of
+variance. \emph{Austral Ecology}, \strong{26}, 32-46. 
 
 Kohonen T. (2001) \emph{Self-Organizing Maps}. Berlin/Heidelberg:
 Springer-Verlag, 3rd edition.
 
-Cottrell, M., Letremy, P. (2005) How to use the Kohonen algorithm to 
+Cottrell M., Ibbou S., Letremy P. (2004) SOM-based algorithms for qualitative
+variables. \emph{Neural Networks}, \strong{17}, 1149-1167.
+
+Cottrell M., Letremy P. (2005) How to use the Kohonen algorithm to 
 simultaneously analyse individuals in a survey. \emph{Neurocomputing}, 
-\strong{21}, 119--138.
+\strong{21}, 119-138.
 
-Cottrell, M., Letremy, P., Roy, E. (1993) Analyzing a contingency table with
-Kohonen maps: a Factorial Correspondence Analysis. In: \emph{Proceedings of
-IWANN'93, J. Cabestany, J. Mary, A. Prieto (Eds.), Lecture Notes in Computer
-Science}, Springer-Verlag, 305--311.
-
-Olteanu, M., Villa-Vialaneix, N. (2015a) On-line relational and multiple
+Olteanu M., Villa-Vialaneix N. (2015) On-line relational and multiple
 relational SOM. \emph{Neurocomputing}, \strong{147}, 15-30. 
 
-Mariette, J. and Rossi, F. and Olteanu, M. and Mariette, J. (2016) Fast 
-implementation of on-line relation SOM. \emph{Technical report}.
+Mariette J., Rossi F., Olteanu M., Mariette J. (2017) Accelerating stochastic 
+kernel SOM. In: M. Verleysen, \emph{XXVth European Symposium on Artificial 
+Neural Networks, Computational Intelligence and Machine Learning (ESANN 2017)},
+i6doc, Bruges, Belgium, 269-274.
 }
+
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
 Julien Boelaert \email{julien.boelaert@gmail.com}\cr
+Jerome Mariette \email{jerome.mariette@inra.fr}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
+
 \note{Warning! Recording intermediate backups with the argument \code{nb.save}
 can strongly increase the computational time since calculating the entire
 clustering and the energy is time consumming. Use this option with care and only

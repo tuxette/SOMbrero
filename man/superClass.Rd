@@ -104,12 +104,12 @@ equivalently, to the vertexes of the graph).
 }
 
 \references{
-Anderson, M. J. (2001). A new method for non-parametric multivariate analysis of
-variance. \emph{Austral Ecology}, \strong{26}, 32--46.
+Anderson M.J. (2001). A new method for non-parametric multivariate analysis of
+variance. \emph{Austral Ecology}, \strong{26}, 32-46.
 
-Olteanu, M., Villa-Vialaneix, N. (2015) Using SOMbrero for clustering and 
-visualizing graphs. \emph{Journal de la Societe Francaise de Statistique}.
-\emph{Under revision}.
+Olteanu M., Villa-Vialaneix N. (2015) Using SOMbrero for clustering and 
+visualizing graphs. \emph{Journal de la Societe Francaise de Statistique}, 
+\strong{156}, 95-119.
 }
 
 \value{The \code{superClass} function returns an object of class 
@@ -135,7 +135,7 @@ sum of the weights) between the vertexes of the two corresponding clusters.}
 \author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
 Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa@toulouse.inra.fr}
+Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
 
 \seealso{\code{\link{hclust}}, \code{\link{cutree}}, \code{\link{trainSOM}}, 

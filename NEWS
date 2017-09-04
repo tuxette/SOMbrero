@@ -2,6 +2,10 @@ SOMbrero 1.2-1
 Fixed bugs:
   fix a bug in plot.somSC for customized colors (reported by Duncan Murdoch)
   
+Misc:
+  updated (and improved references)
+  changed maintener's email
+  
 ********************************************************************************
 SOMbrero 1.2
 Fixed bugs:
