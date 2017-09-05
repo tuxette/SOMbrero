@@ -1,7 +1,7 @@
 # Define UI for dataset viewer application
 shinyUI(pageWithSidebar(
   # Application title
-  headerPanel("SOMbrero Web User Interface (v1.0)"),
+  headerPanel("SOMbrero Web User Interface (v1.1)"),
 
   #### Panel 'About' (right hand side)
   ##############################################################################
@@ -14,7 +14,7 @@ shinyUI(pageWithSidebar(
     p(HTML("<h5>Welcome to SOMbrero, the open-source on-line interface for 
 self-organizing maps (SOM).</h5> This interface trains SOM for numerical data,
 contingency tables and dissimilarity data using the <strong>R</strong> package
-<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v1.1). Train a
+<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v1.2). Train a
 map on your data and visualize their topology in three simple steps using the
 panels on the right.")),
     
@@ -42,11 +42,9 @@ git clone https://github.com/tuxette/sombrero.git</b></font></code></span>')),
     h3('References:'),
     p(HTML('<li> <span style="font-variant: small-caps;">Kohonen T.</span>(2001)
 <I>Self-Organizing Maps</I>. Berlin/Heidelberg: Springer-Verlag, 3rd edition.
-</li><li> <span style="font-variant: small-caps;">Cottrell M., Letremy P., Roy
-E.</span> (1993) Analyzing a contingency table with Kohonen maps: a Factorial
-Correspondence Analysis. In: <I>Proceedings of IWANN’93</I>,
-<span style="font-variant: small-caps;">J. Cabestany, J. Mary, A. Prieto</span>
-(Eds.), <I>Lecture Notes in Computer Science, </I>Springer-Verlag, 305–311.</li>
+</li><li> <span style="font-variant: small-caps;">Cottrell M., Ibbou S., Letremy
+P.</span> (2004) SOM-based algorithms for qualitative variables. <em>Neural 
+Networks</em>, <strong>17</strong>, 1149-1167.</li>
 <li> <span style="font-variant: small-caps;">Olteanu M., Villa-Vialaneix N.,
 Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
 <em>Neurocomputing</em>, <strong>147</strong>, 15-30.</li>'))
@@ -66,11 +64,11 @@ When this is done, choose the SOM type of the left hand side panel and proceed
 to the next step: self-organize a map.")),
                p(HTML('The interface can be tested using example data files for
 the <a href= 
-"http://owncloud.nathalievilla.org/public.php?service=files&t=a4b83ca82bcfc740ee0700cb44324c47"
+"http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa"
 target="_blank">numeric</a>, <a href= 
-"http://owncloud.nathalievilla.org/public.php?service=files&t=7a7db6e0a17127d8fe8ec43c0f6b0afd"
+"http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
 target="_blank">korresp</a> and <a href= 
-"http://owncloud.nathalievilla.org/public.php?service=files&t=2bd5a14bbf636ab9afe495b46e0d523a"
+"http://nextcloud.nathalievilla.org/index.php/s/Tw2H2ZBKwBAPo0v"
 target="_blank">relational </a> algorithms (download these files on your computer and
 proceed).')),
                
