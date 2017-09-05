@@ -382,7 +382,8 @@ shinyServer(function(input, output, session) {
     if (input$scplottype == "dendrogram")
       return(plot(the.sc, type=input$scplottype))
     if (input$scplottype == "grid")
-      return(plot(the.sc, type = input$scplottype, plot.legend = TRUE))
+      return(plot(the.sc, type = input$scplottype, plot.legend = TRUE,
+                  print.titles = TRUE))
 
     tmp.view <- NULL
     if (input$somtype =="korresp")

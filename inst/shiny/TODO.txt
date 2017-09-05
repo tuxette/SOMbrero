@@ -9,3 +9,5 @@
 ** MC : préciser quelle colonne doit contenir le nom des lignes
 
 ** MC : pour lines, représenter toutes les observations et pas la moyenne
+
+** NVV : check print.titles for all SC plots

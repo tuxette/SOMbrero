@@ -35,7 +35,8 @@ summary.myGrid <- function(object,...) {
   print(object)
 }
 
-plot.myGrid <- function(x, neuron.col="white", ...) {
+plot.myGrid <- function(x, neuron.col = "white", print.title = FALSE, 
+                        the.titles = paste("Cluster", 1:prod(x$dim)), ...) {
   # get graphical parameters
   args <- list(...)
   
@@ -67,5 +68,9 @@ plot.myGrid <- function(x, neuron.col="white", ...) {
       neuron.col <- "white"
     }
     rect(xleft,ybottom,xright,ytop,col=neuron.col)
+    
+    if (print.title) {
+      text(x = x$coord[,1], y = x$coord[,2], labels = the.titles, cex = 0.7)
+    }
   }
 }

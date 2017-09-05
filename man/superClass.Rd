@@ -53,6 +53,12 @@ h=NULL, \ldots)
   indicating whether you are giving an additional variable to the argument 
   \code{variable} or not. If you do, the function \code{\link{plot.somRes}} 
   will be called with the argument \code{what} set to \code{"add"}.}
+  \item{print.title}{Whether the cluster titles must be printed in center of
+  the grid or not for \code{type="grid"}. Default to \code{FALSE} (titles not 
+  displayed).}
+  \item{the.titles}{If \code{print.title = TRUE}, values of the title to 
+  display for \code{type="grid"}. Default to "Cluster " followed by the cluster
+  number.}
   \item{\ldots}{Used for \code{plot.somSC}: further arguments passed either to
   the function \code{\link{plot}} (case \code{type="dendro"}) or to 
   \code{\link{plot.myGrid}} (case \code{type="grid"}) or to 

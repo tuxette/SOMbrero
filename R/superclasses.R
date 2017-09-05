@@ -115,6 +115,9 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
                                  "poly.dist", "pie", "graph", "dendro3d", 
                                  "radar", "projgraph"),
                        plot.var=TRUE, plot.legend=FALSE, add.type=FALSE, 
+                       print.title = FALSE, 
+                       the.titles = paste("Cluster", 
+                                          1:prod(x$som$parameters$the.grid$dim)),
                        ...) {
   # TODO: add types "names" and "words"
   args <- list(...)
@@ -200,6 +203,8 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         }
         args$x <- x$som$parameters$the.grid
         args$neuron.col <- clust.col
+        args$print.title <- print.title
+        args$the.titles <- the.titles
         do.call("plot.myGrid", args)
         par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
       } else if (type %in% c("hitmap", "lines", "barplot", "boxplot", "mds",
