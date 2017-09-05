@@ -110,7 +110,8 @@ adequate parameter values.')),
                
                verbatimTextOutput("summary"),
                br(),
-               downloadButton("som.download", "Download the SOM file"),
+               downloadButton("som.download", "Download the SOM file (rda)"),
+               downloadButton("clustering.download", "Download the clustering (txt)"),
                
                br(), br(),
                h4("Options"),

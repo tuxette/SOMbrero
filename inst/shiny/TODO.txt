@@ -5,3 +5,5 @@
 ** JB : laisser la possibilité de télécharger le clustering brut de SOM
 
 ** JB : valeur standard pour le h de superClass?
+
+** MC : préciser quelle colonne doit contenir le nom des lignes
