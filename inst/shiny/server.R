@@ -157,7 +157,7 @@ shinyServer(function(input, output, session) {
     if (ncol(d.input)>input$ncol.preview) 
       d.input <- d.input[,1:input$ncol.preview]
     head(d.input, n=input$nrow.preview) 
-  })
+  }, rownames = TRUE)
 
   #### Panel 'Self-organize'
   #############################################################################
