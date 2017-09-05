@@ -7,3 +7,5 @@
 ** JB : valeur standard pour le h de superClass?
 
 ** MC : préciser quelle colonne doit contenir le nom des lignes
+
+** MC : pour lines, représenter toutes les observations et pas la moyenne
