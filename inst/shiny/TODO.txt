@@ -11,3 +11,7 @@
 ** MC : pour lines, représenter toutes les observations et pas la moyenne
 
 ** NVV : check print.titles for all SC plots
+
+** MC : couleurs dans prototypes/MDS pour SC très pâles
+
+** NVV : check that plot.legend works for everything in SC

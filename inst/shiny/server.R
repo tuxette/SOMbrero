@@ -399,8 +399,8 @@ shinyServer(function(input, output, session) {
                                                 input$scplotvar2]
       } else tmp.var <- input$scplotvar
       
-      plot(x=the.sc, what=input$scplotwhat, type=input$scplottype,
-           variable=tmp.var, view=tmp.view)
+      plot(x = the.sc, what = input$scplotwhat, type = input$scplottype,
+           variable = tmp.var, view = tmp.view, plot.legend = TRUE)
     }
   })
 
