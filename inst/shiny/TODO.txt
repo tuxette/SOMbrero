@@ -15,3 +15,7 @@
 ** MC : couleurs dans prototypes/MDS pour SC très pâles
 
 ** NVV : check that plot.legend works for everything in SC
+
+** MC : possibility to choose additional variables within the original table
+
+** MC : ficelle -> check all features (especially 3D plots)
