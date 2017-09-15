@@ -150,10 +150,10 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         clust.col.pal <- brewer.pal(max(x$cluster), "Set2")
         clust.col <- clust.col.pal[x$cluster]
       }
-      rect.hclust(x$tree, k = max(x$cluster), cluster = sc$cluster,
-                  border = clust.col.pal[unique(sc$cluster[sc$tree$order])])
+      rect.hclust(x$tree, k = max(x$cluster), cluster = x$cluster,
+                  border = clust.col.pal[unique(x$cluster[x$tree$order])])
       legend("topright", col = clust.col.pal, pch = 19, 
-             legend = paste("SC", 1:max(sc$cluster)), cex = 0.7)
+             legend = paste("SC", 1:max(x$cluster)), cex = 0.7)
     } else warning("Impossible to plot the rectangles: no super clusters.\n",
                    call.=TRUE, immediate.=TRUE)
     par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
