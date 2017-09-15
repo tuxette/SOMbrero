@@ -1,18 +1,19 @@
 ## A faire
 
-** JB : enlever nom de variable pour somplot et scplot de Relational?
+** JB : remove variable names for somplot and scplot for Relational?
 
-** JB : laisser la possibilité de télécharger le clustering brut de SOM
+** JB : allow the user to download the clustering of the SOM directly
 
-** JB : valeur standard pour le h de superClass?
+** JB : what is standard value for h in superClass?
 
-** MC : préciser quelle colonne doit contenir le nom des lignes
+** MC : add an option in input (shiny) to indicate which variable contains the
+observation name
 
-** MC : pour lines, représenter toutes les observations et pas la moyenne
+** MC : for lines, display all observations and not the mean
 
 ** NVV : check print.titles for all SC plots
 
-** MC : couleurs dans prototypes/MDS pour SC très pâles
+** MC : improved colors in prototypes/MDS because SC are very light
 
 ** NVV : check that plot.legend works for everything in SC
 
