@@ -1,7 +1,11 @@
-* easy
-** update reference to Marie's work (by Neurocomputing 2005)
-
 * other features (easy)
+** pkgdown documentation (with a Readme)
+** change version
+** check that plot.legend works for everything in SC
+** check print.titles for all SC plots
+** MC : ficelle -> check all features (especially 3D plots)
+** MC : for lines, display all observations and not the mean
+** MC : improved colors in prototypes/MDS because SC are very light
 ** improve predict for Heskes: maybe possible to do it entirely with a matrix
 operation
 ** calculateProtoDist: use other type of neighbors (but add a parameter for the
@@ -26,3 +30,17 @@ radius because it should not affect the poly.dist plot)
 ** colors handling in "names" seems to sometimes bugs
 ** make a function for initializing colors init.color(clustering, def.color)
 ** dissimilarity should maybe algorithm requires a "dist" type input
+
+* package changes
+** make unit test
+** roxygenize documentation
+** C++ for training
+** improved modern graphics (ggplot2)
+
+* shiny
+** JB : remove variable names for somplot and scplot for Relational?
+** JB : allow the user to download the clustering of the SOM directly
+** JB : what is standard value for h in superClass?
+** MC : add an option in input to indicate which variable contains the
+observation name
+** MC : possibility to choose additional variables within the original table
