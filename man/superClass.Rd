@@ -18,9 +18,14 @@ h=NULL, \ldots)
 \method{summary}{somSC}(object, \ldots)
 \method{projectIGraph}{somSC}(object, init.graph, \ldots)
 \method{plot}{somSC}(x, type=c("dendrogram", "grid", "hitmap", "lines", 
-               "barplot", "boxplot", "mds", "color", "poly.dist", "pie",
-               "graph", "dendro3d", "radar", "projgraph"),
-     plot.var=TRUE, plot.legend=FALSE, add.type=FALSE, \ldots)
+                                 "barplot", "boxplot", "mds", "color", 
+                                 "poly.dist", "pie", "graph", "dendro3d", 
+                                 "radar", "projgraph"),
+                       plot.var=TRUE, plot.legend=FALSE, add.type=FALSE, 
+                       print.title = FALSE, 
+                       the.titles = paste("Cluster", 
+                                          1:prod(x$som$parameters$the.grid$dim)),
+                       ...)
 }
 
 \arguments{

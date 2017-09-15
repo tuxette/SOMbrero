@@ -52,7 +52,7 @@ citEntry(
   booktitle = 'Proceedings of XXVth European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning (ESANN 2017)',
   publisher = 'i6doc',
   pages = '269--274',
-  editor = 'Verleysen M.'
+  editor = 'Verleysen M.',
 
   textVersion = paste('Mariette J., Rossi F., Olteanu M., Villa-Vialaneix N. (2016)',
                 'Accelerating stochastic kernel SOM.',
