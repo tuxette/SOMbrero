@@ -54,7 +54,7 @@ simultaneously analyse individuals in a survey. \emph{Neurocomputing},
 
 Letremy P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
 l'analyse des donnees. SAS/IML programs for 'korresp'.
-\url{http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme}.
+\url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto}.
 
 Mariette J., Rossi F., Olteanu M., Mariette J. (2017) Accelerating stochastic 
 kernel SOM. In: M. Verleysen, \emph{XXVth European Symposium on Artificial 

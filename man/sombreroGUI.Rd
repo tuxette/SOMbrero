@@ -30,5 +30,5 @@ Clustering and Data Visualization (Proceedings of WSOM 2017)}, IEEE, Nancy,
 France.
 
 RStudio and Inc. (2013). shiny: Web Application Framework for R. R package
-version 0.7.0. \url{http://cran.r-project.org/package=shiny}
+version 0.7.0. \url{https://cran.r-project.org/package=shiny}
 }

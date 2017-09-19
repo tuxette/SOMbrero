@@ -111,7 +111,7 @@ Information Science and Statistics series, Springer.
 
 Letremy P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a
 l'analyse des donnees. SAS/IML programs for 'korresp'.
-\url{http://samos.univ-paris1.fr/Programmes-bases-sur-l-algorithme}.
+\url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto}.
 
 Rossi F. (2013) yasomi: Yet Another Self-Organising Map Implementation. R 
 package, version 0.3. \url{https://github.com/fabrice-rossi/yasomi}
