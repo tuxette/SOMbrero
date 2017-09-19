@@ -258,16 +258,20 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
           }
         }
         if (plot.legend) {
-          layout(matrix(c(2,2,1),ncol=3))
-          plot.new()
-          legend(x="center", legend=paste("Super cluster", 1:max(x$cluster)), 
-                 col=clust.col.pal, pch=19)
-          if (type%in%c("lines","barplot","boxplot","color","pie", "poly.dist", 
-                        "radar"))
-            warning("Impossible to plot the legend with type '",type,"'.\n",
-                    call.=TRUE, immediate.=TRUE)
+          if (type%in%c("lines", "barplot", "boxplot", "color", "pie", 
+                        "poly.dist", "radar")) {
+            warning("Impossible to plot the legend with type '", type, "'.\n",
+                    call. = TRUE, immediate. = TRUE)
+          } else {
+            layout(matrix(c(2, 2, 1), ncol = 3))
+            plot.new()
+            legend(x = "center", 
+                   legend = paste("Super cluster", 1:max(x$cluster)), 
+                   col = clust.col.pal, pch = 19)
+          }
         }
         args$x <- x$som
+        
         # manage argument 'what'
         if (!add.type) {
           if (type %in% c("hitmap", "boxplot")) {
