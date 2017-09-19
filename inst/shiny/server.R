@@ -241,11 +241,11 @@ shinyServer(function(input, output, session) {
       })
   }
   output$clustering.download <- {
-    downloadHandler(filename=function() {
-      paste0("clustering", format(Sys.time(),format="-%Y-%m-%d_%H:%M"),
-             ".txt", sep="")
+    downloadHandler(filename = function() {
+      paste0("clustering", format(Sys.time(), format="-%Y-%m-%d_%H:%M"),
+             ".txt")
     },
-    content=function(file) {
+    content = function(file) {
       som.export <- data.frame("name" = names(server.env$current.som$clustering),
                                "cluster" = server.env$current.som$clustering)
       write.table(som.export, file = file, row.names = FALSE, sep = "\t")
@@ -423,8 +423,9 @@ shinyServer(function(input, output, session) {
     if (input$rownames2) {
       the.table <- read.table(in.file$datapath, header=input$header2, 
                               sep=the.sep, quote=the.quote, row.names=1,
-                              dec=the.dec)som.export <- data.frame("name" = names(server.env$current.som$clustering),
-                                                                   "cluster" = server.env$current.som$clustering)
+                              dec=the.dec)
+      som.export <- data.frame("name" = names(server.env$current.som$clustering),
+                               "cluster" = server.env$current.som$clustering)
     } else the.table <- read.table(in.file$datapath, header=input$header2, 
                                    sep=the.sep, quote=the.quote, dec=the.dec)
     
