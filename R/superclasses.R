@@ -268,6 +268,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
                     call.=TRUE, immediate.=TRUE)
         }
         args$x <- x$som
+        # manage argument 'what'
         if (!add.type) {
           if (type %in% c("hitmap", "boxplot")) {
             args$what <- "obs"
@@ -277,11 +278,20 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         } else args$what <- "add"
         args$type <- type
         if (type=="boxplot") args$border <- clust.col
-        args$the.titles <- paste("SC",x$cluster)
-        if (type%in%c("pie", "radar")) {
+        
+        # manage titles
+        args$print.title <- print.title
+        if (!print.title | type %in% c("pie", "radar")) {
+          args$the.titles <- paste("SC", x$cluster)
+        } else {
+          args$the.titles <- the.titles
+        }
+        if (type %in% c("pie", "radar")) {
           args$print.title <- TRUE
-        } else if (type%in%c("color", "poly.dist")) args$print.title <- FALSE
+        } else if (type %in% c("color", "poly.dist")) args$print.title <- FALSE
        do.call("plot.somRes", args)
+       
+       # special features for 'color' and 'polydist' and 'projgraph'
        if (type=="color") 
          text(x=x$som$parameters$the.grid$coord[,1], 
               y=x$som$parameters$the.grid$coord[,2],

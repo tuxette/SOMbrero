@@ -1,8 +1,7 @@
 * other features (easy)
-** pkgdown documentation (with a Readme)
+** pkgdown documentation
 ** change version
 ** check that plot.legend works for everything in SC
-** check print.titles for all SC plots
 ** MC : ficelle -> check all features (especially 3D plots)
 ** MC : for lines, display all observations and not the mean
 ** MC : improved colors in prototypes/MDS because SC are very light

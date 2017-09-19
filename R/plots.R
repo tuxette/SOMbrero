@@ -516,6 +516,12 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
       ytop <- (sommap$parameters$the.grid$coord[ind,2]+basesize[ind])
       rect(xleft,ybottom,xright,ytop, col=my.colors[ind], border=NA)
     }))
+    if (print.title) {
+      text(x=sommap$parameters$the.grid$coord[,1], 
+           y=sommap$parameters$the.grid$coord[,2],
+           labels=the.titles, cex=0.7)
+    }
+    
   } else if (type=="boxplot") {
     if (length(variable)>5) {
       stop("maximum number of variables for type='boxplot' exceeded\n", 
