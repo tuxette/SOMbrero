@@ -1,0 +1,5 @@
+"0","plot(my.sc, plot.var=FALSE)
+"
+"2","Error in rect.hclust(x$tree, k = max(x$cluster), cluster = sc$cluster,  : 
+  object 'sc' not found
+"

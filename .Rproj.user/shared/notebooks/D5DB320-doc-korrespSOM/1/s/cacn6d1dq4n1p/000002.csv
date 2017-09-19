@@ -1,0 +1,2 @@
+"0","# plot the line prototypes (106 French departements)"
+"0","plot(korresp.som, what=""prototypes"", type=""lines"", view=""r"", print.title=TRUE)"

@@ -32,9 +32,7 @@ calculates the ratio of sample vectors for which the second best matching unit
 is not in the direct neighborhood of the best matching unit.
 }
 
-\author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
-Julien Boelaert \email{julien.boelaert@gmail.com}\cr
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+\author{Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
 

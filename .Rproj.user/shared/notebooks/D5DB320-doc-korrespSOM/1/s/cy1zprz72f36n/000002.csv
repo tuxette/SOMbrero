@@ -1,0 +1,1 @@
+"0","plot(korresp.som, what=""prototypes"", type=""poly.dist"", print.title=TRUE)"

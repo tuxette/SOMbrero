@@ -34,9 +34,7 @@ observation is assigned (i.e., neuron with the closest prototype).
 When the algorithm's type is \code{"korresp"}, \code{x.new} must be the original 
 contingency table passed to the algorithm.}
 
-\author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
-Julien Boelaert \email{julien.boelaert@gmail.com}\cr
-Jerome Mariette \email{jerome.mariette@inra.fr}\cr
+\author{Jerome Mariette \email{jerome.mariette@inra.fr}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}

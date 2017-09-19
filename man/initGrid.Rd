@@ -37,8 +37,7 @@ of the Self-Organizing Map structure,}
 \item{dim}{Same values as the arguments given to \code{initGrid} function.}
 \item{dist.type}{Same value as the arguments given to \code{initGrid} function.}
 }
-\author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+\author{Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
 \references{

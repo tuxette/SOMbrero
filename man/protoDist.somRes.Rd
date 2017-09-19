@@ -39,9 +39,7 @@ number of neighbors. Neurons are considered to have 8 neighbors at most
 'maximum' which is equal to 1).
 }
 
-\author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
-Julien Boelaert \email{julien.boelaert@gmail.com}\cr
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+\author{Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
 

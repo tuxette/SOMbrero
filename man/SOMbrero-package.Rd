@@ -18,8 +18,8 @@ parameters given to the algorithm (see \code{\link{initSOM}} and
 \tabular{ll}{
 Package: \tab SOMbrero\cr
 Type: \tab Package\cr
-Version: \tab 1.2\cr
-Date: \tab 2016-09-02\cr
+Version: \tab 1.2-2\cr
+Date: \tab 2017-09-19\cr
 License: \tab GPL (>= 2)
 }
 The version of the SOM algorithm implemented in this package is the stochastic
@@ -34,12 +34,10 @@ in Olteanu and Villa-Vialaneix, 2015a with the fast implementation of Mariette
 described in Olteanu and Villa-Vialaneix, 2015b.
 }
 
-\author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
-Julien Boelaert \email{julien.boelaert@gmail.com}\cr
+\author{Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}\cr
 Jerome Mariette \email{jerome.mariette@inra.fr}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}\cr \cr
+Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr \cr
 Maintainer: Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
 

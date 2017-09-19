@@ -96,9 +96,7 @@ The \code{initSOM} function returns an object of class \code{paramSOM} which is
 a list of the parameters passed to the \code{initSOM} function, plus the default
 parameters for the ones not specified by the user.
 }
-\author{Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
-Julien Boelaert \email{julien.boelaert@gmail.com}\cr
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+\author{Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
 }
 \references{
