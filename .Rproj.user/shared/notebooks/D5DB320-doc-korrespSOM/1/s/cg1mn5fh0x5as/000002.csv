@@ -1,2 +1,0 @@
-"0","par(mfrow=c(1,2))"
-"0","plot(korresp.som, what=""prototypes"", type=""color"", variable=5, view=""c"")"

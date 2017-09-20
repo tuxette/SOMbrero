@@ -1,2 +1,0 @@
-"0","# plot the column prototypes (16 candidates)"
-"0","plot(korresp.som, what=""prototypes"", type=""lines"", view=""c"", print.title=TRUE)"
