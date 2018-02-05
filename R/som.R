@@ -569,23 +569,21 @@ trainSOM <- function (x.data, ...) {
       if (parameters$affectation=="standard") {
         winner <- which.min(B[rand.ind,]-0.5*A)
       } else {# Heskes's soft affectation
+        the.dist <- B[rand.ind,]-0.5*A
         if (parameters$radius.type!="letremy") {
-          the.dist <- B[rand.ind,]-0.5*A
           final.dist <- sapply(1:nrow(prototypes), function(a.neuron) {
             the.nei <- selectNei(a.neuron, parameters$the.grid, radius, 
                                  parameters$radius.type, parameters$the.grid$dist.type)
             return(sum(the.dist*the.nei))
           })
-          winner <- which.min(final.dist)
         } else {
-          the.dist <- B[rand.ind,]-0.5*A
           final.dist <- sapply(1:nrow(prototypes), function(a.neuron) {
             the.nei <- selectNei(a.neuron, parameters$the.grid, radius, 
                                  parameters$radius.type, parameters$the.grid$dist.type)
             return(sum(the.dist[the.nei]))
           })
-          winner <- which.min(final.dist)
         }
+        winner <- which.min(final.dist)
       }
     } else {
       winner <- oneObsAffectation(cur.obs, cur.prototypes, parameters$type,
@@ -938,18 +936,8 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0,
           stop("Number of columns of x.new does not correspond to number of 
                columns of the original data")
       }
-      norm.x.new <- switch(object$parameters$scaling,
-                           "none"=x.new,
-                           "frobenius"=x.new/sqrt(sum(object$data^2)),
-                           "max"=x.new/max(abs(object$data)), 
-                           "sd"=x.new/
-                             sd(object$data[upper.tri(object$data, diag=FALSE)]))
-      norm.x.data <- preprocessData(object$data, object$parameters$scaling)
-      norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling,
-                                    object$data)
-      
-      winners <- obsAffectation(norm.x.new, prototypes=norm.proto,
-                                type=object$parameters$type, x.data=norm.x.data,
+      winners <- obsAffectation(x.new, prototypes=object$prototypes,
+                                type=object$parameters$type, x.data=object$data,
                                 affectation=object$parameters$affectation,
                                 radius.type=object$parameters$radius.type,
                                 radius=radius, 
