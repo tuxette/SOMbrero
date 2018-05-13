@@ -21,8 +21,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square"),
   scaling <- match.arg(scaling,
                        c("unitvar", "none", "center", "chi2", "cosine"))
   dist.type <- match.arg(dist.type, c("letremy", "maximum", "euclidean",
-                                      "manhattan", "canberra", "binary",
-                                      "minkowski"))
+                                      "manhattan", "canberra", "minkowski"))
   
   if (dist.type=="letremy" && radius.type=="gaussian") {
     dist.type <- "euclidean"

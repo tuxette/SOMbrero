@@ -24,3 +24,4 @@ Imports: wordcloud, scatterplot3d, RColorBrewer, shiny, grDevices, graphics, sta
 License: GPL (>= 2)
 Repository: CRAN
 VignetteBuilder: knitr
+Encoding: UTF-8
