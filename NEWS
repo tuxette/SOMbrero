@@ -1,6 +1,9 @@
 SOMbrero 1.2-4
 Fixed bugs:
   changed unitary tests because of changes in RGN for devel
+  
+Misc:
+  changed maintainer name and address
 
 ********************************************************************************
 SOMbrero 1.2-3
