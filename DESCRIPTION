@@ -1,7 +1,7 @@
 Package: SOMbrero
 Title: SOM Bound to Realize Euclidean and Relational Outputs
-Version: 1.2-3
-Date: 2018-02-05
+Version: 1.2-4
+Date: 2019-03-07
 Authors@R: c(person("Nathalie", "Vialaneix", role = c("aut", "cre"), email="nathalie.vialaneix@inra.fr"),
              person("Jerome", "Mariette", role= "aut", email="jerome.mariette@inra.fr"),
              person("Madalina", "Olteanu", role = "aut", email="madalina.olteanu@univ-paris1.fr"),
@@ -26,3 +26,4 @@ License: GPL (>= 2)
 Repository: CRAN
 VignetteBuilder: knitr
 Encoding: UTF-8
+RoxygenNote: 6.1.1
