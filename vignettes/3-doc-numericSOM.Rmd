@@ -1,3 +1,7 @@
+---
+title: "Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset"
+---
+
 <!--
 %\VignetteEngine{knitr}
 %\VignetteIndexEntry{SOM for numeric data}

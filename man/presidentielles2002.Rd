@@ -29,8 +29,7 @@ predict that Jean-Marie would be on the second round.
 
 Further comments at
 \url{http://en.wikipedia.org/wiki/French_presidential_election,_2002} or at
-\url{http://fr.wikipedia.org/wiki/%C3%89lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2002
-} (in French).
+\url{https://bit.ly/2pQ6Igi} (in French).
 }
 \examples{
 data(presidentielles2002)
