@@ -29,7 +29,7 @@ panels on the right.")),
 <a href= "https://www.gnu.org/licenses/gpl-2.0.html">GPL-2.0</a>
 license, and was developed by Julien Boelaert, 
 <a href= http://samm.univ-paris1.fr/-Madalina-Olteanu->Madalina Olteanu</a> and
-<a href= http://www.nathalievilla.org/> Nathalie Villa-Vialaneix</a>, using
+<a href= http://www.nathalievialaneix.eu/> Nathalie Vialaneix</a>, using
 <a href="http://www.rstudio.com/shiny/">Shiny</a>. It is also included in the 
 <strong>R</strong> package 
 <a href="http://sombrero.r-forge.r-project.org/">SOMbrero</a>. Its source code
@@ -66,9 +66,9 @@ to the next step: self-organize a map.")),
 the <a href= 
 "http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa"
 target="_blank">numeric</a>, <a href= 
-"http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
-target="_blank">korresp</a> and <a href= 
 "http://nextcloud.nathalievilla.org/index.php/s/Tw2H2ZBKwBAPo0v"
+target="_blank">korresp</a> and <a href= 
+"http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
 target="_blank">relational </a> algorithms (download these files on your computer and
 proceed).')),
                
@@ -302,11 +302,11 @@ SOM:
 variables only. For correct data importation the columns must contain the
 variables and the rows the observations. <br /> It can be applied, for instance,
 to the four first variables of the supplied <a href=
-'http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=9d319bedf64098340ca9b094a527f70608e2d67c'
+'http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa'
 >iris dataset</a>.</li>
 <li><b>Korresp</b> applies the self-organizing algorithm to contingency tables
 between two factors.<br /> For instance, in the supplied <a href=
-'http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=d824f59d7d934468de7f08b873f79d291aa129fd'
+'http://nextcloud.nathalievilla.org/index.php/s/Tw2H2ZBKwBAPo0v'
 >dataset 'presidentielles 2002'</a>, which contains the results for the first
 round of the 2002 French prensidential elections, columns represent presidential
 candidates and rows represent the French districts called 'departements', so
@@ -316,8 +316,7 @@ specific 'departement'.</li>
 contains a measure of distance between two objects. For this method the data
 must be a square numeric matrix, in which rows  and columns represent the same
 observations. The matrix must be symetric, contains only positive entries with a
-null diagonal.<br /> For instance, the supplied <a href='
-http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=254fcf93f2e87ef71ac96eca03e661e659444921'
+null diagonal.<br /> For instance, the supplied <a href='http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD'
 >dataset 'Les Miserables'</a> contains the shortest path lengths between
 characters of Victor Hugo's novel <I>Les Misérables</I> in the co-appearance 
 network provided <a href=
@@ -455,10 +454,10 @@ the clustering obtained with the SOM algorithm, a clustered graph is built in
 which vertices represent neurons and edge are weighted by the number of edges in
 the given graph between the vertices affected to the corresponding neurons. This
 plot can be tested with the supplied dataset <a href=
-'http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=254fcf93f2e87ef71ac96eca03e661e659444921'
+'http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD'
 >Les Miserables</a> that
 corresponds to the graph those adjacency table is provided at <a href=
-'http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=2f908aa535668b3b894b64f1679986e4aa4476b7'
+'http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD'
 >this link</a>.
 </li>"
       )),
@@ -487,7 +486,7 @@ plots are described in the <a href='#plots'>'types of plots'</a> section.<br />
 Note that this is the only panel in which factors can be plotted on the
 self-organizing map. For instance, if the map is trained on the first four
 (numeric) variables of the supplied <a href=
-'http://owncloud.nathalievilla.org/apps/files_sharing/get.php?token=9d319bedf64098340ca9b094a527f70608e2d67c'
+'http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa'
 >iris dataset</a>, you can import the dataset again as external information and
 plot the iris species on the map."))
       )

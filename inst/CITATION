@@ -9,7 +9,7 @@ citEntry(
   author = as.person(meta$Author),
   year = year,
   note = vers,
-  textVersion = paste('Villa-Vialaneix N., Bendhaiba L., Olteanu M. (', year, ') SOMbrero: ', meta$Title, '. ', vers, '.', sep = '')
+  textVersion = paste('Vialaneix N., Mariette J., Olteanu M., Rossi F., Bendhaiba L., Bolaert J. (', year, ') SOMbrero: ', meta$Title, '. ', vers, '.', sep = '')
 )
 
 citEntry(

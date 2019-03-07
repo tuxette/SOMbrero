@@ -2,13 +2,13 @@ Package: SOMbrero
 Title: SOM Bound to Realize Euclidean and Relational Outputs
 Version: 1.2-3
 Date: 2018-02-05
-Authors@R: c(person("Nathalie", "Villa-Vialaneix", role = c("aut", "cre"), email="nathalie.villa-vialaneix@inra.fr"),
+Authors@R: c(person("Nathalie", "Vialaneix", role = c("aut", "cre"), email="nathalie.vialaneix@inra.fr"),
              person("Jerome", "Mariette", role= "aut", email="jerome.mariette@inra.fr"),
              person("Madalina", "Olteanu", role = "aut", email="madalina.olteanu@univ-paris1.fr"),
              person("Fabrice", "Rossi", role = "aut", email="fabrice.rossi@univ-paris1.fr"),
              person("Laura", "Bendhaiba", role = "ctb", email="laurabendhaiba@gmail.com"),
              person("Julien", "Boelaert", role= "ctb", email="julien.boelaert@gmail.com"))
-Maintainer: Nathalie Villa-Vialaneix <nathalie.villa-vialaneix@inra.fr>
+Maintainer: Nathalie Vialaneix <nathalie.vialaneix@inra.fr>
 Description: The stochastic (also called on-line) version of the Self-Organising
              Map (SOM) algorithm is provided. Different versions of the
              algorithm are implemented, for numeric and relational data and for

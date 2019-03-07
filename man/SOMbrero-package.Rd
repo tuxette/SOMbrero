@@ -34,11 +34,11 @@ in Olteanu and Villa-Vialaneix, 2015a with the fast implementation of Mariette
 described in Olteanu and Villa-Vialaneix, 2015b.
 }
 
-\author{Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}\cr
+\author{Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}\cr
 Jerome Mariette \email{jerome.mariette@inra.fr}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr \cr
-Maintainer: Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
+Maintainer: Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 }
 
 \references{         
