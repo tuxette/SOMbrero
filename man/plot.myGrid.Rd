@@ -28,7 +28,7 @@ Color filling process uses the coordinates of the object \code{x}, having class
 \code{myGrid} and included in \code{x$coord}.
 }
 \author{Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
+Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 }
 \seealso{\code{\link{initGrid}} to define a \code{myGrid} class object.}
 \examples{

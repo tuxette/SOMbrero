@@ -144,7 +144,7 @@ sum of the weights) between the vertexes of the two corresponding clusters.}
 }
 
 \author{Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
+Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 }
 
 \seealso{\code{\link{hclust}}, \code{\link{cutree}}, \code{\link{trainSOM}}, 

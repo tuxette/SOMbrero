@@ -38,7 +38,7 @@ of the Self-Organizing Map structure,}
 \item{dist.type}{Same value as the arguments given to \code{initGrid} function.}
 }
 \author{Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Nathalie Villa-Vialaneix \email{nathalie.villa-vialaneix@inra.fr}
+Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 }
 \references{
 Letremy P. (2005) Programmes bases sur l'algorithme de Kohonen et dedies a

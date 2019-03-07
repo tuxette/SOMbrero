@@ -6,7 +6,7 @@
 
 # A basic vignette on grids in SOMbrero
 
-#### Laura Bendhaiba, Madalina Olteanu, Nathalie Villa-Vialaneix
+#### Laura Bendhaiba, Madalina Olteanu, Nathalie Vialaneix
 
 ## Definition and purpose of a myGrid class object
 
