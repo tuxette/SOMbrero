@@ -8,8 +8,6 @@ title: "Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset"
 %\VignettePackage{SOMbrero}
 -->
 
-# Using Self-Organizing Maps with ```SOMbrero``` to cluster a numeric dataset
-
 ## Basic package description
 
 To be able to run the SOM algorithm, you have to load the package called 
