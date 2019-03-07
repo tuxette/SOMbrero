@@ -19,7 +19,7 @@ Produce graphics to help interpreting a \code{somRes} object.
        switch(type, "graph"=1:prod(x$parameters$the.grid$dim),
               paste("Cluster", 1:prod(x$parameters$the.grid$dim))),
      proportional=TRUE, s.radius=1, pie.graph=FALSE, pie.variable=NULL, 
-     view = if (x$parameters$type=="korresp") "r" else NULL, \ldots)
+     view = if (x$parameters$type=="korresp") "r" else NULL, ...)
 }
 
 \arguments{

@@ -22,8 +22,8 @@ initSOM(dimension=c(5,5), topo=c("square"),
                           "korresp"="random"),
         scaling=switch(type, "numeric"="unitvar", "relational"="none",
                        "korresp"="chi2"), eps0=1)
-\method{print}{paramSOM}(x, \ldots)
-\method{summary}{paramSOM}(object, \ldots)
+\method{print}{paramSOM}(x, ...)
+\method{summary}{paramSOM}(object, ...)
 }
 \arguments{
   \item{dimension}{Vector of two integer points corresponding to the x 
@@ -89,7 +89,7 @@ initSOM(dimension=c(5,5), topo=c("square"),
   \eqn{t}{t} is the current step number and \eqn{\textrm{dim}}{dim} is the grid
   dimension (width multiplied by height).}
   \item{x, object}{an object of class \code{paramSOM}.}
-  \item{\ldots}{not used}
+  \item{...}{not used}
 }
 \value{
 The \code{initSOM} function returns an object of class \code{paramSOM} which is

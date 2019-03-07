@@ -13,10 +13,10 @@ Aggregate the resulting clustering of the SOM algorithm into super-clusters.}
 
 \usage{
 \method{superClass}{somRes}(sommap, method="ward.D", members=NULL, k=NULL, 
-h=NULL, \ldots)
-\method{print}{somSC}(x, \ldots)
-\method{summary}{somSC}(object, \ldots)
-\method{projectIGraph}{somSC}(object, init.graph, \ldots)
+h=NULL, ...)
+\method{print}{somSC}(x, ...)
+\method{summary}{somSC}(object, ...)
+\method{projectIGraph}{somSC}(object, init.graph, ...)
 \method{plot}{somSC}(x, type=c("dendrogram", "grid", "hitmap", "lines", 
                                  "barplot", "boxplot", "mds", "color", 
                                  "poly.dist", "pie", "graph", "dendro3d", 
@@ -64,7 +64,7 @@ h=NULL, \ldots)
   \item{the.titles}{If \code{print.title = TRUE}, values of the title to 
   display for \code{type="grid"}. Default to "Cluster " followed by the cluster
   number.}
-  \item{\ldots}{Used for \code{plot.somSC}: further arguments passed either to
+  \item{...}{Used for \code{plot.somSC}: further arguments passed either to
   the function \code{\link{plot}} (case \code{type="dendro"}) or to 
   \code{\link{plot.myGrid}} (case \code{type="grid"}) or to 
   \code{\link{plot.somRes}} (all other cases).}

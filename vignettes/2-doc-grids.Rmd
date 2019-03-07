@@ -1,3 +1,7 @@
+---
+title: "A basic vignette on grids in SOMbrero"
+---
+
 <!--
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{A basic vignette on grids in SOMbrero}

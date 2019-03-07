@@ -11,9 +11,9 @@ The \code{trainSOM} function returns a \code{somRes} class object which
 contains the outputs of the algorithm.
 }
 \usage{
-trainSOM(x.data, \ldots)
-\method{print}{somRes}(x, \ldots)
-\method{summary}{somRes}(object, \ldots)
+trainSOM(x.data, ...)
+\method{print}{somRes}(x, ...)
+\method{summary}{somRes}(object, ...)
 }
 
 \arguments{

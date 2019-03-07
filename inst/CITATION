@@ -6,7 +6,9 @@ vers = paste('R package version', meta$Version)
 citEntry(
   entry = 'manual',
   title = paste('SOMbrero:', meta$Title),
-  author = as.person(meta$Author),
+  author = personList(as.person("Nathalie Vialaneix"), as.person("Jerome Mariette"),
+                      as.person("Madalina Olteanu"), as.person("Fabrice Rossi"),
+                      as.person("Laura Bendhaiba"), as.person("Julie Bolaert")),
   year = year,
   note = vers,
   textVersion = paste('Vialaneix N., Mariette J., Olteanu M., Rossi F., Bendhaiba L., Bolaert J. (', year, ') SOMbrero: ', meta$Title, '. ', vers, '.', sep = '')
@@ -29,14 +31,14 @@ citEntry(
 citEntry(
   entry = 'inProceedings',
   title = 'On-line relational SOM for dissimilarity data',
-  author = personList(as.person("Madalina Olteanu"),as.person("Nathalie Villa-Vialaneix"),as.person("Marie Cottrell")),
+  author = personList(as.person("Madalina Olteanu"), as.person("Nathalie Villa-Vialaneix"), as.person("Marie Cottrell")),
   booktitle = 'Advances in Self-Organizing Maps (Proceedings of WSOM 2012, Santiago, Chili, 12-14 decembre 2012)',
   address = 'Berlin/Heidelberg',
   publisher = 'Springer Verlag',
   year = 2012,
   volume= 198,
   pages = '13--22',
-  editor = 'Estevez P., Principe J., Zegers P., Barreto G.',
+  editor = 'Estevez, P. and Principe, J. and Zegers, P. and Barreto G.',
   series = 'Advances in Intelligent Systems and Computing series',
 
   textVersion = paste('Olteanu M., Villa-Vialaneix N., Cottrell M. (2012)',
