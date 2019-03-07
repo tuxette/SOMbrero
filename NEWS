@@ -1,3 +1,8 @@
+SOMbrero 1.2-4
+Fixed bugs:
+  changed unitary tests because of changes in RGN for devel
+
+********************************************************************************
 SOMbrero 1.2-3
 Fixed bugs:
   removed unecessary scaling checks for 'relational' in predict
