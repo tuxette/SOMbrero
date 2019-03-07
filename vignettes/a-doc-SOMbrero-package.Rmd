@@ -8,8 +8,6 @@ title: "SOMbrero Package description"
 %\VignettePackage{SOMbrero}
 -->
 
-# SOMbrero package
-
 ![logo](./sombrero.png)
 
 ## Package description

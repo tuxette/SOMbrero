@@ -8,8 +8,6 @@ title: "Self-Organizing Map for contingency tables"
 %\VignettePackage{SOMbrero}
 -->
 
-# Self-Organizing Map for contingency tables
-
 ## Basic package description
 
 To be able to run the SOM algorithm, you have to load the package called 
