@@ -42,3 +42,5 @@ radius because it should not affect the poly.dist plot)
 observation name
 ** MC : possibility to choose additional variables within the original table
 ** fix bug in download file names
+** EM : proposer un input pour lancer sombrero sur les jeux de données déjà existants dans l'environnement
+
