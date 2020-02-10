@@ -74,6 +74,7 @@ all.scplot.types <- list("numeric"=
                                        "MDS"="mds", "radar", "dendro3d"),
                                 "obs"="hitmap"))
 
+
 ###############################################################################
 
 # Server
@@ -91,42 +92,84 @@ shinyServer(function(input, output, session) {
   # Output the sombrero logo :
   output$sombrero.logo <- renderImage(list(src="sombrero.png"), 
                                       deleteFile=FALSE)
-  
   # Output the SAMM logo :
   output$samm.logo <- renderImage(list(src="samm.png"), deleteFile=FALSE)
   # Output the SAMM logo :
   output$miat.logo <- renderImage(list(src="miat.png"), deleteFile=FALSE)
   
+  #### Panel 'Self Organize' 
+  ############################################################################## 
+  output$typealgo <- renderUI({
+    if(input$somtype==""){
+      text <- "1. Type of algorithm"
+    } else {
+      text <- paste("1. Type of algorithm, selected : ", input$somtype)
+    }
+    text
+  })
+  
+  observeEvent(input$somtype, {
+    if(input$somtype!=""){
+      updateCollapse(session, "collapsestep1", open = "bscoll2")
+    }
+  })
+  
   #### Panel 'Import data'
   ##############################################################################
-  dInput <- reactive({
-    in.file <- input$file1
-    
-    if (is.null(in.file))
-      return(NULL)
-    
-    the.sep <- switch(input$sep, "Comma"=",", "Semicolon"=";", "Tab"="\t",
+  observe({
+    if(length(dataframes)>0){
+      updateSelectInput(session, inputId="file1envir", choices=dataframes)
+    }
+  })
+
+  val <- reactiveValues(data=NULL)  
+  
+  observeEvent(input$loaddatabutton, {
+    val$data <- get(input$file1envir, envir = .GlobalEnv)
+  }, ignoreInit=T)
+  
+  observeEvent(c(input$file1, input$sep, input$quote, input$dec, input$header, input$rownames), {
+    the.sep <- switch(input$sep, "Comma"=",", 
+                      "Semicolon"=";", 
+                      "Tab"="\t",
                       "Space"="")
-    the.quote <- switch(input$quote, "None"="","Double Quote"='"',
+    the.quote <- switch(input$quote, "None"="",
+                        "Double Quote"='"',
                         "Single Quote"="'")
-    the.dec <- switch(input$dec, "Period"=".", "Comma"=",")
+    the.dec <- switch(input$dec, 
+                      "Period"=".", 
+                      "Comma"=",")
     if (input$rownames) {
-      the.table <- read.table(in.file$datapath, header=input$header, 
+      the.table <- read.table(input$file1$datapath, header=input$header, 
                               sep=the.sep, quote=the.quote, row.names=1,
                               dec=the.dec)
     } else {
-      the.table <- read.table(in.file$datapath, header=input$header, 
+      the.table <- read.table(input$file1$datapath, header=input$header, 
                               sep=the.sep, quote=the.quote, dec=the.dec)
     }
+    val$data <- the.table
+  }, ignoreInit=T)
+  
+  dInput <- reactive({
+    if (is.null(val$data))
+      return(NULL)
+    
+    the.table <- val$data
     
     # update the "input variables" checkbox (if somtype is numeric or integer)
     if (input$somtype =="numeric") {
       output$varchoice <- renderUI(
-        checkboxGroupInput(inputId="varchoice", label="Input variables:",
+        selectInput(inputId="varchoice", label="Input variables:", multiple=T,
                            choices=as.list(colnames(the.table)),
                            selected=as.list(colnames(the.table)[
                              sapply(the.table, class) %in%
                                c("integer", "numeric")])))
+      
+        # checkboxGroupInput(inputId="varchoice", label="Input variables:",
+        #                    choices=as.list(colnames(the.table)),
+        #                    selected=as.list(colnames(the.table)[
+        #                      sapply(the.table, class) %in%
+        #                        c("integer", "numeric")])))
     } else output$varchoice <- renderText("")
 
     # update the map dimensions
@@ -157,8 +200,23 @@ shinyServer(function(input, output, session) {
     if (ncol(d.input)>input$ncol.preview) 
       d.input <- d.input[,1:input$ncol.preview]
     head(d.input, n=input$nrow.preview) 
-  }, rownames = TRUE)
+  }, rownames = TRUE, spacing='xs')
 
+  output$missingrows <- renderText({
+    shiny::validate(need(is.null(dInput())==F, 'Choose data'))
+    nrowmissing <- nrow(dInput())-input$nrow.preview
+    ncolmissing <- ncol(dInput())-input$ncol.preview
+    if(nrowmissing>0 & ncolmissing<=0){
+      text <- paste(nrowmissing, "rows not shown in the preview (the map will be based on the full dataset)", sep=" ")
+    } else if(nrowmissing<=0 & ncolmissing>0){
+      text <- paste(ncolmissing, "cols not shown in the preview (the map will be based on the full dataset)", sep=" ")
+    } else if(nrowmissing>0 & ncolmissing>0){
+      text <- paste(nrowmissing, "rows  and", ncolmissing, "columns not shown in the preview (the map will be based on the full dataset)", sep=" ")
+    } else {
+      text <- NULL
+    }
+    text
+  })
   #### Panel 'Self-organize'
   #############################################################################
 
@@ -221,7 +279,10 @@ shinyServer(function(input, output, session) {
 
   # Render the summary of the SOM
   output$summary <- renderPrint({
-    if (is.null(input$file1))
+    if (input$somtype=="") {
+      return("Choose a type of algorithm.")
+    }
+    if (is.null(val$data))
       return("First import a dataset.")
     if (input$trainbutton==0) {
       return("Hit the Train button to train the map.")
