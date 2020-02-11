@@ -19,10 +19,6 @@ moment}
 
 \item{dist.type}{distance type that defines the topology of the grid (see
 'Details'). Default to \code{"euclidean"}}
-
-\item{x}{object of class "myGrid"}
-
-\item{object}{object of class "myGrid"}
 }
 \value{
 an object of class \code{myGrid} with the following entries:
@@ -58,7 +54,7 @@ initGrid(dimension=c(5, 7), dist.type = "maximum")
 \references{
 Letrémy P. (2005) Programmes basés sur l'algorithme de Kohonen 
 et dédiés à l'analyse des données. SAS/IML programs for 'korresp'. 
-\url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto.}
+\url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto}
 }
 \seealso{
 \code{\link{plot.myGrid}} for plotting the grid

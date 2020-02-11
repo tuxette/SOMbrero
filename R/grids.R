@@ -12,8 +12,6 @@
 #' moment
 #' @param dist.type distance type that defines the topology of the grid (see
 #' 'Details'). Default to \code{"euclidean"}
-#' @param x object of class "myGrid"
-#' @param object object of class "myGrid"
 #'
 #' @author Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
 #' Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>
@@ -32,7 +30,7 @@
 #'
 #' @references Letrémy P. (2005) Programmes basés sur l'algorithme de Kohonen 
 #' et dédiés à l'analyse des données. SAS/IML programs for 'korresp'. 
-#' \url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto.}
+#' \url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto}
 #'
 #' @examples
 #' initGrid()
