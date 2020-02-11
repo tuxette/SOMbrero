@@ -1,80 +1,3 @@
-library(SOMbrero) # Version 0.4
-
-###############################################################################
-## Global variables
-
-# Max file input size :
-options(shiny.maxRequestSize=30*1024^2)
-
-# SOM training function
-trainTheSom <- function(data, type, dimx, dimy, affectation, disttype, maxit,
-                        varnames, rand.seed, scaling, eps0, init.proto, nb.save,
-                        radiustype) {
-  set.seed(rand.seed)
-  
-  if (type=="numeric")
-    data <- data[, varnames]
-  trainSOM(data, dimension=c(dimx,dimy), affectation=affectation, 
-           dist.type=disttype, maxit=maxit, type=type, scaling=scaling, 
-           init.proto=init.proto, nb.save=nb.save, radius.type=radiustype)
-}
-
-# List of somplot types options per SOM type and "what" :
-all.somplot.types <- list("numeric"=
-                            list("prototypes"=
-                                   list("color", "3d", "lines", "barplot",
-                                        "smooth distances"="smooth.dist",
-                                        "polygon distances"="poly.dist",
-                                        "grid distances"="grid.dist",
-                                        "U matrix distances"="umatrix",
-                                        "MDS"="mds", "radar"),
-                                 "obs"=c("hitmap", "color", "lines", "barplot", 
-                                          "names", "boxplot", "radar"),
-                                 "energy"="Energy of backups"),
-                          
-                          "korresp"=
-                            list("prototypes"=
-                                   list("color", "3d", "lines", "barplot",
-                                        "polygon distances"="poly.dist",
-                                        "grid distances"="grid.dist",
-                                        "U matrix distances"="umatrix",
-                                        "MDS"="mds", "radar"),
-                                 "obs"=c("hitmap", "names"),
-                                 "energy"="Energy of backups"),
-                          
-                          "relational"=
-                            list("prototypes"=
-                                   list("lines", "barplot",
-                                        "polygon distances"="poly.dist",
-                                        "grid distances"="grid.dist",
-                                        "U matrix distances"="umatrix",
-                                        "MDS"="mds", "radar"),
-                                 "obs"=c("hitmap", "names"),
-                                 "energy"="Energy of backups"))
-                                         
-all.scplot.types <- list("numeric"=
-                           list("prototypes"=
-                                  list("dendrogram", "dendro3d", "color",
-                                       "lines", "grid", "barplot", 
-                                       "polygon distances"="poly.dist",
-                                       "MDS"="mds", "radar"),
-                                "obs"=c("hitmap", "color", "lines", "barplot", 
-                                         "boxplot", "radar", "grid")),
-                         "korresp"=
-                           list("prototypes"=
-                                  list("dendrogram", "color", "lines", "grid", 
-                                       "barplot", 
-                                       "polygon distances"="poly.dist",
-                                       "MDS"="mds", "radar", "dendro3d"),
-                                "obs"="hitmap"),
-                         "relational"=
-                           list("prototypes"=
-                                  list("dendrogram", "lines", "barplot", "grid",
-                                       "polygon distances"="poly.dist",
-                                       "MDS"="mds", "radar", "dendro3d"),
-                                "obs"="hitmap"))
-
-
 ###############################################################################
 
 # Server
@@ -99,6 +22,10 @@ shinyServer(function(input, output, session) {
   
   #### Panel 'Self Organize' 
   ############################################################################## 
+  
+  
+  ####### bsPanel 'Type of algorithm' 
+  ############################################################################## 
   output$typealgo <- renderUI({
     if(input$somtype==""){
       text <- "1. Type of algorithm"
@@ -114,8 +41,17 @@ shinyServer(function(input, output, session) {
     }
   })
   
-  #### Panel 'Import data'
+  ####### bsPanel 'Data preparation'
   ##############################################################################
+
+  output$texttypedata <- renderUI({
+    switch(input$somtype,
+           "numeric" = HTML("You have chosen the Numeric algorithm. Your data is expected to be a dataset with numeric variables. You can take <b>'iris'</b> as an example."),
+           "korresp" = HTML("You have chosen the Korresp algorithm. Your data is expected to be a contengency table between two factors. You can take <b>'presidentielles2002'</b> as an example."),
+           "relational" = HTML("You have chosen the numeric algorithm. Your data is expected to be a dissimilarity matrix, square, symetric and with a null diagonal. You can take <b>'dissim.lesmis'</b> as an example."),
+           ""
+    )
+  })
   observe({
     if(length(dataframes)>0){
       updateSelectInput(session, inputId="file1envir", choices=dataframes)

@@ -1,9 +1,92 @@
+####################################################################################
+# Libraries
+####################################################################################
+library(shinycssloaders) # for the loader of the summary
+library(shinyBS)  # for bsCollapse
+library(SOMbrero) # Version 0.4
+
+####################################################################################
+# Loading the data from environment and examples
+####################################################################################
 # data.frames in the global environment
-# tibbles and data.tables are also returned since they are in the data.frame class
 data("iris")
 data("lesmis")
 data("presidentielles2002")
 
+# tibbles and data.tables are also returned since they are in the data.frame class
 dataframes <- ls()[sapply(ls(envir = .GlobalEnv), function(x) 'data.frame' %in% class(get(x)) | 'matrix' %in% class(get(x)))]
 
- 
+###############################################################################
+## Global variables
+####################################################################################
+
+# Max file input size :
+options(shiny.maxRequestSize=30*1024^2)
+
+# SOM training function
+trainTheSom <- function(data, type, dimx, dimy, affectation, disttype, maxit,
+                        varnames, rand.seed, scaling, eps0, init.proto, nb.save,
+                        radiustype) {
+  set.seed(rand.seed)
+  
+  if (type=="numeric")
+    data <- data[, varnames]
+  trainSOM(data, dimension=c(dimx,dimy), affectation=affectation, 
+           dist.type=disttype, maxit=maxit, type=type, scaling=scaling, 
+           init.proto=init.proto, nb.save=nb.save, radius.type=radiustype)
+}
+
+# List of somplot types options per SOM type and "what" :
+all.somplot.types <- list("numeric"=
+                            list("prototypes"=
+                                   list("color", "3d", "lines", "barplot",
+                                        "smooth distances"="smooth.dist",
+                                        "polygon distances"="poly.dist",
+                                        "grid distances"="grid.dist",
+                                        "U matrix distances"="umatrix",
+                                        "MDS"="mds", "radar"),
+                                 "obs"=c("hitmap", "color", "lines", "barplot", 
+                                         "names", "boxplot", "radar"),
+                                 "energy"="Energy of backups"),
+                          
+                          "korresp"=
+                            list("prototypes"=
+                                   list("color", "3d", "lines", "barplot",
+                                        "polygon distances"="poly.dist",
+                                        "grid distances"="grid.dist",
+                                        "U matrix distances"="umatrix",
+                                        "MDS"="mds", "radar"),
+                                 "obs"=c("hitmap", "names"),
+                                 "energy"="Energy of backups"),
+                          
+                          "relational"=
+                            list("prototypes"=
+                                   list("lines", "barplot",
+                                        "polygon distances"="poly.dist",
+                                        "grid distances"="grid.dist",
+                                        "U matrix distances"="umatrix",
+                                        "MDS"="mds", "radar"),
+                                 "obs"=c("hitmap", "names"),
+                                 "energy"="Energy of backups"))
+
+all.scplot.types <- list("numeric"=
+                           list("prototypes"=
+                                  list("dendrogram", "dendro3d", "color",
+                                       "lines", "grid", "barplot", 
+                                       "polygon distances"="poly.dist",
+                                       "MDS"="mds", "radar"),
+                                "obs"=c("hitmap", "color", "lines", "barplot", 
+                                        "boxplot", "radar", "grid")),
+                         "korresp"=
+                           list("prototypes"=
+                                  list("dendrogram", "color", "lines", "grid", 
+                                       "barplot", 
+                                       "polygon distances"="poly.dist",
+                                       "MDS"="mds", "radar", "dendro3d"),
+                                "obs"="hitmap"),
+                         "relational"=
+                           list("prototypes"=
+                                  list("dendrogram", "lines", "barplot", "grid",
+                                       "polygon distances"="poly.dist",
+                                       "MDS"="mds", "radar", "dendro3d"),
+                                "obs"="hitmap"))
