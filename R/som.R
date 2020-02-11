@@ -1154,6 +1154,63 @@ protoDist.somRes <- function(object, mode=c("complete","neighbors"), ...) {
   return(distances)
 }
 
+#' @title Compute the projection of a graph on a grid
+#' @name projectIGraph
+#' @aliases projectIGraph.somRes
+#' @export
+#' 
+#' @description Compute the projection of a graph, provided as an 
+#' \code{\link[igraph]{igraph}} object, on the grid of the \code{somRes} object.
+#' 
+#' @param object a \code{somRes} object.
+#' @param init.graph an \link[igraph]{igraph} whose number of vertices is equal
+#' to the clustering length of the \code{somRes} object.
+#' @param \dots Not used.
+#' 
+#' @return The result is an \code{\link[igraph]{igraph}} which vertexes are the
+#' clusters (the clustering is thus understood as a vertex clustering) and the 
+#' edges are the counts of edges in the original graph between two vertices
+#' corresponding to the two clusters in the projected graph or, if 
+#' \code{init.graph} is a weighted graph, the sum of the weights between the 
+#' pairs of vertices corresponding to the two clusters.
+#' 
+#' The resulting igraph object's attributes are: \itemize{
+#'   \item the graph attribute \code{layout} which provides the layout of the 
+#'   projected graph according to the grid of the SOM;
+#'   \item the vertex attributes \code{name} and \code{size} which, respectively
+#'   are the vertex number on the grid and the number of vertexes included in 
+#'   the corresponding cluster;
+#'   \item the edge attribute \code{weight} which gives the number of edges (or 
+#'   the sum of the weights) between the vertexes of the two corresponding 
+#'   clusters.
+#' }
+#' 
+#' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
+#' 
+#' @references 
+#' Olteanu M., Villa-Vialaneix N. (2015) Using SOMbrero for clustering and 
+#' visualizing graphs. \emph{Journal de la Société Française de Statistique},
+#' \strong{156}, 95-119.
+#' 
+#' @seealso \code{\link{projectIGraph.somSC}} which uses the results of a 
+#' super-clustering to obtain another projected graph. \code{\link{plot.somRes}} 
+#' with the option \code{type="graph"} or \code{\link{plot.somSC}} with the 
+#' option \code{type="projgraph"}.
+#' 
+#' @examples 
+#' data(lesmis)
+#' set.seed(7383)
+#' mis.som <- trainSOM(x.data=dissim.lesmis, type="relational", nb.save=10)
+#' proj.lesmis <- projectIGraph(mis.som, lesmis)
+#' \dontrun{plot(proj.lesmis)}
+
+projectIGraph <- function(object, init.graph, ...) {
+  UseMethod("projectIGraph")
+}
+
+#' @export
+
 projectIGraph.somRes <- function(object, init.graph, ...) {
   if (!is_igraph(init.graph)) {
     stop("'init.graph' must be an igraph object\n", call.=TRUE)
@@ -1164,8 +1221,4 @@ projectIGraph.somRes <- function(object, init.graph, ...) {
   proj.graph <- projectGraph(init.graph, object$clustering,
                              object$parameters$the.grid$coord)
   return(proj.graph)
-}
-
-projectIGraph <- function(object, init.graph, ...) {
-  UseMethod("projectIGraph")
 }
