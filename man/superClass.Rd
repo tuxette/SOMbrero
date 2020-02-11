@@ -7,6 +7,7 @@
 \alias{summary.somSC}
 \alias{projectIGraph.somSC}
 \alias{plot.somSC}
+\alias{somSC-class}
 \title{Create super-clusters from SOM results}
 \usage{
 superClass(sommap, method, members, k, h, ...)

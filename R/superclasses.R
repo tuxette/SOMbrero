@@ -27,6 +27,7 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' @aliases summary.somSC
 #' @aliases projectIGraph.somSC
 #' @aliases plot.somSC
+#' @aliases somSC-class
 #' 
 #' @description Aggregate the resulting clustering of the SOM algorithm into 
 #' super-clusters.
