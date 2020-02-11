@@ -56,14 +56,14 @@ initGrid(dimension=c(5, 7), dist.type = "maximum")
 
 }
 \references{
-{Letrémy P. (2005) Programmes basés sur l'algorithme de Kohonen 
-et dédiés a l'analyse des données. SAS/IML programs for 'korresp'. 
-\url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto.}}
+Letrémy P. (2005) Programmes basés sur l'algorithme de Kohonen 
+et dédiés à l'analyse des données. SAS/IML programs for 'korresp'. 
+\url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto.}
 }
 \seealso{
 \code{\link{plot.myGrid}} for plotting the grid
 }
 \author{
-{Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
-Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>}
+Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
+Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>
 }

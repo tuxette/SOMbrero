@@ -15,8 +15,8 @@
 #' @param x object of class "myGrid"
 #' @param object object of class "myGrid"
 #'
-#' @author {Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
-#' Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>}
+#' @author Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
+#' Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>
 #'
 #' @details The units (neurons) of the grid are positionned at coordinates 
 #' (1,1), (1,2), (1,3), ..., (2,1), (2,2), ..., for the \code{square} topology.
@@ -30,9 +30,9 @@
 #'
 #' @seealso \code{\link{plot.myGrid}} for plotting the grid
 #'
-#' @references {Letrémy P. (2005) Programmes basés sur l'algorithme de Kohonen 
-#' et dédiés a l'analyse des données. SAS/IML programs for 'korresp'. 
-#' \url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto.}}
+#' @references Letrémy P. (2005) Programmes basés sur l'algorithme de Kohonen 
+#' et dédiés à l'analyse des données. SAS/IML programs for 'korresp'. 
+#' \url{http://samm.univ-paris1.fr/Programmes-SAS-de-cartes-auto.}
 #'
 #' @examples
 #' initGrid()
@@ -99,9 +99,8 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' display. Default to "Cluster " followed by the cluster number.
 #' @param \dots Further arguments to the \code{\link{plot}} function.
 #' 
-#' @author {Madalina Olteanu, \email{madalina.olteanu@inrae.fr}
-#'
-#' Nathalie Vialaneix, \email{nathalie.vialaneix@inrae.fr}}
+#' @author Madalina Olteanu, \email{madalina.olteanu@inrae.fr}\cr
+#' Nathalie Vialaneix, \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @details The \code{myGrid} class has the following entries:
 #' \itemize{
