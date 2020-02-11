@@ -18,6 +18,10 @@ This data set provides the number of votes at the first round of
 the 2002 French presidential election for each of the 16 candidates for 106
 administrative districts called "Départements".
 }
+\examples{
+data(presidentielles2002)
+apply(presidentielles2002,2,sum)
+}
 \references{
 The 2002 French presidential election consisted of two rounds. 
 The second round attracted a greater than usual amount of international 

@@ -116,6 +116,6 @@ pass to the trainSOM function to change its behavior and
 \author{
 Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
+Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

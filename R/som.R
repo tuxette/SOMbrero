@@ -544,7 +544,7 @@ calculateEnergy <- function(x.data, clustering, prototypes, parameters, ind.t) {
 #' 
 #' @author Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
 #' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-#' Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
+#' Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #'
 #' @note Warning! Recording intermediate backups with the argument 
@@ -1001,7 +1001,7 @@ predictRSOM <- function(object, x.new=NULL, radius=0, tolerance=10^(-10),
 #' 
 #' @author Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
 #' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-#' Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
+#' Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @seealso \code{\link{trainSOM}}
