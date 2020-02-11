@@ -109,6 +109,12 @@ dimension (width multiplied by height).}
 
 \item{object}{an object of class \code{paramSOM}.}
 }
+\value{
+The \code{initSOM} function returns an object of class 
+\code{paramSOM} which is a list of the parameters passed to the 
+\code{initSOM} function, plus the default parameters for the ones not 
+specified by the user.
+}
 \description{
 The \code{initSOM} function returns a \code{paramSOM} class object that
 contains the parameters needed to run the SOM algorithm.

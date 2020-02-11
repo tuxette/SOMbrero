@@ -79,9 +79,10 @@
 #' @param object an object of class \code{paramSOM}.
 #' @param \dots not used
 #' 
-#' @value The \code{initSOM} function returns an object of class \code{paramSOM}
-#' which is a list of the parameters passed to the \code{initSOM} function, plus
-#' the default parameters for the ones not specified by the user.
+#' @return The \code{initSOM} function returns an object of class 
+#' \code{paramSOM} which is a list of the parameters passed to the 
+#' \code{initSOM} function, plus the default parameters for the ones not 
+#' specified by the user.
 #' 
 #' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
