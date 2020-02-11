@@ -1,3 +1,5 @@
+## These functions handle plots of somRes objects
+## ----------------------------------------------------------------------------
 ### subfunctions
 orderIndexes <- function(the.grid, type) {
   if(type=="3d") tmp <- 1:the.grid$dim[1]
@@ -751,6 +753,64 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   } else 
     stop("Sorry: this type is still to be implemented.", call.=TRUE)
 }
+
+#' @title Plot a \code{somRes} class object
+#' @name plot.somRes
+#' @export
+#' 
+#' @description Produce graphics to help interpreting a \code{somRes} object.
+#' 
+#' @param x A \code{somRes} class object.
+#' @param what What you want to plot. Either the observations (\code{obs}, 
+#' default case), the evolution of energy (\code{energy}), the prototypes 
+#' (\code{prototypes}) or an additional variable (\code{add}).
+#' @param type Further argument indicating which type of chart you want to have.
+#' Choices depend on the value of \code{what} (\code{what="energy"} has no
+#' \code{type} argument). Default values are \code{"hitmap"} for \code{obs}, 
+#' \code{"color"} for \code{prototypes} and \code{"pie"} for \code{add}. See
+#' section ``Details'' below for further details.
+#' @param variable Either the variable to be used for \code{what="add"} or the 
+#' index of the variable of the data set to consider. For \code{type="boxplot"}, 
+#' the default value is the sequence from 1 to the minimum between 5 and the 
+#' number of columns of the data set. In all other cases, default value is 1. 
+#' See \code{\link{somRes.plotting}} for further details.
+#' @param my.palette A vector of colors. If omitted, predefined palettes are 
+#' used, depending on the plot case. This argument is used for the following
+#' combinations: all \code{"color"} types and \code{"prototypes"/"poly.dist"}.
+#' @param is.scaled A boolean indicating whether values should be scaled prior 
+#' to plotting or not. Default value is \code{TRUE} when \code{type="numeric"} 
+#' and \code{FALSE} in the other cases.
+#' @param print.title Boolean used to indicate whether each neuron should have a
+#' title or not. Default value is \code{FALSE}. It is feasible on the following 
+#' cases: all \code{"color"} types, all \code{"lines"} types, all 
+#' \code{"barplot"} types, all \code{"radar"} types, all \code{"boxplot"} types,
+#' all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
+#' \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.
+#' @param the.titles The titles to be printed for each neuron if 
+#' \code{print.title=TRUE}. Default to a number which identifies the neuron.
+#' @param proportional Boolean used when \code{what="add"} and 
+#' \code{type="pie"}. It indicates if the pies should be proportional to the 
+#' number of observations in the class. Default value is \code{TRUE}.
+#' @param s.radius The size of the pies to be plotted (maximum size when 
+#' \code{proportional=TRUE}). The default value is \code{0.9}.
+#' @param pie.graph Boolean used when \code{what="add"} and \code{type="graph"}. 
+#' It indicates if the vertices should be pies or not.
+#' @param pie.variable The variable needed to plot the pies when 
+#' \code{what="add"}, \code{type="graph"} and argument \code{pie.graph=TRUE}.
+#' @param view Used only when the algorithm's type is \code{"korresp"}. It
+#' indicates whether rows (\code{"r"}) or columns (\code{"c"}) must be drawn.
+#' @param \dots Further arguments to be passed to the underlined plot function
+#' (which can be \code{\link{plot}}, \code{\link{barplot}}, \code{\link{pie}}...
+#' depending on \code{type}; see \code{\link{somRes.plotting}} for further
+#' details).
+#' 
+#' @details See \code{\link{somRes.plotting}} for further details.
+#' 
+#' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
+#' 
+#' @seealso \code{\link{trainSOM}} to run the SOM algorithm, that returns a 
+#' \code{somRes} class object.
 
 plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"), 
                         type=switch(what,
