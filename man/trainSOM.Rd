@@ -34,7 +34,22 @@ calculated according to the SOM type if the user does not set them:
 \item{object}{an object of class \code{somRes}.}
 }
 \value{
-
+The \code{trainSOM} function returns an object of class \code{somRes}
+which contains the following components:
+\itemize{
+  \item{clustering}{the final classification of the data.}
+  \item{prototypes}{the final coordinates of the prototypes.}
+  \item{energy}{the final energy of the map.}
+  \item{backup}{a list containing some intermediate backups of the prototypes
+  coordinates, clustering, energy and the indexes of the recorded backups, if
+  \code{nb.save} is set to a value larger than 1.}
+  \item{data}{the original dataset used to train the algorithm.}
+  \item{parameters}{a list of the map's parameters, which is an object of 
+  class \code{paramSOM} as produced by the function \code{\link{initSOM}}.}
+}
+The function \code{summary.somRes} also provides an ANOVA (ANalysis Of 
+VAriance) of each input numeric variables in function of the map's clusters. 
+This is helpful to see which variables participate to the clustering.
 }
 \description{
 The \code{trainSOM} function returns a \code{somRes} class 

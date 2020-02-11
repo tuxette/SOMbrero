@@ -496,7 +496,7 @@ calculateEnergy <- function(x.data, clustering, prototypes, parameters, ind.t) {
 #'   \code{nb.save} is set to a value larger than 1.}
 #'   \item{data}{the original dataset used to train the algorithm.}
 #'   \item{parameters}{a list of the map's parameters, which is an object of 
-#'   class \code{paramSOM} as produced by the function \code{\link{initSOM}}.
+#'   class \code{paramSOM} as produced by the function \code{\link{initSOM}}.}
 #' }
 #' The function \code{summary.somRes} also provides an ANOVA (ANalysis Of 
 #' VAriance) of each input numeric variables in function of the map's clusters. 
@@ -972,11 +972,11 @@ predictRSOM <- function(object, x.new=NULL, radius=0, tolerance=10^(-10),
   return(winners)
 }
 
-#' @title Predicts the classification of a new observation
+#' @title Predict the classification of a new observation
 #' @export
 #' @name predict.somRes
 #' 
-#' @description Predicts the neuron where a new observation is classified
+#' @description Predict the neuron where a new observation is classified
 #' 
 #' @param object a \code{somRes} object.
 #' @param x.new a new observation (optional). Default values is NULL which
@@ -1096,6 +1096,50 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0,
   return(winners)
 }
 
+#' @title Compute distances between prototypes
+#' @export
+#' @name protoDist
+#' @aliases protoDist.somRes
+#' 
+#' @description Compute distances, either between all prototypes 
+#' (\code{mode = "complete"}) or only between prototypes' neighbours 
+#' (\code{mode = "neighbors"}).
+#' 
+#' @param object a \code{somRes} object.
+#' @param mode Specifies which distances should be computed.
+#' @param \dots Not used.
+#' 
+#' @details When \code{mode="complete"}, distances between all prototypes are
+#' computed. When \code{mode="neighbors"}, distances are computed only between 
+#' the prototypes and their neighbors. If the data were preprocessed during the
+#' SOM training procedure, the distances are computed on the normalized values 
+#' of the prototypes.
+#' 
+#' @return When \code{mode = "complete"}, the function returns a square matrix 
+#' which dimensions are equal to the product of the grid dimensions.
+#' 
+#' When \code{mode = "neighbors"}, the function returns a list which length is 
+#' equal to the product of the grid dimensions; the length of each item is equal
+#' to the number of neighbors. Neurons are considered to have 8 neighbors at 
+#' most (\emph{i.e.}, two neurons are neighbors if they have a distance of type 
+#' 'maximum' which is equal to 1).
+#' 
+#' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
+#' 
+#' @seealso \code{\link{trainSOM}}
+#' 
+#' @examples
+#' set.seed(2343)
+#' my.som <- trainSOM(x.data=iris[,1:4], dimension=c(5,5))
+#' protoDist(my.som)
+
+protoDist <- function(object, mode,...) {
+  UseMethod("protoDist")
+}
+
+#' @export
+
 protoDist.somRes <- function(object, mode=c("complete","neighbors"), ...) {
   mode <- match.arg(mode)
   complete <- (mode=="complete")
@@ -1108,10 +1152,6 @@ protoDist.somRes <- function(object, mode=c("complete","neighbors"), ...) {
   distances <- calculateProtoDist(norm.proto, object$parameters$the.grid,
                                   object$parameters$type, complete, x.data)
   return(distances)
-}
-
-protoDist <- function(object, mode,...) {
-  UseMethod("protoDist")
 }
 
 projectIGraph.somRes <- function(object, init.graph, ...) {

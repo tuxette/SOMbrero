@@ -43,7 +43,7 @@
 #' algorithm process. Default value is \code{500}. Other data-driven defaults
 #' are set by function \code{trainSOM}.
 #' @param nb.save The number of intermediate back-ups to be done during the 
-#' algorithm process. Default value is \code{0}.}
+#' algorithm process. Default value is \code{0}.
 #' @param verbose The boolean value which activates the verbose mode during the
 #' SOM algorithm process. Default value is \code{FALSE}.
 #' @param proto0 The initial prototypes. Default value is \code{NULL}.

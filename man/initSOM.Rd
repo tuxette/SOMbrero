@@ -67,6 +67,9 @@ corresponds to Heskes's soft affectation.}
 algorithm process. Default value is \code{500}. Other data-driven defaults
 are set by function \code{trainSOM}.}
 
+\item{nb.save}{The number of intermediate back-ups to be done during the 
+algorithm process. Default value is \code{0}.}
+
 \item{verbose}{The boolean value which activates the verbose mode during the
 SOM algorithm process. Default value is \code{FALSE}.}
 
