@@ -972,6 +972,45 @@ predictRSOM <- function(object, x.new=NULL, radius=0, tolerance=10^(-10),
   return(winners)
 }
 
+#' @title Predicts the classification of a new observation
+#' @export
+#' @name predict.somRes
+#' 
+#' @description Predicts the neuron where a new observation is classified
+#' 
+#' @param object a \code{somRes} object.
+#' @param x.new a new observation (optional). Default values is NULL which
+#' corresponds to performing prediction on the training dataset.
+#' @param \dots not used.
+#' @param radius current radius used to perform soft affectation (when 
+#' \code{affectation="heskes"}, see \code{\link{initSOM}} for further details
+#' about Heskes's soft affectation). Default value is \option{0}, 
+#' which corresponds to a hard affectation.
+#' @param tolerance numeric tolerance (to avoid numeric instability during 
+#' 'cosine' pre-processing). Default value is \option{10^(-10)}
+#' 
+#' @details The number of columns of the new observations (or its length if only 
+#' one observation is provided) must match the number of colums of the data set
+#' given to the SOM algorithm (see \code{\link{trainSOM}}).
+#' 
+#' @return \code{predict.somRes} returns the number of the neuron to which the 
+#' new observation is assigned (i.e., neuron with the closest prototype).
+#' 
+#' When the algorithm's type is \code{"korresp"}, \code{x.new} must be the 
+#' original contingency table passed to the algorithm.
+#' 
+#' @author Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
+#' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' Fabrice Rossi \email{fabrice.rossi@univ-paris1.fr}\cr
+#' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
+#' 
+#' @seealso \code{\link{trainSOM}}
+#' 
+#' @examples 
+#' set.seed(2343)
+#' my.som <- trainSOM(x.data=iris[-100,1:4], dimension=c(5,5))
+#' predict(my.som, iris[100,1:4])
+
 predict.somRes <- function(object, x.new=NULL, ..., radius=0, 
                            tolerance=10^(-10)) {
   ## korresp
