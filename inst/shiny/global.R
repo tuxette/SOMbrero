@@ -90,3 +90,4 @@ all.scplot.types <- list("numeric"=
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds", "radar", "dendro3d"),
                                 "obs"="hitmap"))
+
