@@ -1,6 +1,3 @@
-## These functions handle plots of somRes objects
-## ----------------------------------------------------------------------------
-### subfunctions
 orderIndexes <- function(the.grid, type) {
   if(type=="3d") tmp <- 1:the.grid$dim[1]
   else tmp <- the.grid$dim[1]:1
@@ -471,9 +468,14 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
   }
   
   if (type=="lines" || type=="barplot") {
-    plotAllVariables("obs", type, sommap$data, sommap$clustering, 
-                     print.title, the.titles, is.scaled,
-                     sommap$parameters$the.grid, args)
+    # GGPLOT2 version
+    # plotAllVariables("obs", type, sommap$data, sommap$clustering, 
+    #                  print.title, the.titles, is.scaled,
+    #                  sommap$parameters$the.grid, args)
+    args$col <- my.palette
+    ggplotObs("obs", type, sommap$data, sommap$clustering,
+              print.title, the.titles, is.scaled,
+              sommap$parameters$the.grid, args)
   } else if (type=="color") {
     if (length(variable)>1) {
       warning("length(variable)>1, only first element will be considered\n", 
@@ -489,60 +491,84 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
     plotRadar(mean.var, sommap$parameters$the.grid, "obs", print.title,
               the.titles, args)
   } else if (type=="hitmap") {
-    freq <- sapply(1:nrow(sommap$prototypes), function(ind) {
-      length(which(sommap$clustering==ind))
-    })
-    freq <- freq/sum(freq)
-    # basesize is 0.45 for the maximum frequence
-    basesize <- 0.45*sqrt(freq)/max(sqrt(freq))
-    
-    if (is.null(args$col)) {
-      my.colors <- rep("pink", nrow(sommap$prototypes))
-    } else if (length(args$col)==1) {
-      my.colors <- rep(args$col, nrow(sommap$prototypes))
-    } else {
-      if(length(args$col)==nrow(sommap$prototypes)){
-        my.colors <- args$col
-      } else {
-        warning("unadequate number of colors default color will be used\n", 
-                immediate.=TRUE, call.=TRUE)
-        my.colors <- rep("pink", nrow(sommap$prototypes))
-      }
-    }
-    plot.args <- c(list(x=sommap$parameters$the.grid), args)
-    do.call("plot.myGrid",plot.args)
-    invisible(sapply(1:nrow(sommap$prototypes), function(ind){
-      xleft <- (sommap$parameters$the.grid$coord[ind,1]-basesize[ind])
-      xright <- (sommap$parameters$the.grid$coord[ind,1]+basesize[ind])
-      ybottom <- (sommap$parameters$the.grid$coord[ind,2]-basesize[ind])
-      ytop <- (sommap$parameters$the.grid$coord[ind,2]+basesize[ind])
-      rect(xleft,ybottom,xright,ytop, col=my.colors[ind], border=NA)
-    }))
-    if (print.title) {
-      text(x=sommap$parameters$the.grid$coord[,1], 
-           y=sommap$parameters$the.grid$coord[,2],
-           labels=the.titles, cex=0.7)
-    }
+    args$col <- my.palette
+    ggplotObs("obs", type, as.matrix(sommap$clustering), sommap$clustering,
+              print.title, the.titles, is.scaled,
+              sommap$parameters$the.grid, args)
+    # freq <- sapply(1:nrow(sommap$prototypes), function(ind) {
+    #   length(which(sommap$clustering==ind))
+    # })
+    # freq <- freq/sum(freq)
+    # # basesize is 0.45 for the maximum frequence
+    # basesize <- 0.45*sqrt(freq)/max(sqrt(freq))
+    # 
+    # if (is.null(args$col)) {
+    #   my.colors <- rep("pink", nrow(sommap$prototypes))
+    # } else if (length(args$col)==1) {
+    #   my.colors <- rep(args$col, nrow(sommap$prototypes))
+    # } else {
+    #   if(length(args$col)==nrow(sommap$prototypes)){
+    #     my.colors <- args$col
+    #   } else {
+    #     warning("unadequate number of colors default color will be used\n", 
+    #             immediate.=TRUE, call.=TRUE)
+    #     my.colors <- rep("pink", nrow(sommap$prototypes))
+    #   }
+    # }
+    # plot.args <- c(list(x=sommap$parameters$the.grid), args)
+    # do.call("plot.myGrid",plot.args)
+    # invisible(sapply(1:nrow(sommap$prototypes), function(ind){
+    #   xleft <- (sommap$parameters$the.grid$coord[ind,1]-basesize[ind])
+    #   xright <- (sommap$parameters$the.grid$coord[ind,1]+basesize[ind])
+    #   ybottom <- (sommap$parameters$the.grid$coord[ind,2]-basesize[ind])
+    #   ytop <- (sommap$parameters$the.grid$coord[ind,2]+basesize[ind])
+    #   rect(xleft,ybottom,xright,ytop, col=my.colors[ind], border=NA)
+    # }))
+    # if (print.title) {
+    #   text(x=sommap$parameters$the.grid$coord[,1], 
+    #        y=sommap$parameters$the.grid$coord[,2],
+    #        labels=the.titles, cex=0.7)
+    # }
     
   } else if (type=="boxplot") {
     if (length(variable)>5) {
-      stop("maximum number of variables for type='boxplot' exceeded\n", 
+      stop("maximum number of variables for type='boxplot' exceeded\n",
            call.=TRUE)
     }
-    plotAllVariables("obs", type, sommap$data[,variable], sommap$clustering, 
-                     print.title, the.titles, is.scaled,
-                     sommap$parameters$the.grid, args)
+    # GGPLOT2 version
+    # plotAllVariables("obs", type, sommap$data[,variable], sommap$clustering, 
+    #                  print.title, the.titles, is.scaled,
+    #                  sommap$parameters$the.grid, args)
+    args$col <- my.palette
+    ggplotObs("obs", type, sommap$data[,variable], sommap$clustering,
+               print.title, the.titles, is.scaled,
+               sommap$parameters$the.grid, args)
+    
   } else if (type=="names") {
-    if (sommap$parameters$type=="korresp") {
-      values <- names(sommap$clustering)
-    } else {
-      if (!is.null(rownames(sommap$data))) {
-        values <- rownames(sommap$data)
-      } else values <- 1:nrow(sommap$data)
+    args$col <- my.palette
+    if (sommap$parameters$type=="relationnal") {
+      values <- as.matrix(iris.som$clustering)
     }
-    plotAllVariables("obs", type, values, sommap$clustering, 
-                     print.title, the.titles, is.scaled,
-                     sommap$parameters$the.grid, args)
+     if (sommap$parameters$type=="korresp") {
+       values <- as.matrix(iris.som$clustering)
+     } 
+    if(sommap$parameters$type=="numeric") {
+       values <- sommap$data
+     }
+    ggplotObs("obs", type, values, sommap$clustering,
+              print.title, the.titles, is.scaled,
+              sommap$parameters$the.grid, args)
+    # if (sommap$parameters$type=="korresp") {
+    #   values <- names(sommap$clustering)
+    # } else {
+    #   if (!is.null(rownames(sommap$data))) {
+    #     values <- rownames(sommap$data)
+    #   } else values <- sommap$data
+    # }
+
+    # plotAllVariables("obs", type, values, sommap$clustering, 
+    #                  print.title, the.titles, is.scaled,
+    #                  sommap$parameters$the.grid, args)
   }
 }
 
