@@ -1,4 +1,5 @@
 # Define UI for dataset viewer application
+library(shinyBS)
 shinyUI(pageWithSidebar(
   # Application title
   headerPanel("SOMbrero Web User Interface (v1.2)"),
@@ -78,6 +79,7 @@ Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
               Relational = "relational"
             ),
             options = list(
+<<<<<<< HEAD
               placeholder = 'Please select an option',
               onInitialize = I('function() { this.setValue(""); }')
             )
@@ -108,6 +110,37 @@ Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
             )
           ),
           textOutput("texttypedata"),
+=======
+              placeholder = 'Please select an option below',
+              onInitialize = I('function() { this.setValue(""); }')
+            )
+          ),
+          "TODO : Ici mettre des exemples de données nécessaires ou expliquer les différences"
+        ),
+        bsCollapsePanel(title = "2. Data preparation", value="bscoll2",
+          p(
+            HTML(
+              "To run the application, import your data set using the
+  import button below. Your data must be supplied in the form of a text/csv file.
+  If the importation is done properly, a preview of the data is displayed below.
+  When this is done proceed to the next step: self-organize a map."
+            )
+          ),
+          p(
+            HTML(
+              'The interface can be tested using example data files for
+  the <a href=
+  "http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa"
+  target="_blank">numeric</a>, <a href=
+  "http://nextcloud.nathalievilla.org/index.php/s/Tw2H2ZBKwBAPo0v"
+  target="_blank">korresp</a> and <a href=
+  "http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
+  target="_blank">relational </a> algorithms (download these files on your computer and
+  proceed).'
+            )
+          ),
+          
+>>>>>>> 3a6faa401900b4730094c98fc20183c6d6b86f06
           br(),
           fluidRow(
             column(6, 
@@ -170,6 +203,7 @@ adequate parameter values.'
           )
         ),
 
+<<<<<<< HEAD
         hr(),
 
         h4("Options"),
@@ -208,6 +242,43 @@ adequate parameter values.'
                     numericInput("nb.save", "Number of intermediate back-ups:", 0,
                               min = 0))
         ),
+=======
+        br(),
+
+        h4("Options"),
+        uiOutput("varchoice"),
+        "Map dimensions :",
+        fluidRow(
+          column(3, numericInput("dimx", "X:", 5, min = 1)),
+          column(3, numericInput("dimy", "Y:", 5, min = 1))
+        ),
+        numericInput(
+          "randseed",
+          HTML(
+            "Random seed for reproducible results
+<a href='#pseudor'><sup>(1)</sup></a>:"
+          ),
+          sample(1:1e5, size = 1)
+        ),
+        h4("Advanced options"),
+        selectInput("affectation", "Affectation type:",
+                    c("standard", "heskes")),
+        uiOutput("initproto"),
+        numericInput("maxit", "Max. iterations:", 500),
+        uiOutput("disttype"),
+        selectInput("radiustype", "Radius type:",
+                    c("letremy", "gaussian")),
+        uiOutput("scaling"),
+        numericInput(
+          "eps0",
+          "Scaling value for gradient descent",
+          1,
+          min = 0.01,
+          step = .01
+        ),
+        numericInput("nb.save", "Number of intermediate back-ups:", 0,
+                     min = 0),
+>>>>>>> 3a6faa401900b4730094c98fc20183c6d6b86f06
         p(
           HTML(
             "<span style='font-size:10px'><a name='pseudor'><sup>(1)
@@ -220,11 +291,19 @@ pseudo-random generators at
 </a></span>."
           )
         ),
+<<<<<<< HEAD
         actionButton("trainbutton", "Train SOM", class="btn-primary"),
         br(),
         br(),
   
         withSpinner(verbatimTextOutput("summary")),
+=======
+        actionButton("trainbutton", "Train SOM"),
+        br(),
+        br(),
+        
+        verbatimTextOutput("summary"),
+>>>>>>> 3a6faa401900b4730094c98fc20183c6d6b86f06
         br(),
         downloadButton("som.download", "Download the SOM file (rda)"),
         downloadButton("clustering.download", "Download the clustering (txt)")
@@ -237,7 +316,11 @@ pseudo-random generators at
       #########################################################################
       tabPanel(
         "Plot Map",
+<<<<<<< HEAD
         h3("Plot the self-organizing map"),
+=======
+        h3("Third step: plot the self-organizing map"),
+>>>>>>> 3a6faa401900b4730094c98fc20183c6d6b86f06
         p(
           "In this panel and the next ones you can visualize the computed
 self-organizing map. This panel contains the standard plots used to analyze the

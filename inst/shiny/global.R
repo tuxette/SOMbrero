@@ -90,3 +90,8 @@ all.scplot.types <- list("numeric"=
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds", "radar", "dendro3d"),
                                 "obs"="hitmap"))
+=======
+dataframes <- ls()[sapply(ls(envir = .GlobalEnv), function(x) 'data.frame' %in% class(get(x)) | 'matrix' %in% class(get(x)))]
+
+ 
+>>>>>>> 3a6faa401900b4730094c98fc20183c6d6b86f06
