@@ -107,7 +107,7 @@ Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
               )
             )
           ),
-          textOutput("texttypedata"),
+          uiOutput("texttypedata"),
           br(),
           fluidRow(
             column(6, 
@@ -171,21 +171,14 @@ adequate parameter values.'
         ),
 
         hr(),
-
         h4("Options"),
         fluidRow(
-          column(6, 
-                 uiOutput("varchoice"),
+          column(6,
                  HTML("<b>Map dimensions :</b>"),
                  numericInput(inputId = "dimx", label = "X: ", 5, min = 1),
-                 numericInput(inputId = "dimy", label = "Y: ", 5, min = 1),
-                 numericInput(
-                 "randseed",
-                 HTML(
-                   "Random seed for reproducible results<a href='#pseudor'><sup>(1)</sup></a>:"
-                 ),
-                 sample(1:1e5, size = 1)
-                 )
+                 numericInput(inputId = "dimy", label = "Y: ", 5, min = 1)),
+          column(6, 
+                 uiOutput("varchoice")
           )
         ),
         
@@ -196,7 +189,13 @@ adequate parameter values.'
                                 c("standard", "heskes")),
                     uiOutput("initproto"),
                     numericInput("maxit", "Max. iterations:", 500),
-                    uiOutput("disttype"),),
+                    uiOutput("disttype"),
+                    numericInput("randseed",
+                     HTML(
+                       "Random seed for reproducible results
+                       <a href='#pseudor'><sup>(1)</sup></a>:"
+                     ),sample(1:1e5, size = 1))
+                 ),
           column(6, selectInput("radiustype", "Radius type:",
                                 c("letremy", "gaussian")),
                     uiOutput("scaling"),
@@ -206,8 +205,10 @@ adequate parameter values.'
                                  min = 0.01,
                                  step = .01),
                     numericInput("nb.save", "Number of intermediate back-ups:", 0,
-                              min = 0))
+                              min = 0)),
+          
         ),
+        br(),
         p(
           HTML(
             "<span style='font-size:10px'><a name='pseudor'><sup>(1)
@@ -223,7 +224,6 @@ pseudo-random generators at
         actionButton("trainbutton", "Train SOM", class="btn-primary"),
         br(),
         br(),
-  
         withSpinner(verbatimTextOutput("summary")),
         br(),
         downloadButton("som.download", "Download the SOM file (rda)"),
@@ -698,7 +698,7 @@ only works if a 'Number of intermediate backups' larger than 2 is chosen in the
         p(
           HTML(
             "<h3 id=superclasses> Grouping prototypes into
-                      Superclasses</h3>"
+                      Superclasses</h30>"
           )
         ),
         p(

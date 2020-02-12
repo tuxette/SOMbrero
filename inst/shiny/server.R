@@ -22,8 +22,7 @@ shinyServer(function(input, output, session) {
   
   #### Panel 'Self Organize' 
   ############################################################################## 
-  
-  
+
   ####### bsPanel 'Type of algorithm' 
   ############################################################################## 
   output$typealgo <- renderUI({
@@ -52,6 +51,10 @@ shinyServer(function(input, output, session) {
            ""
     )
   })
+
+  #### Panel 'Import data'
+  ##############################################################################
+
   observe({
     if(length(dataframes)>0){
       updateSelectInput(session, inputId="file1envir", choices=dataframes)
@@ -153,6 +156,7 @@ shinyServer(function(input, output, session) {
     }
     text
   })
+  
   #### Panel 'Self-organize'
   #############################################################################
 
