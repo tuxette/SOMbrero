@@ -3,7 +3,14 @@
 ####################################################################################
 library(shinycssloaders) # for the loader of the summary
 library(shinyBS)  # for bsCollapse
+library(shinyjs) # Version hide/show/toggle
+library(shinycssloaders)
 library(SOMbrero) # Version 0.4
+
+jscode <- "
+shinyjs.refocus = function() {
+  window.scrollTo(0,0);
+}"
 
 ####################################################################################
 # Loading the data from environment and examples
@@ -91,3 +98,4 @@ all.scplot.types <- list("numeric"=
                                        "MDS"="mds", "radar", "dendro3d"),
                                 "obs"="hitmap"))
 
+par(mar=c( 5.1, 4.1, 4.1, 5.1 ))

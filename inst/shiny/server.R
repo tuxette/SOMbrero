@@ -8,6 +8,9 @@ shinyServer(function(input, output, session) {
   server.env <- environment() # used to allocate in functions
   current.som <- NULL # this variable will contain the current SOM
   current.table <- NULL
+  
+  RVserver.env <- reactiveValues(current.som = NULL, current.table = NULL) # used to allocate in functions
+  
   #############################################################################
   
   #### Panel 'About' (left hand side)
@@ -212,7 +215,7 @@ shinyServer(function(input, output, session) {
     
     updatePlotSomVar() # update variable choice for som plots
     updatePlotScVar() # update variable choice for sc plots
-
+    RVserver.env$current.som <- server.env$current.som
     # return the computed som
     server.env$current.som
   }
@@ -230,6 +233,16 @@ shinyServer(function(input, output, session) {
     summary(theSom())
   })
 
+  observeEvent(RVserver.env$current.som, {
+    if(is.null(RVserver.env$current.som)){
+      shinyjs::disable("som.download")
+      shinyjs::hide("nextplot")
+    } else {
+      shinyjs::enable("som.download")
+      shinyjs::show("nextplot")
+    }
+  })
+  
   # Output the computed som object to be downloaded
   # TODO: output an error if map not trained
   output$som.download <- {
@@ -241,6 +254,15 @@ shinyServer(function(input, output, session) {
         save(som.export, file=file)
       })
   }
+  
+  observeEvent(RVserver.env$current.som$clustering, {
+    if(is.null(server.env$current.som$clustering)){
+      shinyjs::disable("clustering.download")
+    } else {
+      shinyjs::enable("clustering.download")
+    }
+  })
+  
   output$clustering.download <- {
     downloadHandler(filename = function() {
       paste0("clustering", format(Sys.time(), format="-%Y-%m-%d_%H:%M"),
@@ -253,6 +275,10 @@ shinyServer(function(input, output, session) {
     })
   }
   
+  observeEvent(input$nextplot, {
+    updateTabsetPanel(session = session, inputId = "tabs", selected = "PlotMap")
+    js$refocus()
+  }) 
   #### Panel 'Plot'
   ##############################################################################
   
@@ -338,8 +364,6 @@ shinyServer(function(input, output, session) {
   # Download the superclass classification
   # TODO: output an error if map not trained
   output$sc.download <- {
-    
-    
     downloadHandler(
       filename=function() {
         paste0("superclasses ", format(Sys.time(), format="%Y-%m-%d_%H:%M"),
