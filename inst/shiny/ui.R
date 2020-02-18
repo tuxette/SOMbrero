@@ -1,5 +1,5 @@
 # Define UI for dataset viewer application
-library(shinyBS)
+
 shinyUI(pageWithSidebar(
   # Application title
   headerPanel("SOMbrero Web User Interface (v1.2)"),
@@ -60,15 +60,16 @@ Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
   ),
   
   mainPanel(
+    useShinyjs(),  # Set up shinyjs
+    extendShinyjs(text = jscode, functions = "refocus"),
     tags$head(
       tags$style(type="text/css", ".inline label{ display: table-cell; text-align: left; vertical-align: middle; } 
                  .inline .form-group{display: table-row;}")
     ),
-    tabsetPanel(
+    tabsetPanel(id="tabs",
       #### Panel 'SOM'
       #########################################################################
-      tabPanel(
-        "Self Organize",
+      tabPanel("Self Organize", value="SelfOrganize",
         bsCollapse(id = "collapsestep1", multiple = F, open = "bscoll1",
         bsCollapsePanel(title = uiOutput("typealgo"), value="bscoll1",
           selectizeInput(
@@ -142,7 +143,7 @@ Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
           
           h4("Preview of the data"),
           fluidRow(
-            column(6, numericInput('nrow.preview', 'Number of rows:', 10, )),
+            column(6, numericInput('nrow.preview', 'Number of rows:', 10)),
             column(6, numericInput('ncol.preview', 'Number of columns:', 10))
           ),
           tableOutput("view"),
@@ -228,18 +229,18 @@ pseudo-random generators at
         br(),
         withSpinner(verbatimTextOutput("summary")),
         br(),
-        downloadButton("som.download", "Download the SOM file (rda)"),
-        downloadButton("clustering.download", "Download the clustering (txt)")
-        
+        disabled(downloadButton("som.download", "Download the SOM file (rda)")),
+        disabled(downloadButton("clustering.download", "Download the clustering (txt)")),
+        br(),
+        br(),
+        hidden(actionButton("nextplot", "Next : plot the SOM map", class="btn-primary"))
       )
       )
       ),
       
       #### Panel 'Plot'
       #########################################################################
-      tabPanel(
-        "Plot Map",
-
+      tabPanel("Plot Map", value="PlotMap",
         h3("Plot the self-organizing map"),
         p(
           "In this panel and the next ones you can visualize the computed
@@ -306,8 +307,7 @@ for the chart):",
       
       #### Panel 'Superclasses'
       #########################################################################
-      tabPanel(
-        "Superclasses",
+      tabPanel("Superclasses", value="Superclasses",
         h3("Group prototypes into superclasses"),
         p(
           "In this panel you can group the clusters into 'superclasses'
@@ -390,8 +390,7 @@ relevant for the chart):",
       
       #### Panel 'external information'
       #########################################################################
-      tabPanel(
-        "Combine with external information",
+      tabPanel("Combine with external information", value="Combine",
         h3("Combine the map with external information"),
         p(
           "In this panel you can combine the self-organizing map with

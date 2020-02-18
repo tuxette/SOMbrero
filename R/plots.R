@@ -39,16 +39,26 @@ words2Freq <- function(words, clustering, the.grid, type) {
 
 paramGraph <- function(the.grid, print.title, type) {
   if (print.title) {
-    if(type%in%c("lines","pie","boxplot","names","words")) {
+    if(type%in%c("pie","names","words")) {
       the.mar <- c(0,0,1,0)
     } else the.mar <- c(2,1,1,1)
   } else {
-    if(type%in%c("lines","pie","boxplot","names","words")) {
+    if(type%in%c("pie","names","words")) {
       the.mar <- c(0,0,0,0)
     } else the.mar <- c(2,1,0.5,1)
   }
-  list("mfrow"=c(the.grid$dim[1], the.grid$dim[2]),"oma"=c(0,0,3,0), 
+  # if (print.title) {
+  #   if(type%in%c("lines","pie","boxplot","names","words")) {
+  #     the.mar <- c(0,0,1,0)
+  #   } else the.mar <- c(2,1,1,1)
+  # } else {
+  #   if(type%in%c("lines","pie","boxplot","names","words")) {
+  #     the.mar <- c(0,0,0,0)
+  #   } else the.mar <- c(2,1,0.5,1)
+  # }
+  list("mfrow"=c(the.grid$dim[1], the.grid$dim[2]),"oma"=c(0,0,3,0),
        "bty"="c", "mar"=the.mar)
+  #NULL
 }
 
 myTitle <- function(args, what) {
@@ -333,13 +343,16 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
       variable <- variable[1]
     }
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
-      if (view=="r") 
+      if(view=="r"){
         tmp.var <- variable+ncol(sommap$data)
-      else tmp.var <- variable
+      } else tmp.var <- variable
     } else tmp.var <- variable
-    plotColor("prototypes", sommap$prototypes[,tmp.var], sommap$clustering,
-              sommap$parameters$the.grid, my.palette, print.title, the.titles,
-              args)
+    ggplotGrid("prototypes", "color", sommap$prototypes[,tmp.var], 
+               as.numeric(rownames(sommap$prototypes)), print.title, the.titles, 
+               is.scaled, sommap$parameters$the.grid, args, variable)
+    # plotColor("prototypes", sommap$prototypes[,tmp.var], sommap$clustering,
+    #           sommap$parameters$the.grid, my.palette, print.title, the.titles,
+    #           args)
   } else if (type=="3d") {
     if (length(variable)>1) {
       warning("length(variable)>1, only first element will be considered\n", 
@@ -453,7 +466,6 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
             immediate.=TRUE)
     type <- "hitmap"
   }
-
   # korresp control
   if (sommap$parameters$type=="korresp" && !(type%in%c("hitmap", "names"))) {
     warning("korresp SOM: incorrect type replaced by 'hitmap'\n", call.=TRUE, 
@@ -467,108 +479,42 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
     type <- "hitmap"
   }
   
-  if (type=="lines" || type=="barplot") {
-    # GGPLOT2 version
-    # plotAllVariables("obs", type, sommap$data, sommap$clustering, 
-    #                  print.title, the.titles, is.scaled,
-    #                  sommap$parameters$the.grid, args)
-    args$col <- my.palette
-    ggplotObs("obs", type, sommap$data, sommap$clustering,
-              print.title, the.titles, is.scaled,
-              sommap$parameters$the.grid, args)
-  } else if (type=="color") {
-    if (length(variable)>1) {
-      warning("length(variable)>1, only first element will be considered\n", 
-              call.=TRUE, immediate.=TRUE)
-      variable <- variable[1]
-    } 
-    plotColor("obs", sommap$data[,variable], sommap$clustering,
-              sommap$parameters$the.grid, my.palette, print.title, the.titles,
-              args)
-  } else if (type=="radar") {
-    mean.var <- averageByCluster(sommap$data, sommap$clustering,
-                                 sommap$parameters$the.grid)
-    plotRadar(mean.var, sommap$parameters$the.grid, "obs", print.title,
-              the.titles, args)
-  } else if (type=="hitmap") {
-    args$col <- my.palette
-    ggplotObs("obs", type, as.matrix(sommap$clustering), sommap$clustering,
-              print.title, the.titles, is.scaled,
-              sommap$parameters$the.grid, args)
-    # freq <- sapply(1:nrow(sommap$prototypes), function(ind) {
-    #   length(which(sommap$clustering==ind))
-    # })
-    # freq <- freq/sum(freq)
-    # # basesize is 0.45 for the maximum frequence
-    # basesize <- 0.45*sqrt(freq)/max(sqrt(freq))
-    # 
-    # if (is.null(args$col)) {
-    #   my.colors <- rep("pink", nrow(sommap$prototypes))
-    # } else if (length(args$col)==1) {
-    #   my.colors <- rep(args$col, nrow(sommap$prototypes))
-    # } else {
-    #   if(length(args$col)==nrow(sommap$prototypes)){
-    #     my.colors <- args$col
-    #   } else {
-    #     warning("unadequate number of colors default color will be used\n", 
-    #             immediate.=TRUE, call.=TRUE)
-    #     my.colors <- rep("pink", nrow(sommap$prototypes))
-    #   }
-    # }
-    # plot.args <- c(list(x=sommap$parameters$the.grid), args)
-    # do.call("plot.myGrid",plot.args)
-    # invisible(sapply(1:nrow(sommap$prototypes), function(ind){
-    #   xleft <- (sommap$parameters$the.grid$coord[ind,1]-basesize[ind])
-    #   xright <- (sommap$parameters$the.grid$coord[ind,1]+basesize[ind])
-    #   ybottom <- (sommap$parameters$the.grid$coord[ind,2]-basesize[ind])
-    #   ytop <- (sommap$parameters$the.grid$coord[ind,2]+basesize[ind])
-    #   rect(xleft,ybottom,xright,ytop, col=my.colors[ind], border=NA)
-    # }))
-    # if (print.title) {
-    #   text(x=sommap$parameters$the.grid$coord[,1], 
-    #        y=sommap$parameters$the.grid$coord[,2],
-    #        labels=the.titles, cex=0.7)
-    # }
-    
-  } else if (type=="boxplot") {
-    if (length(variable)>5) {
-      stop("maximum number of variables for type='boxplot' exceeded\n",
-           call.=TRUE)
+  args$col <- my.palette
+  
+  if(type %in% c("lines", "barplot", "radar", "names", "boxplot")){
+    if (type == "lines" || type == "barplot" || type == "radar") {
+      values <- sommap$data
+    } else if (type=="boxplot") {
+      if (length(variable)>5) {
+        stop("maximum number of variables for type='boxplot' exceeded\n",
+             call.=TRUE)
+      }
+      values <- sommap$data[,variable]
+    } else if (type=="names") {
+      if (sommap$parameters$type %in% c("relational", "korresp")) {
+        values <- sommap$clustering
+      }
+      if(sommap$parameters$type=="numeric") {
+        values <- sommap$data
+      }
     }
-    # GGPLOT2 version
-    # plotAllVariables("obs", type, sommap$data[,variable], sommap$clustering, 
-    #                  print.title, the.titles, is.scaled,
-    #                  sommap$parameters$the.grid, args)
-    args$col <- my.palette
-    ggplotObs("obs", type, sommap$data[,variable], sommap$clustering,
+    ggplotFacet("obs", type, values, sommap$clustering,
+                print.title, the.titles, is.scaled,
+                sommap$parameters$the.grid, args)
+  } else if(type %in% c("color", "hitmap")){
+    if (type=="color") {
+      if (length(variable)>1) {
+        warning("length(variable)>1, only first element will be considered\n", 
+                call.=TRUE, immediate.=TRUE)
+        variable <- variable[1]
+      } 
+      values <- sommap$data[,variable]
+    }  else if (type=="hitmap") {
+      values <- sommap$clustering
+    }
+    ggplotGrid("obs", type, values, sommap$clustering,
                print.title, the.titles, is.scaled,
-               sommap$parameters$the.grid, args)
-    
-  } else if (type=="names") {
-    args$col <- my.palette
-    if (sommap$parameters$type=="relationnal") {
-      values <- as.matrix(iris.som$clustering)
-    }
-     if (sommap$parameters$type=="korresp") {
-       values <- as.matrix(iris.som$clustering)
-     } 
-    if(sommap$parameters$type=="numeric") {
-       values <- sommap$data
-     }
-    ggplotObs("obs", type, values, sommap$clustering,
-              print.title, the.titles, is.scaled,
-              sommap$parameters$the.grid, args)
-    # if (sommap$parameters$type=="korresp") {
-    #   values <- names(sommap$clustering)
-    # } else {
-    #   if (!is.null(rownames(sommap$data))) {
-    #     values <- rownames(sommap$data)
-    #   } else values <- sommap$data
-    # }
-
-    # plotAllVariables("obs", type, values, sommap$clustering, 
-    #                  print.title, the.titles, is.scaled,
-    #                  sommap$parameters$the.grid, args)
+               sommap$parameters$the.grid, args, variable)
   }
 }
 
