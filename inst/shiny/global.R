@@ -5,6 +5,8 @@ library(shinycssloaders) # for the loader of the summary
 library(shinyBS)  # for bsCollapse
 library(shinyjs) # Version hide/show/toggle
 library(shinycssloaders)
+library(shinyjqui)
+library(shinyWidgets)
 library(SOMbrero) # Version 0.4
 
 jscode <- "
@@ -31,14 +33,13 @@ dataframes <- ls()[sapply(ls(envir = .GlobalEnv), function(x) 'data.frame' %in% 
 options(shiny.maxRequestSize=30*1024^2)
 
 # SOM training function
-trainTheSom <- function(data, type, dimx, dimy, affectation, disttype, maxit,
+trainTheSom <- function(data, type, topo, dimx, dimy, affectation, disttype, maxit,
                         varnames, rand.seed, scaling, eps0, init.proto, nb.save,
                         radiustype) {
-  set.seed(rand.seed)
-  
   if (type=="numeric")
     data <- data[, varnames]
-  trainSOM(data, dimension=c(dimx,dimy), affectation=affectation, 
+  set.seed(rand.seed)
+  trainSOM(data, topo=topo, dimension=c(dimx,dimy), affectation=affectation, 
            dist.type=disttype, maxit=maxit, type=type, scaling=scaling, 
            init.proto=init.proto, nb.save=nb.save, radius.type=radiustype)
 }
@@ -98,4 +99,3 @@ all.scplot.types <- list("numeric"=
                                        "MDS"="mds", "radar", "dendro3d"),
                                 "obs"="hitmap"))
 
-par(mar=c( 5.1, 4.1, 4.1, 5.1 ))

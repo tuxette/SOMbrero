@@ -5,23 +5,11 @@ shinyServer(function(input, output, session) {
 
   #############################################################################
   ## Server variables
-  server.env <- environment() # used to allocate in functions
-  current.som <- NULL # this variable will contain the current SOM
-  current.table <- NULL
+  #server.env <- environment() # used to allocate in functions
+  #current.som <- NULL # this variable will contain the current SOM
+  #current.table <- NULL
   
-  RVserver.env <- reactiveValues(current.som = NULL, current.table = NULL) # used to allocate in functions
-  
-  #############################################################################
-  
-  #### Panel 'About' (left hand side)
-  ############################################################################## 
-  # Output the sombrero logo :
-  output$sombrero.logo <- renderImage(list(src="sombrero.png"), 
-                                      deleteFile=FALSE)
-  # Output the SAMM logo :
-  output$samm.logo <- renderImage(list(src="samm.png"), deleteFile=FALSE)
-  # Output the SAMM logo :
-  output$miat.logo <- renderImage(list(src="miat.png"), deleteFile=FALSE)
+  RVserver.env <- reactiveValues(current.som = NULL) # used to allocate in functions
   
   #### Panel 'Self Organize' 
   ############################################################################## 
@@ -92,6 +80,14 @@ shinyServer(function(input, output, session) {
     val$data <- the.table
   }, ignoreInit=T)
   
+  output$dataready <- renderText({
+    text <- "No data loaded"
+    if(is.null(val$data)==F){
+      text <- "Preview of the data"
+    } 
+    text
+  })
+  
   dInput <- reactive({
     if (is.null(val$data))
       return(NULL)
@@ -130,7 +126,6 @@ shinyServer(function(input, output, session) {
     updateNumericInput(session, "maxit", value=5 * nrow(the.table))
 
     # return the table
-    server.env$current.table <- the.table
     the.table
   })
   
@@ -163,20 +158,33 @@ shinyServer(function(input, output, session) {
   #### Panel 'Self-organize'
   #############################################################################
 
-  # update the scaling option when input$somtype is changed
-  output$scaling <- renderUI({
-    selectInput(inputId="scaling", label="Data scaling:", 
-                choices=switch(input$somtype,
-                                "numeric"=c("unitvar", "none", "center"),
-                                "korresp"=c("chi2"),
-                                "relational"=c("none","cosine")),
-                selected=switch(input$somtype, "numeric"="unitvar",
-                                 "korresp"="chi2", "relational"="none"))
+  observeEvent(input$showadvlink, {
+    toggleElement(id='divadvancedoptions')
   })
   
-  # update the scaling option when input$radiustype is changed
-  output$disttype <- renderUI({
-    selectInput(inputId="disttype", label="Distance scaling:", 
+  
+  observe({
+    # update the scaling option when input$somtype is changed
+    updateSelectInput(session, inputId="scaling",  
+                  choices=switch(input$somtype,
+                                 "numeric"=c("unitvar", "none", "center"),
+                                 "korresp"=c("chi2"),
+                                 "relational"=c("none","cosine")),
+                  selected=switch(input$somtype, "numeric"="unitvar",
+                                  "korresp"="chi2", "relational"="none")
+                  )
+    
+    # update the initialization method when input$somtype is changed
+    updateSelectInput(session, "initproto", 
+                      selected=switch(input$somtype, 
+                                      "numeric"="random",
+                                      "korresp"="random",
+                                      "relational"="obs"))
+  })
+
+  # update the distance option when input$radiustype is changed
+  observe({
+    updateSelectInput(session, inputId="disttype", 
                 choices=switch(input$radiustype,
                                 "letremy"=c("letremy", "maximum", "euclidean",
                                              "manhattan", "canberra", "binary",
@@ -188,37 +196,26 @@ shinyServer(function(input, output, session) {
                                  "gaussian"="euclidean"))
   })
   
-  # update the initialization method when input$somtype is changed
-  output$initproto <- renderUI({
-    selectInput("initproto", label="Prototypes initialization method:", 
-                choices=c("random","obs","pca"), 
-                selected=switch(input$somtype, 
-                                 "numeric"="random",
-                                 "korresp"="random",
-                                 "relational"="obs"))
-  })
 
   # Train the SOM when the button is hit
-  theSom<- function() {
-    input$trainbutton
-    server.env$current.som <- isolate(trainTheSom(current.table, input$somtype, 
-                                                  input$dimx, input$dimy, 
-                                                  input$affectation,
-                                                  input$disttype, input$maxit, 
-                                                  varnames=input$varchoice, 
-                                                  rand.seed=input$randseed, 
-                                                  scaling=input$scaling, 
-                                                  eps0=input$eps0, 
-                                                  init.proto=input$initproto, 
-                                                  nb.save=input$nb.save,
-                                                  radiustype=input$radiustype))
-    
-    updatePlotSomVar() # update variable choice for som plots
-    updatePlotScVar() # update variable choice for sc plots
-    RVserver.env$current.som <- server.env$current.som
-    # return the computed som
-    server.env$current.som
-  }
+  observeEvent(input$trainbutton, {
+    RVserver.env$current.som <- trainTheSom(dInput(), input$somtype, 
+                                                    input$topo,
+                                                    input$dimx, input$dimy, 
+                                                    input$affectation,
+                                                    input$disttype, input$maxit, 
+                                                    varnames=input$varchoice, 
+                                                    rand.seed=input$randseed, 
+                                                    scaling=input$scaling, 
+                                                    eps0=input$eps0, 
+                                                    init.proto=input$initproto, 
+                                                    nb.save=input$nb.save,
+                                                    radiustype=input$radiustype)
+      
+      updatePlotSomVar() # update variable choice for som plots
+      updatePlotScVar() # update variable choice for sc plots
+  })
+
 
   # Render the summary of the SOM
   output$summary <- renderPrint({
@@ -230,7 +227,10 @@ shinyServer(function(input, output, session) {
     if (input$trainbutton==0) {
       return("Hit the Train button to train the map.")
     }
-    summary(theSom())
+    if (is.null(RVserver.env$current.som)) {
+      return("Hit the Train button to train the map.")
+    }
+    summary(RVserver.env$current.som)
   })
 
   observeEvent(RVserver.env$current.som, {
@@ -250,13 +250,13 @@ shinyServer(function(input, output, session) {
         paste0("som ",format(Sys.time(),format="-%Y-%m-%d_%H:%M"),".rda",sep="")
       },
       content=function(file) {
-        som.export <- server.env$current.som
+        som.export <- RVserver.env$current.som
         save(som.export, file=file)
       })
   }
   
   observeEvent(RVserver.env$current.som$clustering, {
-    if(is.null(server.env$current.som$clustering)){
+    if(is.null(RVserver.env$current.som$clustering)){
       shinyjs::disable("clustering.download")
     } else {
       shinyjs::enable("clustering.download")
@@ -269,8 +269,8 @@ shinyServer(function(input, output, session) {
              ".txt")
     },
     content = function(file) {
-      som.export <- data.frame("name" = names(server.env$current.som$clustering),
-                               "cluster" = server.env$current.som$clustering)
+      som.export <- data.frame("name" = names(RVserver.env$current.som$clustering),
+                               "cluster" = RVserver.env$current.som$clustering)
       write.table(som.export, file = file, row.names = FALSE, sep = "\t")
     })
   }
@@ -291,9 +291,9 @@ shinyServer(function(input, output, session) {
   
   # update variables available for plotting
   updatePlotSomVar <- function() observe({
-    tmp.names <- colnames(current.som$data)
+    tmp.names <- colnames(RVserver.env$current.som$data)
     if (input$somtype =="korresp")
-      tmp.names <- c(tmp.names, rownames(current.som$data))
+      tmp.names <- c(tmp.names, rownames(RVserver.env$current.som$data))
     updateSelectInput(session, "somplotvar", choices=tmp.names)
     updateSelectInput(session, "somplotvar2", choices=tmp.names, 
                       selected=tmp.names[1:min(5,length(tmp.names))])
@@ -301,7 +301,7 @@ shinyServer(function(input, output, session) {
   
   # Plot the SOM
   output$somplot <- renderPlot({
-    if(is.null(current.table))
+    if(is.null(dInput()))
       return(NULL)
     if(input$trainbutton ==0)
       return(NULL)
@@ -311,18 +311,18 @@ shinyServer(function(input, output, session) {
       tmp.view <- input$somplotrowcol
     
     if (input$somplotwhat =="energy")
-      plot(current.som, what=input$somplotwhat)
+      plot(RVserver.env$current.som, what=input$somplotwhat)
     
     if (input$somplottype =="radar") {
-      plot(x=current.som, what=input$somplotwhat, type=input$somplottype,
+      plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
            variable=input$somplotvar, print.title=input$somplottitle,
            view=tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0))
     } else {
       if (input$somplottype =="boxplot") {
-        tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
+        tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
                                               input$somplotvar2]
       } else tmp.var <- input$somplotvar
-    plot(x=current.som, what=input$somplotwhat, type=input$somplottype,
+    plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
          variable=tmp.var, print.title=input$somplottitle,
          view=tmp.view)
     }
@@ -342,16 +342,16 @@ shinyServer(function(input, output, session) {
 
   # Compute superclasses when the button is hit
   computeSuperclasses <- reactive({
-    if (is.null(current.table))
+    if (is.null(dInput()))
       return(NULL)
     if (input$superclassbutton==0)
       return(NULL)
     
     isolate(switch(input$sc.cut.choice, 
                    "Number of superclasses"=
-                     superClass(sommap=current.som, k=input$sc.k),
+                     superClass(sommap=RVserver.env$current.som, k=input$sc.k),
                    "Height in dendrogram"=
-                     superClass(sommap=current.som, h=input$sc.h)))
+                     superClass(sommap=RVserver.env$current.som, h=input$sc.h)))
   })
 
   output$sc.summary <- renderPrint({
@@ -387,9 +387,9 @@ shinyServer(function(input, output, session) {
   
   # update variables available for plotting
   updatePlotScVar <- function() observe({
-    tmp.names <- colnames(current.som$data)
+    tmp.names <- colnames(RVserver.env$current.som$data)
     if (input$somtype =="korresp")
-      tmp.names <- c(tmp.names, rownames(current.som$data))
+      tmp.names <- c(tmp.names, rownames(RVserver.env$current.som$data))
     updateSelectInput(session, "scplotvar", choices=tmp.names)
     updateSelectInput(session, "scplotvar2", choices=tmp.names, 
                       selected=tmp.names[1:min(5,length(tmp.names))])
@@ -397,7 +397,7 @@ shinyServer(function(input, output, session) {
   
   # Update SuperClass plot
   output$scplot <- renderPlot({
-    if(is.null(current.table))
+    if(is.null(dInput()))
       return(NULL)
     
     the.sc <- computeSuperclasses()
@@ -420,7 +420,7 @@ shinyServer(function(input, output, session) {
                   mar=c(0,10,2,0))
     } else { 
       if (input$scplottype =="boxplot") {
-        tmp.var <- (1:ncol(current.som$data))[colnames(current.som$data) %in% 
+        tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
                                                 input$scplotvar2]
       } else tmp.var <- input$scplotvar
       
@@ -449,8 +449,8 @@ shinyServer(function(input, output, session) {
       the.table <- read.table(in.file$datapath, header=input$header2, 
                               sep=the.sep, quote=the.quote, row.names=1,
                               dec=the.dec)
-      som.export <- data.frame("name" = names(server.env$current.som$clustering),
-                               "cluster" = server.env$current.som$clustering)
+      som.export <- data.frame("name" = names(RVserver.env$current.som$clustering),
+                               "cluster" = RVserver.env$current.som$clustering)
     } else the.table <- read.table(in.file$datapath, header=input$header2, 
                                    sep=the.sep, quote=the.quote, dec=the.dec)
     
@@ -490,15 +490,15 @@ shinyServer(function(input, output, session) {
     } else tmp.var <- input$addplotvar2
     
     if(input$addplottype =="radar") {
-      plot(x=current.som, what="add", type=input$addplottype, 
+      plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
            variable=d.input[,tmp.var], key.loc=c(-1,2), mar=c(0,10,2,0))
     } else if (input$addplottype !="graph") {
-      plot(x=current.som, what="add", type=input$addplottype, 
+      plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
            variable=d.input[,tmp.var])
     } else {
       adjBin <- as.matrix(d.input!=0)
       tmpGraph <- graph.adjacency(adjBin, mode="undirected")
-      plot(current.som, what="add", type="graph", variable=tmpGraph)
+      plot(RVserver.env$current.som, what="add", type="graph", variable=tmpGraph)
     }
   })
 })
