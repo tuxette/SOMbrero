@@ -113,7 +113,7 @@
 #' default.paramSOM <- initSOM()
 #' summary(default.paramSOM)
 
-initSOM <- function(dimension=c(5,5), topo=c("square"),
+initSOM <- function(dimension=c(5,5), topo=c("square", "hexagonal"),
                     radius.type=c("gaussian", "letremy"),
                     dist.type=switch(match.arg(radius.type), 
                                      "letremy"="letremy", 
