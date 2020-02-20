@@ -1,7 +1,7 @@
 ## These functions handle plots of somRes objects
 ## ----------------------------------------------------------------------------
 ### subfunctions
-theme_set(theme_bw(base_size = 8) + 
+theme_set(theme_bw(base_size = 12) + 
             theme(
               panel.grid.major = element_blank(),
               panel.grid.minor = element_blank(),
@@ -11,11 +11,10 @@ theme_set(theme_bw(base_size = 8) +
             )
 )
 
-
 ### Plots (ggplot2 version) grid-like : one graph using parameters$the.grid$coord as coordinates on the plan
 #############################################################################################
 ggplotGrid<- function(what, type, values, clustering, print.title,
-                           the.titles, is.scaled=F, the.grid, args=NULL, variable){
+                           the.titles, is.scaled=F, the.grid, args=NULL, variable=1, labelcolor=NULL){
   
   # Colors
   ################################################
@@ -32,60 +31,85 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
   
   # Axes labels 
   ################################################
-   if(what=="prototypes"){
-     labelcolor <- paste0("value of\n", variable, "\nfor each prototype")
-   } else {
-     labelcolor <- paste0("mean of\n", variable)
-   }
+  if(is.null(labelcolor)){
+    if(type=="hitmap"){
+      labelcolor <- "Number of\nobservations"
+    } else if(what=="prototypes"){
+      labelcolor <- paste0("value of\n", variable, "\nfor each prototype")
+    } else {
+      labelcolor <- paste0("mean of\n", variable)
+    }
+  }
+
 
   # Data 
   ################################################
   dataplot <- data.frame("varname"=as.matrix(values)[,1], "SOMclustering"=clustering, the.grid$coord[clustering,], "Nb"=1)
-  datanb<- aggregate(data=dataplot, Nb ~ SOMclustering + x + y, length)
-  datavar<- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
-
+  
   # Plot
   ################################################
   if(type == "hitmap"){
+    dataplot<- aggregate(data=dataplot, Nb ~ SOMclustering + x + y, length)
     nbtot <- length(clustering)
-    tp <- ggplot(datanb, aes(x=x, y=y)) + 
+    tp <- ggplot(dataplot, aes(x=x, y=y)) + 
       geom_point(aes(size = Nb, fill=Nb), pch = 21, show.legend = T) +
       scale_size_continuous(range=c(1,30), 
-                            breaks = unique(c(min(datanb$Nb), floor(median(datanb$Nb)), max(datanb$Nb)))) 
-    # Le rayon des cercles max est de 0.5
-    # geom_circle(aes(x0 = x, y0 = y, r = Nb/nbtot, fill = Nb), show.legend = T) +
+                            breaks = unique(c(min(dataplot$Nb), 
+                                              floor(median(dataplot$Nb)), 
+                                              max(dataplot$Nb)))) +
+      labs(size="Number of\nobservations")
   }
   if(type == "color"){
-    # Le rayon des cercles max est de 0.5
-    tp <- ggplot(datanb, aes(xmin=x-0.5, xmax=x+0.5, ymin=y-0.5, ymax=y+0.5)) + 
-      geom_rect(data=datavar, aes(fill=varname)) + labs(fill = labelcolor)
+    dataplot<- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
+    if(args$topo == "square"){
+      tp <- ggplot(dataplot, aes(x=x, y=y, fill=varname)) + 
+        geom_bin2d(stat="identity", linetype=1, color="grey")
+      # tp <- ggplot(datavar, aes(xmin=x-0.5, xmax=x+0.5, ymin=y-0.5, ymax=y+0.5)) + 
+      #   geom_rect(data=datavar, aes(fill=varname)) + labs(fill = labelcolor)
+    } else {
+      tp <- ggplot(dataplot, aes(x=x, y=y, fill=varname)) + 
+        geom_hex(stat="identity", linetype=1, color="grey") 
+    }
   }
-   if(print.title==T){
-     datagrid <- data.frame(the.grid$coord, the.titles)
-     tp <- tp + geom_text(data=datagrid, aes(x=x, y=y, label=the.titles ))
-   }
   
-  tp + xlim(0.4, 5.6) + ylim(0.4,5.6) +
-    scale_fill_gradient(low = colorsvars[1], high = colorsvars[2]) +
-    ggtitle(myTitle(args, what)) +
+  tp <- tp + scale_fill_gradient(low = colorsvars[1], high = colorsvars[2]) +
+    ggtitle(myTitle(args, what)) + coord_fixed() + 
+    xlim(0.5, max(dataplot$x)+0.5) + ylim(0.5, max(dataplot$y)+0.5) + 
+    labs(fill = labelcolor) +
     theme(axis.title.x=element_blank(),
           axis.text.x=element_blank(),
           axis.ticks.x=element_blank(),
           axis.title.y=element_blank(),
           axis.text.y=element_blank(),
           axis.ticks.y=element_blank())
+  
+  
+  if(print.title==T){
+    datagrid <- data.frame(the.grid$coord, the.titles)
+    tp <- tp + geom_text(data=datagrid, aes(x=x, y=y, label=the.titles, fill=NULL))
+  }
+  
+  tp
 }
 
 ### Plots (ggplot2 version) using facet_wraps : need to have one graph by cluster
 #############################################################################################
 
 ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
-                      the.titles, is.scaled, the.grid, args){
+                      the.titles, is.scaled, the.grid, args, labely=NULL){
   ordered.index <- orderIndexes(the.grid, type)
-
   # Colors
   ################################################
-  ncolors <- ncol(as.matrix(values))
+ if(type == "names" | type == "words"){
+    # 1 color used
+    ncolors <- 2
+  } else if(type=="poly.dist"){
+    ncolors <- length(values)
+  } else {
+    # Nb of variable, discrete colors
+    ncolors <- ncol(as.matrix(values))
+  }
+  
   if (!is.null(args$col) && length(args$col)>1 &&
       length(args$col)!=ncolors) {
     warning("unadequate number of colors; arbitrary color will be used\n",
@@ -94,16 +118,17 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   }
   colorsvars <- args$col
   if (is.null(args$col)) {
-    if(ncolors<=8){
+    if(type %in% c("barplot", "boxplot", "lines", "pie", "radar")){ 
       # Discrete
-      if(type %in% c("barplot", "boxplot", "lines", "pie", "radar")){ 
+        if(ncolors<=8){
         colorsvars <- brewer.pal(max(3, ncolors),"Set2")[1:ncolors]
-      } else { #continuous
-        colorsvars <- rev(brewer.pal(9,"Purples")[2:9])
+      } else { 
+        set.seed(123)
+        colorsvars <- rainbow(ncolors)
       }
     } else {
-      set.seed(123)
-      colorsvars <- rainbow(ncolors)
+      #continuous
+      colorsvars <- rev(brewer.pal(9,"Purples")[2:9])
     }
   } 
   if (length(args$col)==1) {
@@ -112,19 +137,27 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   
   # Axes labels 
   ################################################
-  labely <- "values"
-  if(type=="numeric" & is.scaled==T)  {
-    values <- scale(values, is.scaled, is.scaled)
-    labely <- "scaled_values"
+  if(is.null(labely)){
+    labely <- "values"
+    if(!(type %in% c("names", "words")) & is.scaled==T)  {
+      values <- scale(values, is.scaled, is.scaled)
+      labely <- "scaled_values"
+    }
   }
+
   
   # Data (ggplot way)
   ################################################
-  dataplot <- data.frame(values)
-  dataplot$ind <- rownames(dataplot)
-  dataplot$SOMclustering <- clustering
-  
-  dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = labely)
+  if(type=="poly.dist"){
+    dataplot <- melt(values, value.name="poly.dist")
+    colnames(dataplot)[ncol(dataplot)] <- "SOMclustering"
+    dataplot$ind <- rownames(dataplot)
+  } else {
+    dataplot <- data.frame(values)
+    dataplot$ind <- rownames(dataplot)
+    dataplot$SOMclustering <- clustering
+    dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = labely)
+  }
   
   # Plot
   ################################################
@@ -154,10 +187,15 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
       geom_text_wordcloud(stat="unique", colour=colorsvars[1], alpha=0.7) +
       scale_size_area(max_size = 13) 
   }
+  if(type == "poly.dist"){
+    tp <- ggplot(dataplot, aes(x=x, y=y)) + 
+      geom_polygon(aes(fill=stat(count))) +
+      labs(fill = labely)
+  }
   # Handling of the grid order
   tp <- tp + facet_wrap(factor(SOMclustering, levels=ordered.index, labels=the.titles[ordered.index]) ~ ., 
                         drop=FALSE, 
-                        nrow=the.grid$dim[1],
+                        nrow=the.grid$dim[2],
                         dir = "h") +
              ggtitle(myTitle(args, what)) 
   

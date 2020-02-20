@@ -1,72 +1,100 @@
 # Define UI for dataset viewer application
+PAGE_TITLE <- "SOMbrero"
+PAGE_TITLE_NAV <- div(
+  img(
+    src = "sombrero_cut.png",
+    height = 50,
+    style = "margin:0px 10px; padding: 0px 0px;"
+  ),
+  PAGE_TITLE
+)
+shinyUI(
+  fluidPage(
+    tags$style(HTML("
+  		.navbar-brand {
+      padding: 5px 5px;
+  		}
+      .panel-default > .panel-heading {
+      background-color:#d4ceff;
+      }
+      .navbar-default .navbar-nav > .active > a {
+      background-color: #d4ceff;
+      }
+      ")),
+  navbarPage(PAGE_TITLE_NAV,
+    #"SOMbrero Web User Interface (v2.0)",
+             windowTitle="SOMbrero",
+             useShinyjs(),  # Set up shinyjs
+             extendShinyjs(text = jscode, functions = "refocus"),
+             id="tabs",
+             selected="Intro",
 
-shinyUI(pageWithSidebar(
-  # Application title
-  headerPanel("SOMbrero Web User Interface (v1.2)"),
-  
-  #### Panel 'About' (right hand side)
+  #### Panel 'Intro'
   ##############################################################################
-  sidebarPanel(
-    imageOutput("sombrero.logo", inline = TRUE),
-    p(
-      HTML(
-        "<h5>Welcome to SOMbrero, the open-source on-line interface for
-self-organizing maps (SOM).</h5> This interface trains SOM for numerical data,
-contingency tables and dissimilarity data using the <strong>R</strong> package
-<a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v1.2-3). Train a
-map on your data and visualize their topology in three simple steps using the
-panels on the right."
+  tabPanel("Intro",  value="Intro",
+  #sidebarPanel(
+  tags$table(
+    tags$tr(
+      tags$td(img(src = "sombrero.png",
+                    height = 250)),
+      tags$td(
+        h2("SOMbrero Web User Interface (v1.2)"),
+        br(),
+        p(
+        HTML(
+          "<h5>Welcome to SOMbrero, the open-source on-line interface for
+  self-organizing maps (SOM).</h5> This interface trains SOM for numerical data,
+  contingency tables and dissimilarity data using the <strong>R</strong> package
+  <a href='http://sombrero.r-forge.r-project.org/'>SOMbrero</a> (v1.2-3). Train a
+  map on your data and visualize their topology in three simple steps using the
+  panels on the right."
+        )
       )
-    ),
-    
-    imageOutput("samm.logo", inline = TRUE),
-    br(),
-    imageOutput("miat.logo", inline = TRUE),
-    br(),
-    br(),
-    p(
-      HTML(
-        'It is kindly provided by the
-<a href= "http://samm.univ-paris1.fr/">SAMM</a> team and the
-<a href= "carlit.toulouse.inra.fr">MIA-T</a> team under the
-<a href= "https://www.gnu.org/licenses/gpl-2.0.html">GPL-2.0</a>
-license, and was developed by Julien Boelaert,
-<a href= http://samm.univ-paris1.fr/-Madalina-Olteanu->Madalina Olteanu</a> and
-<a href= http://www.nathalievialaneix.eu/> Nathalie Vialaneix</a>, using
-<a href="http://www.rstudio.com/shiny/">Shiny</a>. It is also included in the
-<strong>R</strong> package
-<a href="http://sombrero.r-forge.r-project.org/">SOMbrero</a>. Its source code
-is freely available on github: <br>
-<span style="font-size:10px;font-family:courrier; background-color:#FADDF2;
-border:1px solid black;"><font color="#870500"><b>
-git clone https://github.com/tuxette/sombrero.git</b></font></code></span>'
-      )
-    ),
-    br(),
-    
-    h3('References:'),
-    p(
-      HTML(
-        '<li> <span style="font-variant: small-caps;">Kohonen T.</span>(2001)
-<I>Self-Organizing Maps</I>. Berlin/Heidelberg: Springer-Verlag, 3rd edition.
-</li><li> <span style="font-variant: small-caps;">Cottrell M., Ibbou S., Letremy
-P.</span> (2004) SOM-based algorithms for qualitative variables. <em>Neural
-Networks</em>, <strong>17</strong>, 1149-1167.</li>
-<li> <span style="font-variant: small-caps;">Olteanu M., Villa-Vialaneix N.,
-Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
-<em>Neurocomputing</em>, <strong>147</strong>, 15-30.</li>'
       )
     )
   ),
+      br(),
+      div(img(src = "samm.png",
+              height = 100), 
+          img(src = "miat.png",
+              height = 100,)),
+      br(),
+      br(),
+      p(
+        HTML(
+          'It is kindly provided by the
+  <a href= "http://samm.univ-paris1.fr/">SAMM</a> team and the
+  <a href= "carlit.toulouse.inra.fr">MIA-T</a> team under the
+  <a href= "https://www.gnu.org/licenses/gpl-2.0.html">GPL-2.0</a>
+  license, and was developed by Julien Boelaert,
+  <a href= http://samm.univ-paris1.fr/-Madalina-Olteanu->Madalina Olteanu</a> and
+  <a href= http://www.nathalievialaneix.eu/> Nathalie Vialaneix</a>, using
+  <a href="http://www.rstudio.com/shiny/">Shiny</a>. It is also included in the
+  <strong>R</strong> package
+  <a href="http://sombrero.r-forge.r-project.org/">SOMbrero</a>. Its source code
+  is freely available on github: <br>
+  <span style="font-size:10px;font-family:courrier; background-color:#FADDF2;
+  border:1px solid black;"><font color="#870500"><b>
+  git clone https://github.com/tuxette/sombrero.git</b></font></code></span>'
+        )
+      ),
+      br(),
+      
+      h3('References:'),
+      p(
+        HTML(
+          '<li> <span style="font-variant: small-caps;">Kohonen T.</span>(2001)
+  <I>Self-Organizing Maps</I>. Berlin/Heidelberg: Springer-Verlag, 3rd edition.
+  </li><li> <span style="font-variant: small-caps;">Cottrell M., Ibbou S., Letremy
+  P.</span> (2004) SOM-based algorithms for qualitative variables. <em>Neural
+  Networks</em>, <strong>17</strong>, 1149-1167.</li>
+  <li> <span style="font-variant: small-caps;">Olteanu M., Villa-Vialaneix N.,
+  Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
+  <em>Neurocomputing</em>, <strong>147</strong>, 15-30.</li>'
+        )
+      )
+  ),
   
-  mainPanel(
-    useShinyjs(),  # Set up shinyjs
-    extendShinyjs(text = jscode, functions = "refocus"),
-    tags$head(
-      tags$style(type="text/css", ".inline label{ display: table-cell; text-align: left; vertical-align: middle; } 
-                 .inline .form-group{display: table-row;}")
-    ),
-    tabsetPanel(id="tabs",
       #### Panel 'SOM'
       #########################################################################
       tabPanel("Self Organize", value="SelfOrganize",
@@ -112,8 +140,12 @@ Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
           uiOutput("texttypedata"),
           br(),
           fluidRow(
-            column(6, 
-              fileInput('file1', 'Choose CSV/TXT File'),
+            column(3,
+              selectInput('file1envir', 'Choose from the environment/examples', choices=NULL),
+              actionButton("loaddatabutton", "Load", class="btn-primary"),  
+              br(),
+              br(),
+              fileInput('file1', 'OR Choose CSV/TXT File'),
               checkboxInput('header', ' Header?', TRUE),
               checkboxInput('rownames', ' Row names?', FALSE),
               selectInput(
@@ -132,22 +164,20 @@ Cottrell M.</span> (2015) On-line relational and multiple relational SOM.
                 'Decimal mark', 
                 c("Period", "Comma"),
                 'Period')
-            ),
-            column(6,
-              selectInput('file1envir', 'OR choose from the environment', choices=NULL),
-              actionButton("loaddatabutton", "Load")  
-            )
           ),
-          
-          hr(),
-          
-          h4("Preview of the data"),
-          fluidRow(
-            column(6, numericInput('nrow.preview', 'Number of rows:', 10)),
-            column(6, numericInput('ncol.preview', 'Number of columns:', 10))
-          ),
-          tableOutput("view"),
-          textOutput("missingrows")
+          column(8,
+             h4(textOutput("dataready")),
+             conditionalPanel("output.dataready == 'Preview of the data'",
+              #h4("Preview of the data"),
+              fluidRow(
+                column(6, numericInput('nrow.preview', 'Number of rows:', 10)),
+                column(6, numericInput('ncol.preview', 'Number of columns:', 10))
+              ),
+              tableOutput("view"),
+              textOutput("missingrows")
+             )
+          )
+        )
       ),
       
       #### Panel 'Self-organize'
@@ -173,48 +203,60 @@ adequate parameter values.'
         ),
 
         hr(),
-        h4("Options"),
-        fluidRow(
-          column(6,
-                 HTML("<b>Map dimensions :</b>"),
-                 numericInput(inputId = "dimx", label = "X: ", 5, min = 1),
-                 numericInput(inputId = "dimy", label = "Y: ", 5, min = 1)),
-          column(6, 
-                 uiOutput("varchoice")
-          )
-        ),
-        
-        hr(),
-        h4("Advanced options"),
-        fluidRow(
-          column(6, selectInput("affectation", "Affectation type:",
-                                c("standard", "heskes")),
-                    uiOutput("initproto"),
-                    numericInput("maxit", "Max. iterations:", 500),
-                    uiOutput("disttype"),
-                    numericInput("randseed",
-                     HTML(
-                       "Random seed for reproducible results
-                       <a href='#pseudor'><sup>(1)</sup></a>:"
-                     ),sample(1:1e5, size = 1))
-                 ),
-          column(6, selectInput("radiustype", "Radius type:",
-                                c("letremy", "gaussian")),
-                    uiOutput("scaling"),
-                    numericInput("eps0",
-                                 "Scaling value for gradient descent",
-                                 1,
-                                 min = 0.01,
-                                 step = .01),
-                    numericInput("nb.save", "Number of intermediate back-ups:", 0,
-                              min = 0)),
-          
-        ),
 
-        br(),
-        p(
-          HTML(
-            "<span style='font-size:10px'><a name='pseudor'><sup>(1)
+        fluidRow(
+          
+          column(3,
+                radioButtons("topo", label="Topology", choices = c("square", "hexagonal"), selected="hexagonal"),
+                HTML("<b>Map dimensions :</b>"),
+                fluidRow(
+                  column(2, HTML("<div style='padding-top:5px;'><b>X: </b></div>")
+                         ),
+                  column(10, numericInput(inputId = "dimx", label = NULL, 5, min = 1)
+                        )
+                ),
+                fluidRow(
+                  column(2, HTML("<div style='padding-top:1px;'><b>Y: </b></div>")
+                  ),
+                  column(10, numericInput(inputId = "dimy", label = NULL, 5, min = 1)
+                  )
+                ),
+                uiOutput("varchoice"),
+                #   )
+                 #),
+                 br(),
+                 actionLink("showadvlink", "Show advanced options", icon=icon("gear")),
+                 hidden(div(id="divadvancedoptions",
+                            h4("Advanced options"),
+                            fluidRow(
+                              column(6, selectInput("affectation", "Affectation type:",
+                                                    c("standard", "heskes")),
+                                     selectInput("initproto", label="Prototypes initialization method:", choices=c("random","obs","pca")),
+                                     numericInput("maxit", "Max. iterations:", 500),
+                                     selectInput(inputId="disttype", label="Distance scaling:", choices=NULL),
+                                     numericInput("randseed",
+                                                  HTML(
+                                                    "Random seed for reproducible results
+                       <a href='#pseudor'><sup>(1)</sup></a>:"
+                                                  ),sample(1:1e5, size = 1))
+                              ),
+                              column(6, selectInput("radiustype", "Radius type:",
+                                                    c("letremy", "gaussian")),
+                                     selectInput(inputId="scaling", label="Data scaling:", choices=NULL),
+                                     numericInput("eps0",
+                                                  "Scaling value for gradient descent",
+                                                  1,
+                                                  min = 0.01,
+                                                  step = .01),
+                                     numericInput("nb.save", "Number of intermediate back-ups:", 0,
+                                                  min = 0)),
+                              
+                            ),
+                            
+                            br(),
+                            p(
+                              HTML(
+                                "<span style='font-size:10px'><a name='pseudor'><sup>(1)
 </sup></a> SOMbrero is based on a stochastic (on-line) version of the SOM
 algorithm and thus uses randomness. Setting a seed results in fixing the random
 procedure in order to obtain reproducible results (runing several times the
@@ -222,18 +264,21 @@ process with the same random seed will give the same map). More information on
 pseudo-random generators at
 <a href='http://en.wikipedia.org/wiki/Pseudorandom_number_generator'>this link
 </a></span>."
-          )
-        ),
-        actionButton("trainbutton", "Train SOM", class="btn-primary"),
-        br(),
-        br(),
-        withSpinner(verbatimTextOutput("summary")),
-        br(),
-        disabled(downloadButton("som.download", "Download the SOM file (rda)")),
-        disabled(downloadButton("clustering.download", "Download the clustering (txt)")),
-        br(),
-        br(),
-        hidden(actionButton("nextplot", "Next : plot the SOM map", class="btn-primary"))
+                              )
+                            )))
+                 ),
+          column(9,
+                 actionButton("trainbutton", "Train SOM", class="btn-primary"),
+                 hidden(actionButton("nextplot", "Next : plot the SOM map", class="btn-primary")),
+                 br(),
+                 br(),
+                 withSpinner(verbatimTextOutput("summary")),
+                 br(),
+                 disabled(downloadButton("som.download", "Download the SOM file (rda)")),
+                 disabled(downloadButton("clustering.download", "Download the clustering (txt)"))
+                 )
+        )
+        
       )
       )
       ),
@@ -247,62 +292,69 @@ pseudo-random generators at
 self-organizing map. This panel contains the standard plots used to analyze the
 map."
         ),
-        
-        h4("Options"),
-        selectInput(
-          "somplotwhat",
-          "Plot what?",
-          choices = list(
-            "Observations" = "obs",
-            "Prototypes" = "prototypes",
-            "Energy" = "energy"
-          )
-        ),
-        selectInput(
-          "somplottype",
-          "Type of plot:",
-          choices = c(
-            "hitmap",
-            "color",
-            "lines",
-            "barplot",
-            "names",
-            "boxplot",
-            "radar"
-          )
-        ),
-        checkboxInput("somplottitle", "Show cluster names"),
-        conditionalPanel(
-          "input.somplottype == 'color' ||
+        fluidRow(
+          column(3, 
+                 h4("Options"),
+                 selectInput(
+                   "somplotwhat",
+                   "Plot what?",
+                   choices = list(
+                     "Observations" = "obs",
+                     "Prototypes" = "prototypes",
+                     "Energy" = "energy"
+                   )
+                 ),
+                 selectInput(
+                   "somplottype",
+                   "Type of plot:",
+                   choices = c(
+                     "hitmap",
+                     "color",
+                     "lines",
+                     "barplot",
+                     "names",
+                     "boxplot",
+                     "radar"
+                   )
+                 ),
+                 checkboxInput("somplottitle", "Show cluster names"),
+                 conditionalPanel(
+                   "input.somplottype == 'color' ||
                          input.somplottype == '3d'",
-          selectInput(
-            "somplotvar",
-            "Variable: (only used for '3d',
+                   selectInput(
+                     "somplotvar",
+                     "Variable: (only used for '3d',
 'color' and 'boxplot' plots if available)",
-            choices = "(Not Available)"
-          )
-        ),
-        conditionalPanel(
-          "input.somplottype == 'boxplot'",
-          selectInput(
-            "somplotvar2",
-            "Variable: (hold Ctrl to select
+                     choices = "(Not Available)"
+                   )
+                 ),
+                 conditionalPanel(
+                   "input.somplottype == 'boxplot'",
+                   selectInput(
+                     "somplotvar2",
+                     "Variable: (hold Ctrl to select
 multiple variables)",
-            choices = "(Not Available)",
-            multiple = TRUE
-          )
-        ),
-        conditionalPanel(
-          "input.somtype == 'korresp'",
-          selectInput(
-            "somplotrowcol",
-            "Plot rows or columns (when relevant
+                     choices = "(Not Available)",
+                     multiple = TRUE
+                   )
+                 ),
+                 conditionalPanel(
+                   "input.somtype == 'korresp'",
+                   selectInput(
+                     "somplotrowcol",
+                     "Plot rows or columns (when relevant
 for the chart):",
-            choices = list("columns" = "c",
-                           "rows" = "r")
-          )
+                     choices = list("columns" = "c",
+                                    "rows" = "r")
+                   )
+                 )
+                 ),
+          column(9,
+                 jqui_resizable(plotOutput("somplot", width = '750px', height = '600px'))
+                 )
         ),
-        plotOutput("somplot")
+        br(),
+        br()
       ),
       
       #### Panel 'Superclasses'
@@ -385,7 +437,7 @@ relevant for the chart):",
                            "rows" = "r")
           )
         ),
-        plotOutput("scplot")
+        jqui_resizable(plotOutput("scplot"))
       ),
       
       #### Panel 'external information'
@@ -469,11 +521,10 @@ to the number of rows ."
               multiple = TRUE
             )
           ),
-          plotOutput("addplot")
+          jqui_resizable(plotOutput("addplot"))
         )
       ),
-      tabPanel(
-        "Help",
+      tabPanel("Help",
         p(
           HTML(
             "<h4>Topics:</h4>
@@ -734,4 +785,4 @@ plot the iris species on the map."
       )
     )
   )
-))
+)

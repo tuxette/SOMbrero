@@ -55,16 +55,15 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
   dist.type <- match.arg(dist.type)
   
   # create coordinates for neurons
-  if (topo == "square") {
-    x <- seq(from = 1, to = dimension[1], by = 1)
-    y <- seq(from = 1, to = dimension[2], by = 1)
+    x <- 1:dimension[1]
+    y <- 1:dimension[2]
     tmp <- as.matrix(expand.grid(y, x))
     tmp <- cbind(tmp[ ,2], tmp[ ,1])
-    colnames(tmp) <- c("x", "y")
-  } else {
-    stop("Sorry, hexagonal topography is currently being developed")
+  if(topo == "hexagonal"){
+    tmp[, 1] <- tmp[, 1] + 0.5 * (tmp[, 2]%%2)
+    tmp[, 2] <- sqrt(3)/2 * tmp[, 2]
   }
-  
+  colnames(tmp) <- c("x", "y")
   result <- list("coord" = tmp, "topo" = topo, "dim" = dimension,
                  "dist.type" = dist.type)
   class(result) <- "myGrid"
