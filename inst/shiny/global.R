@@ -8,6 +8,7 @@ library(shinycssloaders)
 library(shinyjqui)
 library(shinyWidgets)
 library(SOMbrero) # Version 0.4
+library(plotly)
 
 jscode <- "
 shinyjs.refocus = function() {
@@ -47,7 +48,7 @@ trainTheSom <- function(data, type, topo, dimx, dimy, affectation, disttype, max
 # List of somplot types options per SOM type and "what" :
 all.somplot.types <- list("numeric"=
                             list("prototypes"=
-                                   list("color", "3d", "lines", "barplot",
+                                   list("lines", "barplot", "color", "3d", 
                                         "smooth distances"="smooth.dist",
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
@@ -59,7 +60,7 @@ all.somplot.types <- list("numeric"=
                           
                           "korresp"=
                             list("prototypes"=
-                                   list("color", "3d", "lines", "barplot",
+                                   list("lines", "barplot", "color", "3d", 
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",

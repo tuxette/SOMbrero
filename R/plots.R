@@ -2,22 +2,16 @@ orderIndexes <- function(the.grid, type) {
   if(type=="3d") tmp <- 1:the.grid$dim[1]
   else tmp <- the.grid$dim[1]:1
   # Elise : je n'utilise plus le grid.coord pour pouvoir l'utiliser dans topo hexagonal aussi
-  # Je recrée aussi la coord théorique sur un carré. 
-  # Utile pour le facet_wrap. 
-  # tmp n'est plus utilisé. 
-  # Il faudra tester sur le plot 3d. 
+  # Je recrée aussi la coord théorique sur un carré.
+  # Utile pour le facet_wrap.
+  # tmp n'est plus utilisé.
+  # Il faudra tester sur le plot 3d.
   match(paste(rep(1:the.grid$dim[1],the.grid$dim[2]),
               rep(the.grid$dim[2]:1, each=the.grid$dim[1]),
               sep="-"),
         paste(rep(1:the.grid$dim[1], each=the.grid$dim[2]),
               rep(1:the.grid$dim[2], the.grid$dim[1]),
               sep="-"))
-  # match(paste(rep(1:the.grid$dim[2],the.grid$dim[1]),
-  #             rep(tmp,
-  #                 rep(the.grid$dim[2],the.grid$dim[1])),
-  #             sep="-"),
-  #       paste(the.grid$coord[,1],the.grid$coord[,2],
-  #             sep="-"))
 }
 
 averageByCluster <- function(x,clustering,the.grid) {
@@ -347,12 +341,14 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     }
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if(view=="r"){
-        tmp.var <- variable+ncol(sommap$data)
-      } else tmp.var <- variable
+        tmp.var <- rownames(sommap$data)[variable]
+      } else tmp.var <- colnames(sommap$data)[variable]
+    } else if (sommap$parameters$type=="numeric" & (is.numeric(variable))) {
+        tmp.var <- colnames(sommap$data)[variable]
     } else tmp.var <- variable
     ggplotGrid("prototypes", "color", sommap$prototypes[,tmp.var], 
                as.numeric(rownames(sommap$prototypes)), print.title, the.titles, 
-               is.scaled, sommap$parameters$the.grid, args, variable)
+               is.scaled, sommap$parameters$the.grid, args, tmp.var)
   } else if (type=="3d") {
     if (length(variable)>1) {
       warning("length(variable)>1, only first element will be considered\n", 
@@ -366,10 +362,12 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
         tmp.var <- variable
     } else
       tmp.var <- variable
-    #plot3d(sommap$prototypes, sommap$parameters$the.grid, type, tmp.var, args)
-    plot_ly(x=unique(sommap$parameters$the.grid$coord[,1]),
-            y=unique(sommap$parameters$the.grid$coord[,2]),
-            z=matrix(sommap$prototypes[,tmp.var], nrow=sommap$parameters$the.grid$dim[2])) %>% add_surface()
+    # mattmp <- cbind("x"=sommap$parameters$the.grid$coord[,1], "y"=sommap$parameters$the.grid$coord[,2], "z"=sommap$prototypes[,1])
+    # mattmp <- as.matrix(reshape(data.frame(mattmp), idvar ="y", timevar="x", direction="wide"))
+    plot3d(sommap$prototypes, sommap$parameters$the.grid, type, tmp.var, args)
+    # plot_ly(x=unique(sommap$parameters$the.grid$coord[,1]),
+    #         y=unique(sommap$parameters$the.grid$coord[,2]),
+    #         z=matrix(sommap$prototypes[,tmp.var], nrow=sommap$parameters$the.grid$dim[2])) %>% add_surface()
   } else if (type=="poly.dist") {
     values <- protoDist(sommap, "neighbors")
 
@@ -383,7 +381,6 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     # ggplotFacet("prototypes", "poly", values, sommap$clustering, 
     #             print.title, the.titles, is.scaled, 
     #             sommap$parameters$the.grid, args, labely="poly.dist")
-    
     plotPolygon(values, sommap$clustering, sommap$parameters$the.grid,
                 my.palette, args)
     if (print.title) {
@@ -406,19 +403,16 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
                  print.title, the.titles, 
                  is.scaled, sommap$parameters$the.grid, args, variable, 
                  labelcolor="umatrix\nbetween\nprototypes")
-      # plotColor("prototypes", values, sommap$clustering, 
-      #           sommap$parameters$the.grid, my.palette, print.title, the.titles,
-      #           args)
     } else {
-      args$x <- 1:sommap$parameters$the.grid$dim[2]
-      args$y <- 1:sommap$parameters$the.grid$dim[1]
-      args$z <- matrix(data=values, nrow=sommap$parameters$the.grid$dim[2], 
-                       ncol=sommap$parameters$the.grid$dim[1], byrow=TRUE)
-      if (is.null(args$color.palette)) args$color.palette <- cm.colors
-      if (is.null(args$main)) args$main <- "Distances between prototypes"
-      if (is.null(args$xlab)) args$xlab <- "x"
-      if (is.null(args$ylab)) args$ylab <- "y"
-      do.call("filled.contour", args)
+      if(args$topo=="hexagonal"){
+        warning("Not well handled for hexagonal topograpy... imputing missing values to make a full squared grid\n", call.=TRUE, 
+                immediate.=TRUE)
+      }
+      dattmp <- data.frame(cbind("x"=sommap$parameters$the.grid$coord[,1],
+                                 "y"=sommap$parameters$the.grid$coord[,2],
+                                 "z"=values))
+      ggplot(data=dattmp, aes(x=x, y=y, z=z)) + geom_contour_fill(na.fill = TRUE) + 
+      labs(title="Distances between prototypes") + scale_fill_distiller(palette="PRGn")
     }
   } else if (type=="mds") {
     if (sommap$parameters$type=="relational") {
@@ -429,15 +423,12 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     }
     else the.distances <- dist(sommap$prototypes)
     proj.coord <- cmdscale(the.distances, 2)
-    if (is.null(args$xlab)) args$xlab <- "x"
-    if (is.null(args$ylab)) args$ylab <- "y"
-    if (is.null(args$main)) args$main <- "Prototypes visualization by MDS"
     if (is.null(args$labels)) args$labels <- as.character(1:nrow(sommap$prototypes))
     if (is.null(args$col)) args$col <- "#3F007D"
-    if (is.null(args$cex)) args$cex <- 1
+    if (is.null(args$cex)) args$cex <- 4
     dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels)
-    ggplot(dataplot, aes(x=x, y=y)) + geom_text(aes(label=labels), alpha=0.6, size=4*args$cex, col=args$col) +
-      labs(x=args$xlab, y=args$ylab, title=args$main)
+    ggplot(dataplot, aes(x=x, y=y)) + geom_text(aes(label=labels), alpha=0.6, size=args$cex, col=args$col) +
+      labs(x="x", y="y", title="Prototypes visualization by MDS")
   } else if (type=="grid.dist") {
     if (sommap$parameters$type=="relational") {
       the.distances <- protoDist(sommap, "complete")
@@ -448,17 +439,13 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
        the.distances <- the.distances[lower.tri(the.distances)]
      }
     } else the.distances <- dist(sommap$prototypes)
-    if (is.null(args$pch)) args$pch <- 21
-    if (is.null(args$xlab)) args$xlab <- "prototype distances"
-    if (is.null(args$ylab)) args$ylab <- "grid distances"
-    if (is.null(args$col)) args$col <- "black"
-    if (is.null(args$fill)) args$fill <- "#3F007D"
-    if (is.null(args$cex)) args$cex <- 1
     dataplot <- data.frame(x = as.vector(the.distances), 
                            y = as.vector(dist(sommap$parameters$the.grid$coord)))
+    if (is.null(args$col)) args$col <- "black"
+    if (is.null(args$cex)) args$fill <- "#3F007D"
     ggplot(dataplot, aes(x=x, y=y)) + 
-      geom_point(shape=args$pch, alpha=0.6, size=args$cex, col=args$col, fill=args$fill) +
-      labs(x=args$xlab, y=args$ylab, title=args$main)
+      geom_point(shape=21, alpha=0.5, size=1, col=args$col, fill=args$fill) +
+      labs(x="prototype distances", y="grid distances", title="Grid distances between protoypes")
   } else stop("Sorry: this type is still to be implemented.", call.=TRUE)
 }
 
@@ -488,15 +475,9 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
   
   args$topo <- sommap$parameters$the.grid$topo
   args$col <- my.palette
-  
-  if(type %in% c("lines", "barplot", "radar", "names", "boxplot")){
-    if (type == "lines" || type == "barplot" || type == "radar") {
-      values <- sommap$data
-    } else if (type=="boxplot") {
-      if (length(variable)>5) {
-        stop("maximum number of variables for type='boxplot' exceeded\n",
-             call.=TRUE)
-      }
+
+  if(type %in% c("lines", "barplot", "radar", "boxplot", "names")){
+    if (type == "lines" || type == "barplot" || type == "radar" || type == "boxplot") {
       values <- sommap$data[,variable]
     } else if (type=="names") {
       if (sommap$parameters$type %in% c("relational", "korresp")) {
@@ -766,7 +747,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' \code{"barplot"} types, all \code{"radar"} types, all \code{"boxplot"} types,
 #' all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 #' \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.
-#' @param the.titles The titles to be printed for each neuron if 
+#' @param the.ti tles The titles to be printed for each neuron if 
 #' \code{print.title=TRUE}. Default to a number which identifies the neuron.
 #' @param proportional Boolean used when \code{what="add"} and 
 #' \code{type="pie"}. It indicates if the pies should be proportional to the 
@@ -798,8 +779,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                                     "prototypes"="color",
                                     "add"="pie",
                                     "energy"=NULL),
-                        variable = if (what=="add") NULL else 
-                          if (type=="boxplot") 1:min(5,ncol(x$data)) else 1,
+                        variable = if (what=="add") NULL else 1:ncol(x$data),
                         my.palette=NULL, 
                         is.scaled = if (x$parameters$type=="numeric") TRUE else
                           FALSE,

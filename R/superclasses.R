@@ -277,14 +277,15 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
                                  "poly.dist", "pie", "graph", "dendro3d", 
                                  "radar", "projgraph"),
                        plot.var=TRUE, plot.legend=FALSE, add.type=FALSE, 
-                       print.title = FALSE, 
+                       print.title = TRUE, 
                        the.titles = paste("Cluster", 
                                           1:prod(x$som$parameters$the.grid$dim)),
                        ...) {
   # TODO: add types "names" and "words"
   args <- list(...)
   type <- match.arg(type)
-
+  args$topo <- x$som$parameters$the.grid$topo
+  
   if (type=="dendrogram") {
     args$x <- x$tree
     if (is.null(args$xlab)) args$xlab <- ""
@@ -318,8 +319,8 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
              legend = paste("SC", 1:max(x$cluster)), cex = 0.7)
     } else warning("Impossible to plot the rectangles: no super clusters.\n",
                    call.=TRUE, immediate.=TRUE)
-    par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
-  } else  if (type=="dendro3d") {
+    #par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
+  } else if (type=="dendro3d") {
     if (length(x)==3) {
       if ((!is.null(args$col))&(length(args$col)==max(x$cluster))) {
         clust.col.pal <- args$col
@@ -368,23 +369,22 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
                   (does not fit the number of super-clusters);
                   using the default palette.\n", call.=TRUE, immediate.=TRUE)
         # create a color vector from RColorBrewer palette
+        args$col <- brewer.pal(max(x$cluster), "Set2")
         clust.col.pal <- brewer.pal(max(x$cluster), "Set2")
         clust.col <- clust.col.pal[x$cluster]
       }
+      
       if (type=="grid") {
-        if (plot.legend) {
-          layout(matrix(c(2,2,1),ncol=3))
-          plot.new()
-          legend(x="center", legend=paste("Super cluster", 1:max(x$cluster)), 
-                 col=clust.col.pal, pch=19)
-        }
-        args$x <- x$som$parameters$the.grid
-        args$neuron.col <- clust.col
-        args$print.title <- print.title
-        args$the.titles <- the.titles
-        do.call("plot.myGrid", args)
-        par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
-      } else if (type %in% c("hitmap", "lines", "barplot", "boxplot", "mds",
+        args$sc <- max(x$cluster)
+        ggplotGrid("prototypes", type="grid", values=x$cluster, clustering=as.numeric(as.character(rownames(x$som$prototypes))), 
+                   print.title, the.titles, is.scaled,
+                   the.grid=x$som$parameters$the.grid , args, variable="Super-clusters")
+      } else if (type=="hitmap") {
+        args$sc <- max(x$cluster)
+        ggplotGrid("observations", type="hitmap", values=x$cluster[x$som$clustering], clustering=sc$som$clustering, 
+                   print.title, the.titles, is.scaled,
+                   the.grid=x$som$parameters$the.grid , args, variable="Super-clusters")
+      } else if (type %in% c("lines", "barplot", "boxplot", "mds",
                              "color", "poly.dist", "pie", "graph", "radar")) {
         if ((x$som$parameters$type=="korresp") && 
               (type %in% c("boxplot", "pie", "graph")))
@@ -395,11 +395,6 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
           stop(type, " plot is not available for 'relational' super classes\n", 
                call.=TRUE)
           
-        if ((type%in%c("poly.dist", "radar"))&(plot.legend)) {
-          plot.legend <- FALSE
-          warning("Impossible to plot the legend with type '",type,"'.\n",
-                  call.=TRUE, immediate.=TRUE)
-        }
         if (!(type%in%c("graph","pie", "radar"))) {
           args$col <- clust.col
         } else if (type=="graph") {
@@ -410,26 +405,9 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
             args$vertex.color <- clust.col[neclust]
             args$vertex.frame.color <- clust.col[neclust]
           } else {
-            if (plot.legend)
-              warning("Impossible to plot the legend with type '",type,"'.\n",
-                      call.=TRUE, immediate.=TRUE)
-            plot.legend <- FALSE
             print.title <- TRUE
             args$vertex.label <- paste("SC",x$cluster[neclust])
             args$vertex.label.color <- "black"
-          }
-        }
-        if (plot.legend) {
-          if (type%in%c("lines", "barplot", "boxplot", "color", "pie", 
-                        "poly.dist", "radar")) {
-            warning("Impossible to plot the legend with type '", type, "'.\n",
-                    call. = TRUE, immediate. = TRUE)
-          } else {
-            layout(matrix(c(2, 2, 1), ncol = 3))
-            plot.new()
-            legend(x = "center", 
-                   legend = paste("Super cluster", 1:max(x$cluster)), 
-                   col = clust.col.pal, pch = 19)
           }
         }
         args$x <- x$som
@@ -447,90 +425,104 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         
         # manage titles
         args$print.title <- print.title
-        if (!print.title | type %in% c("pie", "radar")) {
+        if(type %in% c("lines", "barplot", "boxplot", "radar")){
+          args$the.titles <- NULL
+        } else {
           args$the.titles <- paste("SC", x$cluster)
-        } else {
-          args$the.titles <- the.titles
         }
-        if (type %in% c("pie", "radar")) {
-          args$print.title <- TRUE
-        } else if (type %in% c("color", "poly.dist")) args$print.title <- FALSE
+
+        # manage colors 
+        if(args$what=="obs"){
+          args$varcolor <- x$cluster[x$som$clustering]
+        }
+        if(args$what=="prototypes"){
+          args$varcolor <- x$cluster
+        }
+        # if (!print.title | type %in% c("pie", "radar")) {
+        #   args$the.titles <- paste("SC", x$cluster)
+        # } else {
+        #   args$the.titles <- the.titles
+        # }
+        # if (type %in% c("pie", "radar")) {
+        #   args$print.title <- TRUE
+        # } else if (type %in% c("color", "poly.dist")) args$print.title <- FALSE
+      
        do.call("plot.somRes", args)
-       
-       # special features for 'color' and 'polydist' and 'projgraph'
-       if (type=="color") 
-         text(x=x$som$parameters$the.grid$coord[,1], 
-              y=x$som$parameters$the.grid$coord[,2],
-              labels=paste("SC",x$cluster))
-       else if (type=="poly.dist")
-         text(x=x$som$parameters$the.grid$coord[,1]-0.1, 
-              y=x$som$parameters$the.grid$coord[,2]+0.1,
-              labels=paste("SC",x$cluster) )
-       par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
-      } else if (type=="projgraph") {
-        # check arguments
-        if (x$som$parameters$type=="korresp")
-          stop(type, " plot is not available for 'korresp' super classes\n", 
-               call.=TRUE)
-        if (is.null(args$variable)) {
-          stop("for type='projgraph', the argument 'variable' must be supplied (igraph object)\n", 
-               call.=TRUE)
-        }
-        if (!is.igraph(args$variable)){
-          stop("for type='projgraph', argument 'variable' must be an igraph object\n", 
-               call.=TRUE)
-        }
-        if (length(V(args$variable)) != nrow(x$som$data)){
-          stop("number of nodes in graph does not fit length of the original data", call.=TRUE)
-        }
-        
-        # colors
-        if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
-          args$vertex.color <- args$col
-          args$vertex.frame.color <- args$col
-        } else {
-          if (!is.null(args$col))
-            warning("Incorrect number of colors 
-  (does not fit the number of super-clusters);
-  using the default palette.\n", call.=TRUE, immediate.=TRUE)
-          # create a color vector from RColorBrewer palette
-          args$vertex.color <- brewer.pal(max(x$cluster), "Set2")
-          args$vertex.frame.color <- brewer.pal(max(x$cluster), "Set2")
-        }
-        
-        if (plot.legend) {
-          layout(matrix(c(2,2,1),ncol=3))
-          plot.new()
-          legend(x="center", legend=paste("Super cluster", 1:max(x$cluster)), 
-                 col=args$vertex.color, pch=19)
-        }
-        
-        # case of pie
-        if (is.null(args$pie.graph)) args$pie.graph <- FALSE
-        if (args$pie.graph) {
-          if (is.null(args$pie.variable)) 
-            stop("pie.graph is TRUE, you must supply argument 'pie.variable'\n", 
-               call.=TRUE)
-          if (nrow(as.matrix(args$pie.variable)) != nrow(x$som$data)) {
-            stop("length of argument 'pie.variable' does not fit length of the 
-             original data", call.=TRUE)
-          }
-          args$vertex.shape <- "pie"
-          if (is.null(args$vertex.pie.color)) args$vertex.pie.color <- NULL
-          proj.pie <- projectFactor(args$variable, x$cluster[x$som$clustering],
-                                    args$pie.variable,
-                                    pie.color=args$vertex.pie.color)
-          args$vertex.pie <- proj.pie$vertex.pie
-          args$vertex.pie.color <- proj.pie$vertex.pie.color
-        } else if (is.null(args$vertex.shape)) args$vertex.shape <- "circle"
-        
-        # find projected graph
-        proj.graph <- projectIGraph.somSC(x, args$variable)
-        args$proj.graph <- proj.graph
-        args$variable <- NULL
-        do.call("plotProjGraph", args)
-        
-      } else stop("Sorry, this type is not implemented yet\n", call.=TRUE) 
+  #      
+  #      # special features for 'color' and 'polydist' and 'projgraph'
+  #      if (type=="color") 
+  #        text(x=x$som$parameters$the.grid$coord[,1], 
+  #             y=x$som$parameters$the.grid$coord[,2],
+  #             labels=paste("SC",x$cluster))
+  #      else if (type=="poly.dist")
+  #        text(x=x$som$parameters$the.grid$coord[,1]-0.1, 
+  #             y=x$som$parameters$the.grid$coord[,2]+0.1,
+  #             labels=paste("SC",x$cluster) )
+  #      #par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
+  #     } else if (type=="projgraph") {
+  #       # check arguments
+  #       if (x$som$parameters$type=="korresp")
+  #         stop(type, " plot is not available for 'korresp' super classes\n", 
+  #              call.=TRUE)
+  #       if (is.null(args$variable)) {
+  #         stop("for type='projgraph', the argument 'variable' must be supplied (igraph object)\n", 
+  #              call.=TRUE)
+  #       }
+  #       if (!is.igraph(args$variable)){
+  #         stop("for type='projgraph', argument 'variable' must be an igraph object\n", 
+  #              call.=TRUE)
+  #       }
+  #       if (length(V(args$variable)) != nrow(x$som$data)){
+  #         stop("number of nodes in graph does not fit length of the original data", call.=TRUE)
+  #       }
+  #       
+  #       # colors
+  #       if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
+  #         args$vertex.color <- args$col
+  #         args$vertex.frame.color <- args$col
+  #       } else {
+  #         if (!is.null(args$col))
+  #           warning("Incorrect number of colors 
+  # (does not fit the number of super-clusters);
+  # using the default palette.\n", call.=TRUE, immediate.=TRUE)
+  #         # create a color vector from RColorBrewer palette
+  #         args$vertex.color <- brewer.pal(max(x$cluster), "Set2")
+  #         args$vertex.frame.color <- brewer.pal(max(x$cluster), "Set2")
+  #       }
+  #       
+  #       # if (plot.legend) {
+  #       #   layout(matrix(c(2,2,1),ncol=3))
+  #       #   plot.new()
+  #       #   legend(x="center", legend=paste("Super cluster", 1:max(x$cluster)), 
+  #       #          col=args$vertex.color, pch=19)
+  #       # }
+  #       
+  #       # case of pie
+  #       if (is.null(args$pie.graph)) args$pie.graph <- FALSE
+  #       if (args$pie.graph) {
+  #         if (is.null(args$pie.variable)) 
+  #           stop("pie.graph is TRUE, you must supply argument 'pie.variable'\n", 
+  #              call.=TRUE)
+  #         if (nrow(as.matrix(args$pie.variable)) != nrow(x$som$data)) {
+  #           stop("length of argument 'pie.variable' does not fit length of the 
+  #            original data", call.=TRUE)
+  #         }
+  #         args$vertex.shape <- "pie"
+  #         if (is.null(args$vertex.pie.color)) args$vertex.pie.color <- NULL
+  #         proj.pie <- projectFactor(args$variable, x$cluster[x$som$clustering],
+  #                                   args$pie.variable,
+  #                                   pie.color=args$vertex.pie.color)
+  #         args$vertex.pie <- proj.pie$vertex.pie
+  #         args$vertex.pie.color <- proj.pie$vertex.pie.color
+  #       } else if (is.null(args$vertex.shape)) args$vertex.shape <- "circle"
+  #       
+  #       # find projected graph
+  #       proj.graph <- projectIGraph.somSC(x, args$variable)
+  #       args$proj.graph <- proj.graph
+  #       args$variable <- NULL
+  #       do.call("plotProjGraph", args)
+  #       
+       } else stop("Sorry, this type is not implemented yet\n", call.=TRUE) 
     }
   }
 }

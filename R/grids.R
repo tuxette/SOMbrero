@@ -53,12 +53,13 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
   # check options
   topo <- match.arg(topo)
   dist.type <- match.arg(dist.type)
-  
+
   # create coordinates for neurons
     x <- 1:dimension[1]
     y <- 1:dimension[2]
-    tmp <- as.matrix(expand.grid(y, x))
-    tmp <- cbind(tmp[ ,2], tmp[ ,1])
+    ### ELISE :: j'ai changé l'ordre ici !!!
+    tmp <- as.matrix(expand.grid(x, y))
+    tmp <- tmp[order(tmp[,1]),]
   if(topo == "hexagonal"){
     tmp[, 1] <- tmp[, 1] + 0.5 * (tmp[, 2]%%2)
     tmp[, 2] <- sqrt(3)/2 * tmp[, 2]
@@ -67,7 +68,7 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
   result <- list("coord" = tmp, "topo" = topo, "dim" = dimension,
                  "dist.type" = dist.type)
   class(result) <- "myGrid"
-  
+
   return(result)
 }
 
