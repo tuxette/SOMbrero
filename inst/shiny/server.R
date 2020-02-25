@@ -296,8 +296,7 @@ shinyServer(function(input, output, session) {
     if (input$somtype =="korresp")
       tmp.names <- c(tmp.names, rownames(RVserver.env$current.som$data))
     updateSelectInput(session, "somplotvar", choices=tmp.names)
-    updateSelectInput(session, "somplotvar2", choices=tmp.names, 
-                      selected=tmp.names[1:min(5,length(tmp.names))])
+    updateSelectInput(session, "somplotvar2", choices=tmp.names, selected=tmp.names)
   })
   
   # Plot the SOM
@@ -310,22 +309,21 @@ shinyServer(function(input, output, session) {
     tmp.view <- NULL
     if (input$somtype =="korresp")
       tmp.view <- input$somplotrowcol
-    
-    if (input$somplotwhat =="energy")
+
+    if (input$somplotwhat =="energy") {
       plot(RVserver.env$current.som, what=input$somplotwhat)
-    
-    if (input$somplottype =="radar") {
-      plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
-           variable=input$somplotvar, print.title=input$somplottitle,
-           view=tmp.view, key.loc=c(-1,2), mar=c(0,10,2,0))
     } else {
-      if (input$somplottype =="boxplot") {
-        tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
-                                              input$somplotvar2]
-      } else tmp.var <- input$somplotvar
-    plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
-         variable=tmp.var, print.title=input$somplottitle,
-         view=tmp.view)
+      tmp.var <- 1
+      if(input$somplottype == 'color' || input$somplottype == '3d'){
+        tmp.var <- input$somplotvar
+      }
+      if(input$somplottype == 'boxplot' || input$somplottype == 'barplot' || 
+         input$somplottype == 'lines'  || input$somplottype == 'radar'){
+        tmp.var <- input$somplotvar2
+      }
+      plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
+                      variable=tmp.var, print.title=input$somplottitle,
+                      view=tmp.view)
     }
   })
   

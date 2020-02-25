@@ -319,20 +319,19 @@ map."
                  ),
                  checkboxInput("somplottitle", "Show cluster names"),
                  conditionalPanel(
-                   "input.somplottype == 'color' ||
-                         input.somplottype == '3d'",
+                   "input.somplottype == 'color' || input.somplottype == '3d'",
                    selectInput(
                      "somplotvar",
-                     "Variable: (only used for '3d',
-'color' and 'boxplot' plots if available)",
+                     "Variable:",
                      choices = "(Not Available)"
                    )
                  ),
                  conditionalPanel(
-                   "input.somplottype == 'boxplot'",
+                   "input.somplottype == 'boxplot' || input.somplottype == 'barplot' || 
+                   input.somplottype == 'lines'  || input.somplottype == 'radar'",
                    selectInput(
                      "somplotvar2",
-                     "Variable: (hold Ctrl to select
+                     "Variables: (hold Ctrl to select
 multiple variables)",
                      choices = "(Not Available)",
                      multiple = TRUE
