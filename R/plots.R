@@ -380,7 +380,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     values <- lapply(values, function(x) 0.429*((maxi-x)/maxi+0.05))
     # ggplotFacet("prototypes", "poly", values, sommap$clustering, 
     #             print.title, the.titles, is.scaled, 
-    #             sommap$parameters$the.grid, args, labely="poly.dist")
+    #             sommap$parameters$the.grid, args)
     plotPolygon(values, sommap$clustering, sommap$parameters$the.grid,
                 my.palette, args)
     if (print.title) {
@@ -399,10 +399,10 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     }
     values <- unlist(lapply(values,mean))
     if (type=="umatrix") {
+      args$labelcolor <- "umatrix\nbetween\nprototypes"
       ggplotGrid("prototypes", "color", values, as.numeric(rownames(sommap$prototypes)), 
                  print.title, the.titles, 
-                 is.scaled, sommap$parameters$the.grid, args, variable, 
-                 labelcolor="umatrix\nbetween\nprototypes")
+                 is.scaled, sommap$parameters$the.grid, args, variable)
     } else {
       if(args$topo=="hexagonal"){
         warning("Not well handled for hexagonal topograpy... imputing missing values to make a full squared grid\n", call.=TRUE, 
@@ -424,11 +424,18 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     else the.distances <- dist(sommap$prototypes)
     proj.coord <- cmdscale(the.distances, 2)
     if (is.null(args$labels)) args$labels <- as.character(1:nrow(sommap$prototypes))
-    if (is.null(args$col)) args$col <- "#3F007D"
+    #if (is.null(args$col)) args$col <- "#3F007D"
     if (is.null(args$cex)) args$cex <- 4
-    dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels)
-    ggplot(dataplot, aes(x=x, y=y)) + geom_text(aes(label=labels), alpha=0.6, size=args$cex, col=args$col) +
-      labs(x="x", y="y", title="Prototypes visualization by MDS")
+    if(is.null(args$sc)){
+      dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels)
+      ggplot(dataplot, aes(x=x, y=y)) + geom_text(aes(label=labels), alpha=0.7, size=args$cex, fontface="bold") +
+        labs(x="x", y="y", title="Prototypes visualization by MDS")
+    } else {
+      dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels, "Super_Cluster"=as.factor(args$sc))
+      ggplot(dataplot, aes(x=x, y=y)) + geom_text(aes(label=labels, col=Super_Cluster), alpha=0.7, size=args$cex, fontface="bold") +
+        labs(x="x", y="y", title="Prototypes visualization by MDS")
+    }
+   
   } else if (type=="grid.dist") {
     if (sommap$parameters$type=="relational") {
       the.distances <- protoDist(sommap, "complete")
@@ -439,12 +446,11 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
        the.distances <- the.distances[lower.tri(the.distances)]
      }
     } else the.distances <- dist(sommap$prototypes)
-    dataplot <- data.frame(x = as.vector(the.distances), 
-                           y = as.vector(dist(sommap$parameters$the.grid$coord)))
+    
     if (is.null(args$col)) args$col <- "black"
     if (is.null(args$cex)) args$fill <- "#3F007D"
-    ggplot(dataplot, aes(x=x, y=y)) + 
-      geom_point(shape=21, alpha=0.5, size=1, col=args$col, fill=args$fill) +
+  
+    ggplot(dataplot, aes(x=x, y=y)) + geom_point(shape=21, alpha=0.7, size=1) +
       labs(x="prototype distances", y="grid distances", title="Grid distances between protoypes")
   } else stop("Sorry: this type is still to be implemented.", call.=TRUE)
 }
@@ -591,6 +597,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     stop("length of additional variable does not fit length of the original
          data", call.=TRUE)
   }
+  args$topo <- sommap$parameters$the.grid$topo
   
   # switch between different types
   if (type=="pie") {
@@ -627,51 +634,58 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
       title(main="Additional variable distribution", outer=TRUE)
     } else title(args$main, outer=TRUE)
     par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
-  } else if (type=="color") {
-    if (!is.numeric(variable)) {
-      stop("for type='color', argument 'variable' must be a numeric vector\n", 
-           call.=TRUE)
-    }
-    plotColor("add", variable, sommap$clustering, sommap$parameters$the.grid, 
-              my.palette, print.title, the.titles, args)
-  } else if (type=="lines" || type=="barplot") {
-    if (!all(apply(variable,2,is.numeric))) {
-      stop("for type='lines' or 'barplot', argument 'variable' must be either a
-           numeric matrix or a numeric data frame\n", call.=TRUE)
-    }
-    plotAllVariables("add", type, variable, sommap$clustering, 
-                     print.title, the.titles, is.scaled,
-                     sommap$parameters$the.grid, args)
-  } else if (type=="radar") {
-    if (ncol(variable)<2) {
-      stop("for type='radar', argument 'variable' must have at least 2
-           columns\n")
-    }
-    mean.var <- averageByCluster(variable, sommap$clustering,
-                                 sommap$parameters$the.grid)
-    plotRadar(mean.var, sommap$parameters$the.grid, "add", print.title,
-              the.titles, args)
-  } else if (type=="boxplot") {
-    if(ncol(variable)>5) {
-      stop("maximum number of variables (5) for type='boxplot' exceeded\n", 
-           call.=TRUE)
-    }
-    plotAllVariables("add", type, variable, sommap$clustering, 
-                     print.title, the.titles, is.scaled,
-                     sommap$parameters$the.grid, args)
+  }  else if (type %in% c("lines", "barplot", "radar", "boxplot", "names")){
+     ggplotFacet("add", type, variable, sommap$clustering, print.title, the.titles, 
+                 is.scaled, sommap$parameters$the.grid, args)
+  }  else if (type %in% c("color")){
+      ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
+                is.scaled, sommap$parameters$the.grid, args)
+  # }
+  #else if (type=="color") {
+  #   if (!is.numeric(variable)) {
+  #     stop("for type='color', argument 'variable' must be a numeric vector\n", 
+  #          call.=TRUE)
+  #   }
+  #   plotColor("add", variable, sommap$clustering, sommap$parameters$the.grid, 
+  #             my.palette, print.title, the.titles, args)
+  # } else if (type=="lines" || type=="barplot") {
+  #   if (!all(apply(variable,2,is.numeric))) {
+  #     stop("for type='lines' or 'barplot', argument 'variable' must be either a
+  #          numeric matrix or a numeric data frame\n", call.=TRUE)
+  #   }
+  #   plotAllVariables("add", type, variable, sommap$clustering, 
+  #                    print.title, the.titles, is.scaled,
+  #                    sommap$parameters$the.grid, args)
+  # } else if (type=="radar") {
+  #   if (ncol(variable)<2) {
+  #     stop("for type='radar', argument 'variable' must have at least 2
+  #          columns\n")
+  #   }
+  #   mean.var <- averageByCluster(variable, sommap$clustering,
+  #                                sommap$parameters$the.grid)
+  #   plotRadar(mean.var, sommap$parameters$the.grid, "add", print.title,
+  #             the.titles, args)
+  # } else if (type=="boxplot") {
+  #   if(ncol(variable)>5) {
+  #     stop("maximum number of variables (5) for type='boxplot' exceeded\n", 
+  #          call.=TRUE)
+  #   }
+  #   plotAllVariables("add", type, variable, sommap$clustering, 
+  #                    print.title, the.titles, is.scaled,
+  #                    sommap$parameters$the.grid, args)
   } else if (type=="words") {
     if (is.null(colnames(variable))) {
       stop("no colnames for 'variable'", call.=TRUE)
     }
     plotAllVariables("add", type, variable, sommap$clustering, print.title,
                      the.titles, is.scaled, sommap$parameters$the.grid, args)
-  } else if (type=="names") {
-    if (ncol(variable) != 1) {
-      stop("for type='names', argument 'variable' must be a vector", call.=TRUE)
-    }
-    plotAllVariables("add", type, as.character(variable), sommap$clustering,
-                     print.title, the.titles, is.scaled,
-                     sommap$parameters$the.grid, args)
+  # } else if (type=="names") {
+  #   if (ncol(variable) != 1) {
+  #     stop("for type='names', argument 'variable' must be a vector", call.=TRUE)
+  #   }
+  #   plotAllVariables("add", type, as.character(variable), sommap$clustering, 
+  #                    print.title, the.titles, is.scaled,
+  #                    sommap$parameters$the.grid, args)
   } else if (type=="graph") {
     # controls
     if (!is_igraph(variable)){
