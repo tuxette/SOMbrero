@@ -11,6 +11,7 @@ shinyServer(function(input, output, session) {
   #current.table <- NULL
   
   RVserver.env <- reactiveValues(current.som = NULL) # used to allocate in functions
+  val <- reactiveValues(data=NULL, dataadd=NULL)  
   
   #### Panel 'Self Organize' 
   ############################################################################## 
@@ -23,7 +24,7 @@ shinyServer(function(input, output, session) {
     } else {
       text <- paste("1. Type of algorithm, selected : ", input$somtype)
     }
-    text
+    HTML(text)
   })
   
   observeEvent(input$somtype, {
@@ -47,14 +48,12 @@ shinyServer(function(input, output, session) {
   #### Panel 'Import data'
   ##############################################################################
 
-  observe({
-    if(length(dataframes)>0){
-      updateSelectInput(session, inputId="file1envir", choices=dataframes)
-    }
-  })
+  # observe({
+  #   if(length(dataframes)>0){
+  #     updateSelectInput(session, inputId="file1envir", choices=dataframes)
+  #   }
+  # })
 
-  val <- reactiveValues(data=NULL)  
-  
   observeEvent(input$loaddatabutton, {
     val$data <- get(input$file1envir, envir = .GlobalEnv)
   }, ignoreInit=T)
@@ -96,20 +95,14 @@ shinyServer(function(input, output, session) {
     the.table <- val$data
     
     # update the "input variables" checkbox (if somtype is numeric or integer)
-    if (input$somtype =="numeric") {
+    #if (input$somtype =="numeric") {
       output$varchoice <- renderUI(
         selectInput(inputId="varchoice", label="Input variables:", multiple=T,
                            choices=as.list(colnames(the.table)),
                            selected=as.list(colnames(the.table)[
                              sapply(the.table, class) %in%
                                c("integer", "numeric")])))
-      
-        # checkboxGroupInput(inputId="varchoice", label="Input variables:",
-        #                    choices=as.list(colnames(the.table)),
-        #                    selected=as.list(colnames(the.table)[
-        #                      sapply(the.table, class) %in%
-        #                        c("integer", "numeric")])))
-    } else output$varchoice <- renderText("")
+    #} else output$varchoice <- renderText("")
 
     # update the map dimensions
     updateNumericInput(session, inputId="dimx", value={
@@ -162,7 +155,6 @@ shinyServer(function(input, output, session) {
   observeEvent(input$showadvlink, {
     toggleElement(id='divadvancedoptions')
   })
-  
   
   observe({
     # update the scaling option when input$somtype is changed
@@ -293,10 +285,17 @@ shinyServer(function(input, output, session) {
   # update variables available for plotting
   updatePlotSomVar <- function() observe({
     tmp.names <- colnames(RVserver.env$current.som$data)
-    if (input$somtype =="korresp")
+    tmp.names2 <- tmp.names
+    if (input$somtype =="korresp"){
       tmp.names <- c(tmp.names, rownames(RVserver.env$current.som$data))
+      if(input$somplotrowcol=="r"){
+        tmp.names2 <- rownames(RVserver.env$current.som$data)
+      } else {
+        tmp.names2 <- colnames(RVserver.env$current.som$data)
+      }
+    }
     updateSelectInput(session, "somplotvar", choices=tmp.names)
-    updateSelectInput(session, "somplotvar2", choices=tmp.names, selected=tmp.names)
+    updateSelectInput(session, "somplotvar2", choices=tmp.names2, selected=tmp.names2)
   })
   
   # Plot the SOM
@@ -341,16 +340,18 @@ shinyServer(function(input, output, session) {
 
   # Compute superclasses when the button is hit
   computeSuperclasses <- reactive({
-    if (is.null(dInput()))
+    if (is.null(dInput()) | is.null(RVserver.env$current.som))
       return(NULL)
-    if (input$superclassbutton==0)
-      return(NULL)
+    if (input$superclassbutton==0) {
+      superClass(sommap=RVserver.env$current.som)
+    } else {
+      isolate(switch(input$sc.cut.choice, 
+                     "Number of superclasses"=
+                       superClass(sommap=RVserver.env$current.som, k=input$sc.k),
+                     "Height in dendrogram"=
+                       superClass(sommap=RVserver.env$current.som, h=input$sc.h)))
+    }
     
-    isolate(switch(input$sc.cut.choice, 
-                   "Number of superclasses"=
-                     superClass(sommap=RVserver.env$current.som, k=input$sc.k),
-                   "Height in dendrogram"=
-                     superClass(sommap=RVserver.env$current.som, h=input$sc.h)))
   })
 
   output$sc.summary <- renderPrint({
@@ -360,6 +361,14 @@ shinyServer(function(input, output, session) {
     summary(tmp.sc)
   })
 
+  observeEvent(c(computeSuperclasses(), input$superclassbutton), {
+    if(is.null(computeSuperclasses()) | input$superclassbutton==0){
+      shinyjs::disable("sc.download")
+    } else {
+      shinyjs::enable("sc.download")
+    }
+  })
+  
   # Download the superclass classification
   # TODO: output an error if map not trained
   output$sc.download <- {
@@ -393,6 +402,14 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "scplotvar2", choices=tmp.names, 
                       selected=tmp.names[1:min(5,length(tmp.names))])
   })
+  
+  # Update SuperClass plot
+  output$somplotscdendro <- renderPlot({
+    if(is.null(dInput()))
+      return(NULL)
+    plot(computeSuperclasses(), type="dendrogram")
+  })
+  
   
   # Update SuperClass plot
   output$scplot <- renderPlot({
@@ -431,31 +448,44 @@ shinyServer(function(input, output, session) {
   #### Panel 'Combine with additional data'
   ##############################################################################
   
-  # File input for additional variables
-  dInputAdd <- reactive({
-    in.file <- input$file2
-    
-    if (is.null(in.file))
-      return(NULL)
-    
-    the.sep <- switch(input$sep2, "Comma"=",", "Semicolon"=";", "Tab"="\t",
-                      "Space"="")
-    the.quote <- switch(input$quote2, "None"="","Double Quote"='"',
-                        "Single Quote"="'")
+  observeEvent(input$loaddatabuttonadd, {
+    val$dataadd <- get(input$file2envir, envir = .GlobalEnv)
+  }, ignoreInit=T)
+  
+  
+  observeEvent(c(input$file2, input$sep2, input$quote2, input$dec2, input$header2, input$rownames2), {
+    the.sep <- switch(input$sep2, "Comma"=",", "Semicolon"=";", "Tab"="\t", "Space"="")
+    the.quote <- switch(input$quote2, "None"="","Double Quote"='"', "Single Quote"="'")
     the.dec <- switch(input$dec2, "Period"=".", "Comma"=",")
     
     if (input$rownames2) {
-      the.table <- read.table(in.file$datapath, header=input$header2, 
+      the.table <- read.table(input$file2$datapath, header=input$header2, 
                               sep=the.sep, quote=the.quote, row.names=1,
                               dec=the.dec)
-      som.export <- data.frame("name" = names(RVserver.env$current.som$clustering),
-                               "cluster" = RVserver.env$current.som$clustering)
-    } else the.table <- read.table(in.file$datapath, header=input$header2, 
+      # som.export <- data.frame("name" = names(RVserver.env$current.som$clustering),
+      #                          "cluster" = RVserver.env$current.som$clustering)
+    } else the.table <- read.table(input$file2$datapath, header=input$header2, 
                                    sep=the.sep, quote=the.quote, dec=the.dec)
+    val$dataadd <- the.table
+  }, ignoreInit=T)
+  
+  # File input for additional variables
+  dInputAdd <- reactive({
+    if (is.null(val$dataadd))
+      return(NULL)
     
+    the.table <- val$dataadd
     updateAddPlotVar() # update variable selector    
-    
+  
     the.table
+  })
+  
+  output$data2ready <- renderText({
+    text <- "No data loaded"
+    if(is.null(val$dataadd)==F){
+      text <- "Preview of the data"
+    } 
+    text
   })
   
   # additional data preview table
@@ -478,6 +508,23 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "addplotvar2", choices=colnames(d.input), 
                       selected=colnames(d.input)[1:min(5,ncol(d.input))])
   })
+  
+  output$missingrowsadd <- renderText({
+    shiny::validate(need(is.null(dInputAdd())==F, 'Choose data'))
+    nrowmissing <- nrow(dInputAdd())-input$nrow.preview
+    ncolmissing <- ncol(dInputAdd())-input$ncol.preview
+    if(nrowmissing>0 & ncolmissing<=0){
+      text <- paste(nrowmissing, "rows not shown in the preview (the map will be based on the full dataset)", sep=" ")
+    } else if(nrowmissing<=0 & ncolmissing>0){
+      text <- paste(ncolmissing, "cols not shown in the preview (the map will be based on the full dataset)", sep=" ")
+    } else if(nrowmissing>0 & ncolmissing>0){
+      text <- paste(nrowmissing, "rows  and", ncolmissing, "columns not shown in the preview (the map will be based on the full dataset)", sep=" ")
+    } else {
+      text <- NULL
+    }
+    text
+  })
+  
   
   # function to render Additional data Plot
   output$addplot <- renderPlot({

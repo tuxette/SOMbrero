@@ -37,8 +37,8 @@ options(shiny.maxRequestSize=30*1024^2)
 trainTheSom <- function(data, type, topo, dimx, dimy, affectation, disttype, maxit,
                         varnames, rand.seed, scaling, eps0, init.proto, nb.save,
                         radiustype) {
-  if (type=="numeric")
-    data <- data[, varnames]
+  #if (type=="numeric")
+  data <- data[, varnames]
   set.seed(rand.seed)
   trainSOM(data, topo=topo, dimension=c(dimx,dimy), affectation=affectation, 
            dist.type=disttype, maxit=maxit, type=type, scaling=scaling, 
@@ -80,22 +80,22 @@ all.somplot.types <- list("numeric"=
 
 all.scplot.types <- list("numeric"=
                            list("prototypes"=
-                                  list("dendrogram", "dendro3d", "color",
-                                       "lines", "grid", "barplot", 
+                                  list("grid", "dendrogram", "dendro3d", "color",
+                                       "lines", "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds", "radar"),
                                 "obs"=c("hitmap", "color", "lines", "barplot", 
                                         "boxplot", "radar", "grid")),
                          "korresp"=
                            list("prototypes"=
-                                  list("dendrogram", "color", "lines", "grid", 
+                                  list("grid", "dendrogram", "color", "lines", 
                                        "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds", "radar", "dendro3d"),
                                 "obs"="hitmap"),
                          "relational"=
                            list("prototypes"=
-                                  list("dendrogram", "lines", "barplot", "grid",
+                                  list("grid", "dendrogram", "lines", "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds", "radar", "dendro3d"),
                                 "obs"="hitmap"))

@@ -283,7 +283,6 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
   # TODO: add types "names" and "words"
   args <- list(...)
   type <- match.arg(type)
-  args$topo <- x$som$parameters$the.grid$topo
   
   if (type=="dendrogram") {
     args$x <- x$tree
@@ -356,6 +355,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
                           byrow=TRUE), type="l")
     }
   } else {
+    args$topo <- x$som$parameters$the.grid$topo
     if (length(x)<3) {
       stop("No super clusters: plot unavailable.\n")
     } else {
@@ -377,12 +377,12 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         args$sc <- max(x$cluster)
         ggplotGrid("prototypes", type="grid", values=x$cluster, clustering=as.numeric(as.character(rownames(x$som$prototypes))), 
                    print.title, the.titles, is.scaled,
-                   the.grid=x$som$parameters$the.grid , args, variable="Super-clusters")
+                   the.grid=x$som$parameters$the.grid , args)
       } else if (type=="hitmap") {
         args$sc <- max(x$cluster)
-        ggplotGrid("observations", type="hitmap", values=x$cluster[x$som$clustering], clustering=sc$som$clustering, 
+        ggplotGrid("observations", type="hitmap", values=x$cluster[x$som$clustering], clustering=x$som$clustering, 
                    print.title, the.titles, is.scaled,
-                   the.grid=x$som$parameters$the.grid , args, variable="Super-clusters")
+                   the.grid=x$som$parameters$the.grid , args)
       } else if (type %in% c("lines", "barplot", "boxplot", "mds",
                              "color", "poly.dist", "pie", "graph", "radar")) {
         if ((x$som$parameters$type=="korresp") && 
@@ -393,7 +393,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
               (type %in% c("boxplot", "color")))
           stop(type, " plot is not available for 'relational' super classes\n", 
                call.=TRUE)
-          
+         
         if (!(type%in%c("graph","pie", "radar"))) {
           args$col <- clust.col
         } else if (type=="graph") {
@@ -433,9 +433,11 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         # manage colors 
         if(args$what=="obs"){
           args$varcolor <- x$cluster[x$som$clustering]
+          args$sc <- x$cluster[x$som$clustering] 
         }
         if(args$what=="prototypes"){
           args$varcolor <- x$cluster
+          args$sc <-  x$cluster
         }
         # if (!print.title | type %in% c("pie", "radar")) {
         #   args$the.titles <- paste("SC", x$cluster)
@@ -445,7 +447,7 @@ plot.somSC <- function(x, type=c("dendrogram", "grid", "hitmap", "lines",
         # if (type %in% c("pie", "radar")) {
         #   args$print.title <- TRUE
         # } else if (type %in% c("color", "poly.dist")) args$print.title <- FALSE
-      
+       args$col <- NULL
        do.call("plot.somRes", args)
   #      
   #      # special features for 'color' and 'polydist' and 'projgraph'

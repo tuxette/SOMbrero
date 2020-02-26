@@ -567,6 +567,18 @@ trainSOM <- function (x.data, ...) {
   ## Step 1: Parameters handling
   if (!is.matrix(x.data)) x.data <- as.matrix(x.data, rownames.force=TRUE)
   
+  # Check inputs
+  notnum <- sapply(x.data, class) 
+  notnum <- notnum[!(notnum %in% c("integer", "numeric"))]
+  if (!is.null(param.args$type) && param.args$type=="korresp" &&
+      length(notnum)>0)
+    stop("data do not match chosen SOM type ('korresp') : all colummns must be numerical\n", call.=TRUE)
+  
+  # Check inputs
+  if (!is.null(param.args$type) && param.args$type=="relational" && 
+      (!identical(x.data, t(x.data)) || (sum(diag(x.data)!=0)>0)))
+    stop("data do not match chosen SOM type ('relational')\n", call.=TRUE)
+  
   # Default dimension: nb.obs/10 with minimum equal to 5 and maximum to 10
   if (is.null(param.args$dimension)) {
     if (!is.null(param.args$type) && param.args$type=="korresp")
@@ -584,11 +596,7 @@ trainSOM <- function (x.data, ...) {
     else
       param.args$maxit <- round(nrow(x.data)*5)
   }
-  # Check inputs
-  if (!is.null(param.args$type) && param.args$type=="relational" && 
-      (!identical(x.data, t(x.data)) || (sum(diag(x.data)!=0)>0)))
-    stop("data do not match chosen SOM type ('relational')\n", call.=TRUE)
-  
+
   # Initialize parameters and print
   parameters <- do.call("initSOM", param.args)
   if (parameters$verbose) {
@@ -895,6 +903,7 @@ summary.somRes <- function(object, ...) {
     cat("\n")
   } else if (object$parameters$type=="korresp") {
     chisq.res <- chisq.test(object$data)
+    sig <- ""
     if (chisq.res$p.value<0.05) sig <- "*"
     if (chisq.res$p.value<0.01) sig <- "**"
     if (chisq.res$p.value<0.001) sig <- "***"
@@ -918,6 +927,7 @@ summary.somRes <- function(object, ...) {
       ((nrow(norm.data)-n.clusters)/(n.clusters-1))
     
     p.value <- 1-pf(F.stat, n.clusters-1, nrow(norm.data)-n.clusters)
+    sig <- ""
     if (p.value<0.001) {
       sig <- "***"
     } else if (p.value<0.1) {

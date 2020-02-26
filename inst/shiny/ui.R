@@ -14,9 +14,6 @@ shinyUI(
   		.navbar-brand {
       padding: 5px 5px;
   		}
-      .panel-default > .panel-heading {
-      background-color:#d4ceff;
-      }
       .navbar-default .navbar-nav > .active > a {
       background-color: #d4ceff;
       }
@@ -99,7 +96,7 @@ shinyUI(
       #########################################################################
       tabPanel("Self Organize", value="SelfOrganize",
         bsCollapse(id = "collapsestep1", multiple = F, open = "bscoll1",
-        bsCollapsePanel(title = uiOutput("typealgo"), value="bscoll1",
+        bsCollapsePanel(title = uiOutput("typealgo"), value="bscoll1", style="success",
           selectizeInput(
             'somtype',
             label = NULL,
@@ -113,19 +110,30 @@ shinyUI(
             )
           )
         ),
-        bsCollapsePanel(title = "2. Data preparation", value="bscoll2",
-          helpText(
-            p(
-              HTML(
-                "To run the application, import your data set using the
-    import button below. Your data must be supplied in the form of a text/csv file.
-    If the importation is done properly, a preview of the data is displayed below.
-    When this is done proceed to the next step: self-organize a map."
-              )
-            ),
-            p(
-              HTML(
-                'The interface can be tested using example data files for
+        bsCollapsePanel(title = HTML("2. Data preparation"), value="bscoll2", style="success",
+    #       helpText(
+    #         p(
+    #           HTML(
+    #             "To run the application, import your data set using the
+    # import button below. Your data must be supplied in the form of a text/csv file.
+    # If the importation is done properly, a preview of the data is displayed below.
+    # When this is done proceed to the next step: self-organize a map."
+    #           )
+    #         )
+    #       ),
+          uiOutput("texttypedata"),
+          br(),
+          fluidRow(
+            column(3,
+              bsCollapse(open='envir',
+                bsCollapsePanel(title=HTML('Choose from the environment/examples'), value="envir",
+                                selectInput('file1envir', 'Choose from the environment/examples', choices=dataframes),
+                                actionButton("loaddatabutton", "Load", class="btn-primary")
+                                ),
+                bsCollapsePanel(title=HTML('OR Choose CSV/TXT File'),
+                                p(
+                                  HTML(
+                                    'The interface can be tested using example data files for
     the <a href=
     "http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa"
     target="_blank">numeric</a>, <a href=
@@ -134,38 +142,31 @@ shinyUI(
     "http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
     target="_blank">relational </a> algorithms (download these files on your computer and
     proceed).'
+                                  )
+                                ),
+                                fileInput('file1', label=NULL),
+                                checkboxInput('header', ' Header?', TRUE),
+                                checkboxInput('rownames', ' Row names?', FALSE),
+                                selectInput(
+                                  'sep',
+                                  'Separator:',
+                                  c("Comma", "Semicolon", "Tab", "Space"),
+                                  'Comma'
+                                ),
+                                selectInput(
+                                  'quote', 
+                                  'Quote:',
+                                  c("None","Double Quote","Single Quote"), 
+                                  'Double Quote'),
+                                selectInput(
+                                  'dec',
+                                  'Decimal mark', 
+                                  c("Period", "Comma"),
+                                  'Period')
+                )
               )
-            )
           ),
-          uiOutput("texttypedata"),
-          br(),
-          fluidRow(
-            column(3,
-              selectInput('file1envir', 'Choose from the environment/examples', choices=NULL),
-              actionButton("loaddatabutton", "Load", class="btn-primary"),  
-              br(),
-              br(),
-              fileInput('file1', 'OR Choose CSV/TXT File'),
-              checkboxInput('header', ' Header?', TRUE),
-              checkboxInput('rownames', ' Row names?', FALSE),
-              selectInput(
-                'sep',
-                'Separator:',
-                c("Comma", "Semicolon", "Tab", "Space"),
-                'Comma'
-              ),
-              selectInput(
-                'quote', 
-                'Quote:',
-                c("None","Double Quote","Single Quote"), 
-                'Double Quote'),
-              selectInput(
-                'dec',
-                'Decimal mark', 
-                c("Period", "Comma"),
-                'Period')
-          ),
-          column(8,
+          column(9,
              h4(textOutput("dataready")),
              conditionalPanel("output.dataready == 'Preview of the data'",
               #h4("Preview of the data"),
@@ -182,11 +183,11 @@ shinyUI(
       
       #### Panel 'Self-organize'
       #########################################################################2
-      bsCollapsePanel(title = "3. Train the self-organizing map", value="bscoll3",
+      bsCollapsePanel(title = HTML("3. Train the self-organizing map"), value="bscoll3", style="success",
         p(
           HTML(
-            "Once your dataset is imported, you can train a
-self-organizing map (SOM) and explore it using the options below. You can then
+            "Once your dataset is loaded, you can train a
+self-organizing map (SOM) and explore it. You can then
 download the resulting SOM in .rda format (you will need <strong>R</strong> and
 the package <a href= 'http://sombrero.r-forge.r-project.org/'>SOMbrero</a> to
 open this file and use the SOM; its class is the 'somRes' class, handled by
@@ -319,6 +320,15 @@ map."
                  ),
                  checkboxInput("somplottitle", "Show cluster names"),
                  conditionalPanel(
+                   "input.somtype == 'korresp' && input.somplotwhat == 'prototypes'",
+                   radioButtons(
+                     "somplotrowcol",
+                     "Plot rows or columns (when relevant for the chart):",
+                     choices = list("columns" = "c", "rows" = "r"),
+                     inline=F
+                   )
+                 ),
+                 conditionalPanel(
                    "input.somplottype == 'color' || input.somplottype == '3d'",
                    selectInput(
                      "somplotvar",
@@ -336,16 +346,6 @@ multiple variables)",
                      choices = "(Not Available)",
                      multiple = TRUE
                    )
-                 ),
-                 conditionalPanel(
-                   "input.somtype == 'korresp'",
-                   selectInput(
-                     "somplotrowcol",
-                     "Plot rows or columns (when relevant
-for the chart):",
-                     choices = list("columns" = "c",
-                                    "rows" = "r")
-                   )
                  )
                  ),
           column(9,
@@ -356,7 +356,7 @@ for the chart):",
         br()
       ),
       
-      #### Panel 'Superclasses'
+      ################################ Panel 'Superclasses'
       #########################################################################
       tabPanel("Superclasses", value="Superclasses",
         h3("Group prototypes into superclasses"),
@@ -367,76 +367,90 @@ resulting clustering in csv format and visualize it on charts. The 'dendrogram'
 plot can help you determine the adequate number of superclasses."
         ),
         
-        selectInput(
-          "sc.cut.choice",
-          "Choose clustering criterion:",
-          choices = c("Number of superclasses",
-                      "Height in dendrogram"),
-          "Number of superclasses"
-        ),
-        uiOutput("scHorK"),
-        #  Superclass Height or K (nb of clusters)
-        actionButton("superclassbutton", "Compute superclasses"),
-        downloadButton("sc.download",
-                       "Download superclass classification"),
-        
-        br(),
-        br(),
-        verbatimTextOutput("sc.summary"),
-        
-        br(),
-        br(),
-        h4("Plot the superclasses:"),
-        selectInput(
-          "scplotwhat",
-          "Plot what?",
-          choices = list("Prototypes" = "prototypes",
-                         "Observations" = "obs")
-        ),
-        selectInput(
-          "scplottype",
-          "Type of plot:",
-          choices = c(
-            "hitmap",
-            "color",
-            "lines",
-            "barplot",
-            "names",
-            "boxplot",
-            "radar"
+        fluidRow(
+          column(3,
+                 radioButtons(
+                   "sc.cut.choice",
+                   "Choose clustering criterion:",
+                   choices = c("Number of superclasses",
+                               "Height in dendrogram"),
+                   selected="Number of superclasses",
+                   inline=F
+                 ),
+                 #  Superclass Height or K (nb of clusters)
+                 uiOutput("scHorK"),
+                 actionButton("superclassbutton", "Compute superclasses", class="btn-primary"),
+                 br(),
+                 br(),
+                 disabled(downloadButton("sc.download", "Download superclass classification"))
+          ),
+          column(9,
+                 jqui_resizable(plotOutput("somplotscdendro")),
+                 verbatimTextOutput("sc.summary")
           )
         ),
-        conditionalPanel(
-          "input.scplottype == 'color' ||
+        br(),
+        br(),
+        fluidRow(
+          column(3,h3("Plot the superclasses"),
+                 selectInput(
+                   "scplotwhat",
+                   "Plot what?",
+                   choices = list("Prototypes" = "prototypes",
+                                  "Observations" = "obs")
+                 ),
+                 selectInput(
+                   "scplottype",
+                   "Type of plot:",
+                   choices = c(
+                     "hitmap",
+                     "color",
+                     "lines",
+                     "barplot",
+                     "names",
+                     "boxplot",
+                     "radar"
+                   )
+                 ),
+                 conditionalPanel(
+                   "input.scplottype == 'color' ||
                          input.scplottype == '3d'",
-          selectInput(
-            "scplotvar",
-            "Variable: (only used for '3d',
-'color' and 'boxplot' plots if available)",
-            choices = "(Not Available)"
-          )
+                   selectInput(
+                     "scplotvar",
+                     "Variable: (only used for '3d', 'color' and 'boxplot' plots if available)",
+                     choices = "(Not Available)"
+                   )
+                 ),
+                 conditionalPanel(
+                   "input.scplottype == 'boxplot'",
+                   selectInput(
+                     "scplotvar2",
+                     "Variables: (hold Ctrl to select multiple variables)",
+                     choices = "(Not Available)",
+                     multiple = TRUE
+                   )
+                 ),
+                 conditionalPanel(
+                   "input.somtype == 'korresp'",
+                   selectInput(
+                     "scplotrowcol",
+                     "Plot rows or columns (when relevant for the chart):",
+                     choices = list("columns" = "c",
+                                    "rows" = "r")
+                   )
+                 )
+                ),
+          column(9,
+                jqui_resizable(plotOutput("scplot", width = '750px', height = '600px'))
+                )
         ),
-        conditionalPanel(
-          "input.scplottype == 'boxplot'",
-          selectInput(
-            "scplotvar2",
-            "Variables: (hold Ctrl to select
-multiple variables)",
-            choices = "(Not Available)",
-            multiple = TRUE
-          )
-        ),
-        conditionalPanel(
-          "input.somtype == 'korresp'",
-          selectInput(
-            "scplotrowcol",
-            "Plot rows or columns (when
-relevant for the chart):",
-            choices = list("columns" = "c",
-                           "rows" = "r")
-          )
-        ),
-        jqui_resizable(plotOutput("scplot"))
+        br(),
+        br(),
+        br(),
+        br(),
+        br(),
+        br()
+        
       ),
       
       #### Panel 'external information'
@@ -452,75 +466,105 @@ adjacency matrix  for 'graph' plots (the adjacency matrix has a dimension equal
 to the number of rows ."
         ),
         
-        h4("Import file for additional variables"),
-        fileInput('file2', 'Choose csv/text file'),
-        checkboxInput('header2', ' Header?', TRUE),
-        checkboxInput('rownames2', ' Row names?', FALSE),
-        selectInput(
-          'sep2',
-          'Separator:',
-          c("Comma", "Semicolon", "Tab", "Space"),
-          'Comma'
+        fluidRow(
+          column(3,
+                 bsCollapse(open='envir',
+                   bsCollapsePanel(title = HTML("Choose from the environment/examples"), value="envir",
+                     selectInput('file2envir', label=NULL, choices=dataframes),
+                     actionButton("loaddatabuttonadd", "Load", class="btn-primary")
+                   ),
+                   bsCollapsePanel(title=HTML("OR Choose CSV/TXT File"),
+                                   fileInput('file2', label=NULL),
+                                   checkboxInput('header2', ' Header?', TRUE),
+                                   checkboxInput('rownames2', ' Row names?', FALSE),
+                                   selectInput(
+                                     'sep2',
+                                     'Separator:',
+                                     c("Comma", "Semicolon", "Tab", "Space"),
+                                     'Comma'
+                                   ),
+                                   selectInput(
+                                     'quote2',
+                                     'Quote:',
+                                     c("None", "Double Quote", "Single Quote"),
+                                     'Double Quote'
+                                   ),
+                                   selectInput('dec2', 'Decimal mark', c("Period", "Comma"),
+                                               'Period')
+                                   )
+                 )
+          ),
+          column(9,
+                 h4(textOutput("data2ready")),
+                 conditionalPanel("output.data2ready == 'Preview of the data'",
+                                  fluidRow(
+                                    column(6, numericInput('nrow.preview.add', 'Number of rows:', 10)),
+                                    column(6, numericInput('ncol.preview.add', 'Number of columns:', 10))
+                                  ),
+                                  tableOutput("addview"),
+                                  textOutput("missingrowsadd")
+                 )
+          )
         ),
-        selectInput(
-          'quote2',
-          'Quote:',
-          c("None", "Double Quote", "Single Quote"),
-          'Double Quote'
-        ),
-        selectInput('dec2', 'Decimal mark', c("Period", "Comma"),
-                    'Period'),
-        numericInput('nrow.preview.add',
-                     'Number of rows in the preview:', 20),
-        numericInput('ncol.preview.add',
-                     'Number of columns in the preview:', 10),
-        tableOutput("addview"),
-        
-        h4("Plot additional variables:"),
-        conditionalPanel(
-          "input.somtype == 'korresp'",
-          p("Option not available for 'Korresp' type of
+
+        h3("Plot additional variables"),
+        fluidRow(
+          column(3,conditionalPanel(
+            "input.somtype == 'korresp'",
+            p("Option not available for 'Korresp' type of
                                   SOM")
-        ),
-        conditionalPanel(
-          "input.somtype != 'korresp'",
-          selectInput(
-            "addplottype",
-            "Type of plot:",
-            choices = c(
-              "pie",
-              "color",
-              "lines",
-              "boxplot",
-              "barplot",
-              "radar",
-              "names",
-              "words",
-              "graph"
-            )
           ),
           conditionalPanel(
-            "input.addplottype == 'pie' ||
+            "input.somtype != 'korresp'",
+            selectInput(
+              "addplottype",
+              "Type of plot:",
+              choices = c(
+                "pie",
+                "color",
+                "lines",
+                "boxplot",
+                "barplot",
+                "radar",
+                "names",
+                "words",
+                "graph"
+              )
+            ),
+            conditionalPanel(
+              "input.addplottype == 'pie' ||
                                    input.addplottype == 'color' ||
                                    input.addplottype == 'names'",
-            selectInput("addplotvar", "Select variable:",
-                        choices = "(first import file)")
-          ),
-          conditionalPanel(
-            "input.addplottype != 'pie' &&
+              selectInput("addplotvar", "Select variable:",
+                          choices = "(first import file)")
+            ),
+            conditionalPanel(
+              "input.addplottype != 'pie' &&
                                    input.addplottype != 'color' &&
                                    input.addplottype != 'names' &&
                                    input.addplottype != 'graph'",
-            selectInput(
-              "addplotvar2",
-              "Select variables:
+              selectInput(
+                "addplotvar2",
+                "Select variables:
                                                (hold Ctrl to select multiple
                                                variables)",
-              choices = "(first import file)",
-              multiple = TRUE
+                choices = "(first import file)",
+                multiple = TRUE
+              )
             )
           ),
-          jqui_resizable(plotOutput("addplot"))
+          column(9,
+              jqui_resizable(plotOutput("addplot", width = '750px', height = '600px'))
+          )
+        ),
+        br(),
+        br(),
+        br(),
+        br(),
+        br(),
+        br(),
+        br(),
+        br()
         )
       ),
       tabPanel("Help",
