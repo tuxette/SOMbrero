@@ -895,6 +895,7 @@ summary.somRes <- function(object, ...) {
     cat("\n")
   } else if (object$parameters$type=="korresp") {
     chisq.res <- chisq.test(object$data)
+    sig <- ""
     if (chisq.res$p.value<0.05) sig <- "*"
     if (chisq.res$p.value<0.01) sig <- "**"
     if (chisq.res$p.value<0.001) sig <- "***"
@@ -918,6 +919,7 @@ summary.somRes <- function(object, ...) {
       ((nrow(norm.data)-n.clusters)/(n.clusters-1))
     
     p.value <- 1-pf(F.stat, n.clusters-1, nrow(norm.data)-n.clusters)
+    sig <- ""
     if (p.value<0.001) {
       sig <- "***"
     } else if (p.value<0.1) {
