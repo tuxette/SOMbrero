@@ -449,9 +449,10 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     
     if (is.null(args$col)) args$col <- "black"
     if (is.null(args$cex)) args$fill <- "#3F007D"
-  
+    dataplot <- data.frame("x" = as.vector(the.distances), 
+                           "y" = as.vector(dist(sommap$parameters$the.grid$coord)))
     ggplot(dataplot, aes(x=x, y=y)) + geom_point(shape=21, alpha=0.7, size=1) +
-      labs(x="prototype distances", y="grid distances", title="Grid distances between protoypes")
+      labs(x="prototype distances", y="grid distances", title="Distances between protoypes (input space vs. grid)")
   } else stop("Sorry: this type is still to be implemented.", call.=TRUE)
 }
 

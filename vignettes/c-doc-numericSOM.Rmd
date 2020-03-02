@@ -254,7 +254,7 @@ plot(iris.som, what="obs", type="color", variable=4, print.title=TRUE,
      main="Petal width")
 plot(iris.som, what="prototypes", type="lines", print.title=TRUE)
 plot(iris.som, what="obs", type="barplot", print.title=TRUE)
-plot(iris.som, what="obs", type="radar", key.loc=c(-0.5,5), mar=c(0,10,2,0))
+plot(iris.som, what="obs", type="radar", key.loc=c(-0.5,5), mar=c(0,1,2,0))
 ```
 
 Empty squares catch the attention: none of the  observations are assigned to
