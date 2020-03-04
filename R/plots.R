@@ -25,10 +25,10 @@ averageByCluster <- function(x,clustering,the.grid) {
 words2Freq <- function(words, clustering, the.grid, type) {
   if (type=="names") {
     freq.words <- matrix(0, ncol=length(unique(words)), nrow=prod(the.grid$dim))
-    all.tables <- by(words, clustering, table)
+    all.tables <- by(as.factor(words), clustering, table)
     freq.words[as.numeric(sort(unique(clustering))),] <- matrix(unlist(
       all.tables), ncol=length(unique(words)), byrow=TRUE)
-    colnames(freq.words) <- names(all.tables[[1]]) 
+    colnames(freq.words) <- names(all.tables[[1]])
   } else if (type=="words") {
     freq.words <- matrix(0, ncol=ncol(words), nrow=prod(the.grid$dim))
     freq.words[as.numeric(sort(unique(clustering))),] <- apply(words,2,
@@ -708,7 +708,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     if (ncol(variable) != 1) {
       stop("for type='names', argument 'variable' must be a vector", call.=TRUE)
     }
-    plotAllVariables("add", type, as.character(variable), sommap$clustering, 
+    plotAllVariables("add", type, as.character(variable), sommap$clustering,
                      print.title, the.titles, is.scaled,
                      sommap$parameters$the.grid, args)
   } else if (type=="graph") {
