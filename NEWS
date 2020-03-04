@@ -1,3 +1,13 @@
+SOMbrero 1.2-5
+Fixed bugs:
+  adapted script to the new stringsAsFactor policy on devel
+  fixed a bug for non significant variables in summary
+  
+Misc:
+  roxygenized documentation
+  changed maintainer name and address, added new contributors
+
+********************************************************************************
 SOMbrero 1.2-4
 Fixed bugs:
   changed unitary tests because of changes in RGN for devel
