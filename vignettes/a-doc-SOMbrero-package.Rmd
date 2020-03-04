@@ -29,7 +29,7 @@ describe iris flowers with 4 numeric variables
 (```Sepal.Length```, ```Sepal.Width```, ```Petal.Length```
 and ```Petal.Width```) and a fifth variable (not used to train the SOM) is the
 flower's species. This example is treated in the
-[numeric SOM guide](./doc-numericSOM.html).
+[numeric SOM guide](./c-doc-numericSOM.html).
 
 
 ### Contingency tables
@@ -41,7 +41,7 @@ is illustrated on the ```presidentielles2002``` data set which contains, for
 each of the French administrative departments (row variables) and each of the
 candidates (column variables), the number of votes in the first round of the 
 2002 presidential election. This example can be found in the
-[korresp user guide](./doc-korrespSOM.html).
+[korresp user guide](./d-doc-korrespSOM.html).
 
 
 ### Dissimilarity matrices
@@ -52,7 +52,7 @@ extracted from the novel ```Les Miserables```, written by the French author
 Victor Hugo and published in the 19th century. This data set provides a
 dissimilarity matrix between the characters of the novel, based on the length
 of shortest paths in a network defined from the novel. This example is provided
-in the [relational user guide](./doc-relationalSOM.html).
+in the [relational user guide](./e-doc-relationalSOM.html).
 
 
 For those who have an R developer soul, and who want to help improve this 

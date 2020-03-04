@@ -6,6 +6,7 @@ Fixed bugs:
 Misc:
   roxygenized documentation
   changed maintainer name and address, added new contributors
+  fixed URI in package vignette
 
 ********************************************************************************
 SOMbrero 1.2-4
