@@ -1,0 +1,10 @@
+pandoc: 2.3.1
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  a-doc-SOMbrero-package: a-doc-SOMbrero-package.html
+  b-doc-grids: b-doc-grids.html
+  c-doc-numericSOM: c-doc-numericSOM.html
+  d-doc-korrespSOM: d-doc-korrespSOM.html
+  e-doc-relationalSOM: e-doc-relationalSOM.html
+
