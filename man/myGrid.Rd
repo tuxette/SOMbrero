@@ -65,6 +65,6 @@ plot(a.grid, neuron.col=my.colors)
 \code{\link{initGrid}} to define a \code{myGrid} class object.
 }
 \author{
-Madalina Olteanu, \email{madalina.olteanu@inrae.fr}\cr
+Madalina Olteanu, \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Vialaneix, \email{nathalie.vialaneix@inrae.fr}
 }

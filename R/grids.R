@@ -97,7 +97,7 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' display. Default to "Cluster " followed by the cluster number.
 #' @param \dots Further arguments to the \code{\link{plot}} function.
 #' 
-#' @author Madalina Olteanu, \email{madalina.olteanu@inrae.fr}\cr
+#' @author Madalina Olteanu, \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix, \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @details The \code{myGrid} class has the following entries:
