@@ -4,25 +4,16 @@
 \alias{plot.somRes}
 \title{Plot a \code{somRes} class object}
 \usage{
-\method{plot}{somRes}(
-  x,
-  what = c("obs", "prototypes", "energy", "add"),
-  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie", energy = NULL),
-  variable = if (what == "add") NULL else if (type == "boxplot") 1:min(5, ncol(x$data))
-    else 1,
-  my.palette = NULL,
+\method{plot}{somRes}(x, what = c("obs", "prototypes", "energy", "add"),
+  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie",
+  energy = NULL), variable = if (what == "add") NULL else if (type ==
+  "boxplot") 1:min(5, ncol(x$data)) else 1, my.palette = NULL,
   is.scaled = if (x$parameters$type == "numeric") TRUE else FALSE,
-  print.title = FALSE,
-  the.titles = if (what != "energy") switch(type, graph =
-    1:prod(x$parameters$the.grid$dim), paste("Cluster",
-    1:prod(x$parameters$the.grid$dim))),
-  proportional = TRUE,
-  s.radius = 1,
-  pie.graph = FALSE,
-  pie.variable = NULL,
-  view = if (x$parameters$type == "korresp") "r" else NULL,
-  ...
-)
+  print.title = FALSE, the.titles = if (what != "energy") switch(type,
+  graph = 1:prod(x$parameters$the.grid$dim), paste("Cluster",
+  1:prod(x$parameters$the.grid$dim))), proportional = TRUE,
+  s.radius = 1, pie.graph = FALSE, pie.variable = NULL, view = if
+  (x$parameters$type == "korresp") "r" else NULL, ...)
 }
 \arguments{
 \item{x}{A \code{somRes} class object.}

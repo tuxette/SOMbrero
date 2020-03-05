@@ -5,9 +5,8 @@
 \alias{superClass.somRes}
 \alias{print.somSC}
 \alias{summary.somSC}
-\alias{projectIGraph.somSC}
 \alias{plot.somSC}
-\alias{somSC-class}
+\alias{projectIGraph.somSC}
 \title{Create super-clusters from SOM results}
 \usage{
 superClass(sommap, method, members, k, h, ...)
@@ -16,17 +15,12 @@ superClass(sommap, method, members, k, h, ...)
 
 \method{summary}{somSC}(object, ...)
 
-\method{plot}{somSC}(
-  x,
-  type = c("dendrogram", "grid", "hitmap", "lines", "barplot", "boxplot", "mds",
-    "color", "poly.dist", "pie", "graph", "dendro3d", "radar", "projgraph"),
-  plot.var = TRUE,
-  plot.legend = FALSE,
-  add.type = FALSE,
-  print.title = FALSE,
+\method{plot}{somSC}(x, type = c("dendrogram", "grid", "hitmap", "lines",
+  "barplot", "boxplot", "mds", "color", "poly.dist", "pie", "graph",
+  "dendro3d", "radar", "projgraph"), plot.var = TRUE,
+  plot.legend = FALSE, add.type = FALSE, print.title = FALSE,
   the.titles = paste("Cluster", 1:prod(x$som$parameters$the.grid$dim)),
-  ...
-)
+  ...)
 
 \method{projectIGraph}{somSC}(object, init.graph, ...)
 }

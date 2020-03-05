@@ -5,20 +5,14 @@
 \alias{print.myGrid}
 \alias{summary.myGrid}
 \alias{plot.myGrid}
-\alias{myGrid-class}
 \title{Methods for 'myGrid' objects.}
 \usage{
 \method{print}{myGrid}(x, ...)
 
 \method{summary}{myGrid}(object, ...)
 
-\method{plot}{myGrid}(
-  x,
-  neuron.col = "white",
-  print.title = FALSE,
-  the.titles = paste("Cluster", 1:prod(x$dim)),
-  ...
-)
+\method{plot}{myGrid}(x, neuron.col = "white", print.title = FALSE,
+  the.titles = paste("Cluster", 1:prod(x$dim)), ...)
 }
 \arguments{
 \item{x}{\code{myGrid} object}
