@@ -240,3 +240,11 @@ projectIGraph(sc.mis, lesmis)
 par(mar=rep(0,4))
 plot(sc.mis, type="projgraph", variable=lesmis, s.radius=2)
 ```
+
+
+### Session information
+
+This vignette has been computed with the following environment:
+```{r sessionInfo}
+sessionInfo()
+```

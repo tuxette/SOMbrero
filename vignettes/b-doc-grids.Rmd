@@ -90,3 +90,9 @@ my.colors <- rainbow(5*6)
 plot(my.first.grid, neuron.col=my.colors)
 ```
 
+### Session information
+
+This vignette has been computed with the following environment:
+```{r sessionInfo}
+sessionInfo()
+```

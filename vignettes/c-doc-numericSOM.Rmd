@@ -505,3 +505,11 @@ Super cluster number 3, at the bottom right corner of the map, contains mostly
 flowers of the "virginica" species. The last super-cluster is located at the
 top right corner of the map and mostly contains flowers of the species 
 "versicolor".
+
+
+### Session information
+
+This vignette has been computed with the following environment:
+```{r sessionInfo}
+sessionInfo()
+```

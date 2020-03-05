@@ -318,3 +318,10 @@ names(korresp.som$clustering)[which(korresp.som$clustering %in%
                                       which(my.sc$cluster==1))]
 ```
 
+
+### Session information
+
+This vignette has been computed with the following environment:
+```{r sessionInfo}
+sessionInfo()
+```

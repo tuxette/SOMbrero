@@ -60,3 +60,12 @@ package, the following picture provides an overview the current arborescence of
 the package:
 
 ![fw](./foodweb.png)
+
+
+### Session information
+
+This vignette has been computed with the following environment:
+```{r sessionInfo}
+sessionInfo()
+```
+
