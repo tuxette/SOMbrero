@@ -1,5 +1,4 @@
 * other features (easy)
-** pkgdown documentation
 ** add plot.legend in plotSC for 'lines' 'barplot' 'boxplot' and 'dendro3d'
 ** MC : ficelle -> check all features (especially 3D plots)
 ** MC : for lines, display all observations and not the mean
@@ -30,8 +29,6 @@ radius because it should not affect the poly.dist plot)
 ** dissimilarity should maybe algorithm requires a "dist" type input
 
 * package changes
-** make unit test
-** roxygenize documentation
 ** C++ for training
 ** improved modern graphics (ggplot2)
 
