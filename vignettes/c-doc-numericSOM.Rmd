@@ -481,6 +481,8 @@ plot(my.sc, type="lines", print.title=TRUE)
 plot(my.sc, type="barplot", print.title=TRUE)
 plot(my.sc, type="boxplot", print.title=TRUE)
 ```
+
+
 ```{r irisSCplot2C, fig.height=4, fig.width=6}
 plot(my.sc, type="mds", plot.legend=TRUE, cex =2)
 ```
