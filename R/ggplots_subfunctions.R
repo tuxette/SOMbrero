@@ -11,39 +11,18 @@ theme_set(theme_bw(base_size = 12) +
             )
 )
 
+
+
 ### Plots (ggplot2 version) grid-like : one graph using parameters$the.grid$coord as coordinates on the plan
 #############################################################################################
 ggplotGrid<- function(what, type, values, clustering, print.title,
                            the.titles, is.scaled=F, the.grid, args=NULL, variable=1){
   
-  # Colors
-  ################################################
-   # colorsvars <- args$col
-   # if(is.null(args$sc)){   
-   #   if (!is.null(colorsvars) && length(colorsvars)!=2) {
-   #     warning("Incorrect number of colors (2 expected). Arbitrary color will be used\n",
-   #             call.=TRUE, immediate.=TRUE)
-   #     colorsvars <- NULL
-   #   }
-   #   if (is.null(colorsvars)) {
-   #     colorsvars <- c("#49AAFF", "#3F007D")
-   #   }
-   # } else {
-   #   # Distinction for SuperClasses : colors are grouped by superclasses
-   #   ncolors <- args$sc
-   #   if(length(colorsvars)!=ncolors){
-   #     warning("Incorrect number of colors (2 expected). Arbitrary color will be used\n",
-   #             call.=TRUE, immediate.=TRUE)
-   #     colorsvars <- brewer.pal(ncolors, "Set2")
-   #   }
-   # }
-
-  
   # Axes labels 
   ################################################
   
   if(is.null(args$labelcolor)){
-    if(is.null(args$sc)){
+    if(is.null(args$sc) | type=="color"){
       if(type=="hitmap"){
         labelcolor <- "Number of\nobservations"
       } else if(what=="prototypes"){
@@ -99,15 +78,10 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
         geom_bin2d(stat="identity", linetype=1, color="grey")
     } else {
       tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname))) + 
-        geom_hex(stat="identity", linetype=1, color="grey") 
+        geom_hex(stat="binhex", position="identity", linetype=1, color="grey") 
     }
   }
-  
-  # if(is.null(args$sc)){
-  #   tp <- tp + scale_fill_gradient(low = colorsvars[1], high = colorsvars[2])
-  # } else {
-  #   tp <- tp + scale_fill_manual(values=colorsvars)
-  # }
+
   tp <- tp +  ggtitle(myTitle(args, what)) + coord_fixed() + 
     xlim(0.5, max(dataplot$x)+0.5) + ylim(0.5, max(dataplot$y)+0.5) + 
     labs(fill = labelcolor) +
@@ -134,50 +108,16 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
                       the.titles, is.scaled, the.grid, args){
   ordered.index <- orderIndexes(the.grid, type)
 
-  # Colors
-  ################################################
- if(type == "names" | type == "words"){
-    # 1 color used
-    ncolors <- 2
-  } else if(type=="poly.dist"){
-    ncolors <- length(values)
-  } else {
-    # Nb of variable, discrete colors
-    ncolors <- ncol(as.matrix(values))
-  }
-  
-  # if (!is.null(args$col) && length(args$col)>1 &&
-  #     length(args$col)!=ncolors) {
-  #   warning("unadequate number of colors; arbitrary color will be used\n",
-  #           call.=TRUE, immediate.=TRUE)
-  #   args$col <- NULL
-  # }
-  # colorsvars <- args$col
-  # if (is.null(args$col)) {
-  #   if(type %in% c("barplot", "boxplot", "lines", "pie", "radar")){ 
-  #     # Discrete
-  #       if(ncolors<=8){
-  #       colorsvars <- brewer.pal(max(3, ncolors),"Set2")[1:ncolors]
-  #     } else { 
-  #       set.seed(123)
-  #       colorsvars <- rainbow(ncolors)
-  #     }
-  #   } else {
-  #     #continuous
-  #     colorsvars <- rev(brewer.pal(9,"Purples")[2:9])
-  #   }
-  # } 
-  # if (length(args$col)==1) {
-  #   colorsvars <- rep(args$col, ncolors)
-  # }
-  
   # Axes labels 
   ################################################
   vary <- "values"
-    if(!(type %in% c("names", "words")) & is.scaled==T)  {
+  if(!(type %in% c("names", "words")))  {
+    if(is.scaled==T){
       values <- scale(values, is.scaled, is.scaled)
       vary <- "scaled_values"
     }
+  } 
+  
   labely <- vary
   if(what %in% c("obs", "add") & type %in% c("radar", "barplot", "lines")){
     labely <- paste0("mean of ", labely)
@@ -185,67 +125,70 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   if(what==" prototypes"){
     labely <- "values for each prototype"
   }
+  if(type=="names"){
+    labely <- "frequency of values"
+    if(type=="names" & is.null(args$variable)==F){
+      labely <- paste("frequency of", args$variable, "values")
+    }
+  }
+  
+
 
   # Data (ggplot way)
   ################################################
-  # if(type=="poly.dist"){
-  #   dataplot <- melt(values, value.name="poly.dist")
-  #   colnames(dataplot)[ncol(dataplot)] <- "SOMclustering"
-  #   dataplot$ind <- rownames(dataplot)
-  # } else {
-    dataplot <- data.frame(values)
-    dataplot$ind <- rownames(dataplot)
-    dataplot$SOMclustering <- clustering
-    if(is.null(args$sc)){
-      dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = vary)
-      dataplot$variable <- as.factor(dataplot$variable)
-      labelcolor <- "variable"
-    } else {
-      dataplot$varcolor <- args$sc
-      dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = vary)
-      dataplot$varcolor <- as.factor(dataplot$varcolor)
-      labelcolor <- "Super_Clusters"
-      colnames(dataplot)[match("varcolor", colnames(dataplot))] <- labelcolor
-    }
-  # }
+  dataplot <- data.frame(values)
+  dataplot$ind <- rownames(dataplot)
+  dataplot$SOMclustering <- clustering
+  if(is.null(args$sc)){
+    dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = vary)
+    dataplot$variable <- as.factor(dataplot$variable)
+    labelcolor <- "variable"
+  } else {
+    dataplot$varcolor <- args$sc
+    dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = vary)
+    dataplot$varcolor <- as.factor(dataplot$varcolor)
+    labelcolor <- "Super_Clusters"
+    colnames(dataplot)[match("varcolor", colnames(dataplot))] <- labelcolor
+  }
+
 
   # Plot
   ################################################
-  if(type == "barplot" | type == "radar"){
+  if(type == "barplot"){
     tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, fill=labelcolor)) +
-      geom_bar(stat='summary', fun.y=mean) + ylab(labely) #+
-      #scale_fill_manual(values=colorsvars)
-  }
-  if(type == "radar"){
-    tp <- tp + coord_polar() + theme(axis.text.x=element_blank())
+      geom_bar(stat='summary', fun.y=mean) + ylab(labely) 
   }
   if(type == "boxplot"){
     tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, fill=labelcolor)) +
-      geom_boxplot() #+
-      #scale_fill_manual(values=colorsvars)
+      geom_boxplot() 
   }
   if(type == "lines"){
+    tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, group=1, colour=labelcolor)) +
+      geom_point(stat='summary', fun.y=mean) + ylab(labely) 
     if(is.null(args$sc)){
-      tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, group=1, colour=labelcolor)) +
-        geom_point(stat='summary', fun.y=mean) + ylab(labely) +
-        stat_summary(fun.y=mean, geom="line", colour="black")
+      tp <- tp + stat_summary(fun.y=mean, geom="line", colour="black")
     } else {
-      tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, group=1, colour=labelcolor)) +
-        geom_point(stat='summary', fun.y=mean) + ylab(labely) + 
-        stat_summary(fun.y=mean, geom="line", mapping = aes_string(colour=labelcolor), show.legend = F)
+      tp <- tp + stat_summary(fun.y=mean, geom="line", mapping = aes_string(colour=labelcolor), show.legend = F)
+      print("tt")
     }
-    #   #scale_colour_manual(values = colorsvars)
   }
   if(type == "names"){
-    tp <- ggplot(dataplot, aes(label = ind)) +
-      geom_text_wordcloud(stat="unique", alpha=0.7) +
-      #geom_text_wordcloud(stat="unique", colour=colorsvars[1], alpha=0.7) +
-      scale_size_area(max_size = 13) 
+     tp <- ggplot(dataplot, aes(label = values)) +
+      geom_text_wordcloud(stat="identity", alpha=0.7) + labs(subtitle = labely)
+  }
+  if(type == "words"){
+    dataplot <- aggregate(data=dataplot, values ~ variable + SOMclustering, sum)
+    tp <- ggplot(dataplot, aes(label = variable, size=values)) +
+      geom_text_wordcloud(stat="identity", alpha=0.7, area_corr=TRUE) + labs(subtitle = "sum of values by variable")
   }
   if(type == "poly.dist"){
     tp <- ggplot(dataplot, aes(x=x, y=y)) + 
       geom_polygon(aes(fill=stat(count))) +
       labs(fill = labely)
+  }
+  if(type == "pie"){
+    tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, fill=labelcolor)) +
+      geom_boxplot() 
   }
   # Handling of the grid order
   tp <- tp + facet_wrap(factor(SOMclustering, levels=ordered.index, labels=the.titles[ordered.index]) ~ ., 
@@ -253,11 +196,11 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
                         nrow=the.grid$dim[2],
                         dir = "h") +
              ggtitle(myTitle(args, what)) 
-  
+
   # Clusters titles
   if(print.title==F){
     tp <- tp + theme(strip.background = element_blank(),
                      strip.text = element_blank())
   }
-  tp
+  return(tp)
 }

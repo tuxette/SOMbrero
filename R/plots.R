@@ -52,18 +52,8 @@ paramGraph <- function(the.grid, print.title, type) {
       the.mar <- c(0,0,0,0)
     } else the.mar <- c(2,1,0.5,1)
   }
-  # if (print.title) {
-  #   if(type%in%c("lines","pie","boxplot","names","words")) {
-  #     the.mar <- c(0,0,1,0)
-  #   } else the.mar <- c(2,1,1,1)
-  # } else {
-  #   if(type%in%c("lines","pie","boxplot","names","words")) {
-  #     the.mar <- c(0,0,0,0)
-  #   } else the.mar <- c(2,1,0.5,1)
-  # }
   list("mfrow"=c(the.grid$dim[1], the.grid$dim[2]),"oma"=c(0,0,3,0),
        "bty"="c", "mar"=the.mar)
-  #NULL
 }
 
 myTitle <- function(args, what) {
@@ -76,167 +66,126 @@ myTitle <- function(args, what) {
   return(the.title)
 }
 
-plotOneVariable <- function(ind, var.val, type, the.title, args) {
-  args$ylab <- ""
-  args$xlab <- ""
-  if (type!="names" && type!="words" && !is.null(args$col) 
-      && length(args$col)>1) {
-    args$col <- args$col[ind]
-    if ((type=="boxplot")&(!is.null(args$border)))
-      args$border <- args$border[ind]
-  }
-  if (!is.null(the.title)) {
-    args$main <- the.title
-  } else args$main <- NULL
-  if (all(is.na(var.val))) {
-    plot(1,type="n",axes=F,xlab="",ylab="",main=args$main)
-    if (type %in% c("lines","boxplot", "names", "words")) box()
-  } else {
-    if(type=="lines") {
-      if (is.null(args$lwd)) args$lwd <- 2
-      if (is.null(args$type)) args$type <- "l"
-      if (is.null(args$col)) args$col <- "tomato"
-      args$xaxt <- "n"
-      args$yaxt <- "n"
-      args$x <- var.val
-      do.call("plot",args)
-    } else if (type=="barplot") {
-      args$height <- var.val
-      args$axes <- FALSE
-      if (is.null(args$col)) args$col <- "orange"
-      if (is.null(args$names.arg)) args$names.arg <- ""
-      if (is.null(args$border)) args$border <- FALSE
-      do.call("barplot",args)
-      abline(h=0, col=args$col)
-    } else if (type=="boxplot") {
-      args$x <- var.val
-      args$axes <- FALSE
-      if (is.null(args$names)) args$names <- FALSE
-      if (is.null(args$col)) args$col <- "tan2"
-      do.call("boxplot", args)
-      box()
-    } else if (type %in% c("names", "words")) {
-      if (sum(var.val)>0) {
-        if (is.null(args$min.freq)) args$min.freq <- 1
-        args$words <- names(var.val)[var.val>0]
-        args$freq <- sqrt(var.val[var.val>0])
-        args$scale <- args$scale*max(var.val)
-        if (is.null(args$ordered.colors)) args$ordered.colors <- TRUE
-        if (is.null(args$rot.per)) args$rot.per <- 0
-        do.call("wordcloud", args)
-      } else plot(1,type="n",axes=F,xlab="",ylab="")
-      box()
-      title(the.title)
-    }
-  }
-}
+# plotOneVariable <- function(ind, var.val, type, the.title, args) {
+#   args$ylab <- ""
+#   args$xlab <- ""
+#   if (type!="names" && type!="words" && !is.null(args$col) 
+#       && length(args$col)>1) {
+#     args$col <- args$col[ind]
+#     if ((type=="boxplot")&(!is.null(args$border)))
+#       args$border <- args$border[ind]
+#   }
+#   if (!is.null(the.title)) {
+#     args$main <- the.title
+#   } else args$main <- NULL
+#   if (all(is.na(var.val))) {
+#     plot(1,type="n",axes=F,xlab="",ylab="",main=args$main)
+#     if (type %in% c("lines","boxplot", "names", "words")) box()
+#   } else {
+#     if(type=="lines") {
+#       if (is.null(args$lwd)) args$lwd <- 2
+#       if (is.null(args$type)) args$type <- "l"
+#       if (is.null(args$col)) args$col <- "tomato"
+#       args$xaxt <- "n"
+#       args$yaxt <- "n"
+#       args$x <- var.val
+#       do.call("plot",args)
+#     } else if (type=="barplot") {
+#       args$height <- var.val
+#       args$axes <- FALSE
+#       if (is.null(args$col)) args$col <- "orange"
+#       if (is.null(args$names.arg)) args$names.arg <- ""
+#       if (is.null(args$border)) args$border <- FALSE
+#       do.call("barplot",args)
+#       abline(h=0, col=args$col)
+#     } else if (type=="boxplot") {
+#       args$x <- var.val
+#       args$axes <- FALSE
+#       if (is.null(args$names)) args$names <- FALSE
+#       if (is.null(args$col)) args$col <- "tan2"
+#       do.call("boxplot", args)
+#       box()
+#     } else if (type %in% c("names", "words")) {
+#       if (sum(var.val)>0) {
+#         if (is.null(args$min.freq)) args$min.freq <- 1
+#         args$words <- names(var.val)[var.val>0]
+#         args$freq <- sqrt(var.val[var.val>0])
+#         args$scale <- args$scale*max(var.val)
+#         if (is.null(args$ordered.colors)) args$ordered.colors <- TRUE
+#         if (is.null(args$rot.per)) args$rot.per <- 0
+#         do.call("wordcloud", args)
+#       } else plot(1,type="n",axes=F,xlab="",ylab="")
+#       box()
+#       title(the.title)
+#     }
+#   }
+# }
 
-plotAllVariables <- function(what, type, values, clustering=NULL, print.title,
-                             the.titles, is.scaled, the.grid, args) {
-  par(paramGraph(the.grid, print.title, type))
-  ordered.index <- orderIndexes(the.grid, type)
-  if (!is.null(args$col) && length(args$col)>1 && 
-        length(args$col)!=length(ordered.index)) {
-    warning("unadequate number of colors; first color will be used for all\n", 
-            call.=TRUE, immediate.=TRUE)
-    args$col <- args$col[1]
-  }
-  if (print.title) {
-    the.titles <- the.titles
-  } else the.titles <- rep(NULL,length(ordered.index))
-  if (type %in% c("names", "words")) {
-    freq.words <- words2Freq(values, clustering, the.grid, type)
-    if (is.null(args$colors)) {
-      nb.breaks <- 6
-      all.colors <- brewer.pal(9,"Purples")[5:9]
-    } else if (length(args$colors)==1) {
-      words.col <- matrix(args$colors, ncol=ncol(freq.words),
-                          nrow=nrow(freq.words))
-    } else {
-      nb.breaks <- length(args$colors)+1
-      all.colors <- args$colors
-    }
-    if (is.null(args$colors)|length(args$colors)>1) {
-      the.breaks <- seq(min(freq.words[freq.words>0])-0.1,
-                        max(freq.words)+0.1,length=nb.breaks)
-      words.cut <- apply(freq.words,2,cut,breaks=the.breaks,labels=FALSE)
-      words.col <- apply(words.cut, 2, function(wc) all.colors[wc])
-    }
-    if (is.null(args$scale)) {
-      args$scale <- c(2,0.5)/max(freq.words)
-    } else args$scale <- args$scale/max(freq.words)
-    sapply(ordered.index, function(ind) {
-      cur.args <- args
-      if (sum(freq.words[ind,])>0) {
-        cur.args$colors <- words.col[ind,freq.words[ind,]>0]
-      }
-      plotOneVariable(ind, freq.words[ind,], type, the.titles[ind], cur.args)
-    })
-  } else {
-    is.scaled.values <- scale(values,is.scaled, is.scaled)
-    args$ylim <- range(is.scaled.values)
-    if (what=="prototypes"|type=="boxplot") {
-      mean.val <- is.scaled.values
-    } else mean.val <- averageByCluster(is.scaled.values, clustering, the.grid)
-    if (type=="boxplot") {
-      sapply(ordered.index, function(ind) {
-        plotOneVariable(ind,matrix(as.matrix(mean.val)[which(clustering==ind),],
-                                   ncol=ncol(as.matrix(values))), type, 
-                        the.titles[ind], args)
-      })
-    } else {
-      sapply(ordered.index, function(ind) {
-        plotOneVariable(ind,mean.val[ind,], type, the.titles[ind], args)
-      })
-    }
-  }
-  title(main=myTitle(args, what), outer=TRUE)
-  par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
-}
+# plotAllVariables <- function(what, type, values, clustering=NULL, print.title,
+#                              the.titles, is.scaled, the.grid, args) {
+#   par(paramGraph(the.grid, print.title, type))
+#   ordered.index <- orderIndexes(the.grid, type)
+#   if (!is.null(args$col) && length(args$col)>1 && 
+#         length(args$col)!=length(ordered.index)) {
+#     warning("unadequate number of colors; first color will be used for all\n", 
+#             call.=TRUE, immediate.=TRUE)
+#     args$col <- args$col[1]
+#   }
+#   if (print.title) {
+#     the.titles <- the.titles
+#   } else the.titles <- rep(NULL,length(ordered.index))
+#   if (type %in% c("names", "words")) {
+#     
+#     freq.words <- words2Freq(values, clustering, the.grid, type)
+#     if (is.null(args$colors)) {
+#       nb.breaks <- 6
+#       all.colors <- brewer.pal(9,"Purples")[5:9]
+#     } else if (length(args$colors)==1) {
+#       words.col <- matrix(args$colors, ncol=ncol(freq.words),
+#                           nrow=nrow(freq.words))
+#     } else {
+#       nb.breaks <- length(args$colors)+1
+#       all.colors <- args$colors
+#     }
+#     if (is.null(args$colors)|length(args$colors)>1) {
+#       the.breaks <- seq(min(freq.words[freq.words>0])-0.1,
+#                         max(freq.words)+0.1,length=nb.breaks)
+#       words.cut <- apply(freq.words,2,cut,breaks=the.breaks,labels=FALSE)
+#       words.col <- apply(words.cut, 2, function(wc) all.colors[wc])
+#     }
+#     if (is.null(args$scale)) {
+#       args$scale <- c(2,0.5)/max(freq.words)
+#     } else args$scale <- args$scale/max(freq.words)
+#     sapply(ordered.index, function(ind) {
+#       cur.args <- args
+#       if (sum(freq.words[ind,])>0) {
+#         cur.args$colors <- words.col[ind,freq.words[ind,]>0]
+#       }
+#       plotOneVariable(ind, freq.words[ind,], type, the.titles[ind], cur.args)
+#     })
+#   } else {
+#     is.scaled.values <- scale(values,is.scaled, is.scaled)
+#     args$ylim <- range(is.scaled.values)
+#     if (what=="prototypes"|type=="boxplot") {
+#       mean.val <- is.scaled.values
+#     } else mean.val <- averageByCluster(is.scaled.values, clustering, the.grid)
+#     if (type=="boxplot") {
+#       sapply(ordered.index, function(ind) {
+#         plotOneVariable(ind,matrix(as.matrix(mean.val)[which(clustering==ind),],
+#                                    ncol=ncol(as.matrix(values))), type, 
+#                         the.titles[ind], args)
+#       })
+#     } else {
+#       sapply(ordered.index, function(ind) {
+#         plotOneVariable(ind,mean.val[ind,], type, the.titles[ind], args)
+#       })
+#     }
+#   }
+#   title(main=myTitle(args, what), outer=TRUE)
+#   par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
+# }
 
-plotColor <- function(what, values, clustering, the.grid, my.palette, 
-                      print.title, the.titles, args) {
-  if (what!="prototypes") {
-    x <- rep(NA, prod(the.grid$dim))
-    ne.neurons <- which(as.character(1:prod(the.grid$dim))%in%
-                          names(table(clustering)))
-    x[ne.neurons] <- tapply(values, clustering, mean)
-  } else x <- values
-  if (is.null(my.palette)) {
-    nb.breaks <- min(c(floor(1 + (3.3*log(prod(the.grid$dim),base=10))),
-                       9))
-  } else nb.breaks <- length(my.palette)
-  the.breaks <- seq(min(x, na.rm=TRUE)-10^(-5),
-                    max(x, na.rm=TRUE)+10^(-5),
-                    length=nb.breaks+1)
-  if (is.null(my.palette)) {
-    my.colors <- heat.colors(nb.breaks)[nb.breaks:1]
-  } else my.colors <- my.palette
-  vect.color <- my.colors[cut(x, the.breaks, labels=FALSE)]
-  if (what!="prototypes") vect.color[is.na(vect.color)] <- "white"
-  plot.args <- c(list(x=the.grid, neuron.col=vect.color),
-                 args)
-  do.call("plot.myGrid",plot.args)
-  if (print.title) {
-    text(x=the.grid$coord[,1], y=the.grid$coord[,2],
-         labels=the.titles, cex=0.7)
-  }
-}
 
-plotRadar <- function(x,the.grid,what,print.title,the.titles,args) {
-  args$main <- myTitle(args, what)
-  if (print.title) {
-      args$labels <- the.titles
-  } else args$labels <- ""
-  if (is.null(args$key.labels)) args$key.labels <- colnames(x)
-  args$x <- x
-  args$nrow <- the.grid$dim[1]
-  args$ncol <- the.grid$dim[2]
-  args$locations <- the.grid$coord
-  if (is.null(args$draw.segments)) args$draw.segments <- TRUE
-  if (is.null(args$len)) args$len <- 0.4
-  do.call("stars", args)
-}
 
 plot3d <- function(x, the.grid, type, variable, args) {
   if(is.null(args$topo)==F) args <- args[which(names(tmpargs)== "topo")]
@@ -305,11 +254,11 @@ plotPolygon <- function(values, clustering, the.grid, my.palette, args) {
 ### SOM algorithm graphics
 plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
                            the.titles, is.scaled, view, args) {
-  ## types : 3d, lines, barplot, radar, color, smooth.dist, poly.dist, umatrix,
+  ## types : 3d, lines, barplot, color, smooth.dist, poly.dist, umatrix,
   # mds
   
   # default value for type="lines"
-  if (!is.element(type,c("3d","lines","barplot","radar","color", "poly.dist",
+  if (!is.element(type,c("3d","lines","barplot","color", "poly.dist",
                          "umatrix", "smooth.dist", "mds", "grid.dist"))) {
     warning("incorrect type replaced by 'lines'\n", call.=TRUE, 
             immediate.=TRUE)
@@ -320,7 +269,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     stop("prototypes/", type, " plot is not available for 'relational'\n", 
          call.=TRUE)
   
-  if (type=="lines" || type=="barplot" || type=="radar") {
+  if (type=="lines" || type=="barplot") {
     if (sommap$parameters$type=="korresp") {
       if (view=="r")
         tmp.proto <- sommap$prototypes[,(ncol(sommap$data)+1):
@@ -424,7 +373,6 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     else the.distances <- dist(sommap$prototypes)
     proj.coord <- cmdscale(the.distances, 2)
     if (is.null(args$labels)) args$labels <- as.character(1:nrow(sommap$prototypes))
-    #if (is.null(args$col)) args$col <- "#3F007D"
     if (is.null(args$cex)) args$cex <- 4
     if(is.null(args$sc)){
       dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels)
@@ -458,10 +406,9 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
 
 plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
                     is.scaled, view, args) {
-  ## types : hitmap, lines, names, color, barplot, boxplot, radar
-  
+  ## types : hitmap, lines, names, color, barplot, boxplot
   # default value is type="hitmap"
-  if (!is.element(type,c("hitmap", "lines", "names", "color", "radar",
+  if (!is.element(type,c("hitmap", "lines", "names", "color",
                          "barplot", "boxplot"))) {
     warning("incorrect type replaced by 'hitmap'\n", call.=TRUE, 
             immediate.=TRUE)
@@ -481,17 +428,29 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
   }
   
   args$topo <- sommap$parameters$the.grid$topo
-  args$col <- my.palette
 
-  if(type %in% c("lines", "barplot", "radar", "boxplot", "names")){
-    if (type == "lines" || type == "barplot" || type == "radar" || type == "boxplot") {
+  if(type %in% c("lines", "barplot", "boxplot", "names")){
+    if (type == "lines" || type == "barplot" || type == "boxplot") {
       values <- sommap$data[,variable]
     } else if (type=="names") {
       if (sommap$parameters$type %in% c("relational", "korresp")) {
-        values <- sommap$clustering
+        values <- names(sommap$clustering)
+        args$variable <- "names"
       }
       if(sommap$parameters$type=="numeric") {
-        values <- sommap$data
+        if (length(variable)>1) {
+          warning("length(variable)>1, only first element will be considered\n", 
+                  call.=TRUE, immediate.=TRUE)
+          variable <- variable[1]
+        }
+        if(is.null(variable)) variable <- "row.names"
+        if(variable=="row.names"){
+            values <- rownames(sommap$data)
+        } else {
+          if(is.numeric(variable)) variable <- colnames(sommap$data)[variable]
+            values <- sommap$data[,variable]
+        }
+        args$variable <- variable
       }
     }
     ggplotFacet("obs", type, values, sommap$clustering,
@@ -575,12 +534,12 @@ plotProjGraph <- function(proj.graph, print.title=FALSE, the.titles=NULL,
 plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     print.title, the.titles, is.scaled, s.radius, pie.graph,
                     pie.variable, args) {
-  ## types : pie, color, lines, boxplot, names, words, graph, barplot, radar
+  ## types : pie, color, lines, boxplot, names, words, graph, barplot
   # to be implemented: graph
   
   # default value is type="pie"
   if (!is.element(type,c("pie", "color", "lines", "barplot", "words",
-                         "boxplot", "names", "radar", "graph"))) {
+                         "boxplot", "names", "graph"))) {
     warning("incorrect type replaced by 'pie'\n", call.=TRUE, 
             immediate.=TRUE)
     type <- "pie"
@@ -602,84 +561,60 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   
   # switch between different types
   if (type=="pie") {
-    if (!is.factor(variable)) variable <- as.factor(variable)
-    cluster.freq <- tapply(variable,sommap$clustering,table)
-    cluster.size <- table(sommap$clustering)
-    par(paramGraph(sommap$parameters$the.grid, print.title, "pie"))
-    ordered.index <- orderIndexes(sommap$parameters$the.grid, type)
-    for (ind in ordered.index) {
-      cur.cluster.vect.full <- cluster.freq[[as.character(ind)]]
-      if (!is.null(cur.cluster.vect.full)) {
-        cur.cluster.vect <- cur.cluster.vect.full[cur.cluster.vect.full>0]
-        cur.args <- args
-        cur.args$x <- cur.cluster.vect
-        if (print.title) {
-          cur.args$main <- the.titles[ind]
-        } else cur.args$main <- NULL
-        if (is.null(args$col)) {
-          cur.args$col <- rainbow(nlevels(variable))[cur.cluster.vect.full>0]
-        } else cur.args$col <- args$col[cur.cluster.vect.full>0]
-        if (is.null(args$labels)) {
-          cur.args$labels <- levels(variable)[cur.cluster.vect.full>0]
-        } else cur.args$labels <- args$labels[cur.cluster.vect.full>0]
-        if (proportional) {
-          cur.args$radius=0.9*s.radius*sqrt(cluster.size[as.character(ind)]/
-                                            max(cluster.size))
-        } else {
-          if (is.null(args$radius)) cur.args$radius <- 0.7
-        }
-        do.call("pie",cur.args)
-      } else plot(1, type="n", bty="n", axes=FALSE)
+    args$topo <- NULL
+    ggplotFacet("add", type, values=as.factor(variable), sommap$clustering, print.title, the.titles, 
+                is.scaled, sommap$parameters$the.grid, args)
+    # if (!is.factor(variable)) variable <- as.factor(variable)
+    # cluster.freq <- tapply(variable,sommap$clustering,table)
+    # cluster.size <- table(sommap$clustering)
+    # par(paramGraph(sommap$parameters$the.grid, print.title, "pie"))
+    # ordered.index <- orderIndexes(sommap$parameters$the.grid, type)
+    # for (ind in ordered.index) {
+    #   cur.cluster.vect.full <- cluster.freq[[as.character(ind)]]
+    #   if (!is.null(cur.cluster.vect.full)) {
+    #     cur.cluster.vect <- cur.cluster.vect.full[cur.cluster.vect.full>0]
+    #     cur.args <- args
+    #     cur.args$x <- cur.cluster.vect
+    #     if (print.title) {
+    #       cur.args$main <- the.titles[ind]
+    #     } else cur.args$main <- NULL
+    #     if (is.null(args$col)) {
+    #       cur.args$col <- rainbow(nlevels(variable))[cur.cluster.vect.full>0]
+    #     } else cur.args$col <- args$col[cur.cluster.vect.full>0]
+    #     if (is.null(args$labels)) {
+    #       cur.args$labels <- levels(variable)[cur.cluster.vect.full>0]
+    #     } else cur.args$labels <- args$labels[cur.cluster.vect.full>0]
+    #     if (proportional) {
+    #       cur.args$radius=0.9*s.radius*sqrt(cluster.size[as.character(ind)]/
+    #                                         max(cluster.size))
+    #     } else {
+    #       if (is.null(args$radius)) cur.args$radius <- 0.7
+    #     }
+    #     do.call("pie",cur.args)
+    #   } else plot(1, type="n", bty="n", axes=FALSE)
+    # }
+    # if (is.null(args$main)) {
+    #   title(main="Additional variable distribution", outer=TRUE)
+    # } else title(args$main, outer=TRUE)
+    # par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
+  }  else if (type %in% c("lines", "barplot", "boxplot", "names")){
+    if(type=="names"){
+      args$variable <- colnames(variable)
+      print(args$variable)
     }
-    if (is.null(args$main)) {
-      title(main="Additional variable distribution", outer=TRUE)
-    } else title(args$main, outer=TRUE)
-    par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
-  }  else if (type %in% c("lines", "barplot", "radar", "boxplot", "names")){
-     ggplotFacet("add", type, variable, sommap$clustering, print.title, the.titles, 
+     ggplotFacet("add", type, values=variable, sommap$clustering, print.title, the.titles, 
                  is.scaled, sommap$parameters$the.grid, args)
   }  else if (type %in% c("color")){
       ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
                 is.scaled, sommap$parameters$the.grid, args)
-  # }
-  #else if (type=="color") {
-  #   if (!is.numeric(variable)) {
-  #     stop("for type='color', argument 'variable' must be a numeric vector\n", 
-  #          call.=TRUE)
-  #   }
-  #   plotColor("add", variable, sommap$clustering, sommap$parameters$the.grid, 
-  #             my.palette, print.title, the.titles, args)
-  # } else if (type=="lines" || type=="barplot") {
-  #   if (!all(apply(variable,2,is.numeric))) {
-  #     stop("for type='lines' or 'barplot', argument 'variable' must be either a
-  #          numeric matrix or a numeric data frame\n", call.=TRUE)
-  #   }
-  #   plotAllVariables("add", type, variable, sommap$clustering, 
-  #                    print.title, the.titles, is.scaled,
-  #                    sommap$parameters$the.grid, args)
-  # } else if (type=="radar") {
-  #   if (ncol(variable)<2) {
-  #     stop("for type='radar', argument 'variable' must have at least 2
-  #          columns\n")
-  #   }
-  #   mean.var <- averageByCluster(variable, sommap$clustering,
-  #                                sommap$parameters$the.grid)
-  #   plotRadar(mean.var, sommap$parameters$the.grid, "add", print.title,
-  #             the.titles, args)
-  # } else if (type=="boxplot") {
-  #   if(ncol(variable)>5) {
-  #     stop("maximum number of variables (5) for type='boxplot' exceeded\n", 
-  #          call.=TRUE)
-  #   }
-  #   plotAllVariables("add", type, variable, sommap$clustering, 
-  #                    print.title, the.titles, is.scaled,
-  #                    sommap$parameters$the.grid, args)
   } else if (type=="words") {
     if (is.null(colnames(variable))) {
       stop("no colnames for 'variable'", call.=TRUE)
     }
-    plotAllVariables("add", type, variable, sommap$clustering, print.title,
-                     the.titles, is.scaled, sommap$parameters$the.grid, args)
+    ggplotFacet("add", type, variable, sommap$clustering, print.title, the.titles, 
+                is.scaled, sommap$parameters$the.grid, args)
+    # plotAllVariables("add", type, variable, sommap$clustering, print.title,
+    #                  the.titles, is.scaled, sommap$parameters$the.grid, args)
   # } else if (type=="names") {
   #   if (ncol(variable) != 1) {
   #     stop("for type='names', argument 'variable' must be a vector", call.=TRUE)
@@ -699,7 +634,6 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     }
     # case of pie
     if (pie.graph) {
-      print("ok")
       if (is.null(pie.variable)) 
         stop("pie.graph is TRUE, you must supply argument 'pie.variable'\n", 
              call.=TRUE)
@@ -759,7 +693,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' @param print.title Boolean used to indicate whether each neuron should have a
 #' title or not. Default value is \code{FALSE}. It is feasible on the following 
 #' cases: all \code{"color"} types, all \code{"lines"} types, all 
-#' \code{"barplot"} types, all \code{"radar"} types, all \code{"boxplot"} types,
+#' \code{"barplot"} types, all \code{"boxplot"} types,
 #' all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 #' \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.
 #' @param the.ti tles The titles to be printed for each neuron if 
@@ -794,7 +728,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                                     "prototypes"="color",
                                     "add"="pie",
                                     "energy"=NULL),
-                        variable = if (what=="add") NULL else 1:ncol(x$data),
+                        variable = if (what=="add" | type=="names") NULL else 1:ncol(x$data),
                         my.palette=NULL, 
                         is.scaled = if (x$parameters$type=="numeric") TRUE else
                           FALSE,
