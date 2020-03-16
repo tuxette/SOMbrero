@@ -9,7 +9,7 @@
 \usage{
 initSOM(
   dimension = c(5, 5),
-  topo = c("square"),
+  topo = c("square", "hexagonal"),
   radius.type = c("gaussian", "letremy"),
   dist.type = switch(match.arg(radius.type), letremy = "letremy", gaussian =
     "euclidean"),

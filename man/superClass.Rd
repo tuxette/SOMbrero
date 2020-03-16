@@ -21,9 +21,8 @@ superClass(sommap, method, members, k, h, ...)
   type = c("dendrogram", "grid", "hitmap", "lines", "barplot", "boxplot", "mds",
     "color", "poly.dist", "pie", "graph", "dendro3d", "radar", "projgraph"),
   plot.var = TRUE,
-  plot.legend = FALSE,
   add.type = FALSE,
-  print.title = FALSE,
+  print.title = TRUE,
   the.titles = paste("Cluster", 1:prod(x$som$parameters$the.grid$dim)),
   ...
 )
@@ -64,10 +63,6 @@ and surimpose the super-clusters over these plots.}
 the explained variance should be plotted. This argument is only used when 
 \code{type="dendrogram"}, its default value is \code{TRUE}.}
 
-\item{plot.legend}{A boolean indicating whether a legend should be added to 
-the plot. This argument is only used when \code{type} is either \code{"grid"} 
-or \code{"hitmap"} or \code{"mds"}. Its default value is \code{FALSE}.}
-
 \item{add.type}{A boolean, which default value is \code{FALSE}, indicating 
 whether you are giving an additional variable to the argument \code{variable}
 or not. If you do, the function \code{\link{plot.somRes}} will be called with
@@ -87,6 +82,10 @@ must be equal to the number of rows in the original dataset processed by the
 SOM (case \code{"korresp"} is not handled by this function). In the projected
 graph, the vertices are positionned at the center of gravity of the 
 super-clusters (more details in the section \strong{Details} below).}
+
+\item{plot.legend}{A boolean indicating whether a legend should be added to 
+the plot. This argument is only used when \code{type} is either \code{"grid"} 
+or \code{"hitmap"} or \code{"mds"}. Its default value is \code{FALSE}.}
 }
 \value{
 The \code{superClass} function returns an object of class 

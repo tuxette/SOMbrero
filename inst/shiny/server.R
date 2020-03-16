@@ -317,8 +317,11 @@ shinyServer(function(input, output, session) {
         tmp.var <- input$somplotvar
       }
       if(input$somplottype == 'boxplot' || input$somplottype == 'barplot' || 
-         input$somplottype == 'lines'  || input$somplottype == 'radar'){
+         input$somplottype == 'lines'){
         tmp.var <- input$somplotvar2
+      }
+      if(input$somplottype == 'names'){
+        tmp.var <- "row.names"
       }
       plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
                       variable=tmp.var, print.title=input$somplottitle,
@@ -343,13 +346,13 @@ shinyServer(function(input, output, session) {
     if (is.null(dInput()) | is.null(RVserver.env$current.som))
       return(NULL)
     if (input$superclassbutton==0) {
-      superClass(sommap=RVserver.env$current.som)
+      superClass(sommap=RVserver.env$current.som, method=input$scmethod)
     } else {
       isolate(switch(input$sc.cut.choice, 
                      "Number of superclasses"=
-                       superClass(sommap=RVserver.env$current.som, k=input$sc.k),
+                       superClass(sommap=RVserver.env$current.som, k=input$sc.k, method=input$scmethod),
                      "Height in dendrogram"=
-                       superClass(sommap=RVserver.env$current.som, h=input$sc.h)))
+                       superClass(sommap=RVserver.env$current.som, h=input$sc.h, method=input$scmethod)))
     }
     
   })
@@ -405,8 +408,10 @@ shinyServer(function(input, output, session) {
   
   # Update SuperClass plot
   output$somplotscdendro <- renderPlot({
-    if(is.null(dInput()))
-      return(NULL)
+    validate(need(is.null(dInput)==F, "First load data (cf 'Self-Organize' tab)"))
+    validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained"))
+    # if(is.null(dInput()))
+    #   return(NULL)
     plot(computeSuperclasses(), type="dendrogram")
   })
   
@@ -430,19 +435,15 @@ shinyServer(function(input, output, session) {
     if (input$somtype =="korresp")
       tmp.view <- input$scplotrowcol
     
-    if (input$scplottype =="radar") {
-      plot(x=the.sc, what=input$scplotwhat, type=input$scplottype,
-                  variable=input$scplotvar, view=tmp.view, key.loc=c(-1,2),
-                  mar=c(0,10,2,0))
-    } else { 
-      if (input$scplottype =="boxplot") {
+      if (input$scplottype =="boxplot" || input$scplottype == 'barplot' || 
+          input$scplottype == 'lines') {
         tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
                                                 input$scplotvar2]
       } else tmp.var <- input$scplotvar
       
       plot(x = the.sc, what = input$scplotwhat, type = input$scplottype,
-           variable = tmp.var, view = tmp.view, plot.legend = TRUE)
-    }
+           variable = tmp.var, view = tmp.view, plot.legend=T)
+    # }
   })
 
   #### Panel 'Combine with additional data'
@@ -535,12 +536,9 @@ shinyServer(function(input, output, session) {
       tmp.var <- input$addplotvar
     } else tmp.var <- input$addplotvar2
     
-    if(input$addplottype =="radar") {
+    if (input$addplottype !="graph") {
       plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
-           variable=d.input[,tmp.var], key.loc=c(-1,2), mar=c(0,10,2,0))
-    } else if (input$addplottype !="graph") {
-      plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
-           variable=d.input[,tmp.var])
+            variable=data.frame(d.input[,tmp.var]))
     } else {
       adjBin <- as.matrix(d.input!=0)
       tmpGraph <- graph.adjacency(adjBin, mode="undirected")

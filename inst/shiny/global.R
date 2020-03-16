@@ -4,11 +4,9 @@
 library(shinycssloaders) # for the loader of the summary
 library(shinyBS)  # for bsCollapse
 library(shinyjs) # Version hide/show/toggle
-library(shinycssloaders)
 library(shinyjqui)
-library(shinyWidgets)
+library(gridExtra)
 library(SOMbrero) # Version 0.4
-library(plotly)
 
 jscode <- "
 shinyjs.refocus = function() {
@@ -53,9 +51,9 @@ all.somplot.types <- list("numeric"=
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",
-                                        "MDS"="mds", "radar"),
+                                        "MDS"="mds"),
                                  "obs"=c("hitmap", "color", "lines", "barplot", 
-                                         "names", "boxplot", "radar"),
+                                         "names", "boxplot"),
                                  "energy"="Energy of backups"),
                           
                           "korresp"=
@@ -64,7 +62,7 @@ all.somplot.types <- list("numeric"=
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",
-                                        "MDS"="mds", "radar"),
+                                        "MDS"="mds"),
                                  "obs"=c("hitmap", "names"),
                                  "energy"="Energy of backups"),
                           
@@ -74,7 +72,7 @@ all.somplot.types <- list("numeric"=
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",
-                                        "MDS"="mds", "radar"),
+                                        "MDS"="mds"),
                                  "obs"=c("hitmap", "names"),
                                  "energy"="Energy of backups"))
 
@@ -83,20 +81,20 @@ all.scplot.types <- list("numeric"=
                                   list("grid", "dendrogram", "dendro3d", "color",
                                        "lines", "barplot", 
                                        "polygon distances"="poly.dist",
-                                       "MDS"="mds", "radar"),
+                                       "MDS"="mds"),
                                 "obs"=c("hitmap", "color", "lines", "barplot", 
-                                        "boxplot", "radar", "grid")),
+                                        "boxplot", "grid")),
                          "korresp"=
                            list("prototypes"=
                                   list("grid", "dendrogram", "color", "lines", 
                                        "barplot", 
                                        "polygon distances"="poly.dist",
-                                       "MDS"="mds", "radar", "dendro3d"),
+                                       "MDS"="mds", "dendro3d"),
                                 "obs"="hitmap"),
                          "relational"=
                            list("prototypes"=
                                   list("grid", "dendrogram", "lines", "barplot", 
                                        "polygon distances"="poly.dist",
-                                       "MDS"="mds", "radar", "dendro3d"),
+                                       "MDS"="mds",  "dendro3d"),
                                 "obs"="hitmap"))
 

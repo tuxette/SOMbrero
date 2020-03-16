@@ -81,13 +81,20 @@
 #' @import igraph
 #' @import RColorBrewer
 #' @import shiny
-#' 
+#' @import ggplot2
+#' @import shinycssloaders
+#' @import shinyBS
+#' @import shinyjs
+#' @import shinyjqui
 #' @importFrom grDevices cm.colors heat.colors rainbow
 #' @importFrom graphics abline box layout legend par plot plot.new polygon rect
 #' @importFrom graphics text title
 #' @importFrom stats aov as.dist chisq.test cmdscale cutree dist hclust pf
-#' @importFrom stats princomp quantile rect.hclust runif sd
+#' @importFrom stats princomp quantile rect.hclust runif sd aggregate
 #' @importFrom scatterplot3d scatterplot3d
-#' @importFrom wordcloud wordcloud
+#' @importFrom reshape2 melt
+#' @importFrom ggwordcloud geom_text_wordcloud
+#' @importFrom metR geom_contour_fill	
+#' @importFrom gridExtra grid.arrange	
 
 NULL

@@ -8,8 +8,7 @@
   x,
   what = c("obs", "prototypes", "energy", "add"),
   type = switch(what, obs = "hitmap", prototypes = "color", add = "pie", energy = NULL),
-  variable = if (what == "add") NULL else if (type == "boxplot") 1:min(5, ncol(x$data))
-    else 1,
+  variable = if (what == "add" | type == "names") NULL else 1:ncol(x$data),
   my.palette = NULL,
   is.scaled = if (x$parameters$type == "numeric") TRUE else FALSE,
   print.title = FALSE,
@@ -58,9 +57,6 @@ cases: all \code{"color"} types, all \code{"lines"} types, all
 all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.}
 
-\item{the.titles}{The titles to be printed for each neuron if 
-\code{print.title=TRUE}. Default to a number which identifies the neuron.}
-
 \item{proportional}{Boolean used when \code{what="add"} and 
 \code{type="pie"}. It indicates if the pies should be proportional to the 
 number of observations in the class. Default value is \code{TRUE}.}
@@ -81,6 +77,9 @@ indicates whether rows (\code{"r"}) or columns (\code{"c"}) must be drawn.}
 (which can be \code{\link{plot}}, \code{\link{barplot}}, \code{\link{pie}}...
 depending on \code{type}; see \code{\link{somRes.plotting}} for further
 details).}
+
+\item{the.ti}{tles The titles to be printed for each neuron if 
+\code{print.title=TRUE}. Default to a number which identifies the neuron.}
 }
 \description{
 Produce graphics to help interpreting a \code{somRes} object.
