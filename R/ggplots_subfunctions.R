@@ -78,7 +78,7 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
         geom_bin2d(stat="identity", linetype=1, color="grey")
     } else {
       tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname))) + 
-        geom_hex(stat="binhex", position="identity", linetype=1, color="grey") 
+        geom_hex(stat="identity", linetype=1, color="grey") 
     }
   }
 
@@ -111,7 +111,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   # Axes labels 
   ################################################
   vary <- "values"
-  if(!(type %in% c("names", "words")))  {
+  if(!(type %in% c("names", "words", "pie")))  {
     if(is.scaled==T){
       values <- scale(values, is.scaled, is.scaled)
       vary <- "scaled_values"
@@ -131,8 +131,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
       labely <- paste("frequency of", args$variable, "values")
     }
   }
-  
-
 
   # Data (ggplot way)
   ################################################
@@ -187,8 +185,9 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
       labs(fill = labely)
   }
   if(type == "pie"){
-    tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, fill=labelcolor)) +
-      geom_boxplot() 
+    # TODO : taille des pie (proportionnelle au nb d'observations)
+    tp <- ggplot(dataplot, aes_string(x = factor(1), fill=vary)) +
+      geom_bar(width = 1, position = "fill") + coord_polar("y", start=0)
   }
   # Handling of the grid order
   tp <- tp + facet_wrap(factor(SOMclustering, levels=ordered.index, labels=the.titles[ordered.index]) ~ ., 
@@ -203,4 +202,47 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
                      strip.text = element_blank())
   }
   return(tp)
+}
+
+
+ggplotPolydist <- function(values, clustering, print.title,
+                           the.titles, the.grid){
+  maxi <- max(unlist(values))
+  # Distance on the grid (min distance beween polygons = 1 --> 0.5 for each polygon)
+  values <- lapply(values, function(x) 0.429*((maxi-x)/maxi+0.05))
+  
+  coords_dist <- lapply(1:length(values), function(x) coords_polydist(x, values, the.grid))
+  coords_dist <- data.frame(do.call("rbind", coords_dist))
+  nbclus <- data.frame(table(clustering), 
+                       stringsAsFactors = F)
+  colnames(nbclus) <- c("id", "Nb_individuals")
+  
+  coords_dist$numrow <- rownames(coords_dist)
+  coords_dist <- merge(coords_dist, nbclus, by="id", all.x=T, sort=F)
+  coords_dist <- coords_dist[order(coords_dist$numrow),]
+  coords_dist[is.na(coords_dist$Nb_individuals),]$Nb_individuals <- 0
+  
+  p <- ggplot(coords_dist, aes(x = x, y = y)) +
+    geom_polygon(data=coords_dist, aes(fill = Nb_individuals, group = id)) + 
+    coord_fixed()
+  if(print.title==T){
+    datagrid <- data.frame(the.grid$coord, the.titles)
+    p <- p + geom_text(data=datagrid, aes(x=x, y=y, label=the.titles, fill=NULL))
+  }
+  p
+}
+
+
+
+ggplotEnergy <- function(sommap) {
+  # possible only if some intermediate backups have been done
+  if (is.null(sommap$backup)) {
+    stop("no intermediate backups have been registered\n", call.=TRUE)
+  } else {
+    dataenergy <- data.frame("Steps" = sommap$backup$steps, "Energy" = sommap$backup$energy)
+    p <- ggplot(dataenergy, aes(x=Steps, y=Energy)) + 
+      geom_line() + geom_point() + 
+      ggtitle("Energy evolution") 
+    p
+  }
 }
