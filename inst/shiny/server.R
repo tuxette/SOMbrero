@@ -46,13 +46,7 @@ shinyServer(function(input, output, session) {
 
   #### Panel 'Import data'
   ##############################################################################
-
-  # observe({
-  #   if(length(dataframes)>0){
-  #     updateSelectInput(session, inputId="file1envir", choices=dataframes)
-  #   }
-  # })
-
+  
   observeEvent(input$loaddatabutton, {
     val$data <- get(input$file1envir, envir = .GlobalEnv)
   }, ignoreInit=T)
@@ -176,16 +170,22 @@ shinyServer(function(input, output, session) {
 
   # update the distance option when input$radiustype is changed
   observe({
-    updateSelectInput(session, inputId="disttype", 
-                choices=switch(input$radiustype,
-                                "letremy"=c("letremy", "maximum", "euclidean",
-                                             "manhattan", "canberra", "binary",
-                                             "minkowski"),
-                                "gaussian"=c("maximum", "euclidean", 
-                                             "manhattan", "canberra", "binary",
-                                             "minkowski")),
-                selected=switch(input$radiustype, "letremy"="letremy",
-                                 "gaussian"="euclidean"))
+    if(input$topo!="hexagonal"){
+      updateSelectInput(session, inputId="disttype", label="Distance scaling:",
+                        choices=switch(input$radiustype,
+                                       "letremy"=c("letremy", "maximum", "euclidean",
+                                                   "manhattan", "canberra", "binary",
+                                                   "minkowski"),
+                                       "gaussian"=c("maximum", "euclidean", 
+                                                    "manhattan", "canberra", "binary",
+                                                    "minkowski")),
+                        selected=switch(input$radiustype, "letremy"="letremy",
+                                        "gaussian"="euclidean"))
+    } else {
+      updateSelectInput(session, inputId="disttype", label="Distance scaling (only euclidean authorized for hexagonal topology):",
+                        choices = "euclidean", selected="euclidean")
+    }
+    
   })
   
 
@@ -208,7 +208,32 @@ shinyServer(function(input, output, session) {
       updatePlotScVar() # update variable choice for sc plots
   })
 
-
+  observeEvent(input$trainbutton,{
+               
+               output$runcodesom <- renderText({
+                 if(is.null(input$file1)==F){
+                   namedata <- "data"
+                 } else {
+                   namedata <- input$file1envir
+                 }
+                 
+                 paste0("set.seed(", input$randseed, ")\n",
+                        "trainSOM(", namedata,
+                        "[,'", paste(input$varchoice, collapse="', '"), "'],\n",
+                        "type='", input$somtype, "', ",
+                        "topo='", input$topo, "', ",
+                        "dimension=, c(", input$dimx, ",", input$dimy, "),\n",
+                        "affectation='", input$affectation, "', ",
+                        "dist.type='", input$disttype, "', ",
+                        "maxit=", input$maxit, ", ", 
+                        "scaling='", input$scaling, "',\n",
+                        "init.proto='", input$initproto, "', ", 
+                        "nb.save=", input$nb.save, ", ",
+                        "radius.type='", input$radiustype, "'",
+                        "eps0=", input$eps0,
+                        ")\n\n\n")
+               })
+               
   # Render the summary of the SOM
   output$summary <- renderPrint({
     if (input$somtype=="") {
@@ -224,6 +249,7 @@ shinyServer(function(input, output, session) {
     }
     summary(RVserver.env$current.som)
   })
+  }, ignoreInit = T)
 
   observeEvent(RVserver.env$current.som, {
     if(is.null(RVserver.env$current.som)){
@@ -271,6 +297,7 @@ shinyServer(function(input, output, session) {
     updateTabsetPanel(session = session, inputId = "tabs", selected = "PlotMap")
     js$refocus()
   }) 
+  
   #### Panel 'Plot'
   ##############################################################################
   

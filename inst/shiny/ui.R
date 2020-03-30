@@ -111,23 +111,13 @@ shinyUI(
           )
         ),
         bsCollapsePanel(title = HTML("2. Data preparation"), value="bscoll2", style="success",
-    #       helpText(
-    #         p(
-    #           HTML(
-    #             "To run the application, import your data set using the
-    # import button below. Your data must be supplied in the form of a text/csv file.
-    # If the importation is done properly, a preview of the data is displayed below.
-    # When this is done proceed to the next step: self-organize a map."
-    #           )
-    #         )
-    #       ),
           uiOutput("texttypedata"),
           br(),
           fluidRow(
             column(3,
               bsCollapse(open='envir',
                 bsCollapsePanel(title=HTML('Choose from the environment/examples'), value="envir",
-                                selectInput('file1envir', 'Choose from the environment/examples', choices=dataframes),
+                                selectInput('file1envir', label=NULL, choices=dataframes),
                                 actionButton("loaddatabutton", "Load", class="btn-primary")
                                 ),
                 bsCollapsePanel(title=HTML('OR Choose CSV/TXT File'),
@@ -272,6 +262,7 @@ pseudo-random generators at
                  hidden(actionButton("nextplot", "Next : plot the SOM map", class="btn-primary")),
                  br(),
                  br(),
+                 verbatimTextOutput("runcodesom"),
                  withSpinner(verbatimTextOutput("summary")),
                  br(),
                  disabled(downloadButton("som.download", "Download the SOM file (rda)")),
