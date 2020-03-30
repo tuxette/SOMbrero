@@ -11,8 +11,6 @@ theme_set(theme_bw(base_size = 12) +
             )
 )
 
-
-
 ### Plots (ggplot2 version) grid-like : one graph using parameters$the.grid$coord as coordinates on the plan
 #############################################################################################
 ggplotGrid<- function(what, type, values, clustering, print.title,
@@ -149,7 +147,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
     colnames(dataplot)[match("varcolor", colnames(dataplot))] <- labelcolor
   }
 
-
   # Plot
   ################################################
   if(type == "barplot"){
@@ -197,7 +194,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
               geom_bar(position = "fill", stat="identity") + 
               coord_polar("y") + 
               theme(axis.text.x = element_blank())
-
   }
   # Handling of the grid order
   tp <- tp + facet_wrap(factor(SOMclustering, levels=ordered.index, labels=the.titles[ordered.index]) ~ ., 
@@ -213,7 +209,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   }
   return(tp)
 }
-
 
 ggplotPolydist <- function(values, clustering, print.title,
                            the.titles, the.grid){
@@ -241,7 +236,6 @@ ggplotPolydist <- function(values, clustering, print.title,
   }
   p
 }
-
 
 
 ggplotEnergy <- function(sommap) {
