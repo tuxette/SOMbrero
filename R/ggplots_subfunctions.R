@@ -191,18 +191,19 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
     datatot <- aggregate(data=dataplot, Nbcluster ~ SOMclustering, sum)
     dataplot <- aggregate(data=dataplot, Nb ~ SOMclustering + values, sum)
     dataplot <- merge(dataplot, datatot, by="SOMclustering", all.x=T)
-    print(dataplot)
-    # See https://stackoverflow.com/questions/31507453/size-based-pie-chart-code-doesnt-work
-    tp <-  ggplot(dataplot, aes(x=Nbcluster/2, y=Nb, fill=values, width=Nbcluster)) +
+    dataplot$Share <- dataplot$Nb/dataplot$Nbcluster
+    
+    tp <-  ggplot(dataplot, aes(x=Nbcluster/2, y=Share, fill=values, width=Nbcluster)) +
               geom_bar(position = "fill", stat="identity") + 
               coord_polar("y") + 
               theme(axis.text.x = element_blank())
+
   }
   # Handling of the grid order
   tp <- tp + facet_wrap(factor(SOMclustering, levels=ordered.index, labels=the.titles[ordered.index]) ~ ., 
                         drop=FALSE, 
                         nrow=the.grid$dim[2],
-                        dir = "h")
+                        dir = "h") +
              ggtitle(myTitle(args, what)) 
 
   # Clusters titles
