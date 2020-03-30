@@ -346,22 +346,7 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
   }
 }
 
-plotEnergy <- function(sommap, args) {
-  # possible only if some intermediate backups have been done
-  if (is.null(sommap$backup)) {
-    stop("no intermediate backups have been registered\n", call.=TRUE)
-  } else {
-    if (is.null(args$main))
-      args$main <- "Energy evolution"
-    if (is.null(args$ylab)) args$ylab <- "Energy"
-    if (is.null(args$xlab)) args$xlab <- "Steps"
-    if (is.null(args$type)) args$type <- "b"
-    if (is.null(args$pch)) args$pch <- "+"
-    args$x <- sommap$backup$steps
-    args$y <- sommap$backup$energy
-    do.call("plot",args)
-  }
-}
+
 
 projectFactor <- function(the.graph, clustering, the.factor, pie.color=NULL) {
 
