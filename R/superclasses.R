@@ -175,7 +175,9 @@ superClass <- function(sommap, method, members, k, h,...) {
 
 superClass.somRes <- function(sommap, method="ward.D", members=NULL, k=NULL,
                               h=NULL, ...) {
-  warning("'method=ward.D2' should not be used with this function because the current code implements the computation of squared distances.", call. = TRUE)
+  if (method == "ward.D2") {
+    warning("'method=ward.D2' should not be used with this function because the current code implements the computation of squared distances.", call. = TRUE)
+  }
   
   if (sommap$parameters$type=="relational") {
     the.distances <- protoDist(sommap, "complete")
