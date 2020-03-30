@@ -39,7 +39,7 @@ trainTheSom <- function(data, type, topo, dimx, dimy, affectation, disttype, max
   data <- data[, varnames]
   set.seed(rand.seed)
   trainSOM(data, topo=topo, dimension=c(dimx,dimy), affectation=affectation, 
-           dist.type=disttype, maxit=maxit, type=type, scaling=scaling, 
+           dist.type=disttype, maxit=maxit, type=type, scaling=scaling, eps0=eps0, 
            init.proto=init.proto, nb.save=nb.save, radius.type=radiustype)
 }
 

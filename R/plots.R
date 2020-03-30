@@ -14,33 +14,6 @@ orderIndexes <- function(the.grid, type) {
               sep="-"))
 }
 
-averageByCluster <- function(x,clustering,the.grid) {
-  mean.var <- matrix(NA,nrow=prod(the.grid$dim),ncol=ncol(x))
-  ne.neurons <- which(as.character(1:prod(the.grid$dim))%in%
-                        names(table(clustering)))
-  mean.var[ne.neurons,] <- matrix(unlist(by(x,clustering,colMeans)),
-                                  byrow=TRUE,ncol=ncol(x))
-  colnames(mean.var) <- colnames(x)
-  return(mean.var)
-}
-
-words2Freq <- function(words, clustering, the.grid, type) {
-  if (type=="names") {
-    freq.words <- matrix(0, ncol=length(unique(words)), nrow=prod(the.grid$dim))
-    all.tables <- by(words, clustering, table)
-    freq.words[as.numeric(sort(unique(clustering))),] <- matrix(unlist(
-      all.tables), ncol=length(unique(words)), byrow=TRUE)
-    colnames(freq.words) <- names(all.tables[[1]]) 
-  } else if (type=="words") {
-    freq.words <- matrix(0, ncol=ncol(words), nrow=prod(the.grid$dim))
-    freq.words[as.numeric(sort(unique(clustering))),] <- apply(words,2,
-                                                               function(word) {
-      by(word,clustering,sum)
-    })
-    colnames(freq.words) <- colnames(words)
-  }
-  return(freq.words)
-}
 
 paramGraph <- function(the.grid, print.title, type) {
   if (print.title) {
@@ -152,6 +125,14 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     stop("prototypes/", type, " plot is not available for 'relational'\n", 
          call.=TRUE)
   
+  if(type %in% c("3d", "color")){
+    if (length(variable)>1) {
+      warning("length(variable)>1, only first element will be considered\n", 
+              call.=TRUE, immediate.=TRUE)
+      variable <- variable[1]
+    }
+  }
+  
   if (type=="lines" || type=="barplot") {
     if (sommap$parameters$type=="korresp") {
       if (view=="r")
@@ -166,11 +147,6 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
                 sommap$parameters$the.grid, args)
   } else if (type=="color") {
     args$topo <- sommap$parameters$the.grid$topo
-    if (length(variable)>1) {
-      warning("length(variable)>1, only first element will be considered\n", 
-              call.=TRUE, immediate.=TRUE)
-      variable <- variable[1]
-    }
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if(view=="r"){
         tmp.var <- rownames(sommap$data)[variable]
@@ -178,38 +154,25 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     } else if (sommap$parameters$type=="numeric" & (is.numeric(variable))) {
         tmp.var <- colnames(sommap$data)[variable]
     } else tmp.var <- variable
+    args$variable <- tmp.var
     ggplotGrid("prototypes", "color", sommap$prototypes[,tmp.var], 
                as.numeric(rownames(sommap$prototypes)), print.title, the.titles, 
-               is.scaled, sommap$parameters$the.grid, args, tmp.var)
+               is.scaled, sommap$parameters$the.grid, args)
   } else if (type=="3d") {
-    if (length(variable)>1) {
-      warning("length(variable)>1, only first element will be considered\n", 
-              call.=TRUE, immediate.=TRUE)
-      variable <- variable[1]
-    }
+    tmp.var <- variable
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
-      if (view=="r") 
-        tmp.var <- variable+ncol(sommap$data)
-      else 
-        tmp.var <- variable
-    } else
-      tmp.var <- variable
-    # mattmp <- cbind("x"=sommap$parameters$the.grid$coord[,1], "y"=sommap$parameters$the.grid$coord[,2], "z"=sommap$prototypes[,1])
-    # mattmp <- as.matrix(reshape(data.frame(mattmp), idvar ="y", timevar="x", direction="wide"))
+      if (view=="r") tmp.var <- variable+ncol(sommap$data)
+    }
     plot3d(sommap$prototypes, sommap$parameters$the.grid, type, tmp.var, args)
-    # plot_ly(x=unique(sommap$parameters$the.grid$coord[,1]),
-    #         y=unique(sommap$parameters$the.grid$coord[,2]),
-    #         z=matrix(sommap$prototypes[,tmp.var], nrow=sommap$parameters$the.grid$dim[2])) %>% add_surface()
   } else if (type=="poly.dist") {
     values <- protoDist(sommap, "neighbors")
-
     if (sommap$parameters$type=="relational") {
       if (sum(unlist(values)<0)>0) {
         stop("Impossible to plot 'poly.dist'!", call.=TRUE)
       } else values <- lapply(values,sqrt)
     }
     ggplotPolydist(values, sommap$clustering, print.title,
-                               the.titles, sommap$parameters$the.grid)
+                               the.titles, sommap$parameters$the.grid, args)
   } else if (type=="umatrix" || type=="smooth.dist") {
     args$topo <- sommap$parameters$the.grid$topo
     values <- protoDist(sommap, "neighbors")
@@ -222,18 +185,19 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     values <- unlist(lapply(values,mean))
     if (type=="umatrix") {
       args$labelcolor <- "umatrix\nbetween\nprototypes"
-      ggplotGrid("prototypes", "color", values, as.numeric(rownames(sommap$prototypes)), 
+      args$variable <- variable
+      ggplotGrid("prototypes", "color", values, as.numeric(as.character(rownames(sommap$prototypes))), 
                  print.title, the.titles, 
-                 is.scaled, sommap$parameters$the.grid, args, variable)
+                 is.scaled, sommap$parameters$the.grid, args)
     } else {
       if(args$topo=="hexagonal"){
-        warning("Not well handled for hexagonal topograpy... imputing missing values to make a full squared grid\n", call.=TRUE, 
+        warning("Hexagonal topograpy: imputing missing values to make a full squared grid\n", call.=TRUE, 
                 immediate.=TRUE)
       }
-      dattmp <- data.frame(cbind("x"=sommap$parameters$the.grid$coord[,1],
+      dataplot <- data.frame(cbind("x"=sommap$parameters$the.grid$coord[,1],
                                  "y"=sommap$parameters$the.grid$coord[,2],
                                  "z"=values))
-      ggplot(data=dattmp, aes(x=x, y=y, z=z)) + geom_contour_fill(na.fill = TRUE) + 
+      ggplot(data=dataplot, aes(x=x, y=y, z=z)) + metR::geom_contour_fill(na.fill = TRUE) + 
       labs(title="Distances between prototypes") + scale_fill_distiller(palette="PRGn")
     }
   } else if (type=="mds") {
@@ -267,13 +231,12 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
        the.distances <- the.distances[lower.tri(the.distances)]
      }
     } else the.distances <- dist(sommap$prototypes)
-    
-    if (is.null(args$col)) args$col <- "black"
-    if (is.null(args$cex)) args$fill <- "#3F007D"
     dataplot <- data.frame("x" = as.vector(the.distances), 
                            "y" = as.vector(dist(sommap$parameters$the.grid$coord)))
-    ggplot(dataplot, aes(x=x, y=y)) + geom_point(shape=21, alpha=0.7, size=1) +
-      labs(x="prototype distances", y="grid distances", title="Distances between protoypes (input space vs. grid)")
+    ggplot(dataplot, aes(x=x, y=y)) + 
+      geom_point(shape=21, alpha=0.7, size=1) +
+      labs(x="prototype distances", y="grid distances", 
+           title="Distances between protoypes (input space vs. grid)")
   } else stop("Sorry: this type is still to be implemented.", call.=TRUE)
 }
 
@@ -340,9 +303,10 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
     }  else if (type=="hitmap") {
       values <- sommap$clustering
     }
+    args$variable <- variable
     ggplotGrid("obs", type, values, sommap$clustering,
                print.title, the.titles, is.scaled,
-               sommap$parameters$the.grid, args, variable)
+               sommap$parameters$the.grid, args)
   }
 }
 
@@ -394,7 +358,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     pie.variable, args) {
   ## types : pie, color, lines, boxplot, names, words, graph, barplot
   # to be implemented: graph
-  
+
   # default value is type="pie"
   if (!is.element(type,c("pie", "color", "lines", "barplot", "words",
                          "boxplot", "names", "graph"))) {
@@ -418,59 +382,20 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   args$topo <- sommap$parameters$the.grid$topo
   
   # switch between different types
-  if (type=="pie") {
+  if(type %in% c("pie", "lines", "barplot", "boxplot", "names", "words")){
     args$topo <- NULL
-    ggplotFacet("add", type, values=as.factor(variable), sommap$clustering, print.title, the.titles, 
-                is.scaled, sommap$parameters$the.grid, args)
-    # if (!is.factor(variable)) variable <- as.factor(variable)
-    # cluster.freq <- tapply(variable,sommap$clustering,table)
-    # cluster.size <- table(sommap$clustering)
-    # par(paramGraph(sommap$parameters$the.grid, print.title, "pie"))
-    # ordered.index <- orderIndexes(sommap$parameters$the.grid, type)
-    # for (ind in ordered.index) {
-    #   cur.cluster.vect.full <- cluster.freq[[as.character(ind)]]
-    #   if (!is.null(cur.cluster.vect.full)) {
-    #     cur.cluster.vect <- cur.cluster.vect.full[cur.cluster.vect.full>0]
-    #     cur.args <- args
-    #     cur.args$x <- cur.cluster.vect
-    #     if (print.title) {
-    #       cur.args$main <- the.titles[ind]
-    #     } else cur.args$main <- NULL
-    #     if (is.null(args$col)) {
-    #       cur.args$col <- rainbow(nlevels(variable))[cur.cluster.vect.full>0]
-    #     } else cur.args$col <- args$col[cur.cluster.vect.full>0]
-    #     if (is.null(args$labels)) {
-    #       cur.args$labels <- levels(variable)[cur.cluster.vect.full>0]
-    #     } else cur.args$labels <- args$labels[cur.cluster.vect.full>0]
-    #     if (proportional) {
-    #       cur.args$radius=0.9*s.radius*sqrt(cluster.size[as.character(ind)]/
-    #                                         max(cluster.size))
-    #     } else {
-    #       if (is.null(args$radius)) cur.args$radius <- 0.7
-    #     }
-    #     do.call("pie",cur.args)
-    #   } else plot(1, type="n", bty="n", axes=FALSE)
-    # }
-    # if (is.null(args$main)) {
-    #   title(main="Additional variable distribution", outer=TRUE)
-    # } else title(args$main, outer=TRUE)
-    # par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
-  }  else if (type %in% c("lines", "barplot", "boxplot", "names")){
-    if(type=="names"){
-      args$variable <- colnames(variable)
-      print(args$variable)
+    if(type == "pie") variable <- as.factor(variable)
+    if(type == "names") args$variable <- colnames(variable)
+    if (type=="words") {
+      if (is.null(colnames(variable))) {
+        stop("no colnames for 'variable'", call.=TRUE)
+      }
     }
-     ggplotFacet("add", type, values=variable, sommap$clustering, print.title, the.titles, 
-                 is.scaled, sommap$parameters$the.grid, args)
-  }  else if (type %in% c("color")){
-      ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
+    ggplotFacet("add", type, values=variable, sommap$clustering, print.title, the.titles, 
                 is.scaled, sommap$parameters$the.grid, args)
-  } else if (type=="words") {
-    if (is.null(colnames(variable))) {
-      stop("no colnames for 'variable'", call.=TRUE)
-    }
-    ggplotFacet("add", type, variable, sommap$clustering, print.title, the.titles, 
-                is.scaled, sommap$parameters$the.grid, args)
+  } else if(type == "color"){
+    ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
+               is.scaled, sommap$parameters$the.grid, args)
   } else if (type=="graph") {
     # controls
     if (!is_igraph(variable)){

@@ -14,11 +14,14 @@ theme_set(theme_bw(base_size = 12) +
 ### Plots (ggplot2 version) grid-like : one graph using parameters$the.grid$coord as coordinates on the plan
 #############################################################################################
 ggplotGrid<- function(what, type, values, clustering, print.title,
-                           the.titles, is.scaled=F, the.grid, args=NULL, variable=1){
+                           the.titles, is.scaled=F, the.grid, args=NULL){
   
   # Axes labels 
   ################################################
-  
+  variable <- args$variable
+  if(is.null(args$variable)){
+    variable <- colnames(values)[1]
+  }
   if(is.null(args$labelcolor)){
     if(is.null(args$sc) | type=="color"){
       if(type=="hitmap"){
@@ -71,6 +74,7 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
   
   if(type=="grid"){
     dataplot<- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
+    print(dataplot)
     if(args$topo == "square"){
       tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname))) + 
         geom_bin2d(stat="identity", linetype=1, color="grey")
@@ -151,7 +155,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   ################################################
   if(type == "barplot"){
     tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, fill=labelcolor)) +
-      geom_bar(stat='summary', fun.y=mean) + ylab(labely) 
+      geom_bar(stat='summary', fun=mean) + ylab(labely) 
   }
   if(type == "boxplot"){
     tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, fill=labelcolor)) +
@@ -159,11 +163,11 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   }
   if(type == "lines"){
     tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, group=1, colour=labelcolor)) +
-      geom_point(stat='summary', fun.y=mean) + ylab(labely) 
+      geom_point(stat='summary', fun=mean) + ylab(labely) 
     if(is.null(args$sc)){
-      tp <- tp + stat_summary(fun.y=mean, geom="line", colour="black")
+      tp <- tp + stat_summary(fun=mean, geom="line", colour="black")
     } else {
-      tp <- tp + stat_summary(fun.y=mean, geom="line", mapping = aes_string(colour=labelcolor), show.legend = F)
+      tp <- tp + stat_summary(fun=mean, geom="line", mapping = aes_string(colour=labelcolor), show.legend = F)
       print("tt")
     }
   }
@@ -182,7 +186,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
       labs(fill = labely)
   }
   if(type == "pie"){
-    # TODO : taille des pie (proportionnelle au nb d'observations)
     dataplot$Nb <- 1
     dataplot$Nbcluster <- 1
     datatot <- aggregate(data=dataplot, Nbcluster ~ SOMclustering, sum)
@@ -193,7 +196,9 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
     tp <-  ggplot(dataplot, aes(x=Nbcluster/2, y=Share, fill=values, width=Nbcluster)) +
               geom_bar(position = "fill", stat="identity") + 
               coord_polar("y") + 
-              theme(axis.text.x = element_blank())
+              theme(axis.text.x = element_blank()) + 
+              ylab(NULL) + xlab("Number of individuals in the cluster") + 
+              guides(fill=guide_legend(title=labelcolor))
   }
   # Handling of the grid order
   tp <- tp + facet_wrap(factor(SOMclustering, levels=ordered.index, labels=the.titles[ordered.index]) ~ ., 
@@ -211,25 +216,34 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
 }
 
 ggplotPolydist <- function(values, clustering, print.title,
-                           the.titles, the.grid){
+                           the.titles, the.grid, args=NULL){
   maxi <- max(unlist(values))
   # Distance on the grid (min distance beween polygons = 1 --> 0.5 for each polygon)
   values <- lapply(values, function(x) 0.429*((maxi-x)/maxi+0.05))
   
   coords_dist <- lapply(1:length(values), function(x) coords_polydist(x, values, the.grid))
   coords_dist <- data.frame(do.call("rbind", coords_dist))
-  nbclus <- data.frame(table(clustering), 
-                       stringsAsFactors = F)
-  colnames(nbclus) <- c("id", "Nb_individuals")
+  
+  if(is.null(args$sc)){
+    labelcolor <- "Nb_observations"
+    datacolor <- data.frame(table(clustering), stringsAsFactors = F)
+    colnames(datacolor) <- c("id", "varcolor")
+  } else {
+    labelcolor <- "Super_Clusters"
+    datacolor <- data.frame("id"=1:length(args$sc), "varcolor" = as.character(args$sc))
+  }
   
   coords_dist$numrow <- rownames(coords_dist)
-  coords_dist <- merge(coords_dist, nbclus, by="id", all.x=T, sort=F)
+  coords_dist <- merge(coords_dist, datacolor, by="id", all.x=T, sort=F)
   coords_dist <- coords_dist[order(coords_dist$numrow),]
-  coords_dist[is.na(coords_dist$Nb_individuals),]$Nb_individuals <- 0
+  if(is.null(args$sc)){
+    coords_dist$varcolor <- ifelse(is.na(coords_dist$varcolor), 0, coords_dist$varcolor)
+  }
   
   p <- ggplot(coords_dist, aes(x = x, y = y)) +
-    geom_polygon(data=coords_dist, aes(fill = Nb_individuals, group = id)) + 
-    coord_fixed()
+    geom_polygon(data=coords_dist, aes(fill = varcolor, group = id)) + 
+    coord_fixed()  + 
+    guides(fill=guide_legend(title=labelcolor))
   if(print.title==T){
     datagrid <- data.frame(the.grid$coord, the.titles)
     p <- p + geom_text(data=datagrid, aes(x=x, y=y, label=the.titles, fill=NULL))

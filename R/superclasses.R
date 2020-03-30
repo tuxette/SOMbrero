@@ -57,9 +57,6 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' @param plot.var A boolean indicating whether a graph showing the evolution of
 #' the explained variance should be plotted. This argument is only used when 
 #' \code{type="dendrogram"}, its default value is \code{TRUE}.
-#' @param plot.legend A boolean indicating whether a legend should be added to 
-#' the plot. This argument is only used when \code{type} is either \code{"grid"} 
-#' or \code{"hitmap"} or \code{"mds"}. Its default value is \code{FALSE}.
 #' @param add.type A boolean, which default value is \code{FALSE}, indicating 
 #' whether you are giving an additional variable to the argument \code{variable}
 #' or not. If you do, the function \code{\link{plot.somRes}} will be called with
@@ -165,7 +162,7 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' sc <- superClass(my.som, k=4)
 #' summary(sc)
 #' plot(sc)
-#' plot(sc, type="hitmap", plot.legend=TRUE)
+#' plot(sc, type="hitmap")
 
 superClass <- function(sommap, method, members, k, h,...) {
   UseMethod("superClass")
@@ -288,7 +285,7 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
   # TODO: add types "names" and "words"
   args <- list(...)
   type <- match.arg(type)
-  
+
   if (type=="dendrogram") {
     args$x <- x$tree
     print(plot.var)
@@ -312,19 +309,23 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
                   (does not fit the number of super-clusters);
                   using the default palette.\n", call.=TRUE, immediate.=TRUE)
         # create a color vector from RColorBrewer palette
-        clust.col.pal <- brewer.pal(max(x$cluster), "Set2")
+        nbclust <- max(x$cluster)
+        if(nbclust<=9){
+          clust.col.pal <- brewer.pal(nbclust, "Set2")
+        } else {
+          clust.col.pal <- rainbow(nbclust)
+        }
         clust.col <- clust.col.pal[x$cluster]
       }
       rect.hclust(x$tree, k = max(x$cluster), cluster = x$cluster,
                   border = clust.col.pal[unique(x$cluster[x$tree$order])])
       legend("topright", col = clust.col.pal, pch = 19, 
-             legend = paste("SC", 1:max(x$cluster)), cex = 0.7)
+             legend = paste("SC", 1:nbclust), cex = 0.7)
     } else warning("Impossible to plot the rectangles: no super clusters.\n",
                    call.=TRUE, immediate.=TRUE)
-    #par(mfrow=c(1,1), oma=c(0,0,0,0), mar=c(5, 4, 4, 2)+0.1)
   } else if (type=="dendro3d") {
     if (length(x)==3) {
-      if ((!is.null(args$col))&(length(args$col)==max(x$cluster))) {
+      if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
         clust.col.pal <- args$col
         clust.col <- args$col[x$cluster]
       } else {
@@ -433,6 +434,8 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
         args$print.title <- print.title
         if(type %in% c("lines", "barplot", "boxplot")){
           args$the.titles <- the.titles
+        } else if(type=="poly.dist"){
+          args$print.title <- F
         } else {
           args$the.titles <- paste("SC", x$cluster)
         }
@@ -446,12 +449,6 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
           args$varcolor <- x$cluster
           args$sc <-  x$cluster
         }
-        
-       if(is.null(args$plot.legend)) {
-         plot.legend=F
-       } else {
-         plot.legend <- args$plot.legend
-       }
       
        do.call("plot.somRes", args)
       } else if (type=="projgraph") {
@@ -484,13 +481,6 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
           args$vertex.color <- brewer.pal(max(x$cluster), "Set2")
           args$vertex.frame.color <- brewer.pal(max(x$cluster), "Set2")
         }
-
-        # if (plot.legend) {
-        #   layout(matrix(c(2,2,1),ncol=3))
-        #   plot.new()
-        #   legend(x="center", legend=paste("Super cluster", 1:max(x$cluster)),
-        #          col=args$vertex.color, pch=19)
-        # }
 
         # case of pie
         if (is.null(args$pie.graph)) args$pie.graph <- FALSE
