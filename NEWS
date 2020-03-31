@@ -1,3 +1,20 @@
+SOMbrero 1.2-5 --- Ajout Elise
+Fixed bugs:
+  eps0 parameter taken into account in shiny app
+  correct use of "what" parameter for superclasses plot
+  trainSOM run even if the model is non significant
+
+Improvements:
+  hexagonal topography
+  data from the environment can be loaded directly in the shiny application
+  3 examples data sets are loaded by default in the shiny app
+  code used in the app is print to ease reproducibility
+  
+Misc:
+  most of the plots are now in ggplot2
+  more intuitive shiny application
+
+********************************************************************************  
 SOMbrero 1.2-4
 Fixed bugs:
   changed unitary tests because of changes in RGN for devel

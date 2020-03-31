@@ -10,7 +10,7 @@ shinyServer(function(input, output, session) {
   #current.som <- NULL # this variable will contain the current SOM
   #current.table <- NULL
   
-  RVserver.env <- reactiveValues(current.som = NULL) # used to allocate in functions
+  RVserver.env <- reactiveValues(current.som = NULL, current.call = NULL) # used to allocate in functions
   val <- reactiveValues(data=NULL, dataadd=NULL)  
   
   #### Panel 'Self Organize' 
@@ -205,60 +205,45 @@ shinyServer(function(input, output, session) {
                                                     nb.save=input$nb.save,
                                                     radiustype=input$radiustype)
       
+    if(is.null(input$file1)==F){
+      namedata <- "data"
+    } else {
+      namedata <- input$file1envir
+    }
+    RVserver.env$current.call <- paste0("set.seed(", input$randseed, ")\n",
+                                         "trainSOM(", namedata,
+                                         "[,'", paste(input$varchoice, collapse="', '"), "'],\n",
+                                         "type='", input$somtype, "', ",
+                                         "topo='", input$topo, "', ",
+                                         "dimension=, c(", input$dimx, ",", input$dimy, "),\n",
+                                         "affectation='", input$affectation, "', ",
+                                         "dist.type='", input$disttype, "', ",
+                                         "maxit=", input$maxit, ", ", 
+                                         "scaling='", input$scaling, "',\n",
+                                         "init.proto='", input$initproto, "', ", 
+                                         "nb.save=", input$nb.save, ", ",
+                                         "radius.type='", input$radiustype, "', ",
+                                         "eps0=", input$eps0,
+                                         ")\n\n\n")
       updatePlotSomVar() # update variable choice for som plots
       updatePlotScVar() # update variable choice for sc plots
   })
-
+  
   output$runcodesom <- renderText({
-        validate(need(input$somplottype!="", "Choose a type of algorithm."))
+        validate(need(input$somtype!="", "Choose a type of algorithm."))
         validate(need(is.null(val$data)==F, "First import a dataset."))
         validate(need(input$trainbutton!=0, "Hit the Train button to train the map."))
-        validate(need(is.null(RVserver.env$current.som)==F, "Hit the Train button to train the map."))
-        
-        if (is.null(RVserver.env$current.som)) {
-          return("Hit the Train button to train the map.")
-        }
-        if(is.null(input$file1)==F){
-          namedata <- "data"
-        } else {
-          namedata <- input$file1envir
-        }
-        
-        paste0("set.seed(", input$randseed, ")\n",
-               "trainSOM(", namedata,
-               "[,'", paste(input$varchoice, collapse="', '"), "'],\n",
-               "type='", input$somtype, "', ",
-               "topo='", input$topo, "', ",
-               "dimension=, c(", input$dimx, ",", input$dimy, "),\n",
-               "affectation='", input$affectation, "', ",
-               "dist.type='", input$disttype, "', ",
-               "maxit=", input$maxit, ", ", 
-               "scaling='", input$scaling, "',\n",
-               "init.proto='", input$initproto, "', ", 
-               "nb.save=", input$nb.save, ", ",
-               "radius.type='", input$radiustype, "', ",
-               "eps0=", input$eps0,
-               ")\n\n\n")
+        validate(need(is.null(RVserver.env$current.call)==F, "Hit the Train button to train the map."))
+        RVserver.env$current.call
     })
 
   # Render the summary of the SOM
   # observeEvent(input$trainbutton,{
   output$summary <- renderPrint({
-    validate(need(input$somplottype!="", "Choose a type of algorithm."))
+    validate(need(input$somtype!="", "Choose a type of algorithm."))
     validate(need(is.null(val$data)==F, "First import a dataset."))
     validate(need(input$trainbutton!=0, "Hit the Train button to train the map."))
     validate(need(is.null(RVserver.env$current.som)==F, "Hit the Train button to train the map."))
-    if (input$somtype=="") {
-      return("Choose a type of algorithm.")
-    }
-    if (is.null(val$data))
-      return("First import a dataset.")
-    if (input$trainbutton==0) {
-      return("Hit the Train button to train the map.")
-    }
-    if (is.null(RVserver.env$current.som)) {
-      return("Hit the Train button to train the map.")
-    }
     summary(RVserver.env$current.som)
   })
 
