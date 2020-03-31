@@ -13,6 +13,10 @@ orderIndexes <- function(the.grid, type) {
               rep(1:the.grid$dim[2], the.grid$dim[1]),
               sep="-"))
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 23a5835a403de826631577d6bc9aa215d693c43e
 
 paramGraph <- function(the.grid, print.title, type) {
   if (print.title) {
@@ -93,10 +97,17 @@ coords_polydist <- function(ind, values, the.grid) {
   # Resolve angle, in radians
   poly.coord$angle <- atan2(poly.coord$y_delta, poly.coord$x_delta)
   poly.coord <- poly.coord[order(poly.coord$angle, decreasing = TRUE), ]
+<<<<<<< HEAD
 
   # Drop intermediate variables
   poly.coord[, c("x_delta", "y_delta", "angle")] <- NULL
 
+=======
+
+  # Drop intermediate variables
+  poly.coord[, c("x_delta", "y_delta", "angle")] <- NULL
+
+>>>>>>> 23a5835a403de826631577d6bc9aa215d693c43e
   poly.coord$id <- ind
   rownames(poly.coord) <- paste0(ind, ".", 1:nrow(poly.coord))
   

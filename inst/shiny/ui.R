@@ -276,7 +276,6 @@ pseudo-random generators at
       
       #### Panel 'Plot'
       #########################################################################
-
       tabPanel("Plot Map", value="PlotMap",
         h3("Plot the self-organizing map"),
         p(

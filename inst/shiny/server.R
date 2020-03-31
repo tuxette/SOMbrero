@@ -1,5 +1,4 @@
 ###############################################################################
-
 # Server
 shinyServer(function(input, output, session) {
 
@@ -31,7 +30,7 @@ shinyServer(function(input, output, session) {
       updateCollapse(session, "collapsestep1", open = "bscoll2")
     }
   })
-  
+
   ####### bsPanel 'Data preparation'
   ##############################################################################
 
