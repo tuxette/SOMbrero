@@ -286,10 +286,28 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
   args <- list(...)
   type <- match.arg(type)
 
+  # Colors (used only for dendrogram, dendro3d and )
+  if(is.null(x$cluster)==F){
+    nbclust <- max(x$cluster)
+    if ((!is.null(args$col)) & (length(args$col)==nbclust)) {
+      clust.col.pal <- args$col
+    } else {
+      if (!is.null(args$col))
+        warning("Incorrect number of colors
+                  (does not fit the number of super-clusters);
+                  using the default palette.\n", call.=TRUE, immediate.=TRUE)
+      if(nbclust<=9){
+        # create a color vector from RColorBrewer palette
+        clust.col.pal <- brewer.pal(nbclust, "Set2")
+      } else {
+        clust.col.pal <- rainbow(nbclust)
+      }
+    }
+    clust.col <- clust.col.pal[x$cluster]
+  }
+  
   if (type=="dendrogram") {
     args$x <- x$tree
-    print(plot.var)
-    print(x$tree$method)
     if (is.null(args$main)) args$main <- "Super-clusters dendrogram"
     if ((x$tree$method=="ward.D") & (plot.var)) {
       layout(matrix(c(2,2,1),ncol=3))
@@ -300,23 +318,6 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
       do.call("plot", args)
     } else do.call("plot", args)
     if (length(x)>2) {
-      if ((!is.null(args$col))&(length(args$col)==max(x$cluster))) {
-        clust.col.pal <- args$col
-        clust.col <- args$col[x$cluster]
-      } else {
-        if (!is.null(args$col))
-          warning("Incorrect number of colors
-                  (does not fit the number of super-clusters);
-                  using the default palette.\n", call.=TRUE, immediate.=TRUE)
-        # create a color vector from RColorBrewer palette
-        nbclust <- max(x$cluster)
-        if(nbclust<=9){
-          clust.col.pal <- brewer.pal(nbclust, "Set2")
-        } else {
-          clust.col.pal <- rainbow(nbclust)
-        }
-        clust.col <- clust.col.pal[x$cluster]
-      }
       rect.hclust(x$tree, k = max(x$cluster), cluster = x$cluster,
                   border = clust.col.pal[unique(x$cluster[x$tree$order])])
       legend("topright", col = clust.col.pal, pch = 19, 
@@ -324,20 +325,9 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
     } else warning("Impossible to plot the rectangles: no super clusters.\n",
                    call.=TRUE, immediate.=TRUE)
   } else if (type=="dendro3d") {
-    if (length(x)==3) {
-      if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
-        clust.col.pal <- args$col
-        clust.col <- args$col[x$cluster]
-      } else {
-        if (!is.null(args$col))
-          warning("Incorrect number of colors
-                  (does not fit the number of super-clusters);
-                  using the default palette.\n", call.=TRUE, immediate.=TRUE)
-        # create a color vector from RColorBrewer palette
-        clust.col.pal <- brewer.pal(max(x$cluster), "Set2")
-        clust.col <- clust.col.pal[x$cluster]
-      }
-    } else clust.col <- rep("black",prod(x$som$parameters$the.grid$dim))
+    if (length(x)<3) {
+      clust.col <- rep("black",prod(x$som$parameters$the.grid$dim))
+    } 
     # FIX IT! maybe some more code improvements...  
     x.y.coord <- x$som$parameters$the.grid$coord+0.5
     if (floor(max(x$tree$height[-which.max(x$tree$height)]))==0) {
@@ -364,20 +354,6 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
     if (length(x)<3) {
       stop("No super clusters: plot unavailable.\n")
     } else {
-      if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
-        clust.col.pal <- args$col
-        clust.col <- args$col[x$cluster]
-      } else {
-        if (!is.null(args$col))
-          warning("Incorrect number of colors
-                  (does not fit the number of super-clusters);
-                  using the default palette.\n", call.=TRUE, immediate.=TRUE)
-        # create a color vector from RColorBrewer palette
-        args$col <- brewer.pal(max(x$cluster), "Set2")
-        clust.col.pal <- brewer.pal(max(x$cluster), "Set2")
-        clust.col <- clust.col.pal[x$cluster]
-      }
-      
       if (type=="grid") {
         args$sc <- max(x$cluster)
         ggplotGrid("prototypes", type="grid", values=x$cluster, clustering=as.numeric(as.character(rownames(x$som$prototypes))), 
@@ -419,14 +395,22 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
         if(args$what=="add" & is.null(args$variable)) {
           stop("Specify the variable to plot")
         }
+        
         # manage argument 'what'
         if (!add.type) {
-          if (type %in% c("hitmap", "boxplot")) {
-            args$what <- "obs"
-          } else if (type%in%c("graph", "pie")) {
+          if (type%in%c("graph", "pie")) {
             args$what <- "add"
-          } else args$what <- "prototypes"
+          } 
         } else args$what <- "add"
+        
+        # # manage argument 'what'
+        # if (!add.type) {
+        #   if (type %in% c("hitmap", "boxplot")) {
+        #     args$what <- "obs"
+        #   } else if (type%in%c("graph", "pie")) {
+        #     args$what <- "add"
+        #   } else args$what <- "prototypes"
+        # } else args$what <- "add"
 
         args$type <- type
 
