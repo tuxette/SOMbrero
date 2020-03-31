@@ -431,7 +431,7 @@ plot can help you determine the adequate number of superclasses."
                                                    )
                                             ),
                                             column(9,
-                                                   jqui_resizable(plotOutput("scplot", width = '750px', height = '600px'))
+                                                   jqui_resizable(plotOutput("scplot", width = "750px", height = "600px"))
                                             )
                                           ),
                                           br(),

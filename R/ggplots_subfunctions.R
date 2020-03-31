@@ -74,13 +74,12 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
   
   if(type=="grid"){
     dataplot<- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
-    print(dataplot)
     if(args$topo == "square"){
       tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname))) + 
         geom_bin2d(stat="identity", linetype=1, color="grey")
     } else {
-      tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname))) + 
-        geom_hex(stat="identity", linetype=1, color="grey") 
+      tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname), group=1)) + 
+        geom_hex(stat="identity", linetype=1, color="grey")
     }
   }
 
