@@ -18,6 +18,7 @@ __This documentation only considers the case of contingency tables.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
 library(SOMbrero)
+library(ggplot2)
 ```
 
 ### Arguments
@@ -122,7 +123,7 @@ For a more precise view, ```"names"``` plot is implemented: it prints,
 in each neuron, the names of the variables assigned to it ; in the korresp SOM, 
 both row and column variable names are printed.
 ```{r presiGraphObs, warning=FALSE, fig.width=12, fig.height=12}
-plot(korresp.som, what="obs", type="names", scale=c(0.9,0.5))
+plot(korresp.som, what="obs", type="names", print.title = T)
 ```
 
 The map is divided into two main parts: minor candidates are classified at its 
@@ -159,9 +160,13 @@ Three representations are available:
 argument is used)
 ```{r presiProtoL}
 # plot the line prototypes (106 French departements)
-plot(korresp.som, what="prototypes", type="lines", view="r", print.title=TRUE)
+plot(korresp.som, what="prototypes", type="lines", view="r", print.title=F) +    
+  guides(color=guide_legend(keywidth=0.1, keyheight=0.1, default.unit="cm", ncol=3)) + 
+  theme(legend.text=element_text(size=3))
 # plot the column prototypes (16 candidates)
-plot(korresp.som, what="prototypes", type="lines", view="c", print.title=TRUE)
+plot(korresp.som, what="prototypes", type="lines", view="c", print.title=F) +
+  guides(color=guide_legend(keywidth=0.1, keyheight=0.1,default.unit="cm", ncol=1)) + 
+  theme(legend.text=element_text(size=6))
 ```
 
 The peaks in neurons 5 and 6 correspond, in the row view, to the overseas 
@@ -189,8 +194,8 @@ the bottom right hand side of the map.
 
 The graphics can also be drawn by giving the variable number and its type,
 either "r" or "c" (here, as an example, CHIRAC who is the 5th candidate):
-```{r presiProtoNumber, fig.width=12, fig.height=6}
-par(mfrow=c(1,2))
+```{r presiProtoNumber, fig.width=12, fig.height=6, fig.show='hold', out.width="50%"}
+# par(mfrow=c(1,2))
 plot(korresp.som, what="prototypes", type="color", variable=5, view="c")
 plot(korresp.som, what="prototypes", type="3d", variable=5, view="c")
 ```
@@ -224,8 +229,8 @@ input space, and y coordinates representing the distance between the
 corresponding neurons on the grid.
 ```{r presiGraphProto2}
 plot(korresp.som, what="prototypes", type="poly.dist", print.title=TRUE)
-plot(korresp.som, what="prototypes", type="umatrix", print.title=TRUE)
-plot(korresp.som, what="prototypes", type="smooth.dist", print.title=TRUE)
+plot(korresp.som, what="prototypes", type="umatrix", print.title=F)
+plot(korresp.som, what="prototypes", type="smooth.dist")
 plot(korresp.som, what="prototypes", type="mds")
 plot(korresp.som, what="prototypes", type="grid.dist")
 ```
@@ -297,17 +302,17 @@ The three super-clusters correspond to traditional votes (blue), far right votes
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:
 ```{r presiSC4}
-plot(my.sc, type="hitmap", plot.legend=TRUE)
-plot(my.sc, type="lines", print.title=TRUE)
-plot(my.sc, type="lines", print.title=TRUE, view="c")
-plot(my.sc, type="mds", plot.legend=TRUE)
+plot(my.sc, what="prototypes", type="hitmap", plot.legend=TRUE)
+plot(my.sc, what="prototypes", type="lines", print.title=F)
+plot(my.sc, what="prototypes", type="lines", print.title=F, view="c")
+plot(my.sc, what="prototypes", type="mds", plot.legend=TRUE)
 ```
 
 And some others identify the super clusters with titles:
 ```{r presiSC5}
-plot(my.sc, type="color", view="r", variable="correze")
-plot(my.sc, type="color", view="c", variable="JOSPIN")
-plot(my.sc, type="poly.dist")
+plot(my.sc, what="prototypes", type="color", view="r", variable="correze")
+plot(my.sc, what="prototypes", type="color", view="c", variable="JOSPIN")
+plot(my.sc, what="prototypes", type="poly.dist")
 ```
 
 Let us consider the first super cluster. It contains departements which were 

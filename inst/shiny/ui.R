@@ -54,7 +54,7 @@ shinyUI(
       div(img(src = "samm.png",
               height = 100), 
           img(src = "miat.png",
-              height = 100,)),
+              height = 100)),
       br(),
       br(),
       p(
@@ -119,42 +119,43 @@ shinyUI(
                 bsCollapsePanel(title=HTML('Choose from the environment/examples'), value="envir",
                                 selectInput('file1envir', label=NULL, choices=dataframes),
                                 actionButton("loaddatabutton", "Load", class="btn-primary")
-                                ),
-                bsCollapsePanel(title=HTML('OR Choose CSV/TXT File'),
-                                p(
-                                  HTML(
-                                    'The interface can be tested using example data files for
-    the <a href=
-    "http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa"
-    target="_blank">numeric</a>, <a href=
-    "http://nextcloud.nathalievilla.org/index.php/s/Tw2H2ZBKwBAPo0v"
-    target="_blank">korresp</a> and <a href=
-    "http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
-    target="_blank">relational </a> algorithms (download these files on your computer and
-    proceed).'
-                                  )
-                                ),
-                                fileInput('file1', label=NULL),
-                                checkboxInput('header', ' Header?', TRUE),
-                                checkboxInput('rownames', ' Row names?', FALSE),
-                                selectInput(
-                                  'sep',
-                                  'Separator:',
-                                  c("Comma", "Semicolon", "Tab", "Space"),
-                                  'Comma'
-                                ),
-                                selectInput(
-                                  'quote', 
-                                  'Quote:',
-                                  c("None","Double Quote","Single Quote"), 
-                                  'Double Quote'),
-                                selectInput(
-                                  'dec',
-                                  'Decimal mark', 
-                                  c("Period", "Comma"),
-                                  'Period')
-                )
-              )
+                                )
+    #             ,
+    #             bsCollapsePanel(title=HTML('OR Choose CSV/TXT File'),
+    #                             p(
+    #                               HTML(
+    #                                 'The interface can be tested using example data files for
+    # the <a href=
+    # "http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa"
+    # target="_blank">numeric</a>, <a href=
+    # "http://nextcloud.nathalievilla.org/index.php/s/Tw2H2ZBKwBAPo0v"
+    # target="_blank">korresp</a> and <a href=
+    # "http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
+    # target="_blank">relational </a> algorithms (download these files on your computer and
+    # proceed).'
+    #                               )
+    #                             ),
+    #                             fileInput('file1', label=NULL),
+    #                             checkboxInput('header', ' Header?', TRUE),
+    #                             checkboxInput('rownames', ' Row names?', FALSE),
+    #                             selectInput(
+    #                               'sep',
+    #                               'Separator:',
+    #                               c("Comma", "Semicolon", "Tab", "Space"),
+    #                               'Comma'
+    #                             ),
+    #                             selectInput(
+    #                               'quote', 
+    #                               'Quote:',
+    #                               c("None","Double Quote","Single Quote"), 
+    #                               'Double Quote'),
+    #                             selectInput(
+    #                               'dec',
+    #                               'Decimal mark', 
+    #                               c("Period", "Comma"),
+    #                               'Period')
+    #             )
+               )
           ),
           column(9,
              h4(textOutput("dataready")),
@@ -239,7 +240,8 @@ adequate parameter values.'
                                                   min = 0.01,
                                                   step = .01),
                                      numericInput("nb.save", "Number of intermediate back-ups:", 0,
-                                                  min = 0)),
+                                                  min = 0)
+                                     )
                               
                             ),
                             
@@ -335,6 +337,11 @@ multiple variables)",
                      choices = "(Not Available)",
                      multiple = TRUE
                    )
+                 ),
+                 conditionalPanel(
+                   "input.somplottype == '3d'",
+                   sliderInput("theta", "theta (azimuthal direction)", min=0, max=180, value=0),
+                   sliderInput("phi", "phi (colatitude)", min=0, max=180, value=15)
                  )
                  ),
           column(9,
@@ -358,7 +365,7 @@ plot can help you determine the adequate number of superclasses."
                           bsCollapsePanel(title = "1. Group prototypes into superclasses", value="computesc", style="success",
                                           fluidRow(
                                             column(3,
-                                                   selectInput("scmethod", "Method for hclust", choices=c("ward.D", "ward.D2", "single", "complete", "average", "mcquitty","median","centroid" ), selected="complete"),
+                                                   selectInput("scmethod", "Method for hclust", choices=c("ward.D", "single", "complete", "average", "mcquitty","median","centroid" ), selected="complete"),
                                                    radioButtons(
                                                      "sc.cut.choice",
                                                      "Choose clustering criterion:",
@@ -402,11 +409,10 @@ plot can help you determine the adequate number of superclasses."
                                                      )
                                                    ),
                                                    conditionalPanel(
-                                                     "input.scplottype == 'color' ||
-                         input.scplottype == '3d'",
+                                                     "input.scplottype == 'color'",
                                                      selectInput(
                                                        "scplotvar",
-                                                       "Variable: (only used for '3d', 'color' and 'boxplot' plots if available)",
+                                                       "Variable: (only used for 'color' plots if available)",
                                                        choices = "(Not Available)"
                                                      )
                                                    ),
@@ -427,6 +433,13 @@ plot can help you determine the adequate number of superclasses."
                                                        "Plot rows or columns (when relevant for the chart):",
                                                        choices = list("columns" = "c",
                                                                       "rows" = "r")
+                                                     )
+                                                   ),
+                                                   conditionalPanel(
+                                                     "input.scplottype == 'dendro3d'",
+                                                     sliderInput(
+                                                       "angle3d",
+                                                       "Angle between x and y axes", min = 10, max=170, value = 40
                                                      )
                                                    )
                                             ),
@@ -462,30 +475,35 @@ to the number of rows ."
                           bsCollapsePanel(title = "1. Load additional information", value="loadadd", style="success",
                                           fluidRow(
                                             column(3,
-                                                   bsCollapse(open='envir',
+                                                   bsCollapse(open='unused',
+                                                              bsCollapsePanel(title = HTML("From unused variales"), value="unused",
+                                                                              selectInput('unusedvar', label=NULL, choices=c("No unused variable"=""), multiple = T),
+                                                                              actionButton("loadunusedvarbutton", "Select", class="btn-primary")
+                                                              ),
                                                               bsCollapsePanel(title = HTML("Choose from the environment/examples"), value="envir",
                                                                               selectInput('file2envir', label=NULL, choices=dataframes),
                                                                               actionButton("loaddatabuttonadd", "Load", class="btn-primary")
-                                                              ),
-                                                              bsCollapsePanel(title=HTML("OR Choose CSV/TXT File"),
-                                                                              fileInput('file2', label=NULL),
-                                                                              checkboxInput('header2', ' Header?', TRUE),
-                                                                              checkboxInput('rownames2', ' Row names?', FALSE),
-                                                                              selectInput(
-                                                                                'sep2',
-                                                                                'Separator:',
-                                                                                c("Comma", "Semicolon", "Tab", "Space"),
-                                                                                'Comma'
-                                                                              ),
-                                                                              selectInput(
-                                                                                'quote2',
-                                                                                'Quote:',
-                                                                                c("None", "Double Quote", "Single Quote"),
-                                                                                'Double Quote'
-                                                                              ),
-                                                                              selectInput('dec2', 'Decimal mark', c("Period", "Comma"),
-                                                                                          'Period')
                                                               )
+                                                              # ,
+                                                              # bsCollapsePanel(title=HTML("OR Choose CSV/TXT File"),
+                                                              #                 fileInput('file2', label=NULL),
+                                                              #                 checkboxInput('header2', ' Header?', TRUE),
+                                                              #                 checkboxInput('rownames2', ' Row names?', FALSE),
+                                                              #                 selectInput(
+                                                              #                   'sep2',
+                                                              #                   'Separator:',
+                                                              #                   c("Comma", "Semicolon", "Tab", "Space"),
+                                                              #                   'Comma'
+                                                              #                 ),
+                                                              #                 selectInput(
+                                                              #                   'quote2',
+                                                              #                   'Quote:',
+                                                              #                   c("None", "Double Quote", "Single Quote"),
+                                                              #                   'Double Quote'
+                                                              #                 ),
+                                                              #                 selectInput('dec2', 'Decimal mark', c("Period", "Comma"),
+                                                              #                             'Period')
+                                                              # )
                                                    )
                                             ),
                                             column(9,

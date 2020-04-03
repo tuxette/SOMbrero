@@ -83,7 +83,7 @@ all.scplot.types <- list("numeric"=
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds"),
                                 "obs"=c("hitmap", "color", "lines", "barplot", 
-                                        "boxplot", "grid")),
+                                        "boxplot")),
                          "korresp"=
                            list("prototypes"=
                                   list("grid", "dendrogram", "color", "lines", 

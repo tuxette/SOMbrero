@@ -98,8 +98,7 @@ coords_polydist <- function(ind, values, the.grid) {
   poly.coord[, c("x_delta", "y_delta", "angle")] <- NULL
   poly.coord$id <- ind
   rownames(poly.coord) <- paste0(ind, ".", 1:nrow(poly.coord))
-  
-  print(poly.coord)
+
   return(poly.coord)
 }
 
@@ -291,17 +290,24 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
                 print.title, the.titles, is.scaled,
                 sommap$parameters$the.grid, args)
   } else if(type %in% c("color", "hitmap")){
-    if (type=="color") {
+      if (type=="color") {
       if (length(variable)>1) {
         warning("length(variable)>1, only first element will be considered\n", 
                 call.=TRUE, immediate.=TRUE)
         variable <- variable[1]
       } 
-      values <- sommap$data[,variable]
+        if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
+          if(view=="r"){
+            tmp.var <- rownames(sommap$data)[variable]
+          } else tmp.var <- colnames(sommap$data)[variable]
+        } else if (sommap$parameters$type=="numeric" & (is.numeric(variable))) {
+          tmp.var <- colnames(sommap$data)[variable]
+        } else tmp.var <- variable
+        args$variable <- tmp.var
+      values <- sommap$data[,tmp.var]
     }  else if (type=="hitmap") {
       values <- sommap$clustering
     }
-    args$variable <- variable
     ggplotGrid("obs", type, values, sommap$clustering,
                print.title, the.titles, is.scaled,
                sommap$parameters$the.grid, args)
@@ -353,7 +359,7 @@ plotProjGraph <- function(proj.graph, print.title=FALSE, the.titles=NULL,
 
 plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     print.title, the.titles, is.scaled, s.radius, pie.graph,
-                    pie.variable, args) {
+                    pie.variable, varname, args) {
   ## types : pie, color, lines, boxplot, names, words, graph, barplot
   # to be implemented: graph
 
@@ -379,11 +385,20 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   }
   args$topo <- sommap$parameters$the.grid$topo
   
+  # Numerical variable control
+  if(type %in% c("lines", "barplot", "boxplot", "words", "color")){
+    nonum <- sapply(variable, is.numeric)
+    nonum <- length(nonum[nonum==F])
+    if(nonum>0){
+      stop(paste(type, "plots are for numerical variables only"), call.=TRUE)
+    }
+  }
+  
   # switch between different types
   if(type %in% c("pie", "lines", "barplot", "boxplot", "names", "words")){
     args$topo <- NULL
     if(type == "pie") variable <- as.factor(variable)
-    if(type == "names") args$variable <- colnames(variable)
+    if(type == "names") args$variable <- varname
     if (type=="words") {
       if (is.null(colnames(variable))) {
         stop("no colnames for 'variable'", call.=TRUE)
@@ -392,7 +407,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     ggplotFacet("add", type, values=variable, sommap$clustering, print.title, the.titles, 
                 is.scaled, sommap$parameters$the.grid, args)
   } else if(type == "color"){
-    ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
+      ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
                is.scaled, sommap$parameters$the.grid, args)
   } else if (type=="graph") {
     # controls
@@ -531,7 +546,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
          "energy"=ggplotEnergy(x),
          "add"=plotAdd(x, type, if (type!="graph") as.matrix(variable) else 
            variable, proportional, my.palette, print.title, the.titles, 
-                       is.scaled, s.radius, pie.graph, pie.variable, args),
+                       is.scaled, s.radius, pie.graph, pie.variable, varname = deparse(substitute(variable)), args),
          "obs"=plotObs(x, type, variable, my.palette, print.title, the.titles,
                        is.scaled, view, args))
 }

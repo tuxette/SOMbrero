@@ -317,30 +317,44 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
            xlab="Number of clusters", ylab="proportion of unexplained variance",
            main="Proportion of variance\n not explained by\n super-clusters")
       do.call("plot", args)
-    } else do.call("plot", args)
+    } else  {
+      do.call("plot", args)
+    }
     if (length(x)>2) {
       rect.hclust(x$tree, k = max(x$cluster), cluster = x$cluster,
                   border = clust.col.pal[unique(x$cluster[x$tree$order])])
       legend("topright", col = clust.col.pal, pch = 19, 
-             legend = paste("SC", 1:nbclust), cex = 0.7)
+             legend = paste("SC", 1:nbclust), cex = 1)
     } else warning("Impossible to plot the rectangles: no super clusters.\n",
                    call.=TRUE, immediate.=TRUE)
+    layout(1)
   } else if (type=="dendro3d") {
     if (length(x)<3) {
-      clust.col <- rep("black",prod(x$som$parameters$the.grid$dim))
+      clust.col <- "black"
     } 
-    # FIX IT! maybe some more code improvements...  
-    x.y.coord <- x$som$parameters$the.grid$coord+0.5
+    # FIX IT! maybe some more code improvements... 
+    
+    x.y.coord <- x$som$parameters$the.grid$coord + 0.5
     if (floor(max(x$tree$height[-which.max(x$tree$height)]))==0) {
       z.max <- max(x$tree$height[-which.max(x$tree$height)])
     } else {
       z.max <- ceiling(max(x$tree$height[-which.max(x$tree$height)]))
     }
+    if(is.null(args$angle)) args$angle <- 40
+    posleg <- "bottomright"
+    if(args$angle>80) posleg <- "topright"
     spt <- scatterplot3d(x=x.y.coord[,1], y=x.y.coord[,2], 
                          z=rep(0,prod(x$som$parameters$the.grid$dim)), 
+                         xlim=c(min(x.y.coord[,1])-0.5, max(x.y.coord[,1])+0.5), 
+                         ylim=c(min(x.y.coord[,2])-0.5, max(x.y.coord[,2])+0.5),
                          zlim=c(0, z.max), 
+                         angle=args$angle,
                          pch=19, color=clust.col, xlab="x", ylab="y",  
                          zlab="", x.ticklabs="", y.ticklabs="")
+    if(length(x)>2){
+      legend(posleg, col = clust.col.pal, pch = 19, 
+             legend = paste("SC", 1:nbclust), cex = 1)
+    }
     horiz.ticks <- matrix(NA, nrow=prod(x$som$parameters$the.grid$dim)-1, ncol=2)
     for (neuron in 1:(prod(x$som$parameters$the.grid$dim)-1)) {
       vert.ticks <- sapply(1:2, dendro3dProcess, ind=neuron, tree=x$tree, 
@@ -393,7 +407,7 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
         }
         args$x <- x$som
         args$what <- what
-        if(args$what=="add" & is.null(args$variable)) {
+        if(args$what == "add" & is.null(args$variable)) {
           stop("Specify the variable to plot")
         }
         
@@ -403,16 +417,7 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
             args$what <- "add"
           } 
         } else args$what <- "add"
-        
-        # # manage argument 'what'
-        # if (!add.type) {
-        #   if (type %in% c("hitmap", "boxplot")) {
-        #     args$what <- "obs"
-        #   } else if (type%in%c("graph", "pie")) {
-        #     args$what <- "add"
-        #   } else args$what <- "prototypes"
-        # } else args$what <- "add"
-
+      
         args$type <- type
 
         # manage titles

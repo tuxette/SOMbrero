@@ -50,27 +50,27 @@ shinyServer(function(input, output, session) {
     val$data <- get(input$file1envir, envir = .GlobalEnv)
   }, ignoreInit=T)
   
-  observeEvent(c(input$file1, input$sep, input$quote, input$dec, input$header, input$rownames), {
-    the.sep <- switch(input$sep, "Comma"=",", 
-                      "Semicolon"=";", 
-                      "Tab"="\t",
-                      "Space"="")
-    the.quote <- switch(input$quote, "None"="",
-                        "Double Quote"='"',
-                        "Single Quote"="'")
-    the.dec <- switch(input$dec, 
-                      "Period"=".", 
-                      "Comma"=",")
-    if (input$rownames) {
-      the.table <- read.table(input$file1$datapath, header=input$header, 
-                              sep=the.sep, quote=the.quote, row.names=1,
-                              dec=the.dec)
-    } else {
-      the.table <- read.table(input$file1$datapath, header=input$header, 
-                              sep=the.sep, quote=the.quote, dec=the.dec)
-    }
-    val$data <- the.table
-  }, ignoreInit=T)
+  # observeEvent(c(input$file1, input$sep, input$quote, input$dec, input$header, input$rownames), {
+  #   the.sep <- switch(input$sep, "Comma"=",", 
+  #                     "Semicolon"=";", 
+  #                     "Tab"="\t",
+  #                     "Space"="")
+  #   the.quote <- switch(input$quote, "None"="",
+  #                       "Double Quote"='"',
+  #                       "Single Quote"="'")
+  #   the.dec <- switch(input$dec, 
+  #                     "Period"=".", 
+  #                     "Comma"=",")
+  #   if (input$rownames) {
+  #     the.table <- read.table(input$file1$datapath, header=input$header, 
+  #                             sep=the.sep, quote=the.quote, row.names=1,
+  #                             dec=the.dec)
+  #   } else {
+  #     the.table <- read.table(input$file1$datapath, header=input$header, 
+  #                             sep=the.sep, quote=the.quote, dec=the.dec)
+  #   }
+  #   val$data <- the.table
+  # }, ignoreInit=T)
   
   output$dataready <- renderText({
     text <- "No data loaded"
@@ -86,15 +86,12 @@ shinyServer(function(input, output, session) {
     
     the.table <- val$data
     
-    # update the "input variables" checkbox (if somtype is numeric or integer)
-    #if (input$somtype =="numeric") {
-      output$varchoice <- renderUI(
-        selectInput(inputId="varchoice", label="Input variables:", multiple=T,
-                           choices=as.list(colnames(the.table)),
-                           selected=as.list(colnames(the.table)[
-                             sapply(the.table, class) %in%
-                               c("integer", "numeric")])))
-    #} else output$varchoice <- renderText("")
+    output$varchoice <- renderUI(
+      selectInput(inputId="varchoice", label="Input variables:", multiple=T,
+                         choices=as.list(colnames(the.table)),
+                         selected=as.list(colnames(the.table)[
+                           sapply(the.table, class) %in%
+                             c("integer", "numeric")])))
 
     # update the map dimensions
     updateNumericInput(session, inputId="dimx", value={
@@ -169,7 +166,7 @@ shinyServer(function(input, output, session) {
 
   # update the distance option when input$radiustype is changed
   observe({
-    if(input$topo!="hexagonal"){
+    if(input$topo=="square"){
       updateSelectInput(session, inputId="disttype", label="Distance scaling:",
                         choices=switch(input$radiustype,
                                        "letremy"=c("letremy", "maximum", "euclidean",
@@ -202,6 +199,13 @@ shinyServer(function(input, output, session) {
                                                     init.proto=input$initproto, 
                                                     nb.save=input$nb.save,
                                                     radiustype=input$radiustype)
+    
+    unused <- colnames(dInput())
+    unused <- unused[-match(input$varchoice, unused)]
+    if(length(unused)>0){
+      updateSelectInput(session, "unusedvar", choices=unused, selected = unused)
+    }
+        
       
     if(is.null(input$file1)==F){
       namedata <- "data"
@@ -343,9 +347,17 @@ shinyServer(function(input, output, session) {
       if(input$somplottype == 'names'){
         tmp.var <- "row.names"
       }
+      
+      theta <- NULL
+      phi <- NULL
+      if (input$somplottype =="3d"){
+        theta <- input$theta
+        phi <- input$phi
+      }
+      
       plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
                       variable=tmp.var, print.title=input$somplottitle,
-                      view=tmp.view)
+                      view=tmp.view, theta = theta, phi=phi)
     }
   })
   
@@ -430,8 +442,6 @@ shinyServer(function(input, output, session) {
   output$somplotscdendro <- renderPlot({
     validate(need(is.null(dInput)==F, "First load data (cf 'Self-Organize' tab)"))
     validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained"))
-    # if(is.null(dInput()))
-    #   return(NULL)
     plot(computeSuperclasses(), type="dendrogram")
   })
   
@@ -455,24 +465,36 @@ shinyServer(function(input, output, session) {
     if (input$somtype =="korresp")
       tmp.view <- input$scplotrowcol
     
-      if (input$scplottype =="boxplot" || input$scplottype == 'barplot' || 
-          input$scplottype == 'lines') {
-        tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
-                                                input$scplotvar2]
-      } else tmp.var <- input$scplotvar
+    if (input$scplottype =="boxplot" || input$scplottype == 'barplot' || 
+        input$scplottype == 'lines') {
+      tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
+                                              input$scplotvar2]
+    } else tmp.var <- input$scplotvar
+    
+    angle <- NULL
+    if (input$scplottype =="dendro3d")
+      angle <- input$angle3d
       
-      plot(x = the.sc, what = input$scplotwhat, type = input$scplottype,
-           variable = tmp.var, view = tmp.view, plot.legend=T)
-    # }
+    plot(x = the.sc, what = input$scplotwhat, type = input$scplottype,
+         variable = tmp.var, view = tmp.view, angle = angle)
+
   })
 
   #### Panel 'Combine with additional data'
   ##############################################################################
   
+  observeEvent(input$loadunusedvarbutton, {
+    val$dataadd <- data.frame(dInput()[,c(input$unusedvar)])
+    colnames(val$dataadd)<- input$unusedvar
+  }, ignoreInit=T)
+  
   observeEvent(input$loaddatabuttonadd, {
     val$dataadd <- get(input$file2envir, envir = .GlobalEnv)
   }, ignoreInit=T)
   
+  observe({
+    print(val$dataadd)
+  })
   
   observeEvent(c(input$file2, input$sep2, input$quote2, input$dec2, input$header2, input$rownames2), {
     the.sep <- switch(input$sep2, "Comma"=",", "Semicolon"=";", "Tab"="\t", "Space"="")
@@ -483,8 +505,6 @@ shinyServer(function(input, output, session) {
       the.table <- read.table(input$file2$datapath, header=input$header2, 
                               sep=the.sep, quote=the.quote, row.names=1,
                               dec=the.dec)
-      # som.export <- data.frame("name" = names(RVserver.env$current.som$clustering),
-      #                          "cluster" = RVserver.env$current.som$clustering)
     } else the.table <- read.table(input$file2$datapath, header=input$header2, 
                                    sep=the.sep, quote=the.quote, dec=the.dec)
     val$dataadd <- the.table
@@ -549,8 +569,8 @@ shinyServer(function(input, output, session) {
   
   # function to render Additional data Plot
   output$addplot <- renderPlot({
-    d.input <- dInputAdd()
-    if (is.null(d.input)) return(NULL)
+    dataAdd <- dInputAdd()
+    if (is.null(dataAdd)) return(NULL)
     
     if (input$addplottype %in% c("pie","color","names")) {
       tmp.var <- input$addplotvar
@@ -558,9 +578,9 @@ shinyServer(function(input, output, session) {
     
     if (input$addplottype !="graph") {
       plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
-            variable=data.frame(d.input[,tmp.var]))
+            variable=data.frame(dataAdd[,tmp.var]))
     } else {
-      adjBin <- as.matrix(d.input!=0)
+      adjBin <- as.matrix(dataAdd!=0)
       tmpGraph <- graph.adjacency(adjBin, mode="undirected")
       plot(RVserver.env$current.som, what="add", type="graph", variable=tmpGraph)
     }

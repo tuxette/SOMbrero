@@ -167,7 +167,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
       tp <- tp + stat_summary(fun=mean, geom="line", colour="black")
     } else {
       tp <- tp + stat_summary(fun=mean, geom="line", mapping = aes_string(colour=labelcolor), show.legend = F)
-      print("tt")
     }
   }
   if(type == "names"){

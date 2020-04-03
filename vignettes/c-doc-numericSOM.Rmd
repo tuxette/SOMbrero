@@ -83,7 +83,9 @@ The numeric SOM algorithm is used to cluster the data:
 set.seed(593)
 # run the SOM algorithm with 10 intermediate backups and 2000 iterations
 my.som <- trainSOM(x.data=the.data, dimension=c(5,5), nb.save=10, maxit=2000, 
-                   scaling="none", radius.type="letremy")
+                   scaling="none", radius.type="gaussian", topo="hexagonal")
+# my.som <- trainSOM(x.data=the.data, dimension=c(5,5), nb.save=10, maxit=2000, 
+#                    scaling="none", radius.type="letremy", topo="hexagonal")
 ```
 
 The energy evolves as described in the following graphic:
@@ -120,8 +122,8 @@ The values of the prototypes can be represented with the plot function and help
 interpret the clusters:
 ```{r colorProto, fig.width=5, fig.height=2.5}
 par(mfrow=c(1,2))
-plot(my.som, what="prototypes", type="color", var=1, main="prototypes - x1")
-plot(my.som, what="prototypes", type="color", var=2, main="prototypes - x2")
+plot(my.som, what="prototypes", type="color", var=1)
+plot(my.som, what="prototypes", type="color", var=2)
 ```
 
 Here, the interpretation is simple enough: high values of the first variables x1
@@ -132,8 +134,8 @@ values are located at the bottom of the map.
 We obtain the same results with a similar plot on the observation mean values:
 ```{r colorObs, fig.width=5, fig.height=2.5}
 par(mfrow=c(1,2))
-plot(my.som, what="obs", type="color", var=1, main="obs mean values - x1")
-plot(my.som, what="obs", type="color", var=2, main="obs mean values - x2")
+plot(my.som, what="obs", type="color", var=1)
+plot(my.som, what="obs", type="color", var=2)
 ```
 
 The prototypes coordinates are also registered for each intermediate backup so 
@@ -477,22 +479,21 @@ plot(my.sc, type="hitmap", plot.legend=TRUE)
 ```
 
 ```{r irisSCplot2B}
-plot(my.sc, type="lines", print.title=TRUE)
-plot(my.sc, type="barplot", print.title=TRUE)
-plot(my.sc, type="boxplot", print.title=TRUE)
+plot(my.sc, what="prototypes", type="lines", print.title=TRUE)
+plot(my.sc, what="prototypes", type="barplot", print.title=TRUE)
+plot(my.sc, what="prototypes", type="boxplot", print.title=TRUE)
 ```
 
 
 ```{r irisSCplot2C, fig.height=4, fig.width=6}
-plot(my.sc, type="mds", plot.legend=TRUE, cex =2)
+plot(my.sc, what="prototypes", type="mds", plot.legend=TRUE, cex =2)
 ```
 
 And some others identify the super clusters with titles:
 ```{r irisSCplot3}
-plot(my.sc, type="color")
-plot(my.sc, type="poly.dist")
-plot(my.sc, type="pie", variable=iris$Species)
-plot(my.sc, type="radar", key.loc=c(-0.5,5), mar=c(0,10,2,0))
+plot(my.sc, what="prototypes", type="color")
+plot(my.sc, what="prototypes", type="poly.dist")
+plot(my.sc, what="obs", type="pie", variable=iris$Species)
 ```
 
 It is also possible to consider an additional variable using the 
