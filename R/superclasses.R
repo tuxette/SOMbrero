@@ -422,14 +422,12 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
 
         # manage titles
         args$print.title <- print.title
-        if(type %in% c("lines", "barplot", "boxplot")){
+        if(type %in% c("lines", "barplot", "boxplot", "poly.dist")){
           args$the.titles <- the.titles
-        } else if(type=="poly.dist"){
-          args$print.title <- F
         } else {
           args$the.titles <- paste("SC", x$cluster)
         }
-
+  
         # manage colors 
         if(args$what=="obs"){
           args$varcolor <- x$cluster[x$som$clustering]
@@ -439,7 +437,7 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
           args$varcolor <- x$cluster
           args$sc <-  x$cluster
         }
-      
+
        do.call("plot.somRes", args)
       } else if (type=="projgraph") {
         # check arguments

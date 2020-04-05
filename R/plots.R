@@ -40,12 +40,11 @@ myTitle <- function(args, what) {
 
 
 plot3d <- function(x, the.grid, type, variable, args) {
-  if(is.null(args$topo)==F) args <- args[which(names(tmpargs)== "topo")]
-  args$x <- 1:the.grid$dim[2]
-  args$y <- 1:the.grid$dim[1]
-  args$z <- t(matrix(data=x[orderIndexes(the.grid, "3d"),variable], 
-                ncol=the.grid$dim[2], 
-                nrow=the.grid$dim[1], byrow=TRUE))
+  args$x <- unique(the.grid$coord[,1])
+  args$y <- unique(the.grid$coord[,2])
+  args$z <- t(matrix(data=x[,variable], 
+                     ncol=the.grid$dim[1], 
+                     nrow=the.grid$dim[2], byrow = F))
   if (is.null(args$theta)) args$theta <- -20 else args$theta <- args$theta
   if (is.null(args$phi)) args$phi <- 20 else args$phi <- args$phi
   if (is.null(args$expand)) args$expand <- 0.4 else args$expand <- args$expand
@@ -407,7 +406,8 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     ggplotFacet("add", type, values=variable, sommap$clustering, print.title, the.titles, 
                 is.scaled, sommap$parameters$the.grid, args)
   } else if(type == "color"){
-      ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
+    args$variable <- varname
+    ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
                is.scaled, sommap$parameters$the.grid, args)
   } else if (type=="graph") {
     # controls
@@ -514,13 +514,14 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                                     "obs"="hitmap",
                                     "prototypes"="color",
                                     "add"="pie",
-                                    "energy"=NULL),
+                                    "energy"="energy"),
                         variable = if (what=="add" | type=="names") NULL else 1:ncol(x$data),
                         my.palette=NULL, 
                         is.scaled = if (x$parameters$type=="numeric") TRUE else
                           FALSE,
-                        print.title=FALSE, the.titles=if (what!="energy") 
-                          switch(type, 
+                        print.title=TRUE, 
+                        the.titles=if (what!="energy")
+                          switch(type,
                                  "graph"=1:prod(x$parameters$the.grid$dim),
                                  paste("Cluster",
                                        1:prod(x$parameters$the.grid$dim))),

@@ -44,7 +44,6 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
   
   # Plot
   ################################################
-
   if(type == "hitmap"){
     if(is.null(args$sc)){
       dataplot<- aggregate(data=dataplot, Nb ~ SOMclustering + x + y, length)
@@ -53,16 +52,21 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
       dataplot<- aggregate(data=dataplot, Nb ~ SOMclustering + x + y + varname, length)
       dataplot$varname <- as.factor(dataplot$varname)
     }
+    
+    if(is.null(args$maxsize)) maxsize <- max(dataplot$Nb) else maxsize <- args$maxsize
+    if(is.null(args$minsize)) minsize <- min(dataplot$Nb) else minsize <- args$minsize
+    # if(is.null(args$maxsize)) maxsize <- 30 else maxsize <- args$maxsize
+    # if(is.null(args$minsize)) minsize <- 1 else minsize <- args$minsize
     tp <- ggplot(dataplot, aes(x=x, y=y)) + 
       geom_point(aes(size = Nb, fill=varname), pch = 21, show.legend = T) +
-      scale_size_continuous(range=c(1,30), 
+      scale_size_continuous(range=c(1,maxsize), 
                             breaks = unique(c(min(dataplot$Nb), 
                                               floor(median(dataplot$Nb)), 
                                               max(dataplot$Nb)))) +
       labs(size="Number of\nobservations")
   }
   if(type == "color"){
-    dataplot<- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
+    dataplot <- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
     if(args$topo == "square"){
       tp <- ggplot(dataplot, aes(x=x, y=y, fill=varname)) + 
         geom_bin2d(stat="identity", linetype=1, color="grey")
@@ -73,7 +77,7 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
   }
   
   if(type=="grid"){
-    dataplot<- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
+    dataplot <- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
     if(args$topo == "square"){
       tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname))) + 
         geom_bin2d(stat="identity", linetype=1, color="grey")
@@ -178,11 +182,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
     tp <- ggplot(dataplot, aes(label = variable, size=values)) +
       geom_text_wordcloud(stat="identity", alpha=0.7, area_corr=TRUE) + labs(subtitle = "sum of values by variable")
   }
-  if(type == "poly.dist"){
-    tp <- ggplot(dataplot, aes(x=x, y=y)) + 
-      geom_polygon(aes(fill=stat(count))) +
-      labs(fill = labely)
-  }
   if(type == "pie"){
     dataplot$Nb <- 1
     dataplot$Nbcluster <- 1
@@ -199,6 +198,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
               guides(fill=guide_legend(title=labelcolor))
   }
   # Handling of the grid order
+  
   tp <- tp + facet_wrap(factor(SOMclustering, levels=ordered.index, labels=the.titles[ordered.index]) ~ ., 
                         drop=FALSE, 
                         nrow=the.grid$dim[2],
