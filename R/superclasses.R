@@ -365,7 +365,6 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
                           byrow=TRUE), type="l")
     }
   } else {
-    args$topo <- x$som$parameters$the.grid$topo
     if (length(x)<3) {
       stop("No super clusters: plot unavailable.\n")
     } else {

@@ -142,7 +142,6 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
                 print.title, the.titles, is.scaled,
                 sommap$parameters$the.grid, args)
   } else if (type=="color") {
-    args$topo <- sommap$parameters$the.grid$topo
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if(view=="r"){
         tmp.var <- rownames(sommap$data)[variable]
@@ -170,7 +169,6 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     ggplotPolydist(values, sommap$clustering, print.title,
                                the.titles, sommap$parameters$the.grid, args)
   } else if (type=="umatrix" || type=="smooth.dist") {
-    args$topo <- sommap$parameters$the.grid$topo
     values <- protoDist(sommap, "neighbors")
 
     if (sommap$parameters$type=="relational") {
@@ -186,7 +184,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
                  print.title, the.titles, 
                  is.scaled, sommap$parameters$the.grid, args)
     } else {
-      if(args$topo=="hexagonal"){
+      if(sommap$the.grid$topo=="hexagonal"){
         warning("Hexagonal topograpy: imputing missing values to make a full squared grid\n", call.=TRUE, 
                 immediate.=TRUE)
       }
@@ -259,8 +257,6 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
     type <- "hitmap"
   }
   
-  args$topo <- sommap$parameters$the.grid$topo
-
   if(type %in% c("lines", "barplot", "boxplot", "names")){
     if (type == "lines" || type == "barplot" || type == "boxplot") {
       values <- sommap$data[,variable]
@@ -382,8 +378,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     stop("length of additional variable does not fit length of the original
          data", call.=TRUE)
   }
-  args$topo <- sommap$parameters$the.grid$topo
-  
+
   # Numerical variable control
   if(type %in% c("lines", "barplot", "boxplot", "words", "color")){
     nonum <- sapply(variable, is.numeric)
@@ -395,7 +390,6 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   
   # switch between different types
   if(type %in% c("pie", "lines", "barplot", "boxplot", "names", "words")){
-    args$topo <- NULL
     if(type == "pie") variable <- as.factor(variable)
     if(type == "names") args$variable <- varname
     if (type=="words") {
