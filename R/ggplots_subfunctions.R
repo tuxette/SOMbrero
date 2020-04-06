@@ -80,10 +80,10 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
     dataplot <- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
     if(the.grid$topo == "square"){
       tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname))) + 
-        geom_bin2d(stat="identity", linetype=1, color="grey", size=0.7)
+        geom_bin2d(stat="identity", linetype=1, color="grey", size=0.6)
     } else {
       tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname), group=1)) + 
-        geom_hex(stat="identity", linetype=1, color="grey", size=0.7)
+        geom_hex(stat="identity", linetype=1, color="grey", size=0.6)
     }
   }
 

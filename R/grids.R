@@ -154,45 +154,7 @@ plot.myGrid <- function(x, neuron.col = "white", print.title = FALSE,
   values <- rep(0, dimgrid)
   id <- 1:dimgrid
   ggplotGrid("obs", "grid", values, id,
-             print.title=F, the.titles=NULL, is.scaled=F,
+             print.title, the.titles, is.scaled=F,
              x, args) + theme(legend.position = "none") + 
-    scale_fill_manual(values="white")
-  # default parameter: new graphic
-  # omar <- par()$mar
-  # on.exit(par(mar=omar))
-  # plane.mar <- c(0.5,0.5,1,0.5)
-  # par(mar=plane.mar)
-  # 
-  # # default parameter: squares topology
-  # ## TODO implement other topologies such as hexagonal
-  # if (x$topo=="square") {
-  #   basesize <- 0.5
-  #   xleft <- (x$coord[,1] - basesize)
-  #   xright <- (x$coord[,1] + basesize)
-  #   ybottom <- (x$coord[,2] - basesize)
-  #   ytop <- (x$coord[,2] + basesize)
-  #   
-  #   # collect all arguments for plotting
-  #   plot.args <- args
-  #   plot.args$x <- NA
-  #   plot.args$xlim <- range(c(xleft, xright))
-  #   plot.args$ylim <- range(c(ybottom, ytop))
-  #   plot.args$xlab <- ""
-  #   plot.args$ylab <- ""
-  #   plot.args$axes <- FALSE
-  #   plot.args$type <- "n"
-  #   do.call("plot", plot.args)
-  #   
-  #   # default parameter: neuron.col=white
-  #   if(length(neuron.col) != prod(x$dim) & length(neuron.col) > 1) {
-  #     warning("unadequate number of colors; default color will be used\n", 
-  #             immediate. = TRUE, call. = TRUE)
-  #     neuron.col <- "white"
-  #   }
-  #   rect(xleft, ybottom, xright, ytop, col = neuron.col)
-  #   
-  #   if (print.title) {
-  #     text(x = x$coord[,1], y = x$coord[,2], labels = the.titles, cex = 0.7)
-  #   }
-  #}
+    scale_fill_manual(values=neuron.col)
 }
