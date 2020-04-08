@@ -41,11 +41,31 @@ depth3d <- function(x,y,z, pmat, minsize=0.2, maxsize=2) {
 
 plot3d <- function(x, the.grid, type, variable, args) {
   args$varname <- NULL
-  args$x <- unique(the.grid$coord[,1])
-  args$y <- unique(the.grid$coord[,2])
-  args$z <- t(matrix(data=x[,variable], 
-                     ncol=the.grid$dim[1], 
-                     nrow=the.grid$dim[2], byrow = F))
+  args$x <- sort(unique(the.grid$coord[,1]))
+  args$y <- sort(unique(the.grid$coord[,2]))
+  
+  if(the.grid$topo=="hexagonal"){
+    gridcoordsx <- rep(args$x, length(args$y))
+    gridcoordsy <- rep(args$y, each=length(args$x))
+    gridvalues<-interpp(the.grid$coord[,1], the.grid$coord[,2], x[,variable], # real cordinates
+                        xo=gridcoordsx, yo=gridcoordsy, # new coordinates
+                        linear=T)
+    gridvalues <- data.frame(gridvalues)
+    colnames(gridvalues)[3] <- "z"
+    origdata <- data.frame(the.grid$coord, "origz"=x[,variable])
+    
+    # Replace existing values (for corners)
+    gridvalues <- merge(gridvalues, origdata, all.x=T)
+    gridvalues$z <- ifelse(is.na(gridvalues$z) & is.na(gridvalues$origz)==F, gridvalues$origz, gridvalues$z)
+    args$z <- t(matrix(data=gridvalues$z, 
+                       ncol=length(args$x), 
+                       nrow=length(args$y), byrow = F))
+  } else {
+    args$z <- t(matrix(data=x[,variable], 
+                       ncol=the.grid$dim[1], 
+                       nrow=the.grid$dim[2], byrow = F))
+  }
+  
   if (is.null(args$theta)) args$theta <- -20 else args$theta <- args$theta
   if (is.null(args$phi)) args$phi <- 20 else args$phi <- args$phi
   if (is.null(args$expand)) args$expand <- 0.4 else args$expand <- args$expand
@@ -56,15 +76,20 @@ plot3d <- function(x, the.grid, type, variable, args) {
   if (is.null(args$lwd)) args$lwd <- 1.5 else args$lwd <- args$lwd
   if (is.null(args$col)) args$col <- gg_color(1)
   if (is.null(args$border)) args$border <- "grey"
+  if (is.null(args$main)) args$main <- "Values of prototypes"
+  if(the.grid$topo=="hexagonal") {
+    args$sub <- "Hexagonal topography : linear interpolation between points"
+  }
   pmat <- do.call("persp", args)
   
+  # Adding points
   # The following taken from : 
   # https://stackoverflow.com/questions/28062399/r-add-points-to-surface-plot-with-persp-having-the-appropriate-size
   # take some xyz values from the matrix
   # s = 1:prod(dim(args$z))
-  xx = args$x[row(args$z)]
-  yy = args$y[col(args$z)]
-  zz = args$z[1:prod(dim(args$z))]
+  xx = the.grid$coord[,1]
+  yy = the.grid$coord[,2]
+  zz = x[,variable]
   
   # determine distance to eye
   psize = depth3d(xx,yy,zz,pmat,minsize=0.5, maxsize = 2)
@@ -171,9 +196,9 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
                as.numeric(rownames(sommap$prototypes)), print.title, the.titles, 
                is.scaled, sommap$parameters$the.grid, args)
   } else if (type=="3d") {
-    if(sommap$parameters$the.grid$topo=="hexagonal"){
-      stop("3d plots are for square topography only", call.=TRUE)
-    }
+    # if(sommap$parameters$the.grid$topo=="hexagonal"){
+    #   stop("3d plots are for square topography only", call.=TRUE)
+    # }
     tmp.var <- variable
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if (view=="r") tmp.var <- variable+ncol(sommap$data)
