@@ -120,41 +120,41 @@ shinyUI(
                                 selectInput('file1envir', label=NULL, choices=dataframes),
                                 actionButton("loaddatabutton", "Load", class="btn-primary")
                                 )
-    #             ,
-    #             bsCollapsePanel(title=HTML('OR Choose CSV/TXT File'),
-    #                             p(
-    #                               HTML(
-    #                                 'The interface can be tested using example data files for
-    # the <a href=
-    # "http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa"
-    # target="_blank">numeric</a>, <a href=
-    # "http://nextcloud.nathalievilla.org/index.php/s/Tw2H2ZBKwBAPo0v"
-    # target="_blank">korresp</a> and <a href=
-    # "http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
-    # target="_blank">relational </a> algorithms (download these files on your computer and
-    # proceed).'
-    #                               )
-    #                             ),
-    #                             fileInput('file1', label=NULL),
-    #                             checkboxInput('header', ' Header?', TRUE),
-    #                             checkboxInput('rownames', ' Row names?', FALSE),
-    #                             selectInput(
-    #                               'sep',
-    #                               'Separator:',
-    #                               c("Comma", "Semicolon", "Tab", "Space"),
-    #                               'Comma'
-    #                             ),
-    #                             selectInput(
-    #                               'quote', 
-    #                               'Quote:',
-    #                               c("None","Double Quote","Single Quote"), 
-    #                               'Double Quote'),
-    #                             selectInput(
-    #                               'dec',
-    #                               'Decimal mark', 
-    #                               c("Period", "Comma"),
-    #                               'Period')
-    #             )
+                ,
+                bsCollapsePanel(title=HTML('OR Choose CSV/TXT File'),
+                                p(
+                                  HTML(
+                                    'The interface can be tested using example data files for
+    the <a href=
+    "http://nextcloud.nathalievilla.org/index.php/s/BWnWADSPxayGSGa"
+    target="_blank">numeric</a>, <a href=
+    "http://nextcloud.nathalievilla.org/index.php/s/Tw2H2ZBKwBAPo0v"
+    target="_blank">korresp</a> and <a href=
+    "http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD"
+    target="_blank">relational </a> algorithms (download these files on your computer and
+    proceed).'
+                                  )
+                                ),
+                                fileInput('file1', label=NULL),
+                                checkboxInput('header', ' Header?', TRUE),
+                                checkboxInput('rownames', ' Row names?', FALSE),
+                                selectInput(
+                                  'sep',
+                                  'Separator:',
+                                  c("Comma", "Semicolon", "Tab", "Space"),
+                                  'Comma'
+                                ),
+                                selectInput(
+                                  'quote',
+                                  'Quote:',
+                                  c("None","Double Quote","Single Quote"),
+                                  'Double Quote'),
+                                selectInput(
+                                  'dec',
+                                  'Decimal mark',
+                                  c("Period", "Comma"),
+                                  'Period')
+                )
                )
           ),
           column(9,
@@ -484,26 +484,26 @@ to the number of rows ."
                                                                               selectInput('file2envir', label=NULL, choices=dataframes),
                                                                               actionButton("loaddatabuttonadd", "Load", class="btn-primary")
                                                               )
-                                                              # ,
-                                                              # bsCollapsePanel(title=HTML("OR Choose CSV/TXT File"),
-                                                              #                 fileInput('file2', label=NULL),
-                                                              #                 checkboxInput('header2', ' Header?', TRUE),
-                                                              #                 checkboxInput('rownames2', ' Row names?', FALSE),
-                                                              #                 selectInput(
-                                                              #                   'sep2',
-                                                              #                   'Separator:',
-                                                              #                   c("Comma", "Semicolon", "Tab", "Space"),
-                                                              #                   'Comma'
-                                                              #                 ),
-                                                              #                 selectInput(
-                                                              #                   'quote2',
-                                                              #                   'Quote:',
-                                                              #                   c("None", "Double Quote", "Single Quote"),
-                                                              #                   'Double Quote'
-                                                              #                 ),
-                                                              #                 selectInput('dec2', 'Decimal mark', c("Period", "Comma"),
-                                                              #                             'Period')
-                                                              # )
+                                                              ,
+                                                              bsCollapsePanel(title=HTML("OR Choose CSV/TXT File"),
+                                                                              fileInput('file2', label=NULL),
+                                                                              checkboxInput('header2', ' Header?', TRUE),
+                                                                              checkboxInput('rownames2', ' Row names?', FALSE),
+                                                                              selectInput(
+                                                                                'sep2',
+                                                                                'Separator:',
+                                                                                c("Comma", "Semicolon", "Tab", "Space"),
+                                                                                'Comma'
+                                                                              ),
+                                                                              selectInput(
+                                                                                'quote2',
+                                                                                'Quote:',
+                                                                                c("None", "Double Quote", "Single Quote"),
+                                                                                'Double Quote'
+                                                                              ),
+                                                                              selectInput('dec2', 'Decimal mark', c("Period", "Comma"),
+                                                                                          'Period')
+                                                              )
                                                    )
                                             ),
                                             column(9,

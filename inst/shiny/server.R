@@ -50,27 +50,27 @@ shinyServer(function(input, output, session) {
     val$data <- get(input$file1envir, envir = .GlobalEnv)
   }, ignoreInit=T)
   
-  # observeEvent(c(input$file1, input$sep, input$quote, input$dec, input$header, input$rownames), {
-  #   the.sep <- switch(input$sep, "Comma"=",", 
-  #                     "Semicolon"=";", 
-  #                     "Tab"="\t",
-  #                     "Space"="")
-  #   the.quote <- switch(input$quote, "None"="",
-  #                       "Double Quote"='"',
-  #                       "Single Quote"="'")
-  #   the.dec <- switch(input$dec, 
-  #                     "Period"=".", 
-  #                     "Comma"=",")
-  #   if (input$rownames) {
-  #     the.table <- read.table(input$file1$datapath, header=input$header, 
-  #                             sep=the.sep, quote=the.quote, row.names=1,
-  #                             dec=the.dec)
-  #   } else {
-  #     the.table <- read.table(input$file1$datapath, header=input$header, 
-  #                             sep=the.sep, quote=the.quote, dec=the.dec)
-  #   }
-  #   val$data <- the.table
-  # }, ignoreInit=T)
+  observeEvent(c(input$file1, input$sep, input$quote, input$dec, input$header, input$rownames), {
+    the.sep <- switch(input$sep, "Comma"=",",
+                      "Semicolon"=";",
+                      "Tab"="\t",
+                      "Space"="")
+    the.quote <- switch(input$quote, "None"="",
+                        "Double Quote"='"',
+                        "Single Quote"="'")
+    the.dec <- switch(input$dec,
+                      "Period"=".",
+                      "Comma"=",")
+    if (input$rownames) {
+      the.table <- read.table(input$file1$datapath, header=input$header,
+                              sep=the.sep, quote=the.quote, row.names=1,
+                              dec=the.dec)
+    } else {
+      the.table <- read.table(input$file1$datapath, header=input$header,
+                              sep=the.sep, quote=the.quote, dec=the.dec)
+    }
+    val$data <- the.table
+  }, ignoreInit=T)
   
   output$dataready <- renderText({
     text <- "No data loaded"
