@@ -345,7 +345,7 @@ multiple variables)",
                  )
                  ),
           column(9,
-                 jqui_resizable(plotOutput("somplot", width = '750px', height = '600px'))
+                 jqui_resizable(plotOutput("somplot", width = 750, height = 600))
                  )
         ),
         br(),
@@ -444,7 +444,7 @@ plot can help you determine the adequate number of superclasses."
                                                    )
                                             ),
                                             column(9,
-                                                   jqui_resizable(plotOutput("scplot", width = "750px", height = "600px"))
+                                                   jqui_resizable(plotOutput("scplot", width = 750, height = 600))
                                             )
                                           ),
                                           br(),
@@ -562,10 +562,9 @@ to the number of rows ."
                                                   multiple = TRUE
                                                 )
                                               )
-                                            ),
+                                            )),
                                             column(9,
-                                                   jqui_resizable(plotOutput("addplot", width = '750px', height = '600px'))
-                                            )
+                                                   jqui_resizable(plotOutput("addplot", width=750, height = 600))
                                             ),
                                             br(),
                                             br(),
