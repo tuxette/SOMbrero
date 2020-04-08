@@ -202,6 +202,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   }
   # Handling of the grid order
   mylabels <- the.titles[ordered.index]
+  names(mylabels) <- levels(dataplot$SOMclustering)
   
   tp <- tp + facet_wrap(SOMclustering ~ ., 
                         drop=FALSE, 

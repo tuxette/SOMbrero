@@ -479,7 +479,6 @@ plot(my.sc, type="hitmap", maxsize=20)
 ```{r irisSCplot2B}
 plot(my.sc, what="prototypes", type="lines")
 plot(my.sc, what="prototypes", type="barplot")
-plot(my.sc, what="prototypes", type="boxplot")
 ```
 
 

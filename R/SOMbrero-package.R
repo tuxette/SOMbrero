@@ -96,6 +96,6 @@
 #' @importFrom ggwordcloud geom_text_wordcloud
 #' @importFrom metR geom_contour_fill	
 #' @importFrom gridExtra grid.arrange	
-#' @importFrom akima interpp
+#' @importFrom interp interp
 
 NULL

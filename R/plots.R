@@ -47,9 +47,10 @@ plot3d <- function(x, the.grid, type, variable, args) {
   if(the.grid$topo=="hexagonal"){
     gridcoordsx <- rep(args$x, length(args$y))
     gridcoordsy <- rep(args$y, each=length(args$x))
-    gridvalues<-interpp(the.grid$coord[,1], the.grid$coord[,2], x[,variable], # real cordinates
+    gridvalues<-interp(the.grid$coord[,1], the.grid$coord[,2], x[,variable], # real cordinates
                         xo=gridcoordsx, yo=gridcoordsy, # new coordinates
-                        linear=T)
+                        output="points",
+                        method="linear")
     gridvalues <- data.frame(gridvalues)
     colnames(gridvalues)[3] <- "z"
     origdata <- data.frame(the.grid$coord, "origz"=x[,variable])
