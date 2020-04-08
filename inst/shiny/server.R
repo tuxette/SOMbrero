@@ -492,10 +492,6 @@ shinyServer(function(input, output, session) {
     val$dataadd <- get(input$file2envir, envir = .GlobalEnv)
   }, ignoreInit=T)
   
-  observe({
-    print(val$dataadd)
-  })
-  
   observeEvent(c(input$file2, input$sep2, input$quote2, input$dec2, input$header2, input$rownames2), {
     the.sep <- switch(input$sep2, "Comma"=",", "Semicolon"=";", "Tab"="\t", "Space"="")
     the.quote <- switch(input$quote2, "None"="","Double Quote"='"', "Single Quote"="'")
@@ -578,7 +574,7 @@ shinyServer(function(input, output, session) {
     
     if (input$addplottype !="graph") {
       plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
-            variable=data.frame(dataAdd[,tmp.var]))
+            variable=data.frame(dataAdd[,tmp.var]), varname=paste0("dataAdd$", tmp.var))
     } else {
       adjBin <- as.matrix(dataAdd!=0)
       tmpGraph <- graph.adjacency(adjBin, mode="undirected")

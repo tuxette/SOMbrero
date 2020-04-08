@@ -141,7 +141,8 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   ################################################
   dataplot <- data.frame(values)
   dataplot$ind <- rownames(dataplot)
-  dataplot$SOMclustering <- clustering
+ # dataplot$SOMclustering <- clustering
+  dataplot$SOMclustering <- factor(clustering, levels=ordered.index)
   if(is.null(args$sc)){
     dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = vary)
     dataplot$variable <- as.factor(dataplot$variable)
@@ -153,7 +154,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
     labelcolor <- "Super_Clusters"
     colnames(dataplot)[match("varcolor", colnames(dataplot))] <- labelcolor
   }
-
+  
   # Plot
   ################################################
   if(type == "barplot"){
@@ -174,13 +175,15 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
     }
   }
   if(type == "names"){
-     tp <- ggplot(dataplot, aes(label = values)) +
+     dataplot$nb <- 1
+     dataplot <- aggregate(data=dataplot, nb ~ values + SOMclustering, length)
+     tp <- ggplot(dataplot, aes(label = values, size=nb)) +
       geom_text_wordcloud(stat="identity", alpha=0.7) + labs(subtitle = labely)
   }
   if(type == "words"){
     dataplot <- aggregate(data=dataplot, values ~ variable + SOMclustering, sum)
     tp <- ggplot(dataplot, aes(label = variable, size=values)) +
-      geom_text_wordcloud(stat="identity", alpha=0.7, area_corr=TRUE) + labs(subtitle = "sum of values by variable")
+      geom_text_wordcloud(stat="identity", alpha=0.7) + labs(subtitle = "sum of values by variable")
   }
   if(type == "pie"){
     dataplot$Nb <- 1
@@ -198,10 +201,12 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
               guides(fill=guide_legend(title=labelcolor))
   }
   # Handling of the grid order
+  mylabels <- the.titles[ordered.index]
   
-  tp <- tp + facet_wrap(factor(SOMclustering, levels=ordered.index, labels=the.titles[ordered.index]) ~ ., 
+  tp <- tp + facet_wrap(SOMclustering ~ ., 
                         drop=FALSE, 
                         nrow=the.grid$dim[2],
+                        labeller=labeller(SOMclustering = mylabels),
                         dir = "h") +
              ggtitle(myTitle(args, what)) 
 

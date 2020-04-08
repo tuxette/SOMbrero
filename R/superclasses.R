@@ -280,8 +280,7 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
                                  "projgraph"),
                        plot.var=TRUE, add.type=FALSE, 
                        print.title = TRUE, 
-                       the.titles = paste("Cluster", 
-                                          1:prod(x$som$parameters$the.grid$dim)),
+                       the.titles = 1:prod(x$som$parameters$the.grid$dim),
                        ...) {
   # TODO: add types "names" and "words"
   args <- list(...)
@@ -297,12 +296,7 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
         warning("Incorrect number of colors
                   (does not fit the number of super-clusters);
                   using the default palette.\n", call.=TRUE, immediate.=TRUE)
-      if(nbclust<=9){
-        # create a color vector from RColorBrewer palette
-        clust.col.pal <- brewer.pal(nbclust, "Set2")
-      } else {
-        clust.col.pal <- rainbow(nbclust)
-      }
+      clust.col.pal <- gg_color(nbclust)
     }
     clust.col <- clust.col.pal[x$cluster]
   }
@@ -464,9 +458,9 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
             warning("Incorrect number of colors
   (does not fit the number of super-clusters);
   using the default palette.\n", call.=TRUE, immediate.=TRUE)
-          # create a color vector from RColorBrewer palette
-          args$vertex.color <- brewer.pal(max(x$cluster), "Set2")
-          args$vertex.frame.color <- brewer.pal(max(x$cluster), "Set2")
+          # create a color vector from ggplot default colors
+          args$vertex.color <- gg_color(nbclust)
+          args$vertex.frame.color <- gg_color(nb_clust)
         }
 
         # case of pie

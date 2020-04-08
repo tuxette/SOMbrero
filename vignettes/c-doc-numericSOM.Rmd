@@ -17,7 +17,7 @@ detailed below.
 __This documentation only considers the case of numerical data.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-library(SOMbrero)
+#library(SOMbrero)
 ```
 
 ### Arguments
@@ -99,7 +99,7 @@ It is stabilized during the last 500 iterations.
 
 The resulting clustering distribution can be visualized by the hitmap:
 ```{r hitmapObs}
-plot(my.som, what="obs", type="hitmap")
+plot(my.som, what="obs", type="hitmap", maxsize=30)
 ```
 
 The observations are almost uniformly distributed on the map.
@@ -183,7 +183,7 @@ used to map each flower on the SOM grid.
 ```{r irisTrain, cache=TRUE}
 set.seed(255)
 # run the SOM algorithm with verbose set to TRUE
-iris.som <- trainSOM(x.data=iris[,1:4], verbose=TRUE, nb.save=5)
+iris.som <- trainSOM(x.data=iris[,1:4], dimension=c(8,9), verbose=TRUE, nb.save=5, topo="square")
 iris.som
 ```
 
@@ -256,7 +256,6 @@ plot(iris.som, what="obs", type="color", variable=4, print.title=TRUE,
      main="Petal width")
 plot(iris.som, what="prototypes", type="lines", print.title=TRUE)
 plot(iris.som, what="obs", type="barplot", print.title=TRUE)
-plot(iris.som, what="obs", type="radar", key.loc=c(-0.5,5), mar=c(0,1,2,0))
 ```
 
 Empty squares catch the attention: none of the  observations are assigned to
@@ -268,9 +267,7 @@ plots, cluster 5 has the following results: high values for
 These results are also noticeable in the other plots:
 
 * on the ```"lines"``` plot, the second point shows a peak;
-* on the ```"barplot"``` plot, this evolution is observed again;
-* on the ```"radar"``` plot, the slice corresponding to ```Sepal.Width``` is 
-very big whereas the two Petal slices are almost invisible.
+* on the ```"barplot"``` plot, this evolution is observed again.
 
 Flowers with a long sepal and all the other variables being small are classified
 in the top left corner of the map. Flowers with large sepals and petals (length
@@ -312,7 +309,7 @@ dataset) of the corresponding neuron.
 Also, some graphics are provided to visualize the distance between prototypes on
 the grid:
 ```{r irisDistProto}
-plot(iris.som, what="prototypes", type="poly.dist")
+plot(iris.som, what="prototypes", type="poly.dist", print.title = F)
 plot(iris.som, what="prototypes", type="umatrix")
 plot(iris.som, what="prototypes", type="smooth.dist")
 plot(iris.som, what="prototypes", type="mds")
@@ -369,7 +366,7 @@ or ```"prototypes"``` cases. Here we choose as an additional variable the first
 variable of the iris data set, so we obtain the same graphic as above (see 
 section __Graphics common to observations and prototypes__).
 ```{r irisAdd2}
-plot(iris.som, what="add", type="color", variable=iris$Sepal.Length)
+plot(iris.som, what="add", type="color", variable=iris$Sepal.Length, print.title = F)
 ```
 
 ##### additional numerical matrix or data frame
@@ -388,11 +385,12 @@ my.cont.mat <- matrix(data=c(rep(c(rep(1,50), rep(0,150)), 2), rep(1,50)),
                       nrow=150, ncol=3)
 colnames(my.cont.mat) <- levels(iris$Species)
 ```
+
 ```{r irisAdd4}
 # my.cont.mat is the contingency matrix corresponding to the variable 
 # iris$Species - overview of the 5 first lines:
 my.cont.mat[1:5,]
-plot(iris.som, what="add", type="words", variable=my.cont.mat)
+plot(iris.som, what="add", type="words", variable=my.cont.mat, print.title = F)
 ```
 
 ##### additional non-numerical vector
@@ -462,7 +460,7 @@ Like ```plot.somRes```, the function ```plot.somSC``` has an argument ```type```
 which offers many different plots and can thus be combined with most of the
 graphics produced by ```plot.somSC```:
 ```{r irisSCplot, fig.width=6, fig.height=4}
-plot(my.sc, type="grid", plot.legend=TRUE)
+plot(my.sc, type="grid")
 ```
 ```{r irisSCplot3d}
 plot(my.sc, type="dendro3d")
@@ -475,25 +473,25 @@ Case ```"dendro3d"``` plots a 3d dendrogram.
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:
 ```{r irisSCplot2, fig.width=6, fig.height=4}
-plot(my.sc, type="hitmap", plot.legend=TRUE)
+plot(my.sc, type="hitmap", maxsize=20)
 ```
 
 ```{r irisSCplot2B}
-plot(my.sc, what="prototypes", type="lines", print.title=TRUE)
-plot(my.sc, what="prototypes", type="barplot", print.title=TRUE)
-plot(my.sc, what="prototypes", type="boxplot", print.title=TRUE)
+plot(my.sc, what="prototypes", type="lines")
+plot(my.sc, what="prototypes", type="barplot")
+plot(my.sc, what="prototypes", type="boxplot")
 ```
 
 
 ```{r irisSCplot2C, fig.height=4, fig.width=6}
-plot(my.sc, what="prototypes", type="mds", plot.legend=TRUE, cex =2)
+plot(my.sc, what="prototypes", type="mds")
 ```
 
 And some others identify the super clusters with titles:
 ```{r irisSCplot3}
-plot(my.sc, what="prototypes", type="color")
-plot(my.sc, what="prototypes", type="poly.dist")
-plot(my.sc, what="obs", type="pie", variable=iris$Species)
+plot(my.sc, what="prototypes", type="color", var="Sepal.Length")
+plot(my.sc, what="prototypes", type="poly.dist", print.title = F)
+plot(my.sc, what="add", type="pie", variable=iris$Species)
 ```
 
 It is also possible to consider an additional variable using the 

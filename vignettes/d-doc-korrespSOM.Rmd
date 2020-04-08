@@ -59,7 +59,8 @@ Chirac and the far-right candidate Jean-Marie Le Pen)
 set.seed(01091407)
 korresp.som <- trainSOM(x.data=presidentielles2002, dimension=c(8,8),
                         type="korresp", scaling="chi2", nb.save=10,
-                        radius.type="letremy")
+                        radius.type="letremy", topo="square")
+clusternames <- 1:prod(korresp.som$parameters$the.grid$dim)
 korresp.som
 ```
 
@@ -116,7 +117,7 @@ korresp.som$clustering
 The resulting distribution of the clustering on the map can also be visualized
 by a hitmap:
 ```{r presiHitmap}
-plot(korresp.som, what="obs", type="hitmap")
+plot(korresp.som, what="obs", type="hitmap", print.title = F)
 ```
 
 For a more precise view, ```"names"``` plot is implemented: it prints, 
@@ -161,12 +162,16 @@ argument is used)
 ```{r presiProtoL}
 # plot the line prototypes (106 French departements)
 plot(korresp.som, what="prototypes", type="lines", view="r", print.title=F) +    
-  guides(color=guide_legend(keywidth=0.1, keyheight=0.1, default.unit="cm", ncol=3)) + 
-  theme(legend.text=element_text(size=3))
+  guides(color=guide_legend(keywidth=0.1, keyheight=0.1, default.unit="cm", ncol=2)) + 
+  theme(legend.text=element_text(size=4), 
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 # plot the column prototypes (16 candidates)
-plot(korresp.som, what="prototypes", type="lines", view="c", print.title=F) +
+plot(korresp.som, what="prototypes", type="lines", view="c", print.title=T) +
   guides(color=guide_legend(keywidth=0.1, keyheight=0.1,default.unit="cm", ncol=1)) + 
-  theme(legend.text=element_text(size=6))
+  theme(legend.text=element_text(size=6),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 ```
 
 The peaks in neurons 5 and 6 correspond, in the row view, to the overseas 
@@ -182,8 +187,7 @@ here drawn, as an example for the candidate "Le Pen" and for the departement
 argument ```variable```) is represented on the map;
 * in 3d, which handling is similar to ```"color"```.
 ```{r presiProtoC3d, fig.width=12, fig.height=6}
-par(mfrow=c(1,2))
-plot(korresp.som, what="prototypes", type="color", variable="TAUBIRA")
+plot(korresp.som, what="prototypes", type="color", variable="LE_PEN")
 plot(korresp.som, what="prototypes", type="3d", variable="martinique")
 ```
 
@@ -193,9 +197,8 @@ that the candidates that obtained the higher scores in Martinique are located in
 the bottom right hand side of the map.
 
 The graphics can also be drawn by giving the variable number and its type,
-either "r" or "c" (here, as an example, CHIRAC who is the 5th candidate):
-```{r presiProtoNumber, fig.width=12, fig.height=6, fig.show='hold', out.width="50%"}
-# par(mfrow=c(1,2))
+either "r" or "c" (here, as an example, CHIRAC who is the 5th candidate, 5th column):
+```{r presiProtoNumber, fig.width=12, fig.height=6}
 plot(korresp.som, what="prototypes", type="color", variable=5, view="c")
 plot(korresp.som, what="prototypes", type="3d", variable=5, view="c")
 ```
@@ -228,7 +231,7 @@ coordinates representing the distance between the prototypes in the
 input space, and y coordinates representing the distance between the 
 corresponding neurons on the grid.
 ```{r presiGraphProto2}
-plot(korresp.som, what="prototypes", type="poly.dist", print.title=TRUE)
+plot(korresp.som, what="prototypes", type="poly.dist", print.title=F)
 plot(korresp.som, what="prototypes", type="umatrix", print.title=F)
 plot(korresp.som, what="prototypes", type="smooth.dist")
 plot(korresp.som, what="prototypes", type="mds")
@@ -292,7 +295,7 @@ Case ```"grid"``` fills the grid with colors according to the super clustering
 (and can provide a legend).
 Case ```"dendro3d"``` plots a 3d dendrogram.
 ```{r presiSC3}
-plot(my.sc, type="grid", plot.legend=TRUE)
+plot(my.sc, type="grid", print.title = T, the.titles=1:length(my.sc$cluster))
 plot(my.sc, type="dendro3d")
 ```
 
@@ -302,17 +305,16 @@ The three super-clusters correspond to traditional votes (blue), far right votes
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:
 ```{r presiSC4}
-plot(my.sc, what="prototypes", type="hitmap", plot.legend=TRUE)
-plot(my.sc, what="prototypes", type="lines", print.title=F)
+plot(my.sc, what="prototypes", type="hitmap", print.title = T, the.titles = clusternames)
 plot(my.sc, what="prototypes", type="lines", print.title=F, view="c")
-plot(my.sc, what="prototypes", type="mds", plot.legend=TRUE)
+plot(my.sc, what="prototypes", type="poly.dist", print.title=T, the.titles = clusternames)
+plot(my.sc, what="prototypes", type="mds")
 ```
 
 And some others identify the super clusters with titles:
 ```{r presiSC5}
 plot(my.sc, what="prototypes", type="color", view="r", variable="correze")
 plot(my.sc, what="prototypes", type="color", view="c", variable="JOSPIN")
-plot(my.sc, what="prototypes", type="poly.dist")
 ```
 
 Let us consider the first super cluster. It contains departements which were 

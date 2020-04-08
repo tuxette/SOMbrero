@@ -128,10 +128,18 @@ or by sur-imposing the original igraph object on the map:
 plot(mis.som, what="add", type="graph", var=lesmis)
 ```
 
-Clusters profile overviews can be plotted either with *e.g.*, lines or radar.
+Clusters profile overviews can be plotted either with *e.g.*, lines or barplot :
 ```{r lesmisProtoProfiles}
-plot(mis.som, what="prototypes", type="lines")
-plot(mis.som, what="prototypes", type="radar")
+plot(mis.som, what="prototypes", type="lines")  +
+  guides(color=guide_legend(keywidth=0.1, keyheight=0.25,default.unit="cm", ncol=2)) + 
+  theme(legend.text=element_text(size=6),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+plot(mis.som, what="prototypes", type="barplot")  +
+  guides(fill=guide_legend(keywidth=0.1, keyheight=0.25,default.unit="cm", ncol=2)) + 
+  theme(legend.text=element_text(size=6),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 ```
 
 On these graphics, one variable is represented respectively with a point or a 
@@ -144,8 +152,7 @@ types.
 * ```"poly.dist"``` represents the distances between neighboring prototypes with
 polygons plotted for each cell of the grid. The smaller the distance between 
 a polygon's vertex and a cell border, the closer the pair of prototypes.
-The colors indicates the number of observations in the neuron (white is used
-for empty neurons);
+The colors indicates the number of observations in the neuron;
 
 * ```"umatrix"``` fills the neurons of the grid using colors that represent
 the average distance between the current prototype and its neighbors;
@@ -200,9 +207,9 @@ sc.mis <- superClass(mis.som, k=5)
 summary(sc.mis)
 table(sc.mis$cluster)
 plot(sc.mis)
-plot(sc.mis, type="grid", plot.legend=TRUE)
-plot(sc.mis, type="lines", print.title=TRUE)
-plot(sc.mis, type="mds", plot.legend=TRUE)
+plot(sc.mis, what="prototypes", type="grid", plot.legend=TRUE)
+plot(sc.mis, what="prototypes", type="lines", print.title=TRUE)
+plot(sc.mis, what="prototypes", type="mds", plot.legend=TRUE)
 plot(sc.mis, type="dendro3d")
 ```
 

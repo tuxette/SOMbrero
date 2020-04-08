@@ -1,11 +1,6 @@
 orderIndexes <- function(the.grid, type) {
-  if(type=="3d") tmp <- 1:the.grid$dim[1]
-  else tmp <- the.grid$dim[1]:1
-  # Elise : je n'utilise plus le grid.coord pour pouvoir l'utiliser dans topo hexagonal aussi
-  # Je recrée aussi la coord théorique sur un carré.
-  # Utile pour le facet_wrap.
-  # tmp n'est plus utilisé.
-  # Il faudra tester sur le plot 3d.
+  # Order of cluster to place them correctly on the grid
+  # Used in plots
   match(paste(rep(1:the.grid$dim[1],the.grid$dim[2]),
               rep(the.grid$dim[2]:1, each=the.grid$dim[1]),
               sep="-"),
@@ -14,20 +9,14 @@ orderIndexes <- function(the.grid, type) {
               sep="-"))
 }
 
-paramGraph <- function(the.grid, print.title, type) {
-  if (print.title) {
-    if(type%in%c("pie","names","words")) {
-      the.mar <- c(0,0,1,0)
-    } else the.mar <- c(2,1,1,1)
-  } else {
-    if(type%in%c("pie","names","words")) {
-      the.mar <- c(0,0,0,0)
-    } else the.mar <- c(2,1,0.5,1)
-  }
-  list("mfrow"=c(the.grid$dim[1], the.grid$dim[2]),"oma"=c(0,0,3,0),
-       "bty"="c", "mar"=the.mar)
+
+# Produce same colors for non ggplot plots (dendro, dendro3d and igraph.pie)
+gg_color <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
 }
 
+# Handle title for plots
 myTitle <- function(args, what) {
   if (is.null(args$main)) {
     the.title <- switch(what,
@@ -38,8 +27,20 @@ myTitle <- function(args, what) {
   return(the.title)
 }
 
+# depth calculation function (adapted from Duncan Murdoch at https://stat.ethz.ch/pipermail/r-help/2005-September/079241.html)
+depth3d <- function(x,y,z, pmat, minsize=0.2, maxsize=2) {
+  
+  # determine depth of each point from xyz and transformation matrix pmat
+  tr <- as.matrix(cbind(x, y, z, 1)) %*% pmat
+  tr <- tr[,3]/tr[,4]
+  
+  # scale depth to point sizes between minsize and maxsize
+  psize <- ((tr-min(tr) ) * (maxsize-minsize)) / (max(tr)-min(tr)) + minsize
+  return(psize)
+}
 
 plot3d <- function(x, the.grid, type, variable, args) {
+  args$varname <- NULL
   args$x <- unique(the.grid$coord[,1])
   args$y <- unique(the.grid$coord[,2])
   args$z <- t(matrix(data=x[,variable], 
@@ -53,8 +54,24 @@ plot3d <- function(x, the.grid, type, variable, args) {
   if (is.null(args$zlab) & is.character(variable)) args$zlab <- variable
   if (is.null(args$zlab)) args$zlab <- colnames(x)[variable] else args$zlab <- args$zlab
   if (is.null(args$lwd)) args$lwd <- 1.5 else args$lwd <- args$lwd
-  if (is.null(args$col)) args$col <- "tomato"
-  do.call("persp", args)
+  if (is.null(args$col)) args$col <- gg_color(1)
+  if (is.null(args$border)) args$border <- "grey"
+  pmat <- do.call("persp", args)
+  
+  # The following taken from : 
+  # https://stackoverflow.com/questions/28062399/r-add-points-to-surface-plot-with-persp-having-the-appropriate-size
+  # take some xyz values from the matrix
+  # s = 1:prod(dim(args$z))
+  xx = args$x[row(args$z)]
+  yy = args$y[col(args$z)]
+  zz = args$z[1:prod(dim(args$z))]
+  
+  # determine distance to eye
+  psize = depth3d(xx,yy,zz,pmat,minsize=0.5, maxsize = 2)
+  # from 3D to 2D coordinates
+  mypoints <- trans3d(xx, yy, zz, pmat=pmat)
+  # plot in 2D space with pointsize related to distance
+  points(mypoints, pch=16, cex=psize, col="black")
 }
 
 
@@ -154,6 +171,9 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
                as.numeric(rownames(sommap$prototypes)), print.title, the.titles, 
                is.scaled, sommap$parameters$the.grid, args)
   } else if (type=="3d") {
+    if(sommap$parameters$the.grid$topo=="hexagonal"){
+      stop("3d plots are for square topography only", call.=TRUE)
+    }
     tmp.var <- variable
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if (view=="r") tmp.var <- variable+ncol(sommap$data)
@@ -184,7 +204,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
                  print.title, the.titles, 
                  is.scaled, sommap$parameters$the.grid, args)
     } else {
-      if(sommap$the.grid$topo=="hexagonal"){
+      if(sommap$parameters$the.grid$topo=="hexagonal"){
         warning("Hexagonal topograpy: imputing missing values to make a full squared grid\n", call.=TRUE, 
                 immediate.=TRUE)
       }
@@ -273,7 +293,7 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
         }
         if(is.null(variable)) variable <- "row.names"
         if(variable=="row.names"){
-            values <- rownames(sommap$data)
+            values <- names(sommap$clustering)
         } else {
           if(is.numeric(variable)) variable <- colnames(sommap$data)[variable]
             values <- sommap$data[,variable]
@@ -316,8 +336,9 @@ projectFactor <- function(the.graph, clustering, the.factor, pie.color=NULL) {
   if (!is.factor(the.factor)) the.factor <- as.factor(the.factor)
   vertex.pie <- lapply(split(the.factor, factor(clustering)), table)
   if (is.null(pie.color)) {
-    pie.color <- list(c(brewer.pal(8,"Set2"),
-                        brewer.pal(12,"Set3"))[1:nlevels(the.factor)])
+    pie.color <- gg_color(nlevels(the.factor))
+    # pie.color <- list(c(brewer.pal(8,"Set2"),
+    #                     brewer.pal(12,"Set3"))[1:nlevels(the.factor)])
   }
   return(list("vertex.pie"=vertex.pie, "vertex.pie.color"=pie.color))
 }
@@ -343,9 +364,11 @@ plotProjGraph <- function(proj.graph, print.title=FALSE, the.titles=NULL,
     
   if (args$vertex.shape!="pie") {
     if (is.null(args$vertex.color))
-      args$vertex.color <- brewer.pal(12,"Set3")[4]
+      args$vertex.color <- gg_color(1)
+     # args$vertex.color <- brewer.pal(12,"Set3")[4]
     if (is.null(args$vertex.frame.color))
-      args$vertex.frame.color <- brewer.pal(12,"Set3")[4]
+      args$vertex.frame.color <- gg_color(1)
+      #args$vertex.frame.color <- brewer.pal(12,"Set3")[4]
   }
 
   par(bg="white")
@@ -517,8 +540,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                         the.titles=if (what!="energy")
                           switch(type,
                                  "graph"=1:prod(x$parameters$the.grid$dim),
-                                 paste("Cluster",
-                                       1:prod(x$parameters$the.grid$dim))),
+                                 1:prod(x$parameters$the.grid$dim)),
                         proportional=TRUE, s.radius=1, pie.graph=FALSE, 
                         pie.variable=NULL,
                         view = if (x$parameters$type=="korresp") "r" else NULL,
@@ -530,10 +552,11 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
   if (length(the.titles)!=prod(x$parameters$the.grid$dim) & what!="energy") {
     the.titles=switch(type,
                       "graph"=1:prod(x$parameters$the.grid$dim),
-                      paste("Cluster",1:prod(x$parameters$the.grid$dim)))
+                      1:prod(x$parameters$the.grid$dim))
     warning("unadequate length for 'the.titles'; replaced by default",
             call.=TRUE, immediate.=TRUE)
   }
+  if(is.null(args$varname)) args$varname <- deparse(substitute(variable))
 
   switch(what,
          "prototypes"=plotPrototypes(x, type, variable, my.palette, print.title,
@@ -541,7 +564,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
          "energy"=ggplotEnergy(x),
          "add"=plotAdd(x, type, if (type!="graph") as.matrix(variable) else 
            variable, proportional, my.palette, print.title, the.titles, 
-                       is.scaled, s.radius, pie.graph, pie.variable, varname = deparse(substitute(variable)), args),
+                       is.scaled, s.radius, pie.graph, pie.variable, varname = args$varname, args),
          "obs"=plotObs(x, type, variable, my.palette, print.title, the.titles,
                        is.scaled, view, args))
 }
