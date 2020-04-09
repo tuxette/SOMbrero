@@ -299,6 +299,8 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
       clust.col.pal <- gg_color(nbclust)
     }
     clust.col <- clust.col.pal[x$cluster]
+  } else {
+    nbclust <- 1
   }
   
   if (type=="dendrogram") {
@@ -466,7 +468,7 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
   using the default palette.\n", call.=TRUE, immediate.=TRUE)
           # create a color vector from ggplot default colors
           args$vertex.color <- gg_color(nbclust)
-          args$vertex.frame.color <- gg_color(nb_clust)
+          args$vertex.frame.color <- gg_color(nbclust)
         }
 
         # case of pie

@@ -6,12 +6,14 @@ Fixed bugs:
 Improvements:
   hexagonal topography
   data from the environment can be loaded directly in the shiny application
+  titles and legends in plots
   3 examples data sets are loaded by default in the shiny app
   code used in the app is print to ease reproducibility
   
 Misc:
   most of the plots are now in ggplot2
   more intuitive shiny application
+  Suppress radar plots
 
 ********************************************************************************
 SOMbrero 1.2-5
