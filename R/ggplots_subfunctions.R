@@ -14,22 +14,22 @@ theme_set(theme_bw(base_size = 12) +
 ### Plots (ggplot2 version) grid-like : one graph using parameters$the.grid$coord as coordinates on the plan
 #############################################################################################
 ggplotGrid<- function(what, type, values, clustering, print.title,
-                           the.titles, is.scaled=F, the.grid, args=NULL){
+                           the.titles, the.grid, args=NULL){
   
   # Axes labels 
   ################################################
-  variable <- args$variable
-  if(is.null(args$variable)){
-    variable <- colnames(values)[1]
+  varname <- args$varname
+  if(is.null(args$varname)){
+    varname <- colnames(values)[1]
   }
   if(is.null(args$labelcolor)){
     if(is.null(args$sc) | type=="color"){
-      if(type=="hitmap"){
+      if(type=="hitmap" | type=="poly.dist"){
         labelcolor <- "Number of\nobservations"
       } else if(what=="prototypes"){
-        labelcolor <- paste0("value of\n", variable, "\nfor each prototype")
+        labelcolor <- paste0("value of\n", varname, "\nfor each prototype")
       } else {
-        labelcolor <- paste0("mean of\n", variable)
+        labelcolor <- paste0("mean of\n", varname)
       }
     } else {
       labelcolor <- "Super_Clusters"
@@ -40,10 +40,40 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
   
   # Data 
   ################################################
-  dataplot <- data.frame("varname"=as.matrix(values)[,1], "SOMclustering"=clustering, the.grid$coord[clustering,], "Nb"=1)
+  if(type!="poly.dist"){
+    dataplot <- data.frame("varname"=as.matrix(values)[,1], "SOMclustering"=clustering, the.grid$coord[clustering,], "Nb"=1)
+  }
   
   # Plot
   ################################################
+  if(type=="poly.dist"){
+    maxi <- max(unlist(values))
+    # Distance on the grid (min distance beween polygons = 1 --> 0.5 for each polygon)
+    values <- lapply(values, function(x) 0.429*((maxi-x)/maxi+0.05))
+    
+    dataplot <- lapply(1:length(values), function(x) coords_polydist(x, values, the.grid))
+    dataplot <- data.frame(do.call("rbind", dataplot))
+    
+    if(is.null(args$sc)){
+      #labelcolor <- "Nb_observations"
+      datacolor <- data.frame(table(clustering), stringsAsFactors = F)
+      colnames(datacolor) <- c("id", "varcolor")
+    } else {
+      #labelcolor <- "Super_Clusters"
+      datacolor <- data.frame("id"=1:length(args$sc), "varcolor" = as.character(args$sc))
+    }
+    
+    dataplot$numrow <- rownames(dataplot)
+    dataplot <- merge(dataplot, datacolor, by="id", all.x=T, sort=F)
+    dataplot <- dataplot[order(dataplot$numrow),]
+    if(is.null(args$sc)){
+      dataplot$varcolor <- ifelse(is.na(dataplot$varcolor), 0, dataplot$varcolor)
+    }
+    
+    tp <- ggplot(dataplot, aes(x = x, y = y)) +
+      geom_polygon(data=dataplot, aes(fill = varcolor, group = id))
+  }
+  
   if(type == "hitmap"){
     if(is.null(args$sc)){
       dataplot<- aggregate(data=dataplot, Nb ~ SOMclustering + x + y, length)
@@ -53,9 +83,21 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
       dataplot$varname <- as.factor(dataplot$varname)
     }
     
-    if(is.null(args$maxsize)) maxsize <- max(dataplot$Nb) else maxsize <- args$maxsize
-    if(is.null(args$minsize)) minsize <- min(dataplot$Nb) else minsize <- args$minsize
-    # if(is.null(args$maxsize)) maxsize <- 30 else maxsize <- args$maxsize
+    if(is.null(args$maxsize)){
+      maxsize <- max(dataplot$Nb)
+      if(maxsize>25){
+        maxsize <- 25
+      }
+    } else maxsize <- args$maxsize
+    if(is.null(args$minsize)){
+      minsize <- min(dataplot$Nb)
+      if(minsize>25){
+        minsize <- 5
+      }
+    } else maxsize <- args$maxsize
+    
+    # # if(is.null(args$minsize)) minsize <- min(dataplot$Nb) else minsize <- args$minsize
+    # if(is.null(args$maxsize)) maxsize <- 25 else maxsize <- args$maxsize
     # if(is.null(args$minsize)) minsize <- 1 else minsize <- args$minsize
     tp <- ggplot(dataplot, aes(x=x, y=y)) + 
       geom_point(aes(size = Nb, fill=varname), pch = 21, show.legend = T) +
@@ -65,6 +107,7 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
                                               max(dataplot$Nb)))) +
       labs(size="Number of\nobservations")
   }
+  
   if(type == "color"){
     dataplot <- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
     if(the.grid$topo == "square"){
@@ -132,8 +175,8 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   }
   if(type=="names"){
     labely <- "frequency of values"
-    if(type=="names" & is.null(args$variable)==F){
-      labely <- paste("frequency of", args$variable, "values")
+    if(type=="names" & is.null(args$varname)==F){
+      labely <- paste("frequency of", args$varname, "values")
     }
   }
 

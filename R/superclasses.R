@@ -365,12 +365,12 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
       if (type=="grid") {
         args$sc <- max(x$cluster)
         ggplotGrid("prototypes", type="grid", values=x$cluster, clustering=as.numeric(as.character(rownames(x$som$prototypes))), 
-                   print.title, the.titles, is.scaled,
+                   print.title, the.titles,
                    the.grid=x$som$parameters$the.grid , args)
       } else if (type=="hitmap") {
         args$sc <- max(x$cluster)
         ggplotGrid("observations", type="hitmap", values=x$cluster[x$som$clustering], clustering=x$som$clustering, 
-                   print.title, the.titles, is.scaled,
+                   print.title, the.titles,
                    the.grid=x$som$parameters$the.grid , args)
       } else if (type %in% c("lines", "barplot", "boxplot", "mds",
                              "color", "poly.dist", "pie", "graph")) {
@@ -400,9 +400,6 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
         }
         args$x <- x$som
         args$what <- what
-        if(args$what == "add" & is.null(args$variable)) {
-          stop("Specify the variable to plot")
-        }
         
         # manage argument 'what'
         if (!add.type) {
@@ -431,6 +428,15 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
           args$sc <-  x$cluster
         }
 
+        if(args$what=="add"){
+          if(is.null(args$variable)){
+            stop("Specify the variable to plot", call. = TRUE)
+          }
+          callvar <- match.call(expand.dots = FALSE)$...[["variable"]]
+          args$varname <- deparse(substitute(callvar))
+          print(args$varname)
+        }
+        
        do.call("plot.somRes", args)
       } else if (type=="projgraph") {
         # check arguments

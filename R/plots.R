@@ -10,7 +10,7 @@ orderIndexes <- function(the.grid, type) {
 }
 
 
-# Produce same colors for non ggplot plots (dendro, dendro3d and igraph.pie)
+# Produce default colors for non ggplot plots (dendro, dendro3d and igraph.pie)
 gg_color <- function(n) {
   hues = seq(15, 375, length = n + 1)
   hcl(h = hues, l = 65, c = 100)[1:n]
@@ -40,7 +40,6 @@ depth3d <- function(x,y,z, pmat, minsize=0.2, maxsize=2) {
 }
 
 plot3d <- function(x, the.grid, type, variable, args) {
-  args$varname <- NULL
   args$x <- sort(unique(the.grid$coord[,1]))
   args$y <- sort(unique(the.grid$coord[,2]))
   
@@ -77,17 +76,16 @@ plot3d <- function(x, the.grid, type, variable, args) {
   if (is.null(args$lwd)) args$lwd <- 1.5 else args$lwd <- args$lwd
   if (is.null(args$col)) args$col <- gg_color(1)
   if (is.null(args$border)) args$border <- "grey"
-  if (is.null(args$main)) args$main <- "Values of prototypes"
+  if (is.null(args$main)) args$main <- paste0("Values of prototypes for ", args$varname)
+  args$varname <- NULL
   if(the.grid$topo=="hexagonal") {
     args$sub <- "Hexagonal topography : linear interpolation between points"
   }
   pmat <- do.call("persp", args)
   
-  # Adding points
+  # Adding points to the map
   # The following taken from : 
   # https://stackoverflow.com/questions/28062399/r-add-points-to-surface-plot-with-persp-having-the-appropriate-size
-  # take some xyz values from the matrix
-  # s = 1:prod(dim(args$z))
   xx = the.grid$coord[,1]
   yy = the.grid$coord[,2]
   zz = x[,variable]
@@ -184,7 +182,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     ggplotFacet("prototypes", type, tmp.proto, as.numeric(rownames(tmp.proto)),
                 print.title, the.titles, is.scaled,
                 sommap$parameters$the.grid, args)
-  } else if (type=="color") {
+  } else if (type=="color" | type=="3d") {
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if(view=="r"){
         tmp.var <- rownames(sommap$data)[variable]
@@ -192,10 +190,15 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     } else if (sommap$parameters$type=="numeric" & (is.numeric(variable))) {
         tmp.var <- colnames(sommap$data)[variable]
     } else tmp.var <- variable
-    args$variable <- tmp.var
-    ggplotGrid("prototypes", "color", sommap$prototypes[,tmp.var], 
-               as.numeric(rownames(sommap$prototypes)), print.title, the.titles, 
-               is.scaled, sommap$parameters$the.grid, args)
+    args$varname <- tmp.var
+    if(type=="color"){
+      ggplotGrid("prototypes", "color", sommap$prototypes[,tmp.var], 
+                 as.numeric(rownames(sommap$prototypes)), print.title, 
+                 the.titles, sommap$parameters$the.grid, args)
+    } else if (type=="3d"){
+      plot3d(sommap$prototypes, sommap$parameters$the.grid, type, tmp.var, args)
+    }
+
   } else if (type=="3d") {
     # if(sommap$parameters$the.grid$topo=="hexagonal"){
     #   stop("3d plots are for square topography only", call.=TRUE)
@@ -212,8 +215,10 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
         stop("Impossible to plot 'poly.dist'!", call.=TRUE)
       } else values <- lapply(values,sqrt)
     }
-    ggplotPolydist(values, sommap$clustering, print.title,
-                               the.titles, sommap$parameters$the.grid, args)
+    ggplotGrid("prototypes", type, values, sommap$clustering, print.title,
+                   the.titles, sommap$parameters$the.grid, args)
+    # ggplotPolydist(values, sommap$clustering, print.title,
+    #                            the.titles, sommap$parameters$the.grid, args)
   } else if (type=="umatrix" || type=="smooth.dist") {
     values <- protoDist(sommap, "neighbors")
 
@@ -225,10 +230,11 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     values <- unlist(lapply(values,mean))
     if (type=="umatrix") {
       args$labelcolor <- "umatrix\nbetween\nprototypes"
-      args$variable <- variable
-      ggplotGrid("prototypes", "color", values, as.numeric(as.character(rownames(sommap$prototypes))), 
+      args$varname <- variable
+      ggplotGrid("prototypes", "color", values,
+                 as.numeric(as.character(rownames(sommap$prototypes))), 
                  print.title, the.titles, 
-                 is.scaled, sommap$parameters$the.grid, args)
+                 sommap$parameters$the.grid, args)
     } else {
       if(sommap$parameters$the.grid$topo=="hexagonal"){
         warning("Hexagonal topograpy: imputing missing values to make a full squared grid\n", call.=TRUE, 
@@ -309,7 +315,7 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
     } else if (type=="names") {
       if (sommap$parameters$type %in% c("relational", "korresp")) {
         values <- names(sommap$clustering)
-        args$variable <- "names"
+        args$varname <- "names"
       }
       if(sommap$parameters$type=="numeric") {
         if (length(variable)>1) {
@@ -324,7 +330,7 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
           if(is.numeric(variable)) variable <- colnames(sommap$data)[variable]
             values <- sommap$data[,variable]
         }
-        args$variable <- variable
+        args$varname <- variable
       }
     }
     ggplotFacet("obs", type, values, sommap$clustering,
@@ -344,14 +350,13 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
         } else if (sommap$parameters$type=="numeric" & (is.numeric(variable))) {
           tmp.var <- colnames(sommap$data)[variable]
         } else tmp.var <- variable
-        args$variable <- tmp.var
+        args$varname <- tmp.var
       values <- sommap$data[,tmp.var]
     }  else if (type=="hitmap") {
       values <- sommap$clustering
     }
     ggplotGrid("obs", type, values, sommap$clustering,
-               print.title, the.titles, is.scaled,
-               sommap$parameters$the.grid, args)
+               print.title, the.titles, sommap$parameters$the.grid, args)
   }
 }
 
@@ -403,7 +408,7 @@ plotProjGraph <- function(proj.graph, print.title=FALSE, the.titles=NULL,
 
 plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     print.title, the.titles, is.scaled, s.radius, pie.graph,
-                    pie.variable, varname, args) {
+                    pie.variable, args) {
   ## types : pie, color, lines, boxplot, names, words, graph, barplot
   # to be implemented: graph
 
@@ -440,7 +445,6 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   # switch between different types
   if(type %in% c("pie", "lines", "barplot", "boxplot", "names", "words")){
     if(type == "pie") variable <- as.factor(variable)
-    if(type == "names") args$variable <- varname
     if (type=="words") {
       if (is.null(colnames(variable))) {
         stop("no colnames for 'variable'", call.=TRUE)
@@ -449,9 +453,8 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     ggplotFacet("add", type, values=variable, sommap$clustering, print.title, the.titles, 
                 is.scaled, sommap$parameters$the.grid, args)
   } else if(type == "color"){
-    args$variable <- varname
     ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
-               is.scaled, sommap$parameters$the.grid, args)
+               sommap$parameters$the.grid, args)
   } else if (type=="graph") {
     # controls
     if (!is_igraph(variable)){
@@ -590,7 +593,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
          "energy"=ggplotEnergy(x),
          "add"=plotAdd(x, type, if (type!="graph") as.matrix(variable) else 
            variable, proportional, my.palette, print.title, the.titles, 
-                       is.scaled, s.radius, pie.graph, pie.variable, varname = args$varname, args),
+                       is.scaled, s.radius, pie.graph, pie.variable, args),
          "obs"=plotObs(x, type, variable, my.palette, print.title, the.titles,
                        is.scaled, view, args))
 }
