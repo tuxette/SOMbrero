@@ -345,6 +345,7 @@ multiple variables)",
                  )
                  ),
           column(9,
+                 verbatimTextOutput("runcodeplot"),
                  jqui_resizable(plotOutput("somplot", width = 750, height = 600))
                  )
         ),
@@ -444,6 +445,7 @@ plot can help you determine the adequate number of superclasses."
                                                    )
                                             ),
                                             column(9,
+                                                   verbatimTextOutput("runcodescplot"),
                                                    jqui_resizable(plotOutput("scplot", width = 750, height = 600))
                                             )
                                           ),
@@ -564,6 +566,7 @@ to the number of rows ."
                                               )
                                             )),
                                             column(9,
+                                                   verbatimTextOutput("runcodeaddplot"),
                                                    jqui_resizable(plotOutput("addplot", width=750, height = 600))
                                             ),
                                             br(),

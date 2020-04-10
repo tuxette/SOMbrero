@@ -207,14 +207,13 @@ shinyServer(function(input, output, session) {
       updateSelectInput(session, "unusedvar", choices=unused, selected = unused)
     }
         
-      
     if(is.null(input$file1)==F){
       namedata <- "data"
     } else {
       namedata <- input$file1envir
     }
     RVserver.env$current.call <- paste0("set.seed(", input$randseed, ")\n",
-                                         "trainSOM(", namedata,
+                                         "mysom <- trainSOM(", namedata,
                                          "[,'", paste(input$varchoice, collapse="', '"), "'],\n",
                                          "type='", input$somtype, "', ",
                                          "topo='", input$topo, "', ",
@@ -356,6 +355,34 @@ shinyServer(function(input, output, session) {
         phi <- input$phi
       }
       
+      observe({
+       output$runcodeplot <- renderText({
+         codeplot <- paste0("plot(mysom, ",
+                "what='", input$somplotwhat, "', ", 
+                "print.title=", input$somplottitle)
+         if(input$somplottype!="energy"){
+           codeplot <- paste0(codeplot, ", type='", input$somplottype, "'")
+         }
+         if(input$somplottype  %in% c("lines", "barplot", "boxplot", "color", "3d")){
+           if(length(tmp.var)==1) {
+             textevar <- paste0("'", tmp.var, "'")
+           } else {
+             textevar <- paste0("c('", paste(tmp.var, collapse="',"), "')")
+           }
+           codeplot <- paste0(codeplot, ", variable=", textevar)
+         }
+         if(input$somtype == "korresp" ){
+           codeplot <- paste0(codeplot, ", view='", tmp.view, "'")
+         }
+         if(input$somplottype =="3d"){
+           codeplot <- paste0(codeplot, ", theta=", theta, ", ",
+                              "phi=", phi)
+         }
+         codeplot <- paste0(codeplot, ")")
+         codeplot
+       })
+      })
+      
       plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
                       variable=tmp.var, print.title=input$somplottitle,
                       view=tmp.view, theta = theta, phi=phi)
@@ -476,6 +503,30 @@ shinyServer(function(input, output, session) {
     if (input$scplottype =="dendro3d")
       angle <- input$angle3d
       
+    observe({
+      output$runcodescplot <- renderText({
+        codeplot <- paste0("plot(mysomSC, ",
+                           "what='", input$scplotwhat, "', ",
+                           "type='", input$scplottype, "'")
+        if(input$scplottype  %in% c("lines", "barplot", "boxplot", "color")){
+          if(length(tmp.var)==1) {
+            textevar <- paste0("'", tmp.var, "'")
+          } else {
+            textevar <- paste0("c('", paste(tmp.var, collapse="',"), "')")
+          }
+          codeplot <- paste0(codeplot, ", variable=", textevar)
+        }
+        if(input$somtype == "korresp" ){
+          codeplot <- paste0(codeplot, ", view='", tmp.view, "'")
+        }
+        if(input$somplottype =="dendro3d"){
+          codeplot <- paste0(codeplot, ", angle=", angle)
+        }
+        codeplot <- paste0(codeplot, ")")
+        codeplot
+      })
+    })
+    
     plot(x = the.sc, what = input$scplotwhat, type = input$scplottype,
          variable = tmp.var, view = tmp.view, angle = angle)
 
@@ -580,11 +631,41 @@ shinyServer(function(input, output, session) {
     } else tmp.var <- input$addplotvar2
     
     if (input$addplottype !="graph") {
+      
+      observe({
+        output$runcodeaddplot <- renderText({
+          codeplot <- paste0("plot(mysom, what='add', ",
+                             "type='", input$addplottype, "'")
+          if(input$addplottype  %in% c("lines", "barplot", "boxplot", "color", "words", "pie")){
+            if(length(tmp.var)==1) {
+              textevar <- paste0("dataAdd$", tmp.var)
+            } else {
+              textevar <- paste0("dataAdd[,c('", paste(tmp.var, collapse="',"), "')]")
+            }
+            codeplot <- paste0(codeplot, ", variable=", textevar)
+          }
+          codeplot <- paste0(codeplot, ")")
+          codeplot
+        })
+      })
       plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
-            variable=data.frame(dataAdd[,tmp.var]), varname=paste0("dataAdd$", tmp.var))
+           variable=data.frame(dataAdd[,tmp.var]), varname=paste0("dataAdd$", tmp.var))
+      # plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
+      #       variable=data.frame(dataAdd[,tmp.var]), varname=paste0("dataAdd$", tmp.var))
     } else {
       adjBin <- as.matrix(dataAdd!=0)
       tmpGraph <- graph.adjacency(adjBin, mode="undirected")
+      
+      observe({
+        output$runcodeaddplot <- renderText({
+          codeplot <- "adjBin <- as.matrix(dataAdd!=0)\n"
+          codeplot <- paste0(codeplot, "tmpGraph <- graph.adjacency(adjBin, mode='undirected')\n")
+          codeplot <- paste0(codeplot, "plot(mysomSC, what='add', ",
+                                       "type='", input$addplottype, "',",
+                                       "variable=tmpGraph)")
+          codeplot
+        })
+      })
       plot(RVserver.env$current.som, what="add", type="graph", variable=tmpGraph)
     }
   })

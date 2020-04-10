@@ -46,7 +46,7 @@ plot3d <- function(x, the.grid, type, variable, args) {
   if(the.grid$topo=="hexagonal"){
     gridcoordsx <- rep(args$x, length(args$y))
     gridcoordsy <- rep(args$y, each=length(args$x))
-    gridvalues<-interp(the.grid$coord[,1], the.grid$coord[,2], x[,variable], # real cordinates
+    gridvalues<-interp::interp(the.grid$coord[,1], the.grid$coord[,2], x[,variable], # real cordinates
                         xo=gridcoordsx, yo=gridcoordsy, # new coordinates
                         output="points",
                         method="linear")
