@@ -87,6 +87,7 @@ plot(my.first.grid)
 
 # generating colors from the rainbow() function
 my.colors <- rainbow(5*6)
+## Fix it!!
 plot(my.first.grid, neuron.col=my.colors)
 ```
 

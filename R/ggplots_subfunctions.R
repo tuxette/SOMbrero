@@ -13,20 +13,20 @@ theme_set(theme_bw(base_size = 12) +
 
 ### Plots (ggplot2 version) grid-like : one graph using parameters$the.grid$coord as coordinates on the plan
 #############################################################################################
-ggplotGrid<- function(what, type, values, clustering, print.title,
-                           the.titles, the.grid, args=NULL){
+ggplotGrid <- function(what, type, values, clustering, print.title,
+                       the.titles, the.grid, args = NULL) {
   
   # Axes labels 
   ################################################
   varname <- args$varname
-  if(is.null(args$varname)){
+  if (is.null(args$varname)) {
     varname <- colnames(values)[1]
   }
-  if(is.null(args$labelcolor)){
-    if(is.null(args$sc) | type=="color"){
-      if(type=="hitmap" | type=="poly.dist"){
+  if (is.null(args$labelcolor)) {
+    if (is.null(args$sc) | type=="color") {
+      if (type=="hitmap" | type=="poly.dist") {
         labelcolor <- "Number of\nobservations"
-      } else if(what=="prototypes"){
+      } else if (what=="prototypes") {
         labelcolor <- paste0("value of\n", varname, "\nfor each prototype")
       } else {
         labelcolor <- paste0("mean of\n", varname)
@@ -40,33 +40,38 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
   
   # Data 
   ################################################
-  if(type!="poly.dist"){
-    dataplot <- data.frame("varname"=as.matrix(values)[,1], "SOMclustering"=clustering, the.grid$coord[clustering,], "Nb"=1)
+  if (type != "poly.dist") {
+    dataplot <- data.frame("varname" = as.matrix(values)[,1],
+                           "SOMclustering" = clustering, 
+                           the.grid$coord[clustering,],
+                           "Nb" = 1)
   }
   
   # Plot
   ################################################
-  if(type=="poly.dist"){
+  if (type == "poly.dist") {
     maxi <- max(unlist(values))
     # Distance on the grid (min distance beween polygons = 1 --> 0.5 for each polygon)
-    values <- lapply(values, function(x) 0.429*((maxi-x)/maxi+0.05))
+    values <- lapply(values, function(x) 0.429 * ((maxi-x)/maxi+0.05))
     
-    dataplot <- lapply(1:length(values), function(x) coords_polydist(x, values, the.grid))
+    dataplot <- lapply(1:length(values), function(x) 
+      coords_polydist(x, values, the.grid))
     dataplot <- data.frame(do.call("rbind", dataplot))
     
-    if(is.null(args$sc)){
+    if (is.null(args$sc)) {
       #labelcolor <- "Nb_observations"
-      datacolor <- data.frame(table(clustering), stringsAsFactors = F)
+      datacolor <- data.frame(table(clustering), stringsAsFactors = FALSE)
       colnames(datacolor) <- c("id", "varcolor")
     } else {
       #labelcolor <- "Super_Clusters"
-      datacolor <- data.frame("id"=1:length(args$sc), "varcolor" = as.character(args$sc))
+      datacolor <- data.frame("id" = 1:length(args$sc), 
+                              "varcolor" = as.character(args$sc))
     }
     
     dataplot$numrow <- rownames(dataplot)
-    dataplot <- merge(dataplot, datacolor, by="id", all.x=T, sort=F)
-    dataplot <- dataplot[order(dataplot$numrow),]
-    if(is.null(args$sc)){
+    dataplot <- merge(dataplot, datacolor, by="id", all.x = TRUE, sort = FALSE)
+    dataplot <- dataplot[order(dataplot$numrow), ]
+    if (is.null(args$sc)) {
       dataplot$varcolor <- ifelse(is.na(dataplot$varcolor), 0, dataplot$varcolor)
     }
     
@@ -74,24 +79,25 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
       geom_polygon(data=dataplot, aes(fill = varcolor, group = id))
   }
   
-  if(type == "hitmap"){
-    if(is.null(args$sc)){
-      dataplot<- aggregate(data=dataplot, Nb ~ SOMclustering + x + y, length)
+  if (type == "hitmap") {
+    if (is.null(args$sc)) {
+      dataplot <- aggregate(data=dataplot, Nb ~ SOMclustering + x + y, length)
       dataplot$varname <- dataplot$Nb
     } else {
-      dataplot<- aggregate(data=dataplot, Nb ~ SOMclustering + x + y + varname, length)
+      dataplot <- aggregate(data=dataplot, Nb ~ SOMclustering + x + y + varname,
+                           length)
       dataplot$varname <- as.factor(dataplot$varname)
     }
     
-    if(is.null(args$maxsize)){
+    if (is.null(args$maxsize)) {
       maxsize <- max(dataplot$Nb)
-      if(maxsize>25){
+      if (maxsize > 25) {
         maxsize <- 25
       }
     } else maxsize <- args$maxsize
-    if(is.null(args$minsize)){
+    if (is.null(args$minsize)) {
       minsize <- min(dataplot$Nb)
-      if(minsize>25){
+      if (minsize>25) {
         minsize <- 5
       }
     } else maxsize <- args$maxsize
@@ -99,51 +105,51 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
     # # if(is.null(args$minsize)) minsize <- min(dataplot$Nb) else minsize <- args$minsize
     # if(is.null(args$maxsize)) maxsize <- 25 else maxsize <- args$maxsize
     # if(is.null(args$minsize)) minsize <- 1 else minsize <- args$minsize
-    tp <- ggplot(dataplot, aes(x=x, y=y)) + 
-      geom_point(aes(size = Nb, fill=varname), pch = 21, show.legend = T) +
-      scale_size_continuous(range=c(1,maxsize), 
+    tp <- ggplot(dataplot, aes(x = x, y = y)) + 
+      geom_point(aes(size = Nb, fill = varname), pch = 21, show.legend = TRUE) +
+      scale_size_continuous(range=c(1, maxsize), 
                             breaks = unique(c(min(dataplot$Nb), 
                                               floor(median(dataplot$Nb)), 
                                               max(dataplot$Nb)))) +
-      labs(size="Number of\nobservations")
+      labs(size = "Number of\nobservations")
   }
   
-  if(type == "color"){
+  if (type == "color") {
     dataplot <- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
-    if(the.grid$topo == "square"){
-      tp <- ggplot(dataplot, aes(x=x, y=y, fill=varname)) + 
-        geom_bin2d(stat="identity", linetype=1, color="grey")
+    if (the.grid$topo == "square") {
+      tp <- ggplot(dataplot, aes(x = x, y = y, fill = varname)) + 
+        geom_bin2d(stat = "identity", linetype = 1, color = "grey")
     } else {
-      tp <- ggplot(dataplot, aes(x=x, y=y, fill=varname)) + 
-        geom_hex(stat="identity", linetype=1, color="grey") 
+      tp <- ggplot(dataplot, aes(x = x, y = y, fill = varname)) + 
+        geom_hex(stat = "identity", linetype = 1, color = "grey") 
     }
   }
   
-  if(type=="grid"){
-    dataplot <- aggregate(data=dataplot, varname ~ SOMclustering + x + y, mean)
-    if(the.grid$topo == "square"){
-      tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname))) + 
-        geom_bin2d(stat="identity", linetype=1, color="grey", size=0.6)
+  if (type == "grid") {
+    dataplot <- aggregate(data = dataplot, varname ~ SOMclustering + x + y, mean)
+    if (the.grid$topo == "square") {
+      tp <- ggplot(dataplot, aes(x = x, y = y, fill = factor(varname))) + 
+        geom_bin2d(stat = "identity", linetype = 1, color = "grey", size = 0.6)
     } else {
-      tp <- ggplot(dataplot, aes(x=x, y=y, fill=factor(varname), group=1)) + 
-        geom_hex(stat="identity", linetype=1, color="grey", size=0.6)
+      tp <- ggplot(dataplot, aes(x = x, y = y, fill = factor(varname), group = 1)) + 
+        geom_hex(stat = "identity", linetype = 1, color = "grey", size = 0.6)
     }
   }
 
   tp <- tp +  ggtitle(myTitle(args, what)) + coord_fixed() + 
-    xlim(0.5, max(dataplot$x)+0.5) + ylim(0.5, max(dataplot$y)+0.5) + 
+    xlim(0.5, max(dataplot$x) + 0.5) + ylim(0.5, max(dataplot$y) + 0.5) + 
     labs(fill = labelcolor) +
-    theme(axis.title.x=element_blank(),
-          axis.text.x=element_blank(),
-          axis.ticks.x=element_blank(),
-          axis.title.y=element_blank(),
-          axis.text.y=element_blank(),
-          axis.ticks.y=element_blank())
+    theme(axis.title.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.ticks.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank())
   
-  
-  if(print.title==T){
+  if (print.title) {
     datagrid <- data.frame(the.grid$coord, the.titles)
-    tp <- tp + geom_text(data=datagrid, aes(x=x, y=y, label=the.titles, fill=NULL))
+    tp <- tp + geom_text(data = datagrid, 
+                         aes(x = x, y = y, label = the.titles, fill = NULL))
   }
   
   tp

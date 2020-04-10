@@ -153,8 +153,7 @@ plot.myGrid <- function(x, neuron.col = "white", print.title = FALSE,
   dimgrid <- prod(x$dim)
   values <- rep(0, dimgrid)
   id <- 1:dimgrid
-  ggplotGrid("obs", "grid", values, id,
-             print.title, the.titles, is.scaled=F,
-             x, args) + theme(legend.position = "none") + 
-    scale_fill_manual(values=neuron.col)
+  ggplotGrid("obs", "grid", values, id, print.title, the.titles, x, args) +
+    theme(legend.position = "none") + 
+    scale_fill_manual(values = neuron.col)
 }
