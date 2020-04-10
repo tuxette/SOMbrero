@@ -1,8 +1,6 @@
 * other features (easy)
-** add plot.legend in plotSC for 'lines' 'barplot' 'boxplot' and 'dendro3d'
 ** MC : ficelle -> check all features (especially 3D plots)
 ** MC : for lines, display all observations and not the mean
-** MC : improved colors in prototypes/MDS because SC are very light
 ** improve predict for Heskes: maybe possible to do it entirely with a matrix
 operation
 ** calculateProtoDist: use other type of neighbors (but add a parameter for the
@@ -12,11 +10,9 @@ radius because it should not affect the poly.dist plot)
 ** add weights to observations
 ** kaski lagus
 ** implement weighted graphs projection
-** change information about maxit (default = 5*n.obs, not 500 as claimed)
 ** add additional variables for superclasses plots
 
 * other features (hard)
-** grid.topology: hexagonal
 ** repeat SOM and combine
 ** multiple dissimilarities
 ** kacm, kdij
@@ -24,19 +20,14 @@ radius because it should not affect the poly.dist plot)
 
 * implementation enhancement
 ** should maybe improve the distance handling and propagate it everywhere
-** colors handling in "names" seems to sometimes bugs
-** make a function for initializing colors init.color(clustering, def.color)
 ** dissimilarity should maybe algorithm requires a "dist" type input
 
 * package changes
 ** C++ for training
-** improved modern graphics (ggplot2)
 
 * shiny
 ** JB : remove variable names for somplot and scplot for Relational?
 ** JB : what is standard value for h in superClass?
 ** MC : add an option in input to indicate which variable contains the
-observation name
-** MC : possibility to choose additional variables within the original table
-** fix bug in download file names
+observation name 
 

@@ -17,7 +17,8 @@ detailed below.
 __This documentation only considers the case of dissimilarity matrices.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-library(SOMbrero)
+#library(SOMbrero)
+devtools::load_all(".")
 ```
 
 ### Arguments
