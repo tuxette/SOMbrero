@@ -94,7 +94,7 @@ ggplotGrid<- function(what, type, values, clustering, print.title,
       if(minsize>25){
         minsize <- 5
       }
-    } else maxsize <- args$maxsize
+    } else minsize <- args$minsize
     
     # # if(is.null(args$minsize)) minsize <- min(dataplot$Nb) else minsize <- args$minsize
     # if(is.null(args$maxsize)) maxsize <- 25 else maxsize <- args$maxsize

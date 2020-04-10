@@ -233,20 +233,20 @@ shinyServer(function(input, output, session) {
   })
   
   output$runcodesom <- renderText({
-        validate(need(input$somtype!="", "Choose a type of algorithm."))
-        validate(need(is.null(val$data)==F, "First import a dataset."))
-        validate(need(input$trainbutton!=0, "Hit the Train button to train the map."))
-        validate(need(is.null(RVserver.env$current.call)==F, "Hit the Train button to train the map."))
+        shiny::validate(need(input$somtype!="", "Choose a type of algorithm."))
+        shiny::validate(need(is.null(val$data)==F, "First import a dataset."))
+        shiny::validate(need(input$trainbutton!=0, "Hit the Train button to train the map."))
+        shiny::validate(need(is.null(RVserver.env$current.call)==F, "Hit the Train button to train the map."))
         RVserver.env$current.call
     })
 
   # Render the summary of the SOM
   # observeEvent(input$trainbutton,{
   output$summary <- renderPrint({
-    validate(need(input$somtype!="", "Choose a type of algorithm."))
-    validate(need(is.null(val$data)==F, "First import a dataset."))
-    validate(need(input$trainbutton!=0, "Hit the Train button to train the map."))
-    validate(need(is.null(RVserver.env$current.som)==F, "Hit the Train button to train the map."))
+    shiny::validate(need(input$somtype!="", "Choose a type of algorithm."))
+    shiny::validate(need(is.null(val$data)==F, "First import a dataset."))
+    shiny::validate(need(input$trainbutton!=0, "Hit the Train button to train the map."))
+    shiny::validate(need(is.null(RVserver.env$current.som)==F, "Hit the Train button to train the map."))
     summary(RVserver.env$current.som)
   })
 
@@ -441,8 +441,8 @@ shinyServer(function(input, output, session) {
   
   # Update SuperClass plot
   output$somplotscdendro <- renderPlot({
-    validate(need(is.null(dInput)==F, "First load data (cf 'Self-Organize' tab)"))
-    validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained"))
+    shiny::validate(need(is.null(dInput)==F, "First load data (cf 'Self-Organize' tab)"))
+    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained."))
     plot(computeSuperclasses(), type="dendrogram")
   })
   
@@ -512,7 +512,10 @@ shinyServer(function(input, output, session) {
     if (is.null(val$dataadd))
       return(NULL)
     
+    
     the.table <- val$dataadd
+    shiny::validate(need(nrow(val$data)==nrow(val$dataadd), 
+                         "Additional data doesn't have the same number of rows than the data used for SOM"))
     updateAddPlotVar() # update variable selector    
   
     the.table
@@ -528,6 +531,7 @@ shinyServer(function(input, output, session) {
   
   # additional data preview table
   output$addview <- renderTable({
+    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained."))
     d.input <- dInputAdd()
     if (is.null(d.input)) 
       return(NULL)
@@ -548,6 +552,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$missingrowsadd <- renderText({
+    if(is.null(RVserver.env$current.som)) return(NULL)
     shiny::validate(need(is.null(dInputAdd())==F, 'Choose data'))
     nrowmissing <- nrow(dInputAdd())-input$nrow.preview
     ncolmissing <- ncol(dInputAdd())-input$ncol.preview
@@ -566,6 +571,7 @@ shinyServer(function(input, output, session) {
   
   # function to render Additional data Plot
   output$addplot <- renderPlot({
+    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained."))
     dataAdd <- dInputAdd()
     if (is.null(dataAdd)) return(NULL)
     
