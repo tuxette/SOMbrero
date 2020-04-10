@@ -72,6 +72,7 @@ shinyServer(function(input, output, session) {
     val$data <- the.table
   }, ignoreInit=T)
   
+  
   output$dataready <- renderText({
     text <- "No data loaded"
     if(is.null(val$data)==F){
@@ -263,7 +264,7 @@ shinyServer(function(input, output, session) {
   # TODO: output an error if map not trained
   output$som.download <- {
     downloadHandler(filename=function() {
-        paste0("som ",format(Sys.time(),format="-%Y-%m-%d_%H:%M"),".rda",sep="")
+        paste0("som",format(Sys.time(),format="%Y%m%d_%H%M"),".rda",sep="")
       },
       content=function(file) {
         som.export <- RVserver.env$current.som
@@ -281,7 +282,7 @@ shinyServer(function(input, output, session) {
   
   output$clustering.download <- {
     downloadHandler(filename = function() {
-      paste0("clustering", format(Sys.time(), format="-%Y-%m-%d_%H:%M"),
+      paste0("clustering", format(Sys.time(), format="%Y%m%d_%H%M"),
              ".txt")
     },
     content = function(file) {
@@ -409,7 +410,7 @@ shinyServer(function(input, output, session) {
   output$sc.download <- {
     downloadHandler(
       filename=function() {
-        paste0("superclasses ", format(Sys.time(), format="%Y-%m-%d_%H:%M"),
+        paste0("superclasses", format(Sys.time(), format="%Y%m%d_%H%M"),
               ".csv", sep="")
       },
       content=function(file) {
