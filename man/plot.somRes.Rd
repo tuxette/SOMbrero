@@ -4,19 +4,16 @@
 \alias{plot.somRes}
 \title{Plot a \code{somRes} class object}
 \usage{
-
-\method{plot}{somRes}(
-  x,
-  what = c("obs", "prototypes", "energy", "add"),
-  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie", energy = NULL),
-  variable = if (what == "add" | type == "names") NULL else 1:ncol(x$data),
-  my.palette = NULL,
-  is.scaled = if (x$parameters$type == "numeric") TRUE else FALSE,
-  print.title = FALSE, the.titles = if (what != "energy") switch(type,
-  graph = 1:prod(x$parameters$the.grid$dim), paste("Cluster",
-  1:prod(x$parameters$the.grid$dim))), proportional = TRUE,
-  s.radius = 1, pie.graph = FALSE, pie.variable = NULL, view = if
-  (x$parameters$type == "korresp") "r" else NULL, ...)
+\method{plot}{somRes}(x, what = c("obs", "prototypes", "energy", "add"),
+  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie",
+  energy = "energy"), variable = if (what == "add" | type == "names")
+  NULL else 1:ncol(x$data), my.palette = NULL, is.scaled = if
+  (x$parameters$type == "numeric") TRUE else FALSE, print.title = TRUE,
+  the.titles = if (what != "energy") switch(type, graph =
+  1:prod(x$parameters$the.grid$dim), 1:prod(x$parameters$the.grid$dim)),
+  proportional = TRUE, s.radius = 1, pie.graph = FALSE,
+  pie.variable = NULL, view = if (x$parameters$type == "korresp") "r"
+  else NULL, ...)
 }
 \arguments{
 \item{x}{A \code{somRes} class object.}
@@ -48,7 +45,7 @@ and \code{FALSE} in the other cases.}
 \item{print.title}{Boolean used to indicate whether each neuron should have a
 title or not. Default value is \code{FALSE}. It is feasible on the following 
 cases: all \code{"color"} types, all \code{"lines"} types, all 
-\code{"barplot"} types, all \code{"radar"} types, all \code{"boxplot"} types,
+\code{"barplot"} types, all \code{"boxplot"} types,
 all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.}
 

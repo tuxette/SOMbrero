@@ -15,16 +15,11 @@ superClass(sommap, method, members, k, h, ...)
 
 \method{summary}{somSC}(object, ...)
 
-
-\method{plot}{somSC}(
-  x,
-  type = c("dendrogram", "grid", "hitmap", "lines", "barplot", "boxplot", "mds",
-    "color", "poly.dist", "pie", "graph", "dendro3d", "projgraph"),
-  plot.var = TRUE,
-  add.type = FALSE,
-  print.title = TRUE,
-  the.titles = paste("Cluster", 1:prod(x$som$parameters$the.grid$dim)),
-  ...)
+\method{plot}{somSC}(x, what = c("obs", "prototypes", "add"),
+  type = c("dendrogram", "grid", "hitmap", "lines", "barplot", "boxplot",
+  "mds", "color", "poly.dist", "pie", "graph", "dendro3d", "projgraph"),
+  plot.var = TRUE, add.type = FALSE, print.title = TRUE,
+  the.titles = 1:prod(x$som$parameters$the.grid$dim), ...)
 
 \method{projectIGraph}{somSC}(object, init.graph, ...)
 }
@@ -81,10 +76,6 @@ must be equal to the number of rows in the original dataset processed by the
 SOM (case \code{"korresp"} is not handled by this function). In the projected
 graph, the vertices are positionned at the center of gravity of the 
 super-clusters (more details in the section \strong{Details} below).}
-
-\item{plot.legend}{A boolean indicating whether a legend should be added to 
-the plot. This argument is only used when \code{type} is either \code{"grid"} 
-or \code{"hitmap"} or \code{"mds"}. Its default value is \code{FALSE}.}
 }
 \value{
 The \code{superClass} function returns an object of class 
@@ -140,7 +131,7 @@ On plots, the different super classes are identified in the following ways:
   \code{"barplot"} (*, #), \code{"boxplot"}, \code{"mds"} (*, #), 
   \code{"dendro3d"} (*, #), \code{"graph"} (*, #)
   \item or with title, when \code{type} is set among: \code{"color"} (*),
-  \code{"poly.dist"} (*, #), \code{"pie"} (#), \code{"radar"} (#)
+  \code{"poly.dist"} (*, #), \code{"pie"} (#)
 }
 In the list above, the charts available for a \code{korresp} SOM are marked 
 with a * whereas those available for a \code{relational} SOM are marked with 
@@ -168,7 +159,7 @@ plot(sc)
 sc <- superClass(my.som, k=4)
 summary(sc)
 plot(sc)
-plot(sc, type="hitmap", plot.legend=TRUE)
+plot(sc, type="hitmap")
 }
 \references{
 Anderson M.J. (2001). A new method for non-parametric multivariate analysis 
