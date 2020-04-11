@@ -384,6 +384,7 @@ plot can help you determine the adequate number of superclasses."
                                             ),
                                             column(9,
                                                    jqui_resizable(plotOutput("somplotscdendro")),
+                                                   verbatimTextOutput("runcodesc"),
                                                    verbatimTextOutput("sc.summary")
                                             )
                                           )

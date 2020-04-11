@@ -217,7 +217,7 @@ shinyServer(function(input, output, session) {
                                          "[,'", paste(input$varchoice, collapse="', '"), "'],\n",
                                          "type='", input$somtype, "', ",
                                          "topo='", input$topo, "', ",
-                                         "dimension=, c(", input$dimx, ",", input$dimy, "),\n",
+                                         "dimension=c(", input$dimx, ",", input$dimy, "),\n",
                                          "affectation='", input$affectation, "', ",
                                          "dist.type='", input$disttype, "', ",
                                          "maxit=", input$maxit, ", ", 
@@ -333,9 +333,9 @@ shinyServer(function(input, output, session) {
     if (input$somtype =="korresp")
       tmp.view <- input$somplotrowcol
 
-    if (input$somplotwhat =="energy") {
-      plot(RVserver.env$current.som, what=input$somplotwhat)
-    } else {
+    # if (input$somplotwhat =="energy") {
+    #   plot(RVserver.env$current.som, what=input$somplotwhat)
+    # } else {
       tmp.var <- 1
       if(input$somplottype == 'color' || input$somplottype == '3d'){
         tmp.var <- input$somplotvar
@@ -347,7 +347,6 @@ shinyServer(function(input, output, session) {
       if(input$somplottype == 'names'){
         tmp.var <- "row.names"
       }
-      
       theta <- NULL
       phi <- NULL
       if (input$somplottype =="3d"){
@@ -356,37 +355,37 @@ shinyServer(function(input, output, session) {
       }
       
       observe({
-       output$runcodeplot <- renderText({
-         codeplot <- paste0("plot(mysom, ",
-                "what='", input$somplotwhat, "', ", 
-                "print.title=", input$somplottitle)
-         if(input$somplottype!="energy"){
-           codeplot <- paste0(codeplot, ", type='", input$somplottype, "'")
-         }
-         if(input$somplottype  %in% c("lines", "barplot", "boxplot", "color", "3d")){
-           if(length(tmp.var)==1) {
-             textevar <- paste0("'", tmp.var, "'")
-           } else {
-             textevar <- paste0("c('", paste(tmp.var, collapse="',"), "')")
-           }
-           codeplot <- paste0(codeplot, ", variable=", textevar)
-         }
-         if(input$somtype == "korresp" ){
-           codeplot <- paste0(codeplot, ", view='", tmp.view, "'")
-         }
-         if(input$somplottype =="3d"){
-           codeplot <- paste0(codeplot, ", theta=", theta, ", ",
-                              "phi=", phi)
-         }
-         codeplot <- paste0(codeplot, ")")
-         codeplot
-       })
+        output$runcodeplot <- renderText({
+          codeplot <- paste0("plot(mysom, ",
+                             "what='", input$somplotwhat, "'")
+          if(input$somplottype!="energy"){
+            codeplot <- paste0(codeplot, ", type='", input$somplottype, "',",
+                                         "print.title=", input$somplottitle)
+          }
+          if(input$somplottype  %in% c("lines", "barplot", "boxplot", "color", "3d")){
+            if(length(tmp.var)==1) {
+              textevar <- paste0("'", tmp.var, "'")
+            } else {
+              textevar <- paste0("c('", paste(tmp.var, collapse="','"), "')")
+            }
+            codeplot <- paste0(codeplot, ", variable=", textevar)
+          }
+          if(input$somtype == "korresp" ){
+            codeplot <- paste0(codeplot, ", view='", tmp.view, "'")
+          }
+          if(input$somplottype =="3d"){
+            codeplot <- paste0(codeplot, ", theta=", theta, ", ",
+                               "phi=", phi)
+          }
+          codeplot <- paste0(codeplot, ")")
+          codeplot
+        })
       })
-      
       plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
                       variable=tmp.var, print.title=input$somplottitle,
                       view=tmp.view, theta = theta, phi=phi)
-    }
+    # }
+    
   })
   
   #### Panel 'Superclass'
@@ -408,13 +407,13 @@ shinyServer(function(input, output, session) {
     if (input$superclassbutton==0) {
       superClass(sommap=RVserver.env$current.som, method=input$scmethod)
     } else {
-      isolate(switch(input$sc.cut.choice, 
-                     "Number of superclasses"=
-                       superClass(sommap=RVserver.env$current.som, k=input$sc.k, method=input$scmethod),
-                     "Height in dendrogram"=
-                       superClass(sommap=RVserver.env$current.som, h=input$sc.h, method=input$scmethod)))
+      isolate(switch(input$sc.cut.choice,
+                            "Number of superclasses"=
+                              superClass(sommap=RVserver.env$current.som, k=input$sc.k, method=input$scmethod),
+                            "Height in dendrogram"=
+                              superClass(sommap=RVserver.env$current.som, h=input$sc.h, method=input$scmethod))
+      )
     }
-    
   })
 
   output$sc.summary <- renderPrint({
@@ -427,9 +426,16 @@ shinyServer(function(input, output, session) {
   observeEvent(c(computeSuperclasses(), input$superclassbutton), {
     if(is.null(computeSuperclasses()) | input$superclassbutton==0){
       shinyjs::disable("sc.download")
+      codesc <- paste0("superClass(sommap=mysom, method='", input$scmethod, "')")
     } else {
       shinyjs::enable("sc.download")
+      if(input$sc.cut.choice=="Number of superclasses"){
+        codesc <- paste0("superClass(sommap=mysom, method='", input$scmethod, "', k=", input$sc.k, ")")
+      } else {
+        paste0("superClass(sommap=mysom, method='", input$scmethod, "', h=", input$sc.h, ")")
+      }
     }
+    output$runcodesc <- renderText({ codesc })
   })
   
   # Download the superclass classification
@@ -495,8 +501,9 @@ shinyServer(function(input, output, session) {
     
     if (input$scplottype =="boxplot" || input$scplottype == 'barplot' || 
         input$scplottype == 'lines') {
-      tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
-                                              input$scplotvar2]
+      tmp.var <- colnames(RVserver.env$current.som$data)[colnames(RVserver.env$current.som$data) %in% input$scplotvar2]
+      # tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
+      #                                         input$scplotvar2]
     } else tmp.var <- input$scplotvar
     
     angle <- NULL

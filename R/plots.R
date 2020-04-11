@@ -170,26 +170,18 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     }
   }
   
+  tmp.var <- variable
+  if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
+    if(view=="r"){
+      tmp.var <- rownames(sommap$data)[variable]
+    } else tmp.var <- colnames(sommap$data)[variable]
+  } 
+  
   if (type=="lines" || type=="barplot") {
-    if (sommap$parameters$type=="korresp") {
-      if (view=="r")
-        tmp.proto <- sommap$prototypes[,(ncol(sommap$data)+1):
-                                         ncol(sommap$prototypes)]
-      else
-        tmp.proto <- sommap$prototypes[,1:ncol(sommap$data)]
-    } else
-      tmp.proto <- sommap$prototypes
-    ggplotFacet("prototypes", type, tmp.proto, as.numeric(rownames(tmp.proto)),
+    ggplotFacet("prototypes", type, sommap$prototypes[,variable], as.numeric(rownames(sommap$prototypes)),
                 print.title, the.titles, is.scaled,
                 sommap$parameters$the.grid, args)
   } else if (type=="color" | type=="3d") {
-    if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
-      if(view=="r"){
-        tmp.var <- rownames(sommap$data)[variable]
-      } else tmp.var <- colnames(sommap$data)[variable]
-    } else if (sommap$parameters$type=="numeric" & (is.numeric(variable))) {
-        tmp.var <- colnames(sommap$data)[variable]
-    } else tmp.var <- variable
     args$varname <- tmp.var
     if(type=="color"){
       ggplotGrid("prototypes", "color", sommap$prototypes[,tmp.var], 
@@ -200,9 +192,6 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     }
 
   } else if (type=="3d") {
-    # if(sommap$parameters$the.grid$topo=="hexagonal"){
-    #   stop("3d plots are for square topography only", call.=TRUE)
-    # }
     tmp.var <- variable
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if (view=="r") tmp.var <- variable+ncol(sommap$data)
@@ -217,8 +206,6 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
     }
     ggplotGrid("prototypes", type, values, sommap$clustering, print.title,
                    the.titles, sommap$parameters$the.grid, args)
-    # ggplotPolydist(values, sommap$clustering, print.title,
-    #                            the.titles, sommap$parameters$the.grid, args)
   } else if (type=="umatrix" || type=="smooth.dist") {
     values <- protoDist(sommap, "neighbors")
 
@@ -561,7 +548,8 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                                     "prototypes"="color",
                                     "add"="pie",
                                     "energy"="energy"),
-                        variable = if (what=="add" | type=="names") NULL else 1:ncol(x$data),
+                        # variable = if (what=="add" | type=="names") NULL else 1:ncol(x$data),
+                        variable = NULL,
                         my.palette=NULL, 
                         is.scaled = if (x$parameters$type=="numeric") TRUE else
                           FALSE,
@@ -576,6 +564,16 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                         ...) {
   args <- list(...)
   what <- match.arg(what)
+  
+  if(is.null(variable)){
+    if (what!="add" & type!="names"){
+      if(x$parameters$type %in% c("numeric", "relational")){
+        variable <- 1:ncol(x$data)
+      } else if(x$parameters$type == "korresp"){
+        if(view=="c") variable <- 1:ncol(x$data) else variable <- 1:nrow(x$data)
+      } 
+    }
+  }
   if ((x$parameters$type=="korresp")&&!(view%in%c("r","c")))
       stop("view must be one of 'r'/'c'",call.=TRUE)
   if (length(the.titles)!=prod(x$parameters$the.grid$dim) & what!="energy") {
