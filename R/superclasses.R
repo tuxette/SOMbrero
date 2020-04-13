@@ -47,6 +47,13 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' SOM (case \code{"korresp"} is not handled by this function). In the projected
 #' graph, the vertices are positionned at the center of gravity of the 
 #' super-clusters (more details in the section \strong{Details} below).
+#' @param what What you want to plot for superClass object. 
+#' Either the observations (\code{obs}, the prototypes (\code{prototypes}) or an 
+#' additional variable (\code{add}), or \code(NULL) if not appropriate (default).
+#' Automatically set for types 'boxplot' (to \code("obs")), 'mds', and 'poly.dist'
+#' (to \code("prototypes")), 'graph' and 'pie' (to \code("add")). 
+#' Set to \code("add") if\code(add.type=T). Default to \code(prototypes) 
+#' for 'lines', 'barplot', and 'color' types.
 #' @param type The type of plot to draw. Default value is \code{"dendrogram"}, 
 #' to plot the dendrogram of the clustering. Case \code{"grid"} plots the grid 
 #' in color according to the super clustering. Case \code{"projgraph"} uses an
@@ -273,7 +280,7 @@ summary.somSC <- function(object, ...) {
 
 #' @export
 #' @rdname superClass
-plot.somSC <- function(x, what=c("obs", "prototypes", "add"), 
+plot.somSC <- function(x, what=c("prototypes", "obs", "add"), 
                        type=c("dendrogram", "grid", "hitmap", "lines", 
                                  "barplot", "boxplot", "mds", "color", 
                                  "poly.dist", "pie", "graph", "dendro3d", 
@@ -328,9 +335,8 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
     if (length(x)<3) {
       clust.col <- "black"
     } 
-    # FIX IT! maybe some more code improvements... 
-    
-    x.y.coord <- x$som$parameters$the.grid$coord + 0.5
+   
+     x.y.coord <- x$som$parameters$the.grid$coord + 0.5
     if (floor(max(x$tree$height[-which.max(x$tree$height)]))==0) {
       z.max <- max(x$tree$height[-which.max(x$tree$height)])
     } else {
@@ -401,17 +407,17 @@ plot.somSC <- function(x, what=c("obs", "prototypes", "add"),
           }
         }
         args$x <- x$som
-        args$what <- what
-        
-        # manage argument 'what'
-        if (!add.type) {
-          if (type%in%c("graph", "pie")) {
+        args$what <- what[1]
+        # manage argument 'what' :
+        if (add.type | type %in% c("graph", "pie")) {
             args$what <- "add"
-          } 
-        } else args$what <- "add"
-      
+        } 
+        if(type=="boxplot") args$what <- "obs"
+        if(type %in% c("mds", "poly.dist")) args$what <- "prototypes"
+        if(args$what != what[1]) {
+          warning(paste0('`what` argument set to "', args$what, '"'), call. = TRUE, immediate. = TRUE)
+        }
         args$type <- type
-
         # manage titles
         args$print.title <- print.title
         if(type %in% c("lines", "barplot", "boxplot", "poly.dist")){

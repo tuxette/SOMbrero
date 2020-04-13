@@ -146,8 +146,8 @@ summary.myGrid <- function(object,...) {
 
 #' @export
 #' @rdname myGrid
-plot.myGrid <- function(x, neuron.col = NULL, print.title = FALSE, 
-                        the.titles = NULL, ...) {
+plot.myGrid <- function(x, neuron.col = NULL, print.title = TRUE, 
+                        the.titles = 1:prod(x$dim), ...) {
   # get graphical parameters
   args <- list(...)
   dimgrid <- prod(x$dim)

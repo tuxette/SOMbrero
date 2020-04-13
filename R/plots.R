@@ -564,16 +564,21 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                         ...) {
   args <- list(...)
   what <- match.arg(what)
-  
+
   if(is.null(variable)){
     if (what!="add" & type!="names"){
       if(x$parameters$type %in% c("numeric", "relational")){
-        variable <- 1:ncol(x$data)
+        variable <- colnames(x$data)[1:ncol(x$data)]
       } else if(x$parameters$type == "korresp"){
         if(view=="c") variable <- 1:ncol(x$data) else variable <- 1:nrow(x$data)
       } 
     }
   }
+
+  if(is.null(args$variable)==F){
+    if(is.null(args$varname)) args$varname <- deparse(substitute(variable))
+  }
+  
   if ((x$parameters$type=="korresp")&&!(view%in%c("r","c")))
       stop("view must be one of 'r'/'c'",call.=TRUE)
   if (length(the.titles)!=prod(x$parameters$the.grid$dim) & what!="energy") {
@@ -583,8 +588,6 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
     warning("unadequate length for 'the.titles'; replaced by default",
             call.=TRUE, immediate.=TRUE)
   }
-  if(is.null(args$varname)) args$varname <- deparse(substitute(variable))
-
   switch(what,
          "prototypes"=plotPrototypes(x, type, variable, my.palette, print.title,
                                      the.titles, is.scaled, view, args),
