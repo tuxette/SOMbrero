@@ -146,14 +146,21 @@ summary.myGrid <- function(object,...) {
 
 #' @export
 #' @rdname myGrid
-plot.myGrid <- function(x, neuron.col = "white", print.title = FALSE, 
-                        the.titles = paste("Cluster", 1:prod(x$dim)), ...) {
+plot.myGrid <- function(x, neuron.col = NULL, print.title = FALSE, 
+                        the.titles = NULL, ...) {
   # get graphical parameters
   args <- list(...)
   dimgrid <- prod(x$dim)
-  values <- rep(0, dimgrid)
+  values <- 1:dimgrid
   id <- 1:dimgrid
-  ggplotGrid("obs", "grid", values, id, print.title, the.titles, x, args) +
-    theme(legend.position = "none") + 
-    scale_fill_manual(values = neuron.col)
+  if(is.null(args$main)) args$main <- "Grid"
+
+  tp <- ggplotGrid("obs", "grid", values, id,
+             print.title, the.titles, x, args) + 
+    theme(legend.position = "none")
+  if(is.null(neuron.col)==F){
+    if(length(neuron.col)==1) neuron.col <- rep(neuron.col, dimgrid) 
+    tp <- tp + scale_fill_manual(values=neuron.col)
+  }
+  tp
 }

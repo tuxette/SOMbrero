@@ -240,7 +240,6 @@ shinyServer(function(input, output, session) {
     })
 
   # Render the summary of the SOM
-  # observeEvent(input$trainbutton,{
   output$summary <- renderPrint({
     shiny::validate(need(input$somtype!="", "Choose a type of algorithm."))
     shiny::validate(need(is.null(val$data)==F, "First import a dataset."))
@@ -260,7 +259,6 @@ shinyServer(function(input, output, session) {
   })
   
   # Output the computed som object to be downloaded
-  # TODO: output an error if map not trained
   output$som.download <- {
     downloadHandler(filename=function() {
         paste0("som",format(Sys.time(),format="%Y%m%d_%H%M"),".rda",sep="")
@@ -322,6 +320,21 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "somplotvar2", choices=tmp.names2, selected=tmp.names2)
   })
   
+  varsomplot <- debounce(reactive({
+    tmp.var <- 1
+    if(input$somplottype == 'color' || input$somplottype == '3d'){
+      tmp.var <- input$somplotvar
+    }
+    if(input$somplottype == 'boxplot' || input$somplottype == 'barplot' || 
+       input$somplottype == 'lines'){
+      tmp.var <- input$somplotvar2
+    }
+    if(input$somplottype == 'names'){
+      tmp.var <- "row.names"
+    }
+    tmp.var
+  }) , 1000)
+  
   # Plot the SOM
   output$somplot <- renderPlot({
     if(is.null(dInput()))
@@ -332,21 +345,6 @@ shinyServer(function(input, output, session) {
     tmp.view <- NULL
     if (input$somtype =="korresp")
       tmp.view <- input$somplotrowcol
-
-    # if (input$somplotwhat =="energy") {
-    #   plot(RVserver.env$current.som, what=input$somplotwhat)
-    # } else {
-      tmp.var <- 1
-      if(input$somplottype == 'color' || input$somplottype == '3d'){
-        tmp.var <- input$somplotvar
-      }
-      if(input$somplottype == 'boxplot' || input$somplottype == 'barplot' || 
-         input$somplottype == 'lines'){
-        tmp.var <- input$somplotvar2
-      }
-      if(input$somplottype == 'names'){
-        tmp.var <- "row.names"
-      }
       theta <- NULL
       phi <- NULL
       if (input$somplottype =="3d"){
@@ -354,6 +352,7 @@ shinyServer(function(input, output, session) {
         phi <- input$phi
       }
       
+      variable <- varsomplot()
       observe({
         output$runcodeplot <- renderText({
           codeplot <- paste0("plot(mysom, ",
@@ -363,10 +362,10 @@ shinyServer(function(input, output, session) {
                                          "print.title=", input$somplottitle)
           }
           if(input$somplottype  %in% c("lines", "barplot", "boxplot", "color", "3d")){
-            if(length(tmp.var)==1) {
-              textevar <- paste0("'", tmp.var, "'")
+            if(length(variable)==1) {
+              textevar <- paste0("'", variable, "'")
             } else {
-              textevar <- paste0("c('", paste(tmp.var, collapse="','"), "')")
+              textevar <- paste0("c('", paste(variable, collapse="','"), "')")
             }
             codeplot <- paste0(codeplot, ", variable=", textevar)
           }
@@ -382,10 +381,8 @@ shinyServer(function(input, output, session) {
         })
       })
       plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
-                      variable=tmp.var, print.title=input$somplottitle,
+                      variable=variable, print.title=input$somplottitle,
                       view=tmp.view, theta = theta, phi=phi)
-    # }
-    
   })
   
   #### Panel 'Superclass'
@@ -394,8 +391,8 @@ shinyServer(function(input, output, session) {
   output$scHorK <- renderUI(
     switch(input$sc.cut.choice, 
            "Number of superclasses"=
-             numericInput("sc.k", "Number of superclasses:", 2, min=1,
-                          max=input$dimx*input$dimy-1), 
+             numericInput("sc.k", "Number of superclasses:", 2, min=2,
+                          max=max(input$dimx*input$dimy-1, 2)), 
            "Height in dendrogram"=
              numericInput("sc.h", "Height in dendrogram:", 10, min=0))
   )
@@ -426,20 +423,25 @@ shinyServer(function(input, output, session) {
   observeEvent(c(computeSuperclasses(), input$superclassbutton), {
     if(is.null(computeSuperclasses()) | input$superclassbutton==0){
       shinyjs::disable("sc.download")
+      shinyjs::hide("nextplotsc")
       codesc <- paste0("superClass(sommap=mysom, method='", input$scmethod, "')")
     } else {
       shinyjs::enable("sc.download")
+      shinyjs::show("nextplotsc")
       if(input$sc.cut.choice=="Number of superclasses"){
         codesc <- paste0("superClass(sommap=mysom, method='", input$scmethod, "', k=", input$sc.k, ")")
       } else {
-        paste0("superClass(sommap=mysom, method='", input$scmethod, "', h=", input$sc.h, ")")
+        codesc <- paste0("superClass(sommap=mysom, method='", input$scmethod, "', h=", input$sc.h, ")")
       }
     }
     output$runcodesc <- renderText({ codesc })
   })
   
+  observeEvent(input$nextplotsc, {
+    updateCollapse(session, "collapsesuperclass", open = "plotsc")
+  })
+  
   # Download the superclass classification
-  # TODO: output an error if map not trained
   output$sc.download <- {
     downloadHandler(
       filename=function() {
@@ -499,11 +501,8 @@ shinyServer(function(input, output, session) {
     if (input$somtype =="korresp")
       tmp.view <- input$scplotrowcol
     
-    if (input$scplottype =="boxplot" || input$scplottype == 'barplot' || 
-        input$scplottype == 'lines') {
+    if (input$scplottype =="boxplot" || input$scplottype == 'barplot' || input$scplottype == 'lines') {
       tmp.var <- colnames(RVserver.env$current.som$data)[colnames(RVserver.env$current.som$data) %in% input$scplotvar2]
-      # tmp.var <- (1:ncol(RVserver.env$current.som$data))[colnames(RVserver.env$current.som$data) %in% 
-      #                                         input$scplotvar2]
     } else tmp.var <- input$scplotvar
     
     angle <- NULL
@@ -657,8 +656,6 @@ shinyServer(function(input, output, session) {
       })
       plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
            variable=data.frame(dataAdd[,tmp.var]), varname=paste0("dataAdd$", tmp.var))
-      # plot(x=RVserver.env$current.som, what="add", type=input$addplottype, 
-      #       variable=data.frame(dataAdd[,tmp.var]), varname=paste0("dataAdd$", tmp.var))
     } else {
       adjBin <- as.matrix(dataAdd!=0)
       tmpGraph <- graph.adjacency(adjBin, mode="undirected")

@@ -10,7 +10,6 @@ radius because it should not affect the poly.dist plot)
 ** add weights to observations
 ** kaski lagus
 ** implement weighted graphs projection
-** add additional variables for superclasses plots
 
 * other features (hard)
 ** repeat SOM and combine
@@ -20,7 +19,7 @@ radius because it should not affect the poly.dist plot)
 
 * implementation enhancement
 ** should maybe improve the distance handling and propagate it everywhere
-** dissimilarity should maybe algorithm requires a "dist" type input
+** dissimilarity algorithm should maybe requires a "dist" type input
 
 * package changes
 ** C++ for training

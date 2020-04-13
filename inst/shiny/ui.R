@@ -380,6 +380,9 @@ plot can help you determine the adequate number of superclasses."
                                                    actionButton("superclassbutton", "Compute superclasses", class="btn-primary"),
                                                    br(),
                                                    br(),
+                                                   hidden(actionButton("nextplotsc", "Next : plot the superclasses", class="btn-primary")),
+                                                   br(),
+                                                   br(),
                                                    disabled(downloadButton("sc.download", "Download superclass classification"))
                                             ),
                                             column(9,

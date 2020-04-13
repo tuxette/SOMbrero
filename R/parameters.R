@@ -137,6 +137,10 @@ initSOM <- function(dimension=c(5,5), topo=c("square", "hexagonal"),
   dist.type <- match.arg(dist.type, c("letremy", "maximum", "euclidean",
                                       "manhattan", "canberra", "minkowski"))
   
+  if(prod(dimension)<=1){
+    stop("wrong dimension argument : the product of x and y must be >1")
+  }
+  
   if (dist.type=="letremy" && radius.type=="gaussian") {
     dist.type <- "euclidean"
     warning("dist.type value replaced to 'euclidean' for Gaussian radius\n

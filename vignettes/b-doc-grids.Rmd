@@ -82,13 +82,9 @@ must match the total number of squares. The map is filled from the bottom left
 corner, up the column and then likewise in the next column to the right.
 
 ```{r plotRainbowGrid}
-# plot without any color specification: squares are filled in white color
+# plot without any color specification: default ggplot colors
 plot(my.first.grid)
-
-# generating colors from the rainbow() function
-my.colors <- rainbow(5*6)
-## Fix it!!
-plot(my.first.grid, neuron.col=my.colors)
+plot(my.first.grid, neuron.col="white")
 ```
 
 ### Session information

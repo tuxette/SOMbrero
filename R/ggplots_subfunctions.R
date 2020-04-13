@@ -22,6 +22,7 @@ ggplotGrid <- function(what, type, values, clustering, print.title,
   if (is.null(args$varname)) {
     varname <- colnames(values)[1]
   }
+  labelcolor <- ""
   if (is.null(args$labelcolor)) {
     if (is.null(args$sc) | type=="color") {
       if (type=="hitmap" | type=="poly.dist") {
@@ -59,11 +60,9 @@ ggplotGrid <- function(what, type, values, clustering, print.title,
     dataplot <- data.frame(do.call("rbind", dataplot))
     
     if (is.null(args$sc)) {
-      #labelcolor <- "Nb_observations"
       datacolor <- data.frame(table(clustering), stringsAsFactors = FALSE)
       colnames(datacolor) <- c("id", "varcolor")
     } else {
-      #labelcolor <- "Super_Clusters"
       datacolor <- data.frame("id" = 1:length(args$sc), 
                               "varcolor" = as.character(args$sc))
     }
@@ -267,42 +266,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
   }
   return(tp)
 }
-
-# ggplotPolydist <- function(values, clustering, print.title,
-#                            the.titles, the.grid, args=NULL){
-#   maxi <- max(unlist(values))
-#   # Distance on the grid (min distance beween polygons = 1 --> 0.5 for each polygon)
-#   values <- lapply(values, function(x) 0.429*((maxi-x)/maxi+0.05))
-#   
-#   coords_dist <- lapply(1:length(values), function(x) coords_polydist(x, values, the.grid))
-#   coords_dist <- data.frame(do.call("rbind", coords_dist))
-#   
-#   if(is.null(args$sc)){
-#     labelcolor <- "Nb_observations"
-#     datacolor <- data.frame(table(clustering), stringsAsFactors = F)
-#     colnames(datacolor) <- c("id", "varcolor")
-#   } else {
-#     labelcolor <- "Super_Clusters"
-#     datacolor <- data.frame("id"=1:length(args$sc), "varcolor" = as.character(args$sc))
-#   }
-#   
-#   coords_dist$numrow <- rownames(coords_dist)
-#   coords_dist <- merge(coords_dist, datacolor, by="id", all.x=T, sort=F)
-#   coords_dist <- coords_dist[order(coords_dist$numrow),]
-#   if(is.null(args$sc)){
-#     coords_dist$varcolor <- ifelse(is.na(coords_dist$varcolor), 0, coords_dist$varcolor)
-#   }
-#   
-#   p <- ggplot(coords_dist, aes(x = x, y = y)) +
-#     geom_polygon(data=coords_dist, aes(fill = varcolor, group = id)) + 
-#     coord_fixed()  + 
-#     guides(fill=guide_legend(title=labelcolor))
-#   if(print.title==T){
-#     datagrid <- data.frame(the.grid$coord, the.titles)
-#     p <- p + geom_text(data=datagrid, aes(x=x, y=y, label=the.titles, fill=NULL))
-#   }
-#   p
-# }
 
 
 ggplotEnergy <- function(sommap) {

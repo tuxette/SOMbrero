@@ -589,6 +589,7 @@ trainSOM <- function (x.data, ...) {
       param.args$dimension <- c(max(5,min(10,ceiling(sqrt(nrow(x.data)/10)))), 
                                 max(5,min(10,ceiling(sqrt(nrow(x.data)/10)))))
   }
+  
   # Default maxit: nb.obs*5
   if (is.null(param.args$maxit)) {
     if (!is.null(param.args$type) && param.args$type=="korresp")
