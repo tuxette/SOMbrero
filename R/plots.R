@@ -516,7 +516,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' \code{"barplot"} types, all \code{"boxplot"} types,
 #' all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 #' \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.
-#' @param the.ti tles The titles to be printed for each neuron if 
+#' @param the.titles The titles to be printed for each neuron if 
 #' \code{print.title=TRUE}. Default to a number which identifies the neuron.
 #' @param proportional Boolean used when \code{what="add"} and 
 #' \code{type="pie"}. It indicates if the pies should be proportional to the 
