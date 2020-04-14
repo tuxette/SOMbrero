@@ -4,16 +4,24 @@
 \alias{plot.somRes}
 \title{Plot a \code{somRes} class object}
 \usage{
-\method{plot}{somRes}(x, what = c("obs", "prototypes", "energy", "add"),
-  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie",
-  energy = "energy"), variable = if (what == "add" | type == "names")
-  NULL else 1:ncol(x$data), my.palette = NULL, is.scaled = if
-  (x$parameters$type == "numeric") TRUE else FALSE, print.title = TRUE,
-  the.titles = if (what != "energy") switch(type, graph =
-  1:prod(x$parameters$the.grid$dim), 1:prod(x$parameters$the.grid$dim)),
-  proportional = TRUE, s.radius = 1, pie.graph = FALSE,
-  pie.variable = NULL, view = if (x$parameters$type == "korresp") "r"
-  else NULL, ...)
+\method{plot}{somRes}(
+  x,
+  what = c("obs", "prototypes", "energy", "add"),
+  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie", energy =
+    "energy"),
+  variable = NULL,
+  my.palette = NULL,
+  is.scaled = if (x$parameters$type == "numeric") TRUE else FALSE,
+  show.names = TRUE,
+  names = if (what != "energy") switch(type, graph = 1:prod(x$parameters$the.grid$dim),
+    1:prod(x$parameters$the.grid$dim)),
+  proportional = TRUE,
+  s.radius = 1,
+  pie.graph = FALSE,
+  pie.variable = NULL,
+  view = if (x$parameters$type == "korresp") "r" else NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{somRes} class object.}
@@ -42,7 +50,7 @@ combinations: all \code{"color"} types and \code{"prototypes"/"poly.dist"}.}
 to plotting or not. Default value is \code{TRUE} when \code{type="numeric"} 
 and \code{FALSE} in the other cases.}
 
-\item{print.title}{Boolean used to indicate whether each neuron should have a
+\item{show.names}{Boolean used to indicate whether each neuron should have a
 title or not. Default value is \code{FALSE}. It is feasible on the following 
 cases: all \code{"color"} types, all \code{"lines"} types, all 
 \code{"barplot"} types, all \code{"boxplot"} types,
@@ -70,8 +78,8 @@ indicates whether rows (\code{"r"}) or columns (\code{"c"}) must be drawn.}
 depending on \code{type}; see \code{\link{somRes.plotting}} for further
 details).}
 
-\item{the.ti}{tles The titles to be printed for each neuron if 
-\code{print.title=TRUE}. Default to a number which identifies the neuron.}
+\item{the.titles}{The titles to be printed for each neuron if 
+\code{show.names=TRUE}. Default to a number which identifies the neuron.}
 }
 \description{
 Produce graphics to help interpreting a \code{somRes} object.

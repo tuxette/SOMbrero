@@ -240,9 +240,10 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
                 immediate.=TRUE)
       }
       dataplot <- data.frame(cbind("x"=sommap$parameters$the.grid$coord[,1],
-                                 "y"=sommap$parameters$the.grid$coord[,2],
-                                 "z"=values))
-      ggplot(data=dataplot, aes(x=x, y=y, z=z)) + metR::geom_contour_fill(na.fill = TRUE) + 
+                                   "y"=sommap$parameters$the.grid$coord[,2],
+                                   "z"=values))
+      ggplot(data=dataplot, aes_string(x="x", y="y", z="z")) + 
+        metR::geom_contour_fill(na.fill = TRUE) + 
       labs(title="Distances between prototypes") + scale_fill_distiller(palette="PRGn")
     }
   } else if (type=="mds") {
@@ -257,12 +258,17 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     if (is.null(args$labels)) args$labels <- as.character(1:nrow(sommap$prototypes))
     if (is.null(args$cex)) args$cex <- 4
     if(is.null(args$sc)){
-      dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels)
-      ggplot(dataplot, aes(x=x, y=y)) + geom_text(aes(label=labels), alpha=0.7, size=args$cex, fontface="bold") +
+      dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], 
+                             "labels"=args$labels)
+      ggplot(dataplot, aes_string(x="x", y="y")) + 
+        geom_text(aes_string(label="labels"), alpha=0.7, size=args$cex, 
+                  fontface="bold") +
         labs(x="x", y="y", title="Prototypes visualization by MDS")
     } else {
       dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels, "Super_Cluster"=as.factor(args$sc))
-      ggplot(dataplot, aes(x=x, y=y)) + geom_text(aes(label=labels, col=Super_Cluster), alpha=0.7, size=args$cex, fontface="bold") +
+      ggplot(dataplot, aes_string(x="x", y="y")) + 
+        geom_text(aes_string(label="labels", col="Super_Cluster"), alpha=0.7, 
+                  size=args$cex, fontface="bold") +
         labs(x="x", y="y", title="Prototypes visualization by MDS")
     }
    
@@ -278,7 +284,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     } else the.distances <- dist(sommap$prototypes)
     dataplot <- data.frame("x" = as.vector(the.distances), 
                            "y" = as.vector(dist(sommap$parameters$the.grid$coord)))
-    ggplot(dataplot, aes(x=x, y=y)) + 
+    ggplot(dataplot, aes_string(x="x", y="y")) + 
       geom_point(shape=21, alpha=0.7, size=1) +
       labs(x="prototype distances", y="grid distances", 
            title="Distances between protoypes (input space vs. grid)")
@@ -524,7 +530,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' \code{"barplot"} types, all \code{"boxplot"} types,
 #' all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 #' \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.
-#' @param the.ti tles The titles to be printed for each neuron if 
+#' @param the.titles The titles to be printed for each neuron if 
 #' \code{show.names=TRUE}. Default to a number which identifies the neuron.
 #' @param proportional Boolean used when \code{what="add"} and 
 #' \code{type="pie"}. It indicates if the pies should be proportional to the 

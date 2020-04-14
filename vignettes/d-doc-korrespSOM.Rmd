@@ -17,8 +17,8 @@ detailed below.
 __This documentation only considers the case of contingency tables.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-library(SOMbrero)
-library(ggplot2)
+library("ggplot2")
+library("SOMbrero")
 ```
 
 ### Arguments

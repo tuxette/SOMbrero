@@ -95,5 +95,6 @@
 #' @importFrom ggwordcloud geom_text_wordcloud
 #' @importFrom metR geom_contour_fill	
 #' @importFrom interp interp
+#' @importFrom utils packageVersion
 
 NULL

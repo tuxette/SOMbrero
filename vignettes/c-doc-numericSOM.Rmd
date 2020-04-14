@@ -17,8 +17,8 @@ detailed below.
 __This documentation only considers the case of numerical data.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-library(SOMbrero)
-library(ggplot2)
+library("ggplot2")
+library("SOMbrero")
 ```
 
 ### Arguments
@@ -84,8 +84,6 @@ set.seed(593)
 # run the SOM algorithm with 10 intermediate backups and 2000 iterations
 my.som <- trainSOM(x.data=the.data, dimension=c(5,5), nb.save=10, maxit=2000, 
                    scaling="none", radius.type="gaussian", topo="hexagonal")
-# my.som <- trainSOM(x.data=the.data, dimension=c(5,5), nb.save=10, maxit=2000, 
-#                    scaling="none", radius.type="letremy", topo="hexagonal")
 ```
 
 The energy evolves as described in the following graphic:
@@ -250,8 +248,10 @@ plot(iris.som, what="obs", type="color", variable=1)
 plot(iris.som, what="obs", type="color", variable=2)
 plot(iris.som, what="obs", type="color", variable=3)
 plot(iris.som, what="obs", type="color", variable=4)
-plot(iris.som, what="prototypes", type="lines", show.names=F) + theme(axis.text.x = element_blank())
-plot(iris.som, what="obs", type="barplot", show.names=F) + theme(axis.text.x = element_blank())
+plot(iris.som, what="prototypes", type="lines", show.names=FALSE) + 
+  theme(axis.text.x = element_blank())
+plot(iris.som, what="obs", type="barplot", show.names=FALSE) + 
+  theme(axis.text.x = element_blank())
 ```
 
 Empty squares catch the attention: none of the  observations are assigned to
