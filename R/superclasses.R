@@ -48,7 +48,7 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' graph, the vertices are positionned at the center of gravity of the 
 #' super-clusters (more details in the section \strong{Details} below).
 #' @param what What you want to plot for superClass object. Either the observations 
-#' (\code{obs}, the prototypes (\code{prototypes}) or an additional variable 
+#' (\code{obs}), the prototypes (\code{prototypes}) or an additional variable 
 #' (\code{add}), or \code(NULL) if not appropriate. Default to \code(prototypes) 
 #' for 'lines', 'barplot', and 'color' types. Automatically set for 
 #' types 'boxplot' (to \code("obs")), 'mds', and 'poly.dist' (to \code("prototypes")), 
@@ -451,7 +451,6 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
           }
           callvar <- match.call(expand.dots = FALSE)$...[["variable"]]
           args$varname <- deparse(substitute(callvar))
-          print(args$varname)
         }
         
        do.call("plot.somRes", args)

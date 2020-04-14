@@ -18,10 +18,8 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
   
   # Axes labels 
   ################################################
-  varname <- args$varname
-  if (is.null(args$varname)) {
-    varname <- colnames(values)[1]
-  }
+  if(is.null(args$varname)) varname <- colnames(values)[1] else varname <- args$varname
+
   labelcolor <- ""
   if (is.null(args$labelcolor)) {
     if (is.null(args$sc) | type=="color") {
@@ -234,6 +232,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
       geom_text_wordcloud(stat="identity", alpha=0.7) + labs(subtitle = "sum of values by variable")
   }
   if(type == "pie"){
+    if(is.null(args$varname)==F) labelcolor <- args$varname
     dataplot$Nb <- 1
     dataplot$Nbcluster <- 1
     datatot <- aggregate(data=dataplot, Nbcluster ~ SOMclustering, sum)

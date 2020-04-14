@@ -18,6 +18,7 @@ __This documentation only considers the case of numerical data.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
 library(SOMbrero)
+library(ggplot2)
 ```
 
 ### Arguments

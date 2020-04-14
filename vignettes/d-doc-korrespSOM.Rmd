@@ -18,6 +18,7 @@ __This documentation only considers the case of contingency tables.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
 library(SOMbrero)
+library(ggplot2)
 ```
 
 ### Arguments
@@ -159,16 +160,14 @@ argument is used)
 ```{r presiProtoL}
 # plot the line prototypes (106 French departements)
 plot(korresp.som, what="prototypes", type="lines", view="r", show.names=F) +    
-  guides(color=guide_legend(keywidth=0.1, keyheight=0.1, default.unit="cm", ncol=2)) + 
-  theme(legend.text=element_text(size=4), 
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+  guides(color=guide_legend(keyheight=0.5, ncol=2,
+                            label.theme=element_text(size=4))) + 
+  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
 # plot the column prototypes (16 candidates)
 plot(korresp.som, what="prototypes", type="lines", view="c", show.names=F) +
-  guides(color=guide_legend(keywidth=0.1, keyheight=0.1,default.unit="cm", ncol=1)) + 
-  theme(legend.text=element_text(size=6),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+  guides(color=guide_legend(keyheight=0.5, ncol=1, 
+                            label.theme=element_text(size=6))) + 
+  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
 ```
 
 The peaks in neurons 5 and 6 correspond, in the row view, to the overseas 

@@ -66,6 +66,18 @@ plot3d <- function(x, the.grid, type, variable, args) {
                        nrow=the.grid$dim[2], byrow = F))
   }
   
+  # for points
+  if (is.null(args$minsize)) minsize <- 0.5 
+  else {
+    minsize = args$minsize
+    args$minsize <- NULL
+  }
+  if (is.null(args$maxsize)) maxsize <- 2 
+  else {
+    maxsize = args$maxsize
+    args$maxsize <- NULL
+  }
+  
   if (is.null(args$theta)) args$theta <- -20 else args$theta <- args$theta
   if (is.null(args$phi)) args$phi <- 20 else args$phi <- args$phi
   if (is.null(args$expand)) args$expand <- 0.4 else args$expand <- args$expand
@@ -77,8 +89,6 @@ plot3d <- function(x, the.grid, type, variable, args) {
   if (is.null(args$col)) args$col <- gg_color(1)
   if (is.null(args$border)) args$border <- "grey"
   if (is.null(args$main)) args$main <- paste0("Values of prototypes for ", args$varname)
-  if (is.null(args$minsize)) args$minsize <- 0.5 # for points
-  if (is.null(args$maxsize)) args$maxsize <- 2 # for points
   args$varname <- NULL
   if(the.grid$topo=="hexagonal") {
     args$sub <- "Hexagonal topography : linear interpolation between points"
@@ -93,7 +103,7 @@ plot3d <- function(x, the.grid, type, variable, args) {
   zz = x[,variable]
   
   # determine distance to eye
-  psize = depth3d(xx,yy,zz,pmat,minsize=args$minsize, maxsize = args$maxsize)
+  psize = depth3d(xx,yy,zz,pmat,minsize=minsize, maxsize = maxsize)
   # from 3D to 2D coordinates
   mypoints <- trans3d(xx, yy, zz, pmat=pmat)
   # plot in 2D space with pointsize related to distance
@@ -178,9 +188,9 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
       tmp.var <- rownames(sommap$data)[variable]
     } else tmp.var <- colnames(sommap$data)[variable]
   } 
-  
+
   if (type=="lines" || type=="barplot") {
-    ggplotFacet("prototypes", type, sommap$prototypes[,variable], as.numeric(rownames(sommap$prototypes)),
+    ggplotFacet("prototypes", type, sommap$prototypes[,tmp.var], as.numeric(rownames(sommap$prototypes)),
                 show.names, names, is.scaled,
                 sommap$parameters$the.grid, args)
   } else if (type=="color" | type=="3d") {

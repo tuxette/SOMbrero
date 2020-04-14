@@ -18,6 +18,7 @@ __This documentation only considers the case of dissimilarity matrices.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
 library(SOMbrero)
+library(ggplot2)
 ```
 
 ### Arguments
@@ -131,14 +132,12 @@ plot(mis.som, what="add", type="graph", var=lesmis)
 Clusters profile overviews can be plotted either with *e.g.*, lines or barplot :
 ```{r lesmisProtoProfiles}
 plot(mis.som, what="prototypes", type="lines")  +
-  guides(color=guide_legend(keywidth=0.1, keyheight=0.25,default.unit="cm", ncol=2)) + 
-  theme(legend.text=element_text(size=6),
-        axis.text.x=element_blank(),
+  guides(color=guide_legend(keyheight=0.5,ncol=2, label.theme = element_text(size=6))) + 
+  theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 plot(mis.som, what="prototypes", type="barplot")  +
-  guides(fill=guide_legend(keywidth=0.1, keyheight=0.25,default.unit="cm", ncol=2)) + 
-  theme(legend.text=element_text(size=6),
-        axis.text.x=element_blank(),
+  guides(fill=guide_legend(keyheight=0.5, ncol=2, label.theme = element_text(size=6))) + 
+  theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 ```
 
