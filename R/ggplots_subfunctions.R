@@ -127,11 +127,9 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
       tp <- ggplot(dataplot, aes_string(x = "x", y = "y", fill = "varname")) + 
         geom_bin2d(stat = "identity", linetype = 1, color = "grey", size = 0.6)
     } else {
-      ## !!!check it!!!
       dataplot$varname <- factor(dataplot$varname)
-      dataplot$group <- 1
       tp <- ggplot(dataplot, aes_string(x = "x", y = "y", fill = "varname",
-                                        group = "group")) + 
+                                        group = "1")) + 
         geom_hex(stat = "identity", linetype = 1, color = "grey", size = 0.6)
     }
   }
