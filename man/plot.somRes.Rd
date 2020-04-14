@@ -4,16 +4,24 @@
 \alias{plot.somRes}
 \title{Plot a \code{somRes} class object}
 \usage{
-\method{plot}{somRes}(x, what = c("obs", "prototypes", "energy", "add"),
-  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie",
-  energy = "energy"), variable = if (what == "add" | type == "names")
-  NULL else 1:ncol(x$data), my.palette = NULL, is.scaled = if
-  (x$parameters$type == "numeric") TRUE else FALSE, print.title = TRUE,
+\method{plot}{somRes}(
+  x,
+  what = c("obs", "prototypes", "energy", "add"),
+  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie", energy =
+    "energy"),
+  variable = NULL,
+  my.palette = NULL,
+  is.scaled = if (x$parameters$type == "numeric") TRUE else FALSE,
+  print.title = TRUE,
   the.titles = if (what != "energy") switch(type, graph =
-  1:prod(x$parameters$the.grid$dim), 1:prod(x$parameters$the.grid$dim)),
-  proportional = TRUE, s.radius = 1, pie.graph = FALSE,
-  pie.variable = NULL, view = if (x$parameters$type == "korresp") "r"
-  else NULL, ...)
+    1:prod(x$parameters$the.grid$dim), 1:prod(x$parameters$the.grid$dim)),
+  proportional = TRUE,
+  s.radius = 1,
+  pie.graph = FALSE,
+  pie.variable = NULL,
+  view = if (x$parameters$type == "korresp") "r" else NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{somRes} class object.}
