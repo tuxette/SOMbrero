@@ -12,9 +12,9 @@
   variable = NULL,
   my.palette = NULL,
   is.scaled = if (x$parameters$type == "numeric") TRUE else FALSE,
-  print.title = TRUE,
-  the.titles = if (what != "energy") switch(type, graph =
-    1:prod(x$parameters$the.grid$dim), 1:prod(x$parameters$the.grid$dim)),
+  show.names = TRUE,
+  names = if (what != "energy") switch(type, graph = 1:prod(x$parameters$the.grid$dim),
+    1:prod(x$parameters$the.grid$dim)),
   proportional = TRUE,
   s.radius = 1,
   pie.graph = FALSE,
@@ -50,15 +50,12 @@ combinations: all \code{"color"} types and \code{"prototypes"/"poly.dist"}.}
 to plotting or not. Default value is \code{TRUE} when \code{type="numeric"} 
 and \code{FALSE} in the other cases.}
 
-\item{print.title}{Boolean used to indicate whether each neuron should have a
+\item{show.names}{Boolean used to indicate whether each neuron should have a
 title or not. Default value is \code{FALSE}. It is feasible on the following 
 cases: all \code{"color"} types, all \code{"lines"} types, all 
 \code{"barplot"} types, all \code{"boxplot"} types,
 all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.}
-
-\item{the.titles}{The titles to be printed for each neuron if 
-\code{print.title=TRUE}. Default to a number which identifies the neuron.}
 
 \item{proportional}{Boolean used when \code{what="add"} and 
 \code{type="pie"}. It indicates if the pies should be proportional to the 
@@ -80,6 +77,9 @@ indicates whether rows (\code{"r"}) or columns (\code{"c"}) must be drawn.}
 (which can be \code{\link{plot}}, \code{\link{barplot}}, \code{\link{pie}}...
 depending on \code{type}; see \code{\link{somRes.plotting}} for further
 details).}
+
+\item{the.titles}{The titles to be printed for each neuron if 
+\code{show.names=TRUE}. Default to a number which identifies the neuron.}
 }
 \description{
 Produce graphics to help interpreting a \code{somRes} object.

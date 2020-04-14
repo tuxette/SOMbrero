@@ -23,8 +23,8 @@ superClass(sommap, method, members, k, h, ...)
     "color", "poly.dist", "pie", "graph", "dendro3d", "projgraph"),
   plot.var = TRUE,
   add.type = FALSE,
-  print.title = TRUE,
-  the.titles = 1:prod(x$som$parameters$the.grid$dim),
+  show.names = TRUE,
+  names = 1:prod(x$som$parameters$the.grid$dim),
   ...
 )
 
@@ -77,11 +77,11 @@ whether you are giving an additional variable to the argument \code{variable}
 or not. If you do, the function \code{\link{plot.somRes}} will be called with
 the argument \code{what} set to \code{"add"}.}
 
-\item{print.title}{Whether the cluster titles must be printed in center of
+\item{show.names}{Whether the cluster titles must be printed in center of
 the grid or not for \code{type="grid"}. Default to \code{FALSE} (titles not 
 displayed).}
 
-\item{the.titles}{If \code{print.title = TRUE}, values of the title to 
+\item{names}{If \code{show.names = TRUE}, values of the title to 
 display for \code{type="grid"}. Default to "Cluster " followed by the cluster
 number.}
 
