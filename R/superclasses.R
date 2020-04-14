@@ -49,10 +49,10 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' super-clusters (more details in the section \strong{Details} below).
 #' @param what What you want to plot for superClass object. 
 #' Either the observations (\code{obs}, the prototypes (\code{prototypes}) or an 
-#' additional variable (\code{add}), or \code(NULL) if not appropriate (default).
-#' Automatically set for types 'boxplot' (to \code("obs")), 'mds', and 'poly.dist'
-#' (to \code("prototypes")), 'graph' and 'pie' (to \code("add")). 
-#' Set to \code("add") if\code(add.type=T). Default to \code(prototypes) 
+#' additional variable (\code{add}), or \code{NULL} if not appropriate (default).
+#' Automatically set for types 'boxplot' (to \code{"obs"}), 'mds', and 'poly.dist'
+#' (to \code{"prototypes"}), 'graph' and 'pie' (to \code{"add"}). 
+#' Set to \code{"add"} if\code{add.type = TRUE}. Default to \code{prototypes}
 #' for 'lines', 'barplot', and 'color' types.
 #' @param type The type of plot to draw. Default value is \code{"dendrogram"}, 
 #' to plot the dendrogram of the clustering. Case \code{"grid"} plots the grid 
