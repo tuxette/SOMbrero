@@ -17,7 +17,7 @@ detailed below.
 __This documentation only considers the case of numerical data.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-#library(SOMbrero)
+library(SOMbrero)
 ```
 
 ### Arguments
@@ -48,7 +48,6 @@ hitmap      |           |   x   |               |         |         x
 color       |           |   x   |       x       |   x     |         x2
 lines       |           |   x   |       x       |   x     |         x2
 barplot     |           |   x   |       x       |   x     |         x2
-radar       |           |   x   |       x       |   x     |         x2
 pie         |           |       |               |   x     |         x
 boxplot     |           |   x   |               |   x     |         x2
 3d          |           |       |       x       |         |
@@ -183,7 +182,7 @@ used to map each flower on the SOM grid.
 ```{r irisTrain, cache=TRUE}
 set.seed(255)
 # run the SOM algorithm with verbose set to TRUE
-iris.som <- trainSOM(x.data=iris[,1:4], dimension=c(8,9), verbose=TRUE, nb.save=5, topo="square")
+iris.som <- trainSOM(x.data=iris[,1:4], dimension=c(5,5), verbose=TRUE, nb.save=5, topo="square")
 iris.som
 ```
 
@@ -246,16 +245,12 @@ values.
 
 ```{r irisGraphOP}
 par(mfrow=c(2,2))
-plot(iris.som, what="obs", type="color", variable=1, print.title=TRUE, 
-     main="Sepal length")
-plot(iris.som, what="obs", type="color", variable=2, print.title=TRUE, 
-     main="Sepal width")
-plot(iris.som, what="obs", type="color", variable=3, print.title=TRUE, 
-     main="Petal length")
-plot(iris.som, what="obs", type="color", variable=4, print.title=TRUE, 
-     main="Petal width")
-plot(iris.som, what="prototypes", type="lines", print.title=TRUE)
-plot(iris.som, what="obs", type="barplot", print.title=TRUE)
+plot(iris.som, what="obs", type="color", variable=1)
+plot(iris.som, what="obs", type="color", variable=2)
+plot(iris.som, what="obs", type="color", variable=3)
+plot(iris.som, what="obs", type="color", variable=4)
+plot(iris.som, what="prototypes", type="lines", show.names=F) + theme(axis.text.x = element_blank())
+plot(iris.som, what="obs", type="barplot", show.names=F) + theme(axis.text.x = element_blank())
 ```
 
 Empty squares catch the attention: none of the  observations are assigned to
@@ -277,9 +272,8 @@ with small sepal length are classified in the top right corner of the map.
 #### More graphics on observations
 
 ```{r irisObs}
-plot(iris.som, what="obs", type="boxplot", print.title=TRUE)
-rownames(iris)
-plot(iris.som, what="obs", type="names", print.title=TRUE, scale=c(0.9,0.5))
+plot(iris.som, what="obs", type="boxplot", show.names=F)
+plot(iris.som, what="obs", type="names", show.names=F)
 ```
 
 * By default, the ```"boxplot"``` plot considers all numerical variables of the 
@@ -295,10 +289,10 @@ Some more graphics handling prototypes have been implemented.
 
 ```{r irisProto}
 par(mfrow=c(2,2))
-plot(iris.som, what="prototypes", type="3d", variable=1, main="Sepal length")
-plot(iris.som, what="prototypes", type="3d", variable=2, main="Sepal width")
-plot(iris.som, what="prototypes", type="3d", variable=3, main="Petal length")
-plot(iris.som, what="prototypes", type="3d", variable=4, main="Petal width")
+plot(iris.som, what="prototypes", type="3d", variable=1)
+plot(iris.som, what="prototypes", type="3d", variable=2)
+plot(iris.som, what="prototypes", type="3d", variable=3)
+plot(iris.som, what="prototypes", type="3d", variable=4)
 ```
 
 ```"3d"``` provides the same results as "color" but in a 3 dimensional graphic:
@@ -309,7 +303,7 @@ dataset) of the corresponding neuron.
 Also, some graphics are provided to visualize the distance between prototypes on
 the grid:
 ```{r irisDistProto}
-plot(iris.som, what="prototypes", type="poly.dist", print.title = F)
+plot(iris.som, what="prototypes", type="poly.dist", show.names = F)
 plot(iris.som, what="prototypes", type="umatrix")
 plot(iris.som, what="prototypes", type="smooth.dist")
 plot(iris.som, what="prototypes", type="mds")
@@ -366,7 +360,7 @@ or ```"prototypes"``` cases. Here we choose as an additional variable the first
 variable of the iris data set, so we obtain the same graphic as above (see 
 section __Graphics common to observations and prototypes__).
 ```{r irisAdd2}
-plot(iris.som, what="add", type="color", variable=iris$Sepal.Length, print.title = F)
+plot(iris.som, what="add", type="color", variable=iris$Sepal.Length, show.names = F)
 ```
 
 ##### additional numerical matrix or data frame
@@ -390,7 +384,7 @@ colnames(my.cont.mat) <- levels(iris$Species)
 # my.cont.mat is the contingency matrix corresponding to the variable 
 # iris$Species - overview of the 5 first lines:
 my.cont.mat[1:5,]
-plot(iris.som, what="add", type="words", variable=my.cont.mat, print.title = F)
+plot(iris.som, what="add", type="words", variable=my.cont.mat, show.names = F)
 ```
 
 ##### additional non-numerical vector
@@ -489,7 +483,7 @@ plot(my.sc, what="prototypes", type="mds")
 And some others identify the super clusters with titles:
 ```{r irisSCplot3}
 plot(my.sc, what="prototypes", type="color", var="Sepal.Length")
-plot(my.sc, what="prototypes", type="poly.dist", print.title = F)
+plot(my.sc, what="prototypes", type="poly.dist")
 plot(my.sc, what="add", type="pie", variable=iris$Species)
 ```
 

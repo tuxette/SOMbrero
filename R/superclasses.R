@@ -68,10 +68,10 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' whether you are giving an additional variable to the argument \code{variable}
 #' or not. If you do, the function \code{\link{plot.somRes}} will be called with
 #' the argument \code{what} set to \code{"add"}.
-#' @param print.title Whether the cluster titles must be printed in center of
+#' @param show.names Whether the cluster titles must be printed in center of
 #' the grid or not for \code{type="grid"}. Default to \code{FALSE} (titles not 
 #' displayed).
-#' @param the.titles If \code{print.title = TRUE}, values of the title to 
+#' @param names If \code{show.names = TRUE}, values of the title to 
 #' display for \code{type="grid"}. Default to "Cluster " followed by the cluster
 #' number.
 #' @param \dots Used for \code{plot.somSC}: further arguments passed either to
@@ -286,14 +286,24 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
                                  "poly.dist", "pie", "graph", "dendro3d", 
                                  "projgraph"),
                        plot.var=TRUE, add.type=FALSE, 
-                       print.title = TRUE, 
-                       the.titles = 1:prod(x$som$parameters$the.grid$dim),
+                       show.names = TRUE, 
+                       names = 1:prod(x$som$parameters$the.grid$dim),
                        ...) {
   # TODO: add types "names" and "words"
   args <- list(...)
   type <- match.arg(type)
 
-  # Colors (used only for dendrogram, dendro3d and )
+  calls <- names(sapply(match.call(), deparse))[-1]
+  if(any("print.title" %in% calls)) {
+    warning("'print.title' will be deprecated, please use 'show.names' instead", call. = F, immediate. = T)
+    show.names <- args$print.title
+  }
+  if(any("the.titles" %in% calls)) {
+    warning("'the.titles' will be deprecated, please use 'names' instead", call. = F, immediate. = T)
+    names <- args$the.titles
+  }
+  
+  # Colors (used only for dendrogram, dendro3d, graph and projgraph)
   if(is.null(x$cluster)==F){
     nbclust <- max(x$cluster)
     if ((!is.null(args$col)) & (length(args$col)==nbclust)) {
@@ -373,12 +383,12 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
       if (type=="grid") {
         args$sc <- max(x$cluster)
         ggplotGrid("prototypes", type="grid", values=x$cluster, clustering=as.numeric(as.character(rownames(x$som$prototypes))), 
-                   print.title, the.titles,
+                   show.names, names,
                    the.grid=x$som$parameters$the.grid , args)
       } else if (type=="hitmap") {
         args$sc <- max(x$cluster)
         ggplotGrid("observations", type="hitmap", values=x$cluster[x$som$clustering], clustering=x$som$clustering, 
-                   print.title, the.titles,
+                   show.names, names,
                    the.grid=x$som$parameters$the.grid , args)
       } else if (type %in% c("lines", "barplot", "boxplot", "mds",
                              "color", "poly.dist", "pie", "graph")) {
@@ -391,9 +401,7 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
           stop(type, " plot is not available for 'relational' super classes\n", 
                call.=TRUE)
          
-        if (!(type%in%c("graph","pie"))) {
-          args$col <- clust.col
-        } else if (type=="graph") {
+        if (type=="graph") {
           neclust <- which(!is.na(match(1:prod(x$som$parameters$the.grid$dim),
                                         unique(x$som$clustering))))
           if (is.null(args$pie.graph)) args$pie.graph <- FALSE
@@ -401,12 +409,13 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
             args$vertex.color <- clust.col[neclust]
             args$vertex.frame.color <- clust.col[neclust]
           } else {
-            print.title <- TRUE
+            show.names <- TRUE
             args$vertex.label <- paste("SC",x$cluster[neclust])
             args$vertex.label.color <- "black"
           }
         }
         args$x <- x$som
+        
         args$what <- what[1]
         # manage argument 'what' :
         if (add.type | type %in% c("graph", "pie")) {
@@ -415,15 +424,16 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         if(type=="boxplot") args$what <- "obs"
         if(type %in% c("mds", "poly.dist")) args$what <- "prototypes"
         if(args$what != what[1]) {
-          warning(paste0('`what` argument set to "', args$what, '"'), call. = TRUE, immediate. = TRUE)
+          warning(paste0('`what` argument set to "', args$what, '"'), immediate. = TRUE)
         }
         args$type <- type
+        
         # manage titles
-        args$print.title <- print.title
+        args$show.names <- show.names
         if(type %in% c("lines", "barplot", "boxplot", "poly.dist")){
-          args$the.titles <- the.titles
+          args$names <- names
         } else {
-          args$the.titles <- paste("SC", x$cluster)
+          args$names <- paste("SC", x$cluster)
         }
   
         # manage colors 
@@ -463,19 +473,41 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
           stop("number of nodes in graph does not fit length of the original data", call.=TRUE)
         }
 
-        # colors
-        if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
-          args$vertex.color <- args$col
-          args$vertex.frame.color <- args$col
+        
+        
+        # Colors (used only for dendrogram, dendro3d, graph and projgraph)
+        if(is.null(x$cluster)==F){
+          nbclust <- max(x$cluster)
+          if ((!is.null(args$col)) & (length(args$col)==nbclust)) {
+            clust.col.pal <- args$col
+          } else {
+            if (!is.null(args$col))
+              warning("Incorrect number of colors
+                  (does not fit the number of super-clusters);
+                  using the default palette.\n", call.=TRUE, immediate.=TRUE)
+            clust.col.pal <- gg_color(nbclust)
+          }
+          clust.col <- clust.col.pal[x$cluster]
         } else {
-          if (!is.null(args$col))
-            warning("Incorrect number of colors
-  (does not fit the number of super-clusters);
-  using the default palette.\n", call.=TRUE, immediate.=TRUE)
-          # create a color vector from ggplot default colors
-          args$vertex.color <- gg_color(nbclust)
-          args$vertex.frame.color <- gg_color(nbclust)
+          nbclust <- 1
         }
+        
+        
+        args$vertex.color <- clust.col.pal
+        args$vertex.frame.color <- clust.col.pal
+  #       # colors
+  #       if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
+  #         args$vertex.color <- args$col
+  #         args$vertex.frame.color <- args$col
+  #       } else {
+  #         if (!is.null(args$col))
+  #           warning("Incorrect number of colors
+  # (does not fit the number of super-clusters);
+  # using the default palette.\n", call.=TRUE, immediate.=TRUE)
+  #         # create a color vector from ggplot default colors
+  #         args$vertex.color <- gg_color(nbclust)
+  #         args$vertex.frame.color <- gg_color(nbclust)
+  #       }
 
         # case of pie
         if (is.null(args$pie.graph)) args$pie.graph <- FALSE

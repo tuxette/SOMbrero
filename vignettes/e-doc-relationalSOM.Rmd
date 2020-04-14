@@ -17,8 +17,7 @@ detailed below.
 __This documentation only considers the case of dissimilarity matrices.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-#library(SOMbrero)
-devtools::load_all(".")
+library(SOMbrero)
 ```
 
 ### Arguments
@@ -170,9 +169,9 @@ input space, and y coordinates representing the distance between the
 corresponding neurons on the grid.
 
 ```{r lesmisProtoDist}
-plot(mis.som, what="prototypes", type="poly.dist", print.title=TRUE)
+plot(mis.som, what="prototypes", type="poly.dist")
 plot(mis.som, what="prototypes", type="smooth.dist")
-plot(mis.som, what="prototypes", type="umatrix", print.title=TRUE)
+plot(mis.som, what="prototypes", type="umatrix")
 plot(mis.som, what="prototypes", type="mds")
 plot(mis.som, what="prototypes", type="grid.dist")
 ```
@@ -208,9 +207,9 @@ sc.mis <- superClass(mis.som, k=5)
 summary(sc.mis)
 table(sc.mis$cluster)
 plot(sc.mis)
-plot(sc.mis, what="prototypes", type="grid", plot.legend=TRUE)
-plot(sc.mis, what="prototypes", type="lines", print.title=TRUE)
-plot(sc.mis, what="prototypes", type="mds", plot.legend=TRUE)
+plot(sc.mis, what="prototypes", type="grid")
+plot(sc.mis, what="prototypes", type="lines")
+plot(sc.mis, what="prototypes", type="mds")
 plot(sc.mis, type="dendro3d")
 ```
 
