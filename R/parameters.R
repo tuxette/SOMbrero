@@ -148,7 +148,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square", "hexagonal"),
             call.=TRUE, immediate.=TRUE)
   }
   
-  if (topo == "hexagonal" && dist.type != "euclidean") {
+  if (topo == "hexagonal" & dist.type != "euclidean") {
     dist.type <- "euclidean"
     warning("'dist.type' value replaced to 'euclidean' for hexagonal topology\n
             (other values of 'dist.type' are not not allowed)\n", 
