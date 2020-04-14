@@ -357,8 +357,6 @@ projectFactor <- function(the.graph, clustering, the.factor, pie.color=NULL) {
   vertex.pie <- lapply(split(the.factor, factor(clustering)), table)
   if (is.null(pie.color)) {
     pie.color <- gg_color(nlevels(the.factor))
-    # pie.color <- list(c(brewer.pal(8,"Set2"),
-    #                     brewer.pal(12,"Set3"))[1:nlevels(the.factor)])
   }
   return(list("vertex.pie"=vertex.pie, "vertex.pie.color"=pie.color))
 }

@@ -101,9 +101,6 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
       }
     } else minsize <- args$minsize
     
-    # # if(is.null(args$minsize)) minsize <- min(dataplot$Nb) else minsize <- args$minsize
-    # if(is.null(args$maxsize)) maxsize <- 25 else maxsize <- args$maxsize
-    # if(is.null(args$minsize)) minsize <- 1 else minsize <- args$minsize
     tp <- ggplot(dataplot, aes(x = x, y = y)) + 
       geom_point(aes(size = Nb, fill = varname), pch = 21, show.legend = TRUE) +
       scale_size_continuous(range=c(1, maxsize), 
@@ -188,16 +185,19 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
   # Data (ggplot way)
   ################################################
   dataplot <- data.frame(values)
+  nbvar <- ncol(dataplot)
+  colnames(dataplot)[1:nbvar] <- paste0(vary, "-", colnames(dataplot)[1:nbvar])
   dataplot$ind <- rownames(dataplot)
- # dataplot$SOMclustering <- clustering
   dataplot$SOMclustering <- factor(clustering, levels=ordered.index)
   if(is.null(args$sc)){
-    dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = vary)
+    dataplot <- reshape(dataplot,  varying = 1:nbvar, idvar=c("ind", "SOMclustering"), 
+                        sep="-", direction="long", timevar="variable")
     dataplot$variable <- as.factor(dataplot$variable)
     labelcolor <- "variable"
   } else {
     dataplot$varcolor <- args$sc
-    dataplot <- melt(dataplot,  measure.vars = colnames(data.frame(values)), value.name = vary)
+    dataplot <- reshape(dataplot,  varying = 1:nbvar, idvar=c("ind", "SOMclustering", "varcolor"), 
+                        sep="-", direction="long", timevar="variable")
     dataplot$varcolor <- as.factor(dataplot$varcolor)
     labelcolor <- "Super_Clusters"
     colnames(dataplot)[match("varcolor", colnames(dataplot))] <- labelcolor

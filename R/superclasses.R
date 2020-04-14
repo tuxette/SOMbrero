@@ -47,13 +47,12 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' SOM (case \code{"korresp"} is not handled by this function). In the projected
 #' graph, the vertices are positionned at the center of gravity of the 
 #' super-clusters (more details in the section \strong{Details} below).
-#' @param what What you want to plot for superClass object. 
-#' Either the observations (\code{obs}, the prototypes (\code{prototypes}) or an 
-#' additional variable (\code{add}), or \code(NULL) if not appropriate (default).
-#' Automatically set for types 'boxplot' (to \code("obs")), 'mds', and 'poly.dist'
-#' (to \code("prototypes")), 'graph' and 'pie' (to \code("add")). 
-#' Set to \code("add") if\code(add.type=T). Default to \code(prototypes) 
-#' for 'lines', 'barplot', and 'color' types.
+#' @param what What you want to plot for superClass object. Either the observations 
+#' (\code{obs}, the prototypes (\code{prototypes}) or an additional variable 
+#' (\code{add}), or \code(NULL) if not appropriate. Default to \code(prototypes) 
+#' for 'lines', 'barplot', and 'color' types. Automatically set for 
+#' types 'boxplot' (to \code("obs")), 'mds', and 'poly.dist' (to \code("prototypes")), 
+#' 'graph' and 'pie' (to \code("add")). Set to \code("add") if\code(add.type=T). 
 #' @param type The type of plot to draw. Default value is \code{"dendrogram"}, 
 #' to plot the dendrogram of the clustering. Case \code{"grid"} plots the grid 
 #' in color according to the super clustering. Case \code{"projgraph"} uses an
@@ -492,22 +491,8 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
           nbclust <- 1
         }
         
-        
         args$vertex.color <- clust.col.pal
         args$vertex.frame.color <- clust.col.pal
-  #       # colors
-  #       if ((!is.null(args$col)) & (length(args$col)==max(x$cluster))) {
-  #         args$vertex.color <- args$col
-  #         args$vertex.frame.color <- args$col
-  #       } else {
-  #         if (!is.null(args$col))
-  #           warning("Incorrect number of colors
-  # (does not fit the number of super-clusters);
-  # using the default palette.\n", call.=TRUE, immediate.=TRUE)
-  #         # create a color vector from ggplot default colors
-  #         args$vertex.color <- gg_color(nbclust)
-  #         args$vertex.frame.color <- gg_color(nbclust)
-  #       }
 
         # case of pie
         if (is.null(args$pie.graph)) args$pie.graph <- FALSE
