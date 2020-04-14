@@ -18,7 +18,6 @@ __This documentation only considers the case of contingency tables.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
 library(SOMbrero)
-library(ggplot2)
 ```
 
 ### Arguments
@@ -60,7 +59,6 @@ set.seed(01091407)
 korresp.som <- trainSOM(x.data=presidentielles2002, dimension=c(8,8),
                         type="korresp", scaling="chi2", nb.save=10,
                         radius.type="letremy", topo="square")
-clusternames <- 1:prod(korresp.som$parameters$the.grid$dim)
 korresp.som
 ```
 
@@ -90,7 +88,6 @@ hitmap      |           |   x   |               |         |         x
 color       |           |       |       x2      |         |         x2
 lines       |           |       |       x2      |         |         x2
 barplot     |           |       |       x       |         |
-radar       |           |       |       x       |         |
 pie         |           |       |               |         |
 boxplot     |           |       |               |         |
 3d          |           |       |       x2      |         |
@@ -117,14 +114,14 @@ korresp.som$clustering
 The resulting distribution of the clustering on the map can also be visualized
 by a hitmap:
 ```{r presiHitmap}
-plot(korresp.som, what="obs", type="hitmap", print.title = F)
+plot(korresp.som, what="obs", type="hitmap", show.names = F)
 ```
 
 For a more precise view, ```"names"``` plot is implemented: it prints, 
 in each neuron, the names of the variables assigned to it ; in the korresp SOM, 
 both row and column variable names are printed.
 ```{r presiGraphObs, warning=FALSE, fig.width=12, fig.height=12}
-plot(korresp.som, what="obs", type="names", print.title = T)
+plot(korresp.som, what="obs", type="names")
 ```
 
 The map is divided into two main parts: minor candidates are classified at its 
@@ -161,13 +158,13 @@ Three representations are available:
 argument is used)
 ```{r presiProtoL}
 # plot the line prototypes (106 French departements)
-plot(korresp.som, what="prototypes", type="lines", view="r", print.title=F) +    
+plot(korresp.som, what="prototypes", type="lines", view="r", show.names=F) +    
   guides(color=guide_legend(keywidth=0.1, keyheight=0.1, default.unit="cm", ncol=2)) + 
   theme(legend.text=element_text(size=4), 
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 # plot the column prototypes (16 candidates)
-plot(korresp.som, what="prototypes", type="lines", view="c", print.title=T) +
+plot(korresp.som, what="prototypes", type="lines", view="c", show.names=F) +
   guides(color=guide_legend(keywidth=0.1, keyheight=0.1,default.unit="cm", ncol=1)) + 
   theme(legend.text=element_text(size=6),
         axis.text.x=element_blank(),
@@ -231,8 +228,8 @@ coordinates representing the distance between the prototypes in the
 input space, and y coordinates representing the distance between the 
 corresponding neurons on the grid.
 ```{r presiGraphProto2}
-plot(korresp.som, what="prototypes", type="poly.dist", print.title=F)
-plot(korresp.som, what="prototypes", type="umatrix", print.title=F)
+plot(korresp.som, what="prototypes", type="poly.dist", show.names=F)
+plot(korresp.som, what="prototypes", type="umatrix")
 plot(korresp.som, what="prototypes", type="smooth.dist")
 plot(korresp.som, what="prototypes", type="mds")
 plot(korresp.som, what="prototypes", type="grid.dist")
@@ -295,7 +292,7 @@ Case ```"grid"``` fills the grid with colors according to the super clustering
 (and can provide a legend).
 Case ```"dendro3d"``` plots a 3d dendrogram.
 ```{r presiSC3}
-plot(my.sc, type="grid", print.title = T, the.titles=1:length(my.sc$cluster))
+plot(my.sc, type="grid")
 plot(my.sc, type="dendro3d")
 ```
 
@@ -305,9 +302,9 @@ The three super-clusters correspond to traditional votes (blue), far right votes
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:
 ```{r presiSC4}
-plot(my.sc, what="prototypes", type="hitmap", print.title = T, the.titles = clusternames)
-plot(my.sc, what="prototypes", type="lines", print.title=F, view="c")
-plot(my.sc, what="prototypes", type="poly.dist", print.title=T, the.titles = clusternames)
+plot(my.sc, what="prototypes", type="hitmap")
+plot(my.sc, what="prototypes", type="lines", show.names=F, view="c")
+plot(my.sc, what="prototypes", type="poly.dist")
 plot(my.sc, what="prototypes", type="mds")
 ```
 
@@ -320,7 +317,7 @@ plot(my.sc, what="prototypes", type="color", view="c", variable="JOSPIN")
 Let us consider the first super cluster. It contains departements which were 
 crucial in promoting the far right candidate LE PEN, unexpected winner of the
 first round:
-```{r DOM, echo=FALSE}
+```{r DOM, echo=TRUE}
 names(korresp.som$clustering)[which(korresp.som$clustering %in%
                                       which(my.sc$cluster==1))]
 ```

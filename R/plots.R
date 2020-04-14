@@ -77,6 +77,8 @@ plot3d <- function(x, the.grid, type, variable, args) {
   if (is.null(args$col)) args$col <- gg_color(1)
   if (is.null(args$border)) args$border <- "grey"
   if (is.null(args$main)) args$main <- paste0("Values of prototypes for ", args$varname)
+  if (is.null(args$minsize)) args$minsize <- 0.5 # for points
+  if (is.null(args$maxsize)) args$maxsize <- 2 # for points
   args$varname <- NULL
   if(the.grid$topo=="hexagonal") {
     args$sub <- "Hexagonal topography : linear interpolation between points"
@@ -91,7 +93,7 @@ plot3d <- function(x, the.grid, type, variable, args) {
   zz = x[,variable]
   
   # determine distance to eye
-  psize = depth3d(xx,yy,zz,pmat,minsize=0.5, maxsize = 2)
+  psize = depth3d(xx,yy,zz,pmat,minsize=args$minsize, maxsize = args$maxsize)
   # from 3D to 2D coordinates
   mypoints <- trans3d(xx, yy, zz, pmat=pmat)
   # plot in 2D space with pointsize related to distance
@@ -145,8 +147,8 @@ coords_polydist <- function(ind, values, the.grid) {
 
 
 ### SOM algorithm graphics
-plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
-                           the.titles, is.scaled, view, args) {
+plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
+                           names, is.scaled, view, args) {
   ## types : 3d, lines, barplot, color, smooth.dist, poly.dist, umatrix,
   # mds
   
@@ -179,14 +181,14 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
   
   if (type=="lines" || type=="barplot") {
     ggplotFacet("prototypes", type, sommap$prototypes[,variable], as.numeric(rownames(sommap$prototypes)),
-                print.title, the.titles, is.scaled,
+                show.names, names, is.scaled,
                 sommap$parameters$the.grid, args)
   } else if (type=="color" | type=="3d") {
     args$varname <- tmp.var
     if(type=="color"){
       ggplotGrid("prototypes", "color", sommap$prototypes[,tmp.var], 
-                 as.numeric(rownames(sommap$prototypes)), print.title, 
-                 the.titles, sommap$parameters$the.grid, args)
+                 as.numeric(rownames(sommap$prototypes)), show.names, 
+                 names, sommap$parameters$the.grid, args)
     } else if (type=="3d"){
       plot3d(sommap$prototypes, sommap$parameters$the.grid, type, tmp.var, args)
     }
@@ -204,8 +206,8 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
         stop("Impossible to plot 'poly.dist'!", call.=TRUE)
       } else values <- lapply(values,sqrt)
     }
-    ggplotGrid("prototypes", type, values, sommap$clustering, print.title,
-                   the.titles, sommap$parameters$the.grid, args)
+    ggplotGrid("prototypes", type, values, sommap$clustering, show.names,
+                   names, sommap$parameters$the.grid, args)
   } else if (type=="umatrix" || type=="smooth.dist") {
     values <- protoDist(sommap, "neighbors")
 
@@ -220,7 +222,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
       args$varname <- variable
       ggplotGrid("prototypes", "color", values,
                  as.numeric(as.character(rownames(sommap$prototypes))), 
-                 print.title, the.titles, 
+                 show.names, names, 
                  sommap$parameters$the.grid, args)
     } else {
       if(sommap$parameters$the.grid$topo=="hexagonal"){
@@ -273,7 +275,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, print.title,
   } else stop("Sorry: this type is still to be implemented.", call.=TRUE)
 }
 
-plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
+plotObs <- function(sommap, type, variable, my.palette, show.names, names,
                     is.scaled, view, args) {
   ## types : hitmap, lines, names, color, barplot, boxplot
   # default value is type="hitmap"
@@ -321,7 +323,7 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
       }
     }
     ggplotFacet("obs", type, values, sommap$clustering,
-                print.title, the.titles, is.scaled,
+                show.names, names, is.scaled,
                 sommap$parameters$the.grid, args)
   } else if(type %in% c("color", "hitmap")){
       if (type=="color") {
@@ -343,7 +345,7 @@ plotObs <- function(sommap, type, variable, my.palette, print.title, the.titles,
       values <- sommap$clustering
     }
     ggplotGrid("obs", type, values, sommap$clustering,
-               print.title, the.titles, sommap$parameters$the.grid, args)
+               show.names, names, sommap$parameters$the.grid, args)
   }
 }
 
@@ -361,7 +363,7 @@ projectFactor <- function(the.graph, clustering, the.factor, pie.color=NULL) {
   return(list("vertex.pie"=vertex.pie, "vertex.pie.color"=pie.color))
 }
 
-plotProjGraph <- function(proj.graph, print.title=FALSE, the.titles=NULL, 
+plotProjGraph <- function(proj.graph, show.names=FALSE, names=NULL, 
                           s.radius=1, pie.graph=FALSE, pie.variable=NULL, ...) {
   
   args <- list(...)
@@ -370,23 +372,21 @@ plotProjGraph <- function(proj.graph, print.title=FALSE, the.titles=NULL,
   if (is.null(s.radius)) s.radius <- 1
   args$vertex.size <- s.radius*20*sqrt(V(proj.graph)$size)/
     max(sqrt(V(proj.graph)$size))
-  if (is.null(args$vertex.label) & !print.title) args$vertex.label <- NA
-  if (print.title) {
+  if (is.null(args$vertex.label) & !show.names) args$vertex.label <- NA
+  if (show.names) {
     if (is.null(args$vertex.label)) {
-      if (is.null(the.titles)) {
+      if (is.null(names)) {
         args$vertex.label <- V(proj.graph)$name
       } else 
-        args$vertex.label <- the.titles[as.numeric(V(proj.graph)$name)]
+        args$vertex.label <- names[as.numeric(V(proj.graph)$name)]
     }
   }
     
   if (args$vertex.shape!="pie") {
     if (is.null(args$vertex.color))
       args$vertex.color <- gg_color(1)
-     # args$vertex.color <- brewer.pal(12,"Set3")[4]
     if (is.null(args$vertex.frame.color))
       args$vertex.frame.color <- gg_color(1)
-      #args$vertex.frame.color <- brewer.pal(12,"Set3")[4]
   }
 
   par(bg="white")
@@ -394,7 +394,7 @@ plotProjGraph <- function(proj.graph, print.title=FALSE, the.titles=NULL,
 }
 
 plotAdd <- function(sommap, type, variable, proportional, my.palette,
-                    print.title, the.titles, is.scaled, s.radius, pie.graph,
+                    show.names, names, is.scaled, s.radius, pie.graph,
                     pie.variable, args) {
   ## types : pie, color, lines, boxplot, names, words, graph, barplot
   # to be implemented: graph
@@ -437,10 +437,10 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
         stop("no colnames for 'variable'", call.=TRUE)
       }
     }
-    ggplotFacet("add", type, values=variable, sommap$clustering, print.title, the.titles, 
+    ggplotFacet("add", type, values=variable, sommap$clustering, show.names, names, 
                 is.scaled, sommap$parameters$the.grid, args)
   } else if(type == "color"){
-    ggplotGrid("add", type, values=variable, sommap$clustering, print.title, the.titles, 
+    ggplotGrid("add", type, values=variable, sommap$clustering, show.names, names, 
                sommap$parameters$the.grid, args)
   } else if (type=="graph") {
     # controls
@@ -474,8 +474,8 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     # create projected graph and plot
     args$proj.graph <- projectGraph(variable, sommap$clustering, 
                                     sommap$parameters$the.grid$coord)
-    args$print.title <- print.title
-    args$the.titles <- the.titles
+    args$show.names <- show.names
+    args$names <- names
     args$s.radius <- s.radius
     args$pie.graph <- pie.graph
     args$pie.variable <- pie.variable
@@ -510,14 +510,14 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' @param is.scaled A boolean indicating whether values should be scaled prior 
 #' to plotting or not. Default value is \code{TRUE} when \code{type="numeric"} 
 #' and \code{FALSE} in the other cases.
-#' @param print.title Boolean used to indicate whether each neuron should have a
+#' @param show.names Boolean used to indicate whether each neuron should have a
 #' title or not. Default value is \code{FALSE}. It is feasible on the following 
 #' cases: all \code{"color"} types, all \code{"lines"} types, all 
 #' \code{"barplot"} types, all \code{"boxplot"} types,
 #' all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 #' \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.
 #' @param the.titles The titles to be printed for each neuron if 
-#' \code{print.title=TRUE}. Default to a number which identifies the neuron.
+#' \code{show.names=TRUE}. Default to a number which identifies the neuron.
 #' @param proportional Boolean used when \code{what="add"} and 
 #' \code{type="pie"}. It indicates if the pies should be proportional to the 
 #' number of observations in the class. Default value is \code{TRUE}.
@@ -553,8 +553,8 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                         my.palette=NULL, 
                         is.scaled = if (x$parameters$type=="numeric") TRUE else
                           FALSE,
-                        print.title=TRUE, 
-                        the.titles=if (what!="energy")
+                        show.names=TRUE, 
+                        names=if (what!="energy")
                           switch(type,
                                  "graph"=1:prod(x$parameters$the.grid$dim),
                                  1:prod(x$parameters$the.grid$dim)),
@@ -565,6 +565,20 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
   args <- list(...)
   what <- match.arg(what)
 
+  calls <- names(sapply(match.call(), deparse))[-1]
+  if(any("print.title" %in% calls)) {
+    warning("'print.title' will be deprecated, please use 'show.names' instead", call. = F, immediate. = T)
+    show.names <- args$print.title
+  }
+  if(any("the.titles" %in% calls)) {
+    warning("'the.titles' will be deprecated, please use 'names' instead", call. = F, immediate. = T)
+    names <- args$the.titles
+  }
+  
+  if(is.null(variable)==F){
+    if(is.null(args$varname)) args$varname <- deparse(substitute(variable))
+  }
+  
   if(is.null(variable)){
     if (what!="add" & type!="names"){
       if(x$parameters$type %in% c("numeric", "relational")){
@@ -575,26 +589,22 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
     }
   }
 
-  if(is.null(args$variable)==F){
-    if(is.null(args$varname)) args$varname <- deparse(substitute(variable))
-  }
-  
   if ((x$parameters$type=="korresp")&&!(view%in%c("r","c")))
       stop("view must be one of 'r'/'c'",call.=TRUE)
-  if (length(the.titles)!=prod(x$parameters$the.grid$dim) & what!="energy") {
-    the.titles=switch(type,
+  if (length(names)!=prod(x$parameters$the.grid$dim) & what!="energy") {
+    names=switch(type,
                       "graph"=1:prod(x$parameters$the.grid$dim),
                       1:prod(x$parameters$the.grid$dim))
-    warning("unadequate length for 'the.titles'; replaced by default",
+    warning("unadequate length for 'names'; replaced by default",
             call.=TRUE, immediate.=TRUE)
   }
   switch(what,
-         "prototypes"=plotPrototypes(x, type, variable, my.palette, print.title,
-                                     the.titles, is.scaled, view, args),
+         "prototypes"=plotPrototypes(x, type, variable, my.palette, show.names,
+                                     names, is.scaled, view, args),
          "energy"=ggplotEnergy(x),
          "add"=plotAdd(x, type, if (type!="graph") as.matrix(variable) else 
-           variable, proportional, my.palette, print.title, the.titles, 
+           variable, proportional, my.palette, show.names, names, 
                        is.scaled, s.radius, pie.graph, pie.variable, args),
-         "obs"=plotObs(x, type, variable, my.palette, print.title, the.titles,
+         "obs"=plotObs(x, type, variable, my.palette, show.names, names,
                        is.scaled, view, args))
 }

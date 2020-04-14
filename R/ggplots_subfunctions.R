@@ -13,8 +13,8 @@ theme_set(theme_bw(base_size = 12) +
 
 ### Plots (ggplot2 version) grid-like : one graph using parameters$the.grid$coord as coordinates on the plan
 #############################################################################################
-ggplotGrid <- function(what, type, values, clustering, print.title,
-                       the.titles, the.grid, args = NULL) {
+ggplotGrid <- function(what, type, values, clustering, show.names,
+                       names, the.grid, args = NULL) {
   
   # Axes labels 
   ################################################
@@ -145,10 +145,10 @@ ggplotGrid <- function(what, type, values, clustering, print.title,
           axis.text.y = element_blank(),
           axis.ticks.y = element_blank())
   
-  if (print.title) {
-    datagrid <- data.frame(the.grid$coord, the.titles)
+  if (show.names) {
+    datagrid <- data.frame(the.grid$coord, names)
     tp <- tp + geom_text(data = datagrid, 
-                         aes(x = x, y = y, label = the.titles, fill = NULL))
+                         aes(x = x, y = y, label = names, fill = NULL))
   }
   
   tp
@@ -157,8 +157,8 @@ ggplotGrid <- function(what, type, values, clustering, print.title,
 ### Plots (ggplot2 version) using facet_wraps : need to have one graph by cluster
 #############################################################################################
 
-ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
-                      the.titles, is.scaled, the.grid, args){
+ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
+                      names, is.scaled, the.grid, args){
   ordered.index <- orderIndexes(the.grid, type)
 
   # Axes labels 
@@ -249,7 +249,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
               guides(fill=guide_legend(title=labelcolor))
   }
   # Handling of the grid order
-  mylabels <- the.titles[ordered.index]
+  mylabels <- names[ordered.index]
   names(mylabels) <- levels(dataplot$SOMclustering)
   
   tp <- tp + facet_wrap(SOMclustering ~ ., 
@@ -260,7 +260,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, print.title,
              ggtitle(myTitle(args, what)) 
 
   # Clusters titles
-  if(print.title==F){
+  if(show.names==F){
     tp <- tp + theme(strip.background = element_blank(),
                      strip.text = element_blank())
   }
