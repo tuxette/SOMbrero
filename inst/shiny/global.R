@@ -1,6 +1,7 @@
 ####################################################################################
 # Libraries
 ####################################################################################
+
 library(shinycssloaders) # for the loader of the summary
 library(shinyBS)  # for bsCollapse
 library(shinyjs) # Version hide/show/toggle

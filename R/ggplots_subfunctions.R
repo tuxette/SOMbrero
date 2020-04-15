@@ -247,8 +247,14 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
     datatot <- aggregate(data=dataplot, Nbcluster ~ SOMclustering, sum)
     dataplot <- aggregate(data=dataplot, Nb ~ SOMclustering + values, sum)
     dataplot <- merge(dataplot, datatot, by="SOMclustering", all.x=TRUE)
+    labely <- "Number of observations in the cluster"
     dataplot$Share <- dataplot$Nb/dataplot$Nbcluster
+    if(args$proportional==F){
+        labely <- ""
+        dataplot$Nbcluster <- max(dataplot$Nbcluster)
+    }
     dataplot$halfNbCluster <- dataplot$Nbcluster/2
+
     
     tp <-  ggplot(dataplot, aes_string(x="halfNbCluster", y="Share", 
                                        fill="values", width="Nbcluster")) +

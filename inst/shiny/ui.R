@@ -260,7 +260,7 @@ pseudo-random generators at
                             )))
                  ),
           column(9,
-                 actionButton("trainbutton", "Train SOM", class="btn-primary"),
+                 disabled(actionButton("trainbutton", "Train SOM", class="btn-primary")),
                  hidden(actionButton("nextplot", "Next : plot the SOM map", class="btn-primary")),
                  br(),
                  br(),

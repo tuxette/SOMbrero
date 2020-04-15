@@ -411,7 +411,6 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     show.names, names, is.scaled, s.radius, pie.graph,
                     pie.variable, args) {
   ## types : pie, color, lines, boxplot, names, words, graph, barplot
-  # to be implemented: graph
 
   # default value is type="pie"
   if (!is.element(type,c("pie", "color", "lines", "barplot", "words",
@@ -445,7 +444,10 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   
   # switch between different types
   if(type %in% c("pie", "lines", "barplot", "boxplot", "names", "words")){
-    if(type == "pie") variable <- as.factor(variable)
+    if(type == "pie") {
+      variable <- as.factor(variable)
+      args$proportional <- proportional
+    }
     if (type=="words") {
       if (is.null(colnames(variable))) {
         stop("no colnames for 'variable'", call.=TRUE)
@@ -525,12 +527,12 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' to plotting or not. Default value is \code{TRUE} when \code{type="numeric"} 
 #' and \code{FALSE} in the other cases.
 #' @param show.names Boolean used to indicate whether each neuron should have a
-#' title or not. Default value is \code{FALSE}. It is feasible on the following 
+#' title or not. Default value is \code{TRUE}. It is feasible on the following 
 #' cases: all \code{"color"} types, all \code{"lines"} types, all 
 #' \code{"barplot"} types, all \code{"boxplot"} types,
 #' all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 #' \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.
-#' @param the.titles The titles to be printed for each neuron if 
+#' @param names The names to be printed for each neuron if 
 #' \code{show.names=TRUE}. Default to a number which identifies the neuron.
 #' @param proportional Boolean used when \code{what="add"} and 
 #' \code{type="pie"}. It indicates if the pies should be proportional to the 

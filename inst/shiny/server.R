@@ -185,7 +185,14 @@ shinyServer(function(input, output, session) {
     
   })
   
-
+  observe({
+    if(is.null(input$somtype) | is.null(dInput())){
+      disable("trainbutton")
+    } else {
+      enable("trainbutton")
+    }
+  })
+  
   # Train the SOM when the button is hit
   observeEvent(input$trainbutton, {
     RVserver.env$current.som <- trainTheSom(dInput(), input$somtype, 
@@ -214,7 +221,7 @@ shinyServer(function(input, output, session) {
     }
     RVserver.env$current.call <- paste0("set.seed(", input$randseed, ")\n",
                                          "mysom <- trainSOM(", namedata,
-                                         "[,'", paste(input$varchoice, collapse="', '"), "'],\n",
+                                         "[,c('", paste(input$varchoice, collapse="', '"), "')],\n",
                                          "type='", input$somtype, "', ",
                                          "topo='", input$topo, "', ",
                                          "dimension=c(", input$dimx, ",", input$dimy, "),\n",
@@ -359,7 +366,7 @@ shinyServer(function(input, output, session) {
                              "what='", input$somplotwhat, "'")
           if(input$somplottype!="energy"){
             codeplot <- paste0(codeplot, ", type='", input$somplottype, "',",
-                                         "print.title=", input$somplottitle)
+                                         "show.names=", input$somplottitle)
           }
           if(input$somplottype  %in% c("lines", "barplot", "boxplot", "color", "3d")){
             if(length(variable)==1) {
@@ -381,7 +388,7 @@ shinyServer(function(input, output, session) {
         })
       })
       plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
-                      variable=variable, print.title=input$somplottitle,
+                      variable=variable, show.names=input$somplottitle,
                       view=tmp.view, theta = theta, phi=phi)
   })
   
@@ -495,7 +502,7 @@ shinyServer(function(input, output, session) {
       return(plot(the.sc, type=input$scplottype))
     if (input$scplottype == "grid")
       return(plot(the.sc, type = input$scplottype, plot.legend = TRUE,
-                  print.titles = TRUE))
+                  show.names = TRUE))
 
     tmp.view <- NULL
     if (input$somtype =="korresp")
