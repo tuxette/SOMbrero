@@ -83,7 +83,6 @@
 #' @import ggplot2
 #' @import shinycssloaders
 #' @import shinyBS
-#' @import shinyjs
 #' @import shinyjqui
 #' @importFrom grDevices rainbow trans3d hcl
 #' @importFrom graphics layout legend par plot rect
@@ -96,5 +95,7 @@
 #' @importFrom metR geom_contour_fill	
 #' @importFrom interp interp
 #' @importFrom utils packageVersion
+#' @importFrom shinyjs disable enable disabled enabled hidden hide 
+#' @importFrom shinyjs show toggle useshinyjs toggleElement
 
 NULL

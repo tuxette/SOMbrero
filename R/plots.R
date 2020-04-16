@@ -40,6 +40,7 @@ depth3d <- function(x,y,z, pmat, minsize=0.2, maxsize=2) {
 }
 
 plot3d <- function(x, the.grid, type, variable, args) {
+  if(min(the.grid$dim)==1) stop("Not meaningful with the dimensions")
   args$x <- sort(unique(the.grid$coord[,1]))
   args$y <- sort(unique(the.grid$coord[,2]))
   
