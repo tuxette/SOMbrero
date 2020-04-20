@@ -47,12 +47,13 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' SOM (case \code{"korresp"} is not handled by this function). In the projected
 #' graph, the vertices are positionned at the center of gravity of the 
 #' super-clusters (more details in the section \strong{Details} below).
-#' @param what What you want to plot for superClass object. Either the observations 
-#' (\code{obs}), the prototypes (\code{prototypes}) or an additional variable 
-#' (\code{add}), or \code(NULL) if not appropriate. Default to \code(prototypes) 
-#' for 'lines', 'barplot', and 'color' types. Automatically set for 
-#' types 'boxplot' (to \code("obs")), 'mds', and 'poly.dist' (to \code("prototypes")), 
-#' 'graph' and 'pie' (to \code("add")). Set to \code("add") if\code(add.type=T). 
+#' @param what What you want to plot for superClass object. Either the 
+#' observations (\code{obs}), the prototypes (\code{prototypes}) or an 
+#' additional variable (\code{add}), or \code{NULL} if not appropriate. Default
+#' to \code{prototypes} for 'lines', 'barplot', and 'color' types. 
+#' Automatically set for types 'boxplot' (to \code{"obs"}), 'mds', and 
+#' 'poly.dist' (to \code{"prototypes"}), 'graph' and 'pie' (to \code{"add"}). 
+#' Set to \code{"add"} if \code{add.type = TRUE}. 
 #' @param type The type of plot to draw. Default value is \code{"dendrogram"}, 
 #' to plot the dendrogram of the clustering. Case \code{"grid"} plots the grid 
 #' in color according to the super clustering. Case \code{"projgraph"} uses an
