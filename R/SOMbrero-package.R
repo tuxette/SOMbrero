@@ -95,7 +95,7 @@
 #' @importFrom metR geom_contour_fill	
 #' @importFrom interp interp
 #' @importFrom utils packageVersion
-#' @importFrom shinyjs disable enable disabled enabled hidden hide 
-#' @importFrom shinyjs show toggle useshinyjs toggleElement
+#' @importFrom shinyjs disable enable disabled hidden hide 
+#' @importFrom shinyjs show toggle toggleElement
 
 NULL

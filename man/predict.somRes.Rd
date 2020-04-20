@@ -4,7 +4,8 @@
 \alias{predict.somRes}
 \title{Predict the classification of a new observation}
 \usage{
-\method{predict}{somRes}(object, x.new = NULL, ..., radius = 0, tolerance = 10^(-10))
+\method{predict}{somRes}(object, x.new = NULL, ..., radius = 0,
+  tolerance = 10^(-10))
 }
 \arguments{
 \item{object}{a \code{somRes} object.}

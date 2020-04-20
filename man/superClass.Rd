@@ -5,9 +5,8 @@
 \alias{superClass.somRes}
 \alias{print.somSC}
 \alias{summary.somSC}
-\alias{projectIGraph.somSC}
 \alias{plot.somSC}
-\alias{somSC-class}
+\alias{projectIGraph.somSC}
 \title{Create super-clusters from SOM results}
 \usage{
 superClass(sommap, method, members, k, h, ...)
@@ -16,17 +15,11 @@ superClass(sommap, method, members, k, h, ...)
 
 \method{summary}{somSC}(object, ...)
 
-\method{plot}{somSC}(
-  x,
-  what = c("prototypes", "obs", "add"),
-  type = c("dendrogram", "grid", "hitmap", "lines", "barplot", "boxplot", "mds",
-    "color", "poly.dist", "pie", "graph", "dendro3d", "projgraph"),
-  plot.var = TRUE,
-  add.type = FALSE,
-  show.names = TRUE,
-  names = 1:prod(x$som$parameters$the.grid$dim),
-  ...
-)
+\method{plot}{somSC}(x, what = c("prototypes", "obs", "add"),
+  type = c("dendrogram", "grid", "hitmap", "lines", "barplot", "boxplot",
+  "mds", "color", "poly.dist", "pie", "graph", "dendro3d", "projgraph"),
+  plot.var = TRUE, add.type = FALSE, show.names = TRUE,
+  names = 1:prod(x$som$parameters$the.grid$dim), ...)
 
 \method{projectIGraph}{somSC}(object, init.graph, ...)
 }
@@ -52,13 +45,12 @@ the function \code{\link{plot}} (case \code{type="dendro"}) or to
 
 \item{object}{A \code{somSC} object.}
 
-\item{what}{What you want to plot for superClass object. 
-Either the observations (\code{obs}, the prototypes (\code{prototypes}) or an 
-additional variable (\code{add}), or \code{NULL} if not appropriate (default).
-Automatically set for types 'boxplot' (to \code{"obs"}), 'mds', and 'poly.dist'
-(to \code{"prototypes"}), 'graph' and 'pie' (to \code{"add"}). 
-Set to \code{"add"} if\code{add.type = TRUE}. Default to \code{prototypes}
-for 'lines', 'barplot', and 'color' types.}
+\item{what}{What you want to plot for superClass object. Either the observations 
+(\code{obs}), the prototypes (\code{prototypes}) or an additional variable 
+(\code{add}), or \code(NULL) if not appropriate. Default to \code(prototypes) 
+for 'lines', 'barplot', and 'color' types. Automatically set for 
+types 'boxplot' (to \code("obs")), 'mds', and 'poly.dist' (to \code("prototypes")), 
+'graph' and 'pie' (to \code("add")). Set to \code("add") if\code(add.type=T).}
 
 \item{type}{The type of plot to draw. Default value is \code{"dendrogram"}, 
 to plot the dendrogram of the clustering. Case \code{"grid"} plots the grid 
