@@ -105,7 +105,8 @@ plot(first_grid, neuron.col = colorRampPalette(c("white", "pink", "red"))(30),
 Hexagonal grids can be displayed similarly:
 ```{r plotHexa}
 second_grid <- initGrid(dimension = c(4, 5), topo = "hexagonal")
-plot(second_grid) + ggplot2::ggtitle("Hexagonal SOM grid")
+plot(second_grid, the.titles = paste0("N", 1:20)) + 
+  ggplot2::ggtitle("Hexagonal SOM grid")
 ```
 
 
