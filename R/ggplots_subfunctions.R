@@ -100,8 +100,9 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
     } else minsize <- args$minsize
     
 
-    tp <- ggplot(dataplot, aes(x = x, y = y)) + 
-      geom_point(aes(size = Nb, fill = varname), pch = 21, show.legend = TRUE) +
+    tp <- ggplot(dataplot, aes_string(x = "x", y = "y")) + 
+      geom_point(aes_string(size = "Nb", fill = "varname"), 
+                 pch = 21, show.legend = TRUE) +
       scale_size_continuous(range=c(1, maxsize), 
                             breaks = unique(c(min(dataplot$Nb), 
                                               floor(median(dataplot$Nb)), 
