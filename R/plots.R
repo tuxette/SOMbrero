@@ -68,13 +68,13 @@ plot3d <- function(x, the.grid, type, variable, args) {
   }
   
   # for points
-  if (is.null(args$minsize)) minsize <- 0.5 
-  else {
+  minsize <- 0.5
+  maxsize <- 2
+  if (!is.null(args$minsize)){
     minsize = args$minsize
     args$minsize <- NULL
   }
-  if (is.null(args$maxsize)) maxsize <- 2 
-  else {
+  if(!is.null(args$maxsize)){
     maxsize = args$maxsize
     args$maxsize <- NULL
   }

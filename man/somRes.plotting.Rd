@@ -14,8 +14,7 @@ marked with a #.
 
 \section{Graphics on the observations: \code{what="obs"}}{
 The possible values for \code{type} are: \code{"hitmap"}(*, #), \code{"color"},
-\code{"lines"}, \code{"barplot"}, \code{"names"}(*, #), \code{"boxplot"} and
-\code{"radar"}.
+\code{"lines"}, \code{"barplot"}, \code{"names"}(*, #) and \code{"boxplot"}.
 
 For the cases \code{what="obs"} and \code{what="add"}, if a neuron is empty,
 nothing will be plotted at its location.
@@ -23,24 +22,14 @@ nothing will be plotted at its location.
 \itemize{
 \item \code{"hitmap"} (*, #) plots proportional areas according to the number of
 observations per neuron. It is the default plot when \code{what="obs"}.
-\item \code{"color"} can have two more arguments, \code{var}, the index of the  
-variable to be considered (default, \code{1}), and \code{my.palette} for the 
-colors to be used. Neurons are filled using the given colors according to the 
-average value level of the observations for the chosen variable.
+\item \code{"color"} can have one more argument, \code{variable}, the name or index of thevariable to be considered (default, \code{1}). Neurons are filled using the given colors according to the average value level of the observations for the chosen variable.
 \item \code{"lines"} plots, for each neuron, the average value level of the
-observations, with lines. One point represents a variable. All variables of the
-dataset used to train the algorithm are plotted.
+observations, with lines. One point represents a variable. By default, all variables of the dataset used to train the algorithm are plotted but a vector of variables (names or indexes) can be provided with the argument \code{variable}.
 \item \code{"barplot"} is similar to \code{"lines"} but using barplots. Then, 
 a bar represents a variable.
-\item \code{"radar"} is similar to \code{"lines"} but using radars. Then, a 
-slice represents a variable. If needed, a legend can be added ; its location 
-has to be passed by the \code{key.loc} argument (see \code{stars}).
+\item \code{"boxplot"} plots boxplots for the observations in every neuron, by variable. Like \code{"lines"} and \code{"barplot"} a vector of variables (names or indexes) can be provided with the argument \code{variable}}
 \item \code{"names"} (*, #) prints on the grid the element names (i.e., the
-names of the rows) in the neuron to which it belongs.
-\item \code{"boxplot"} plots boxplots for several observations in every neuron.
-This case can handle 5 variables at most. The default behavior is to plot the
-boxplots forthe first 5 variables of the data set; if there is less than 5
-variables in the data set, they will all be plotted.}
+row names or row and column names in the case of \code{korresp}) in the neuron to which it belongs.
 
 When the algorithm's type is \code{korresp} or \code{relational}, only the types
 \code{"hitmap"} and \code{"names"} are available.
@@ -48,12 +37,12 @@ When the algorithm's type is \code{korresp} or \code{relational}, only the types
 
 \section{Graphic on the energy: \code{what="energy"} (*, #)}{
 This graphic is only available if some intermediate backups have been
-registered (i.e., \code{x$parameters$nb.save>1}). Graphic plots the evolution of
+registered (i.e., with the argument \code{nb.save} of \code{trainSOM} or \code{initSOM} resulting in \code{x$parameters$nb.save>1}). Graphic plots the evolution of
 the level of the energy according to the registered steps.}
 
 \section{Graphics on the prototypes: \code{what="prototypes"}}{
 The possible values for \code{type} are: \code{"3d"}(*), \code{"lines"}(*, #),
-\code{"barplot"}(*, #), \code{"radar"}(*, #), \code{"color"}(*), 
+\code{"barplot"}(*, #), \code{"color"}(*), 
 \code{"smooth.dist"} (*, #), \code{"poly.dist"}(*, #), \code{"umatrix"}(*, #), 
 \code{"mds"}(*, #) and \code{"grid.dist"}(*, #). 
 
@@ -62,13 +51,11 @@ The possible values for \code{type} are: \code{"3d"}(*), \code{"lines"}(*, #),
 described in the observations section, but according to the prototypes level;
 \item \code{"barplot"} (*, #) has the same behavior as the \code{"barplot"} case 
 described in the observations section, but according to the prototypes level;
-\item \code{"radar"} (*, #) has the same behavior as the \code{"radar"} case 
-described in the observations section, but according to the prototypes level;
 \item \code{"color"} (*) has the same behavior as the \code{"color"} case 
 described in the observations section, but according to the prototypes level;
 \item \code{"3d"} case is similar to the \code{"color"} case, but in 3
 dimensions, with x and y the coordinates of the grid and z the value of the
-prototypes for the considered variable;
+prototypes for the considered variable. This function can take two more arguments: \code{maxsize} (default to \code{2}) and \code{minsize} (default to \code{0.5}) for the size of the points representing neurons;
 \item \code{"smooth.dist"} (*, #) depicts the average distance between a 
 prototypes and its neighbors on a map where x and y are the coordinates of the 
 prototypes on the grid;
@@ -98,7 +85,7 @@ The case \code{what="add"} considers an additional variable, which has to be
 given to the argument \code{variable}. Its length must match the number of
 observations in the original data. Then the possible values for \code{type} are:
 \code{"pie"}(#), \code{"color"}(#), \code{"lines"}(#), \code{"boxplot"}(#),
-\code{"barplot"}(#), \code{"radar"}(#), \code{"names"}(#), \code{"words"}(#) and
+\code{"barplot"}(#), \code{"names"}(#), \code{"words"}(#) and
 \code{"graph"}(#). 
 
 \itemize{
@@ -114,9 +101,6 @@ either a numeric vector or a numeric matrix/data frame;
 \item \code{"barplot"} (#) has the same behavior as the \code{"color"} case 
 described in the observations section. Then, the additional variable must be 
 either a numeric vector or a numeric matrix/data frame;
-\item \code{"radar"} (#) has the same behavior as the \code{"color"} case 
-described in the observations section. Then, the additional variable must be a 
-numerical matrix or data frame;
 \item \code{"pie"} requires the argument \code{variable} to be a factor vector
 and plots one pie for each neuron according to this factor;
 \item \code{"names"} (#) has the same behavior as the \code{"names"} case 
@@ -165,7 +149,6 @@ are summarized in the following list:
 \item \code{\link{pie}} is called by the case \code{what="add"/type="pie"}
 \item \code{\link{barplot}} is called by the cases \code{type="barplot"}
 \item \code{\link{boxplot}} is called by the cases \code{type="boxplot"}
-\item \code{\link{stars}} is called by the cases \code{type="radar"}
 \item \code{\link{persp}} is called by the case 
 \code{what="prototypes"/type="3d"}
 \item \code{\link[wordcloud]{wordcloud}} is called by the cases:
