@@ -81,32 +81,14 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
       dataplot <- aggregate(data=dataplot, Nb ~ SOMclustering + x + y, length)
       dataplot$varname <- dataplot$Nb
     } else {
-      dataplot <- aggregate(data=dataplot, Nb ~ SOMclustering + x + y + varname,
-                           length)
+      dataplot <- aggregate(data=dataplot, Nb ~ SOMclustering + x + y + varname, length)
       dataplot$varname <- as.factor(dataplot$varname)
     }
     
-    if (is.null(args$maxsize)) {
-      maxsize <- max(dataplot$Nb)
-      if (maxsize > 25) {
-        maxsize <- 25
-      }
-    } else maxsize <- args$maxsize
-    if (is.null(args$minsize)) {
-      minsize <- min(dataplot$Nb)
-      if (minsize>25) {
-        minsize <- 5
-      }
-    } else minsize <- args$minsize
-    
-
     tp <- ggplot(dataplot, aes_string(x = "x", y = "y")) + 
-      geom_point(aes_string(size = "Nb", fill = "varname"), 
-                 pch = 21, show.legend = TRUE) +
-      scale_size_continuous(range=c(1, maxsize), 
-                            breaks = unique(c(min(dataplot$Nb), 
-                                              floor(median(dataplot$Nb)), 
-                                              max(dataplot$Nb)))) +
+      geom_point(aes_string(size = "Nb", color = "varname")) +
+      #scale_size_continuous() +
+      scale_size_area(max_size=min(25,max(dataplot$Nb)))+
       labs(size = "Number of\nobservations")
   }
   
@@ -147,7 +129,6 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
   
   if (show.names) {
     datagrid <- data.frame(the.grid$coord, names)
-    ## !!!FIX IT!!!
     tp <- tp + geom_text(data = datagrid, 
                          aes_string(x = "x", y = "y", label = "names", fill = NULL))
   }
