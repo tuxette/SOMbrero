@@ -92,25 +92,24 @@ observations in the original data. Then the possible values for \code{type} are:
 \item \code{"color"} (#) has the same behavior as the \code{"color"} case 
 described in the observations section. Then, the additional variable must be a 
 numerical vector;
-\item \code{"lines"} (#) has the same behavior as the \code{"color"} case 
+\item \code{"lines"} (#) has the same behavior as the \code{"lines"} case 
 described in the observations section. Then, the additional variable must be a 
 numerical matrix or a data frame;
-\item \code{"boxplot"} (#) has the same behavior as the \code{"color"} case 
+\item \code{"boxplot"} (#) has the same behavior as the \code{"boxplot"} case 
 described in the observations section. Then, the additional variable must be 
 either a numeric vector or a numeric matrix/data frame;
-\item \code{"barplot"} (#) has the same behavior as the \code{"color"} case 
+\item \code{"barplot"} (#) has the same behavior as the \code{"barplot"} case 
 described in the observations section. Then, the additional variable must be 
 either a numeric vector or a numeric matrix/data frame;
 \item \code{"pie"} requires the argument \code{variable} to be a factor vector
-and plots one pie for each neuron according to this factor;
+and plots one pie for each neuron according to this factor. The size of the pies are by default proportional to the size of the neurons (number of observations) but this can be changed with the argument \code{proportional=FALSE};
 \item \code{"names"} (#) has the same behavior as the \code{"names"} case 
 described in the observations section. Then, the names to be printed are the 
 elements of the variable given to the \code{variable} argument;
-\item \code{"words"} (#) needs the argument \code{variable} be a contingency
-table: names of the columns will be used as words and the values express the 
+\item \code{"words"} (#) needs the argument \code{variable} be a numeric table or data.frame: names of the columns will be used as words and the values express the 
 frequency of a given word in the observation. Then, for each neuron of the grid,
-the words will be printed with sizes proportional to their frequency in the
-neuron;
+the words will be printed with sizes proportional to the sum of their values in the
+neuron. If the \code{variable} given is a contingency table, it will plot directly the frequency of the words in the neurons;
 \item Last option is \code{"graph"} (#). The argument \code{variable} must be an
 \code{igraph} object (see \code{library(igraph)}. According to the existing
 edges in the graph and to the clustering obtained with the SOM algorithm, a 
