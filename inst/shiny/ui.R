@@ -309,7 +309,6 @@ map."
                      "boxplot"
                    )
                  ),
-                 checkboxInput("somplottitle", "Show cluster names"),
                  conditionalPanel(
                    "input.somtype == 'korresp' && input.somplotwhat == 'prototypes'",
                    radioButtons(
@@ -342,7 +341,9 @@ multiple variables)",
                    "input.somplottype == '3d'",
                    sliderInput("theta", "theta (azimuthal direction)", min=0, max=180, value=0),
                    sliderInput("phi", "phi (colatitude)", min=0, max=180, value=15)
-                 )
+                 ),
+                 checkboxInput("somplottitle", "Show cluster names", value = F),
+                 checkboxInput("somplotlegend", "Hide the legend", value = F)
                  ),
           column(9,
                  verbatimTextOutput("runcodeplot"),
@@ -417,7 +418,7 @@ plot can help you determine the adequate number of superclasses."
                                                      "input.scplottype == 'color'",
                                                      selectInput(
                                                        "scplotvar",
-                                                       "Variable: (only used for 'color' plots if available)",
+                                                       "Variable:",
                                                        choices = "(Not Available)"
                                                      )
                                                    ),
@@ -426,18 +427,18 @@ plot can help you determine the adequate number of superclasses."
                    input.scplottype == 'lines'",
                                                      selectInput(
                                                        "scplotvar2",
-                                                       "Variables: (hold Ctrl to select multiple variables)",
+                                                       "Variables:",
                                                        choices = "(Not Available)",
                                                        multiple = TRUE
                                                      )
                                                    ),
                                                    conditionalPanel(
                                                      "input.somtype == 'korresp'",
-                                                     selectInput(
+                                                     radioButtons(
                                                        "scplotrowcol",
                                                        "Plot rows or columns (when relevant for the chart):",
-                                                       choices = list("columns" = "c",
-                                                                      "rows" = "r")
+                                                       choices = list("columns" = "c", "rows" = "r"),
+                                                       inline=F
                                                      )
                                                    ),
                                                    conditionalPanel(

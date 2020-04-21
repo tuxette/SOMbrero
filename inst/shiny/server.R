@@ -387,9 +387,13 @@ shinyServer(function(input, output, session) {
           codeplot
         })
       })
-      plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
+      p <- plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
                       variable=variable, show.names=input$somplottitle,
                       view=tmp.view, theta = theta, phi=phi)
+      if(input$somplotlegend==T){
+        p <- p + ggplot2::theme(legend.position = "none")
+      }
+      p
   })
   
   #### Panel 'Superclass'
@@ -475,10 +479,11 @@ shinyServer(function(input, output, session) {
   updatePlotScVar <- function() observe({
     tmp.names <- colnames(RVserver.env$current.som$data)
     if (input$somtype =="korresp")
-      tmp.names <- c(tmp.names, rownames(RVserver.env$current.som$data))
+      if(input$scplotrowcol=="r")
+      tmp.names <- rownames(RVserver.env$current.som$data)
     updateSelectInput(session, "scplotvar", choices=tmp.names)
     updateSelectInput(session, "scplotvar2", choices=tmp.names, 
-                      selected=tmp.names[1:min(5,length(tmp.names))])
+                      selected=tmp.names[1:length(tmp.names)])
   })
   
   # Update SuperClass plot
@@ -509,7 +514,7 @@ shinyServer(function(input, output, session) {
       tmp.view <- input$scplotrowcol
     
     if (input$scplottype =="boxplot" || input$scplottype == 'barplot' || input$scplottype == 'lines') {
-      tmp.var <- colnames(RVserver.env$current.som$data)[colnames(RVserver.env$current.som$data) %in% input$scplotvar2]
+      tmp.var <-  input$scplotvar2
     } else tmp.var <- input$scplotvar
     
     angle <- NULL
