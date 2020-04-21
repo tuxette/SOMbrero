@@ -99,13 +99,13 @@ The neuron number is displayed in the neuron, unless the option
 plot(first_grid)
 plot(first_grid, neuron.col = "white")
 plot(first_grid, neuron.col = colorRampPalette(c("white", "pink", "red"))(30),
-     print.title = FALSE)
+     show.names = FALSE)
 ```
 
 Hexagonal grids can be displayed similarly:
 ```{r plotHexa}
 second_grid <- initGrid(dimension = c(4, 5), topo = "hexagonal")
-plot(second_grid, the.titles = paste0("N", 1:20)) + 
+plot(second_grid, names = paste0("N", 1:20)) + 
   ggplot2::ggtitle("Hexagonal SOM grid")
 ```
 

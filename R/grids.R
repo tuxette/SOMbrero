@@ -146,17 +146,28 @@ summary.myGrid <- function(object,...) {
 
 #' @export
 #' @rdname myGrid
-plot.myGrid <- function(x, neuron.col = NULL, print.title = TRUE, 
-                        the.titles = 1:prod(x$dim), ...) {
+plot.myGrid <- function(x, neuron.col = NULL, show.names = TRUE, 
+                        names = 1:prod(x$dim), ...) {
   # get graphical parameters
   args <- list(...)
+  
+  calls <- names(sapply(match.call(), deparse))[-1]
+  if(any("print.title" %in% calls)) {
+    warning("'print.title' will be deprecated, please use 'show.names' instead", call. = F, immediate. = T)
+    show.names <- args$print.title
+  }
+  if(any("the.titles" %in% calls)) {
+    warning("'the.titles' will be deprecated, please use 'names' instead", call. = F, immediate. = T)
+    names <- args$the.titles
+  }
+  
   dimgrid <- prod(x$dim)
   values <- 1:dimgrid
   id <- 1:dimgrid
   if(is.null(args$main)) args$main <- "Grid"
 
   tp <- ggplotGrid("obs", "grid", values, id,
-             print.title, the.titles, x, args) + 
+             show.names, names, x, args) + 
     theme(legend.position = "none")
   if(is.null(neuron.col)==F){
     if(length(neuron.col)==1) neuron.col <- rep(neuron.col, dimgrid) 
