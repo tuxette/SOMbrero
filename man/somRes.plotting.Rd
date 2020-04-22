@@ -168,6 +168,8 @@ iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
 # plots
 # on energy
 plot(iris.som, what="energy") # energy
+# on observations
+plot(iris.som, what="obs", type="boxplot")
 # on prototypes
 plot(iris.som, what="prototypes", type="3d", variable="Sepal.Length")
 # on an additional variable: the flower species
