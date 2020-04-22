@@ -27,9 +27,9 @@ observations per neuron. It is the default plot when \code{what="obs"}.
 observations, with lines. One point represents a variable. By default, all variables of the dataset used to train the algorithm are plotted but a vector of variables (names or indexes) can be provided with the argument \code{variable}.
 \item \code{"barplot"} is similar to \code{"lines"} but using barplots. Then, 
 a bar represents a variable.
-\item \code{"boxplot"} plots boxplots for the observations in every neuron, by variable. Like \code{"lines"} and \code{"barplot"} a vector of variables (names or indexes) can be provided with the argument \code{variable}}
+\item \code{"boxplot"} plots boxplots for the observations in every neuron, by variable. Like \code{"lines"} and \code{"barplot"} a vector of variables (names or indexes) can be provided with the argument \code{variable}
 \item \code{"names"} (*, #) prints on the grid the element names (i.e., the
-row names or row and column names in the case of \code{korresp}) in the neuron to which it belongs.
+row names or row and column names in the case of \code{korresp}) in the neuron to which it belongs.}
 
 When the algorithm's type is \code{korresp} or \code{relational}, only the types
 \code{"hitmap"} and \code{"names"} are available.
@@ -101,8 +101,7 @@ either a numeric vector or a numeric matrix/data frame;
 \item \code{"barplot"} (#) has the same behavior as the \code{"barplot"} case 
 described in the observations section. Then, the additional variable must be 
 either a numeric vector or a numeric matrix/data frame;
-\item \code{"pie"} requires the argument \code{variable} to be a factor vector
-and plots one pie for each neuron according to this factor. The size of the pies are by default proportional to the size of the neurons (number of observations) but this can be changed with the argument \code{proportional=FALSE};
+\item \code{"pie"} requires the argument \code{variable} to be a vector, which will be passed to the function as.factor, and plots one pie for each neuron according to this factor. The size of the pies are by default proportional to the size of the neurons (number of observations) but this can be changed with the argument \code{proportional=FALSE};
 \item \code{"names"} (#) has the same behavior as the \code{"names"} case 
 described in the observations section. Then, the names to be printed are the 
 elements of the variable given to the \code{variable} argument;

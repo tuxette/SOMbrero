@@ -132,6 +132,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square", "hexagonal"),
   type <- match.arg(type)
   radius.type <- match.arg(radius.type)
   affectation <- match.arg(affectation)
+  topo <- match.arg(topo)
   scaling <- match.arg(scaling,
                        c("unitvar", "none", "center", "chi2", "cosine"))
   dist.type <- match.arg(dist.type, c("letremy", "maximum", "euclidean",
