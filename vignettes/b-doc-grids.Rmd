@@ -93,7 +93,7 @@ from the bottom left corner, up the column and then likewise in the next columns
 from left to right.
 
 The neuron number is displayed in the neuron, unless the option 
-`print.title = FALSE` is used.
+`show.names = FALSE` is used.
 
 ```{r plotRainbowGrid}
 plot(first_grid)
