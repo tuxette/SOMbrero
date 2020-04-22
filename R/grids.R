@@ -90,10 +90,10 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' \code{white}. If the argument is composed of one single color, neurons will 
 #' all be filled with the same color. If the argument is composed of many 
 #' colors, the number of colors must match the total number of neurons.
-#' @param print.title Whether the cluster titles must be printed in center of
-#' the grid or not. Default to \code{FALSE} (titles not displayed).
-#' @param the.titles If \code{print.title = TRUE}, values of the title to 
-#' display. Default to "Cluster " followed by the cluster number.
+#' @param show.names Whether the cluster names must be printed in center of
+#' the grid or not. Default to \code{TRUE} (names not displayed).
+#' @param names If \code{show.names = TRUE}, values of the names to 
+#' display. Default to the cluster number.
 #' @param \dots Further arguments to the \code{\link{plot}} function.
 #' 
 #' @author Madalina Olteanu, \email{madalina.olteanu@univ-paris1.fr}\cr
@@ -123,7 +123,7 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' plot(a.grid)
 #' # generating colors from rainbow() function
 #' my.colors <- rainbow(5*5)
-#' plot(a.grid, neuron.col=my.colors)
+#' plot(a.grid) + scale_fill_manual(my.colors)
 
 print.myGrid <-function(x,...) {
   cat("\n      Self-Organizing Map structure\n\n")
@@ -145,7 +145,7 @@ summary.myGrid <- function(object,...) {
 
 #' @export
 #' @rdname myGrid
-plot.myGrid <- function(x, neuron.col = NULL, show.names = TRUE, 
+plot.myGrid <- function(x, show.names = TRUE, 
                         names = 1:prod(x$dim), ...) {
   # get graphical parameters
   args <- list(...)
@@ -166,11 +166,7 @@ plot.myGrid <- function(x, neuron.col = NULL, show.names = TRUE,
   if(is.null(args$main)) args$main <- "Grid"
 
   tp <- ggplotGrid("obs", "grid", values, id,
-             show.names, names, x, args) + 
-    theme(legend.position = "none")
-  if(is.null(neuron.col)==F){
-    if(length(neuron.col)==1) neuron.col <- rep(neuron.col, dimgrid) 
-    tp <- tp + scale_fill_manual(values=neuron.col)
-  }
+                   show.names, names, x, args) + 
+        theme(legend.position = "none")
   tp
 }

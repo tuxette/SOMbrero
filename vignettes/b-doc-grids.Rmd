@@ -17,6 +17,7 @@ output:
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
 library(SOMbrero)
+library(ggplot2)
 ```
 
 ## Definition and purpose of a `myGrid` class object
@@ -81,25 +82,19 @@ summary(first_grid)
 ### The `plot.myGrid` function
 
 The `myGrid` object `plot` function draws the squared area corresponding to the 
-object, in a new graphical window. It has 2 parameters:
+object, in a new graphical window. It has 3 parameters:
 
 * the object to be plotted,
 
-* the color(s) to be used to fill the areas on the graph. The __default colors__ 
-correspond to the default `ggplot2` qualitative colors. If only one color is
-specified then all neurons are filled with it and, otherwise, the number of 
-colors must correspond to the number of neurons on the map. The map is filled 
-from the bottom left corner, up the column and then likewise in the next columns
-from left to right.
+* `show.names`, boolean, indicating if the names of the neurons should be displayed on the graph (default to `TRUE`)
 
-The neuron number is displayed in the neuron, unless the option 
-`show.names = FALSE` is used.
+* `names`, a vector, giving the names of the neurons if `show.names = TRUE`, default to the number of the neuron.
+
 
 ```{r plotRainbowGrid}
 plot(first_grid)
-plot(first_grid, neuron.col = "white")
-plot(first_grid, neuron.col = colorRampPalette(c("white", "pink", "red"))(30),
-     show.names = FALSE)
+plot(first_grid) + scale_fill_manual(values=rep("white", 30))
+plot(first_grid, show.names=F) + scale_fill_manual(values=colorRampPalette(c("white", "pink", "purple"))(30))
 ```
 
 Hexagonal grids can be displayed similarly:

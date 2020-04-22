@@ -528,7 +528,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' to plotting or not. Default value is \code{TRUE} when \code{type="numeric"} 
 #' and \code{FALSE} in the other cases.
 #' @param show.names Boolean used to indicate whether each neuron should have a
-#' title or not. Default value is \code{TRUE}. It is feasible on the following 
+#' title or not. Default to \code{TRUE}. It is feasible on the following 
 #' cases: all \code{"color"} types, all \code{"lines"} types, all 
 #' \code{"barplot"} types, all \code{"boxplot"} types,
 #' all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
@@ -538,12 +538,12 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' @param proportional Boolean used when \code{what="add"} and 
 #' \code{type="pie"}. It indicates if the pies should be proportional to the 
 #' number of observations in the class. Default value is \code{TRUE}.
-#' @param s.radius The size of the pies to be plotted (maximum size when 
-#' \code{proportional=TRUE}). The default value is \code{0.9}.
 #' @param pie.graph Boolean used when \code{what="add"} and \code{type="graph"}. 
 #' It indicates if the vertices should be pies or not.
 #' @param pie.variable The variable needed to plot the pies when 
 #' \code{what="add"}, \code{type="graph"} and argument \code{pie.graph=TRUE}.
+#' @param s.radius The size of the pies to be plotted (maximum size when 
+#' \code{proportional=TRUE}) for \code{what="add"}, \code{type="graph"} and \code{pie.graph=TRUE}. The default value is \code{0.9}.
 #' @param view Used only when the algorithm's type is \code{"korresp"}. It
 #' indicates whether rows (\code{"r"}) or columns (\code{"c"}) must be drawn.
 #' @param \dots Further arguments to be passed to the underlined plot function
@@ -575,8 +575,8 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                           switch(type,
                                  "graph"=1:prod(x$parameters$the.grid$dim),
                                  1:prod(x$parameters$the.grid$dim)),
-                        proportional=TRUE, s.radius=1, pie.graph=FALSE, 
-                        pie.variable=NULL,
+                        proportional=TRUE, pie.graph=FALSE, 
+                        pie.variable=NULL, s.radius=1, 
                         view = if (x$parameters$type=="korresp") "r" else NULL,
                         ...) {
   args <- list(...)

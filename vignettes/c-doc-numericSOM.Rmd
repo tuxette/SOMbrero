@@ -272,7 +272,7 @@ with small sepal length are classified in the top right corner of the map.
 
 #### More graphics on observations
 
-```{r irisObs}
+```{r irisObs, warning=FALSE}
 plot(iris.som, what="obs", type="boxplot", show.names=F)
 plot(iris.som, what="obs", type="names", show.names=F)
 ```
@@ -295,6 +295,7 @@ plot(iris.som, what="prototypes", type="3d", variable=2)
 plot(iris.som, what="prototypes", type="3d", variable=3)
 plot(iris.som, what="prototypes", type="3d", variable=4)
 ```
+
 
 ```"3d"``` provides the same results as "color" but in a 3 dimensional graphic:
 x is the x dimension of the grid, y is the y dimension of the grid and z is the
@@ -394,13 +395,12 @@ plot(iris.som, what="add", type="words", variable=my.cont.mat, show.names = F)
 Here we choose to give the argument ```variable``` the row names of the iris 
 data set: so we obtain the same graphic as above (see 
 __More graphics on observations__).
-```{r irisAdd5}
-plot(iris.som, what="add", type="names", variable=rownames(iris),
-     scale=c(0.9,0.5))
+```{r irisAdd5, warning=F}
+plot(iris.som, what="add", type="names", variable=rownames(iris))
 ```
 
 Then, we can try to call this plot again but on the variable ```iris$Species```.
-```{r irisAdd5bis}
+```{r irisAdd5bis, warning=F}
 plot(iris.som, what="add", type="names", variable=iris$Species)
 ```
 
