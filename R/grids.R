@@ -57,7 +57,6 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
   # create coordinates for neurons
     x <- 1:dimension[1]
     y <- 1:dimension[2]
-    ### ELISE :: j'ai changé l'ordre ici !!!
     tmp <- as.matrix(expand.grid(x, y))
     tmp <- tmp[order(tmp[,1]),]
   if(topo == "hexagonal"){
