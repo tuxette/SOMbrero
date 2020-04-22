@@ -96,6 +96,6 @@
 #' @importFrom interp interp
 #' @importFrom utils packageVersion
 #' @importFrom shinyjs disable enable disabled hidden hide 
-#' @importFrom shinyjs show toggle toggleElement
+#' @importFrom shinyjs show toggle toggleElement useShinyjs
 
 NULL
