@@ -162,6 +162,8 @@ Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 }
 
 \examples{
+
+### Numerical SOM
 # run the SOM algorithm on the numerical data of 'iris' data set
 iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
 
@@ -170,8 +172,20 @@ iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
 plot(iris.som, what="energy") # energy
 # on observations
 plot(iris.som, what="obs", type="boxplot")
+plot(iris.som, what="obs", type="lines")
+plot(iris.som, what="obs", type="barplot")
+plot(iris.som, what="obs", type="color", var=1)
+
 # on prototypes
 plot(iris.som, what="prototypes", type="3d", variable="Sepal.Length")
+plot(iris.som, what="prototypes", type="lines")
+plot(iris.som, what="prototypes", type="smooth.dist")
+plot(iris.som, what="prototypes", type="poly.dist")
+plot(iris.som, what="prototypes", type="umatrix")
+plot(iris.som, what="prototypes", type="grid.dist")
+plot(iris.som, what="prototypes", type="mds")
+
 # on an additional variable: the flower species
 plot(iris.som, what="add", type="pie", variable=iris$Species)
+plot(iris.som, what="add", type="names", variable=iris$Species)
 }

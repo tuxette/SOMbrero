@@ -314,17 +314,15 @@ shinyServer(function(input, output, session) {
   # update variables available for plotting
   updatePlotSomVar <- function() observe({
     tmp.names <- colnames(RVserver.env$current.som$data)
-    tmp.names2 <- tmp.names
     if (input$somtype =="korresp"){
-      tmp.names <- c(tmp.names, rownames(RVserver.env$current.som$data))
       if(input$somplotrowcol=="r"){
-        tmp.names2 <- rownames(RVserver.env$current.som$data)
+        tmp.names <- rownames(RVserver.env$current.som$data)
       } else {
-        tmp.names2 <- colnames(RVserver.env$current.som$data)
+        tmp.names <- colnames(RVserver.env$current.som$data)
       }
     }
     updateSelectInput(session, "somplotvar", choices=tmp.names)
-    updateSelectInput(session, "somplotvar2", choices=tmp.names2, selected=tmp.names2)
+    updateSelectInput(session, "somplotvar2", choices=tmp.names, selected=tmp.names)
   })
   
   varsomplot <- debounce(reactive({
@@ -364,9 +362,11 @@ shinyServer(function(input, output, session) {
         output$runcodeplot <- renderText({
           codeplot <- paste0("plot(mysom, ",
                              "what='", input$somplotwhat, "'")
-          if(input$somplottype!="energy"){
-            codeplot <- paste0(codeplot, ", type='", input$somplottype, "',",
-                                         "show.names=", input$somplottitle)
+          if(input$somplottype != "energy"){
+            codeplot <- paste0(codeplot, ", type='", input$somplottype, "'")
+          }
+          if(!(input$somplottype %in% c("energy", "mds", "umatrix", "smooth.dist"))){
+            codeplot <- paste0(codeplot, ", show.names=", input$somplottitle)
           }
           if(input$somplottype  %in% c("lines", "meanline", "barplot", "boxplot", "color", "3d")){
             if(length(variable)==1) {
@@ -376,6 +376,7 @@ shinyServer(function(input, output, session) {
             }
             codeplot <- paste0(codeplot, ", variable=", textevar)
           }
+          #if(input$somtype == "korresp" & !(type %in% c())){
           if(input$somtype == "korresp" ){
             codeplot <- paste0(codeplot, ", view='", tmp.view, "'")
           }

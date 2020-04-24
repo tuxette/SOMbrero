@@ -552,14 +552,26 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' depending on \code{type}; see \code{\link{somRes.plotting}} for further
 #' details).
 #' 
-#' @details See \code{\link{somRes.plotting}} for further details.
+#' @details See \code{\link{somRes.plotting}} for further details and more examples.
 #' 
 #' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @seealso \code{\link{trainSOM}} to run the SOM algorithm, that returns a 
 #' \code{somRes} class object.
-
+#' 
+#' @examples
+#' # run the SOM algorithm on the numerical data of 'iris' data set
+#' iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
+#' # plots
+#' # on energy
+#' plot(iris.som, what="energy") 
+#' # on observations
+#' plot(iris.som, what="obs", type="boxplot")
+#' # on prototypes
+#' plot(iris.som, what="prototypes", type="3d", variable="Sepal.Length")
+#' # on an additional variable: the flower species
+#' plot(iris.som, what="add", type="pie", variable=iris$Species)
 plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"), 
                         type=switch(what,
                                     "obs"="hitmap",
