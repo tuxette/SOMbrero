@@ -169,6 +169,7 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' sc <- superClass(my.som, k=4)
 #' summary(sc)
 #' plot(sc)
+#' plot(sc, type="grid")
 #' plot(sc, type="hitmap")
 
 superClass <- function(sommap, method, members, k, h,...) {

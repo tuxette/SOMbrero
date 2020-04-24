@@ -317,8 +317,6 @@ shinyServer(function(input, output, session) {
     if (input$somtype =="korresp"){
       if(input$somplotrowcol=="r"){
         tmp.names <- rownames(RVserver.env$current.som$data)
-      } else {
-        tmp.names <- colnames(RVserver.env$current.som$data)
       }
     }
     updateSelectInput(session, "somplotvar", choices=tmp.names)
@@ -376,8 +374,8 @@ shinyServer(function(input, output, session) {
             }
             codeplot <- paste0(codeplot, ", variable=", textevar)
           }
-          #if(input$somtype == "korresp" & !(type %in% c())){
-          if(input$somtype == "korresp" ){
+          if(input$somtype == "korresp" & 
+             input$somplottype %in% c("lines", "meanline", "barplot", "boxplot", "color", "3d")){
             codeplot <- paste0(codeplot, ", view='", tmp.view, "'")
           }
           if(input$somplottype =="3d"){
@@ -536,7 +534,7 @@ shinyServer(function(input, output, session) {
           }
           codeplot <- paste0(codeplot, ", variable=", textevar)
         }
-        if(input$somtype == "korresp" ){
+        if(input$somtype == "korresp"  & input$scplottype %in% c("lines", "meanline", "barplot", "boxplot", "color")){
           codeplot <- paste0(codeplot, ", view='", tmp.view, "'")
         }
         if(input$somplottype =="dendro3d"){

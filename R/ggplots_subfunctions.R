@@ -116,8 +116,11 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
     }
   }
 
+  if(type != "poly.dist"){
+    tp <- tp + xlim(0.5, max(dataplot$x) + 0.5) + ylim(0.5, max(dataplot$y) + 0.5)
+  }
+  
   tp <- tp +  ggtitle(myTitle(args, what)) + coord_fixed() + 
-    xlim(0.5, max(dataplot$x) + 0.5) + ylim(0.5, max(dataplot$y) + 0.5) + 
     labs(fill = labelcolor) +
     theme(axis.title.x = element_blank(),
           axis.text.x = element_blank(),
@@ -125,7 +128,7 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
           axis.title.y = element_blank(),
           axis.text.y = element_blank(),
           axis.ticks.y = element_blank())
-  
+
   if (show.names) {
     datagrid <- data.frame(the.grid$coord, names)
     tp <- tp + geom_text(data = datagrid, 
