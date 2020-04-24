@@ -190,7 +190,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     } else tmp.var <- colnames(sommap$data)[variable]
   } 
 
-  if (type=="lines" || type=="barplot") {
+  if (type == "lines" || type == "barplot" || type == "meanline") {
     ggplotFacet("prototypes", type, sommap$prototypes[,tmp.var], as.numeric(rownames(sommap$prototypes)),
                 show.names, names, is.scaled,
                 sommap$parameters$the.grid, args)
@@ -332,6 +332,7 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
         if(is.null(variable)) variable <- "row.names"
         if(variable=="row.names"){
             values <- names(sommap$clustering)
+            print(values)
         } else {
           if(is.numeric(variable)) variable <- colnames(sommap$data)[variable]
             values <- sommap$data[,variable]
@@ -414,7 +415,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   ## types : pie, color, lines, boxplot, names, words, graph, barplot
 
   # default value is type="pie"
-  if (!is.element(type,c("pie", "color", "lines", "barplot", "words",
+  if (!is.element(type,c("pie", "color", "lines", "meanline", "barplot", "words",
                          "boxplot", "names", "graph"))) {
     warning("incorrect type replaced by 'pie'\n", call.=TRUE, 
             immediate.=TRUE)
@@ -435,7 +436,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   }
 
   # Numerical variable control
-  if(type %in% c("lines", "barplot", "boxplot", "words", "color")){
+  if(type %in% c("lines", "meanline", "barplot", "boxplot", "words", "color")){
     nonum <- sapply(variable, is.numeric)
     nonum <- length(nonum[nonum==F])
     if(nonum>0){
@@ -444,7 +445,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
   }
   
   # switch between different types
-  if(type %in% c("pie", "lines", "barplot", "boxplot", "names", "words")){
+  if(type %in% c("pie", "lines", "meanline", "barplot", "boxplot", "names", "words")){
     if(type == "pie") {
       variable <- as.factor(variable)
       args$proportional <- proportional

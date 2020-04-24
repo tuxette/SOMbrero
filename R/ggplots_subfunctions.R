@@ -88,7 +88,7 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
     tp <- ggplot(dataplot, aes_string(x = "x", y = "y")) + 
       geom_point(aes_string(size = "Nb", color = "varname")) +
       scale_size_area(max_size=min(25,max(dataplot$Nb)))+
-      labs(size = "Number of\nobservations")
+      labs(size = "Number of\nobservations") + labs(color=labelcolor)
   }
   
   if (type == "color") {
