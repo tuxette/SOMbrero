@@ -18,21 +18,21 @@
 #' values are: \code{(5,5)}. Other data-driven defaults are set by function 
 #' \code{trainSOM}.
 #' @param topo The topology to be used to build the grid of the \code{myGrid} 
-#' class object. Default value is \code{square}.
+#' class object. Accept values \code{"square"} (Default) or \code{"hexagonal"}.
 #' @param radius.type The neighbourhood type. Default value is 
 #' \code{"gaussian"}, which corresponds to a Gaussian neighbourhood. The 
 #' annealing of the neighbourhood during the training step is similar to the one
 #' implemented in \href{https://github.com/fabrice-rossi/yasomi}{yasomi}. The 
 #' alternative value corresponds to an piecewise linear neighbourhood as 
 #' implementated by Patrick Letremy in his SAS scripts.
-#' @param dist.type The neighborhood relationship on the grid. When 
-#' \code{radius.type} is \code{letremy}, default value is \code{letremy} which 
+#' @param dist.type The neighborhood relationship on the grid. One of 
+#' \code{c("letremy", "euclidean", "maximum", "manhattan", "canberra", "minkowski"). 
+#' When \code{radius.type} is \code{letremy}, default value is \code{letremy} which 
 #' is the original implementation by Patrick Letremy. When \code{radius.type} is
 #' \code{gaussian}, default value is \code{euclidean}. The other possible values
-#' (\code{maximum}, \code{manhattan}, \code{canberra}, \code{minkowski}) are 
-#' passed to \code{method} in function \code{\link[stats]{dist}}. 
-#' \code{dist.type="letremy"} is not permitted with 
-#' \code{radius.type="gaussian"}.
+#' are passed to \code{method} in function \code{\link[stats]{dist}}. 
+#' \code{dist.type="letremy"} is not permitted with \code{radius.type="gaussian"}. 
+#' Only \code{euclidian} is allowed with hexagonal topology.
 #' @param type The SOM algorithm type. Possible values are: \code{numeric} 
 #' (default value), \code{korresp} and \code{relational}.
 #' @param mode The SOM algorithm mode. Default value is \code{online}.
@@ -48,8 +48,8 @@
 #' SOM algorithm process. Default value is \code{FALSE}.
 #' @param proto0 The initial prototypes. Default value is \code{NULL}.
 #' @param init.proto The method to be used to initialize the prototypes, which
-#' may be \code{random} (randomization), \code{obs} (each prototype is assigned
-#' a random observation) or \code{pca}. In \code{pca} the prototypes are 
+#' may be \code{"random"} (randomization), \code{"obs"} (each prototype is assigned
+#' a random observation) or \code{"pca"}. In \code{pca} the prototypes are 
 #' initialized to the observations closest to a grid along the two first 
 #' principal components of the data (\code{numeric} case) or along a
 #' two-dimensional multidimensional scaling (\code{relational} case, equivalent

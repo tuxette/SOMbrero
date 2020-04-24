@@ -281,7 +281,7 @@ summary.somSC <- function(object, ...) {
 #' @export
 #' @rdname superClass
 plot.somSC <- function(x, what=c("prototypes", "obs", "add"), 
-                       type=c("dendrogram", "grid", "hitmap", "lines", 
+                       type=c("dendrogram", "grid", "hitmap", "lines", "meanline",
                                  "barplot", "boxplot", "mds", "color", 
                                  "poly.dist", "pie", "graph", "dendro3d", 
                                  "projgraph"),
@@ -390,7 +390,7 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         ggplotGrid("observations", type="hitmap", values=x$cluster[x$som$clustering], clustering=x$som$clustering, 
                    show.names, names,
                    the.grid=x$som$parameters$the.grid , args)
-      } else if (type %in% c("lines", "barplot", "boxplot", "mds",
+      } else if (type %in% c("lines", "meanline", "barplot", "boxplot", "mds",
                              "color", "poly.dist", "pie", "graph")) {
         if ((x$som$parameters$type=="korresp") && 
               (type %in% c("boxplot", "pie", "graph")))
@@ -416,8 +416,8 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         }
         args$x <- x$som
         
-        args$what <- what[1]
         # manage argument 'what' :
+        args$what <- what[1]
         if (add.type | type %in% c("graph", "pie")) {
             args$what <- "add"
         } 
@@ -430,7 +430,7 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         
         # manage titles
         args$show.names <- show.names
-        if(type %in% c("lines", "barplot", "boxplot", "poly.dist")){
+        if(type %in% c("lines", "meanline", "barplot", "boxplot", "poly.dist")){
           args$names <- names
         } else {
           args$names <- paste("SC", x$cluster)
@@ -455,6 +455,7 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         }
         
        do.call("plot.somRes", args)
+       
       } else if (type=="projgraph") {
         # check arguments
         if (x$som$parameters$type=="korresp")
@@ -470,25 +471,6 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         }
         if (length(V(args$variable)) != nrow(x$som$data)){
           stop("number of nodes in graph does not fit length of the original data", call.=TRUE)
-        }
-
-        
-        
-        # Colors (used only for dendrogram, dendro3d, graph and projgraph)
-        if(is.null(x$cluster)==F){
-          nbclust <- max(x$cluster)
-          if ((!is.null(args$col)) & (length(args$col)==nbclust)) {
-            clust.col.pal <- args$col
-          } else {
-            if (!is.null(args$col))
-              warning("Incorrect number of colors
-                  (does not fit the number of super-clusters);
-                  using the default palette.\n", call.=TRUE, immediate.=TRUE)
-            clust.col.pal <- gg_color(nbclust)
-          }
-          clust.col <- clust.col.pal[x$cluster]
-        } else {
-          nbclust <- 1
         }
         
         args$vertex.color <- clust.col.pal

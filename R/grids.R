@@ -8,8 +8,7 @@
 #'
 #' @param dimension a 2-dimensional vector giving the dimensions (width, length)
 #' of the grid
-#' @param topo topology of the grid. Only \code{"square"} is supported for the
-#' moment
+#' @param topo topology of the grid. Accept values \code{"square"} (Default) or \code{"hexagonal"}.
 #' @param dist.type distance type that defines the topology of the grid (see
 #' 'Details'). Default to \code{"euclidean"}
 #'

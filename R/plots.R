@@ -164,7 +164,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
   # mds
   
   # default value for type="lines"
-  if (!is.element(type,c("3d","lines","barplot","color", "poly.dist",
+  if (!is.element(type,c("3d","lines", "barplot","color", "poly.dist",
                          "umatrix", "smooth.dist", "mds", "grid.dist"))) {
     warning("incorrect type replaced by 'lines'\n", call.=TRUE, 
             immediate.=TRUE)
@@ -297,7 +297,7 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
   ## types : hitmap, lines, names, color, barplot, boxplot
   # default value is type="hitmap"
   if (!is.element(type,c("hitmap", "lines", "names", "color",
-                         "barplot", "boxplot"))) {
+                         "barplot", "boxplot", "meanline"))) {
     warning("incorrect type replaced by 'hitmap'\n", call.=TRUE, 
             immediate.=TRUE)
     type <- "hitmap"
@@ -315,8 +315,8 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
     type <- "hitmap"
   }
   
-  if(type %in% c("lines", "barplot", "boxplot", "names")){
-    if (type == "lines" || type == "barplot" || type == "boxplot") {
+  if(type %in% c("lines", "barplot", "boxplot", "names", "meanline")){
+    if (type %in% c("lines", "barplot", "boxplot", "meanline")) {
       values <- sommap$data[,variable]
     } else if (type=="names") {
       if (sommap$parameters$type %in% c("relational", "korresp")) {

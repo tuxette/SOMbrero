@@ -153,10 +153,11 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
   } 
   
   labely <- vary
-  if (what %in% c("obs", "add") & type %in% c("radar", "barplot", "lines")) {
+  if (what %in% c("obs", "add") & type %in% c("barplot", "meanline")) {
     labely <- paste0("mean of ", labely)
   }
-  if (what == " prototypes") {
+  if (what == "prototypes") {
+    if(type == "lines") type <- "meanline"
     labely <- "values for each prototype"
   }
   if (type == "names") {
@@ -173,6 +174,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
   colnames(dataplot)[1:nbvar] <- paste0(vary, "-", colnames(dataplot)[1:nbvar])
   dataplot$ind <- rownames(dataplot)
   dataplot$SOMclustering <- factor(clustering, levels=ordered.index)
+  
   if(is.null(args$sc)){
     dataplot <- reshape(dataplot,  varying = 1:nbvar, idvar=c("ind", "SOMclustering"), 
                         sep="-", direction="long", timevar="variable")
@@ -198,14 +200,23 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
       geom_boxplot() 
   }
   if (type == "lines") {
-    tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, group=1, 
+    if (is.null(args$sc)) {
+      tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, group='ind')) +
+        geom_line(alpha=0.8) + ylab(labely) 
+    } else {
+      tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, group='ind', color=labelcolor)) +
+        geom_line(alpha=0.8) + ylab(labely) 
+    }
+  } 
+  if (type == "meanline") {
+    tp <- ggplot(dataplot, aes_string(x = 'variable', y = vary, group=1,
                                       colour=labelcolor)) +
-      geom_point(stat='summary', fun=mean) + ylab(labely) 
+      geom_point(stat='summary', fun=mean) + ylab(labely)
     if (is.null(args$sc)) {
       tp <- tp + stat_summary(fun=mean, geom="line", colour="black")
     } else {
-      tp <- tp + stat_summary(fun=mean, geom="line", 
-                              mapping = aes_string(colour=labelcolor), 
+      tp <- tp + stat_summary(fun=mean, geom="line",
+                              mapping = aes_string(colour=labelcolor),
                               show.legend = FALSE)
     }
   }
