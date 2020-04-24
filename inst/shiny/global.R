@@ -47,19 +47,19 @@ trainTheSom <- function(data, type, topo, dimx, dimy, affectation, disttype, max
 # List of somplot types options per SOM type and "what" :
 all.somplot.types <- list("numeric"=
                             list("prototypes"=
-                                   list("lines", "barplot", "color", "3d", 
+                                   list("lines", "meanline", "barplot", "color", "3d", 
                                         "smooth distances"="smooth.dist",
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",
                                         "MDS"="mds"),
-                                 "obs"=c("hitmap", "color", "lines", "barplot", 
+                                 "obs"=c("hitmap", "color", "lines", "meanline", "barplot", 
                                          "names", "boxplot"),
                                  "energy"="Energy of backups"),
                           
                           "korresp"=
                             list("prototypes"=
-                                   list("lines", "barplot", "color", "3d", 
+                                   list("lines", "meanline", "barplot", "color", "3d", 
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",
@@ -69,7 +69,7 @@ all.somplot.types <- list("numeric"=
                           
                           "relational"=
                             list("prototypes"=
-                                   list("lines", "barplot",
+                                   list("lines", "meanline", "barplot",
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",
@@ -80,21 +80,21 @@ all.somplot.types <- list("numeric"=
 all.scplot.types <- list("numeric"=
                            list("prototypes"=
                                   list("grid", "dendrogram", "dendro3d", "color",
-                                       "lines", "barplot", 
+                                       "lines","meanline", "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds"),
-                                "obs"=c("hitmap", "color", "lines", "barplot", 
+                                "obs"=c("hitmap", "color", "lines", "meanline", "barplot", 
                                         "boxplot")),
                          "korresp"=
                            list("prototypes"=
-                                  list("grid", "dendrogram", "color", "lines", 
+                                  list("grid", "dendrogram", "color", "lines", "meanline", 
                                        "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds", "dendro3d"),
                                 "obs"="hitmap"),
                          "relational"=
                            list("prototypes"=
-                                  list("grid", "dendrogram", "lines", "barplot", 
+                                  list("grid", "dendrogram", "lines", "meanline", "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds",  "dendro3d"),
                                 "obs"="hitmap"))

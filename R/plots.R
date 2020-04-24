@@ -164,7 +164,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
   # mds
   
   # default value for type="lines"
-  if (!is.element(type,c("3d","lines", "barplot","color", "poly.dist",
+  if (!is.element(type,c("3d","lines", "meanline", "barplot","color", "poly.dist",
                          "umatrix", "smooth.dist", "mds", "grid.dist"))) {
     warning("incorrect type replaced by 'lines'\n", call.=TRUE, 
             immediate.=TRUE)

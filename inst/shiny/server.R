@@ -333,7 +333,7 @@ shinyServer(function(input, output, session) {
       tmp.var <- input$somplotvar
     }
     if(input$somplottype == 'boxplot' || input$somplottype == 'barplot' || 
-       input$somplottype == 'lines'){
+       input$somplottype == 'lines' || input$somplottype == 'meanline'){
       tmp.var <- input$somplotvar2
     }
     if(input$somplottype == 'names'){
@@ -368,7 +368,7 @@ shinyServer(function(input, output, session) {
             codeplot <- paste0(codeplot, ", type='", input$somplottype, "',",
                                          "show.names=", input$somplottitle)
           }
-          if(input$somplottype  %in% c("lines", "barplot", "boxplot", "color", "3d")){
+          if(input$somplottype  %in% c("lines", "meanline", "barplot", "boxplot", "color", "3d")){
             if(length(variable)==1) {
               textevar <- paste0("'", variable, "'")
             } else {
@@ -513,7 +513,8 @@ shinyServer(function(input, output, session) {
     if (input$somtype =="korresp")
       tmp.view <- input$scplotrowcol
     
-    if (input$scplottype =="boxplot" || input$scplottype == 'barplot' || input$scplottype == 'lines') {
+    if (input$scplottype =="boxplot" || input$scplottype == 'barplot' ||
+        input$scplottype == 'lines' || input$scplottype == 'meanline') {
       tmp.var <-  input$scplotvar2
     } else tmp.var <- input$scplotvar
     
@@ -526,7 +527,7 @@ shinyServer(function(input, output, session) {
         codeplot <- paste0("plot(mysomSC, ",
                            "what='", input$scplotwhat, "', ",
                            "type='", input$scplottype, "'")
-        if(input$scplottype  %in% c("lines", "barplot", "boxplot", "color")){
+        if(input$scplottype  %in% c("lines", "meanline", "barplot", "boxplot", "color")){
           if(length(tmp.var)==1) {
             textevar <- paste0("'", tmp.var, "'")
           } else {
@@ -654,7 +655,7 @@ shinyServer(function(input, output, session) {
         output$runcodeaddplot <- renderText({
           codeplot <- paste0("plot(mysom, what='add', ",
                              "type='", input$addplottype, "'")
-          if(input$addplottype  %in% c("lines", "barplot", "boxplot", "color", "words", "pie")){
+          if(input$addplottype  %in% c("lines", "meanline", "barplot", "boxplot", "color", "words", "pie")){
             if(length(tmp.var)==1) {
               textevar <- paste0("dataAdd$", tmp.var)
             } else {

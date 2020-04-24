@@ -328,7 +328,7 @@ map."
                  ),
                  conditionalPanel(
                    "input.somplottype == 'boxplot' || input.somplottype == 'barplot' || 
-                   input.somplottype == 'lines'",
+                   input.somplottype == 'lines' || input.somplottype == 'meanline'",
                    selectInput(
                      "somplotvar2",
                      "Variables: (hold Ctrl to select
@@ -424,7 +424,7 @@ plot can help you determine the adequate number of superclasses."
                                                    ),
                                                    conditionalPanel(
                                                      "input.scplottype == 'boxplot' || input.scplottype == 'barplot' || 
-                   input.scplottype == 'lines'",
+                   input.scplottype == 'lines' || input.scplottype == 'meanline'",
                                                      selectInput(
                                                        "scplotvar2",
                                                        "Variables:",
@@ -541,6 +541,7 @@ to the number of rows ."
                                                   "pie",
                                                   "color",
                                                   "lines",
+                                                  "meanline",
                                                   "boxplot",
                                                   "barplot",
                                                   "names",

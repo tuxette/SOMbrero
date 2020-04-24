@@ -157,7 +157,7 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
     labely <- paste0("mean of ", labely)
   }
   if (what == "prototypes") {
-    if(type == "lines") type <- "meanline"
+    #if(type == "lines") type <- "meanline"
     labely <- "values for each prototype"
   }
   if (type == "names") {
