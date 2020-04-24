@@ -7,11 +7,11 @@ data(presidentielles2002)
 presi.som <- trainSOM(x.data=presidentielles2002, type="korresp", scaling="chi2", dimension=c(8,8))
 
 # prototypes overview can either be plotted for columns variables
-plot(presi.som, what="lines", type="barplot", view="c")
+plot(presi.som, what="prototypes", type="barplot", view="c")
 # or for row variables
-plot(presi.som, what="lines", type="barplot", view="r")
+plot(presi.som, what="prototypes", type="barplot", view="r")
 # Plots are ggplot2 so you can manipulate plot elements afterwards (if legend is too big for example)
-plot(presi.som, what="lines", type="barplot", view="r") +    
+plot(presi.som, what="prototypes", type="barplot", view="r") +    
   guides(fill=guide_legend(keyheight=0.6, ncol=2, label.theme=element_text(size=6))) + 
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
 
