@@ -565,7 +565,8 @@ calculateEnergy <- function(x.data, clustering, prototypes, parameters, ind.t) {
 trainSOM <- function (x.data, ...) {
   param.args <- list(...)
   ## Step 1: Parameters handling
-  if (!is.matrix(x.data)) x.data <- as.matrix(x.data, rownames.force=TRUE)
+  if (!is.matrix(x.data)) x.data <- as.matrix(x.data)
+  if(is.null(rownames(x.data))) rownames(x.data) <- 1:nrow(x.data)
   
   # Check inputs
   notnum <- sapply(x.data, class) 
