@@ -93,8 +93,10 @@ object, in a new graphical window. It has 3 parameters:
 
 ```{r plotRainbowGrid}
 plot(first_grid)
-plot(first_grid) + scale_fill_manual(values=rep("white", 30))
-plot(first_grid, show.names=F) + scale_fill_manual(values=colorRampPalette(c("white", "pink", "purple"))(30))
+plot(first_grid) + ggplot2::scale_fill_manual(values = rep("white", 30))
+my_palette <- colorRampPalette(c("white", "pink", "purple"))(30)
+plot(first_grid, show.names = FALSE) + 
+  ggplot2::scale_fill_manual(values = my_palette)
 ```
 
 Hexagonal grids can be displayed similarly:
