@@ -53,8 +53,8 @@ a.grid <- initGrid(dimension=c(5,5), topo="square", dist.type="maximum")
 # without any color specification
 plot(a.grid)
 # generating colors from rainbow() function
-my.colors <- rainbow(5*5)
-plot(a.grid) + scale_fill_manual(my.colors)
+my.colors <- grDevices::rainbow(5*5)
+plot(a.grid) + ggplot2::scale_fill_manual(values = my.colors)
 }
 \seealso{
 \code{\link{initGrid}} to define a \code{myGrid} class object.

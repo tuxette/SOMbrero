@@ -117,8 +117,8 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' # without any color specification
 #' plot(a.grid)
 #' # generating colors from rainbow() function
-#' my.colors <- rainbow(5*5)
-#' plot(a.grid) + scale_fill_manual(my.colors)
+#' my.colors <- grDevices::rainbow(5*5)
+#' plot(a.grid) + ggplot2::scale_fill_manual(values = my.colors)
 
 print.myGrid <-function(x,...) {
   cat("\n      Self-Organizing Map structure\n\n")

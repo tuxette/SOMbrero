@@ -84,9 +84,8 @@
 #' @import shinycssloaders
 #' @import shinyBS
 #' @import shinyjqui
-#' @importFrom grDevices rainbow trans3d hcl
-#' @importFrom graphics layout legend par plot rect
-#' @importFrom graphics text title points
+#' @importFrom grDevices trans3d hcl
+#' @importFrom graphics layout legend par plot rect text title points
 #' @importFrom stats aov as.dist chisq.test cmdscale cutree dist hclust pf
 #' @importFrom stats princomp quantile rect.hclust runif sd aggregate median
 #' @importFrom stats reshape
@@ -95,7 +94,7 @@
 #' @importFrom metR geom_contour_fill	
 #' @importFrom interp interp
 #' @importFrom utils packageVersion
-#' @importFrom shinyjs disable enable disabled hidden hide 
+#' @importFrom shinyjs disable enable disabled hidden hide extendShinyjs
 #' @importFrom shinyjs show toggle toggleElement useShinyjs
 
 NULL
