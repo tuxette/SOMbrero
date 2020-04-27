@@ -26,11 +26,6 @@ the grid or not. Default to \code{TRUE} (names not displayed).}
 
 \item{names}{If \code{show.names = TRUE}, values of the names to 
 display. Default to the cluster number.}
-
-\item{neuron.col}{Color(s) used to depict the neurons. Default value is 
-\code{white}. If the argument is composed of one single color, neurons will 
-all be filled with the same color. If the argument is composed of many 
-colors, the number of colors must match the total number of neurons.}
 }
 \description{
 Methods for the result of \code{\link{initGrid}}

@@ -45,6 +45,15 @@ implemented in \href{https://github.com/fabrice-rossi/yasomi}{yasomi}. The
 alternative value corresponds to an piecewise linear neighbourhood as 
 implementated by Patrick Letremy in his SAS scripts.}
 
+\item{dist.type}{The neighborhood relationship on the grid. One of 
+\code{c("letremy", "euclidean", "maximum", "manhattan", "canberra", "minkowski")}. 
+When \code{radius.type} is \code{letremy}, default value is \code{letremy} which 
+is the original implementation by Patrick Letremy. When \code{radius.type} is
+\code{gaussian}, default value is \code{euclidean}. The other possible values
+are passed to \code{method} in function \code{\link[stats]{dist}}. 
+\code{dist.type="letremy"} is not permitted with \code{radius.type="gaussian"}. 
+Only \code{euclidian} is allowed with hexagonal topology.}
+
 \item{type}{The SOM algorithm type. Possible values are: \code{numeric} 
 (default value), \code{korresp} and \code{relational}.}
 

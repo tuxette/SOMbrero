@@ -26,7 +26,7 @@
 #' alternative value corresponds to an piecewise linear neighbourhood as 
 #' implementated by Patrick Letremy in his SAS scripts.
 #' @param dist.type The neighborhood relationship on the grid. One of 
-#' \code{c("letremy", "euclidean", "maximum", "manhattan", "canberra", "minkowski"). 
+#' \code{c("letremy", "euclidean", "maximum", "manhattan", "canberra", "minkowski")}. 
 #' When \code{radius.type} is \code{letremy}, default value is \code{letremy} which 
 #' is the original implementation by Patrick Letremy. When \code{radius.type} is
 #' \code{gaussian}, default value is \code{euclidean}. The other possible values

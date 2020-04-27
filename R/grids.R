@@ -85,10 +85,6 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' (\code{myGrid} object)
 #' @param object \code{myGrid} object
 #' @param x \code{myGrid} object
-#' @param neuron.col Color(s) used to depict the neurons. Default value is 
-#' \code{white}. If the argument is composed of one single color, neurons will 
-#' all be filled with the same color. If the argument is composed of many 
-#' colors, the number of colors must match the total number of neurons.
 #' @param show.names Whether the cluster names must be printed in center of
 #' the grid or not. Default to \code{TRUE} (names not displayed).
 #' @param names If \code{show.names = TRUE}, values of the names to 
@@ -144,8 +140,7 @@ summary.myGrid <- function(object,...) {
 
 #' @export
 #' @rdname myGrid
-plot.myGrid <- function(x, show.names = TRUE, 
-                        names = 1:prod(x$dim), ...) {
+plot.myGrid <- function(x, show.names = TRUE, names = 1:prod(x$dim), ...) {
   # get graphical parameters
   args <- list(...)
   
