@@ -4,16 +4,17 @@
 \alias{initGrid}
 \title{Create an empty grid}
 \usage{
-initGrid(dimension = c(5, 5), topo = c("square", "hexagonal"),
-  dist.type = c("euclidean", "maximum", "manhattan", "canberra",
-  "minkowski", "letremy"))
+initGrid(
+  dimension = c(5, 5),
+  topo = c("square", "hexagonal"),
+  dist.type = c("euclidean", "maximum", "manhattan", "canberra", "minkowski", "letremy")
+)
 }
 \arguments{
 \item{dimension}{a 2-dimensional vector giving the dimensions (width, length)
 of the grid}
 
-\item{topo}{topology of the grid. Only \code{"square"} is supported for the
-moment}
+\item{topo}{topology of the grid. Accept values \code{"square"} (Default) or \code{"hexagonal"}.}
 
 \item{dist.type}{distance type that defines the topology of the grid (see
 'Details'). Default to \code{"euclidean"}}

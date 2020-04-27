@@ -4,15 +4,24 @@
 \alias{plot.somRes}
 \title{Plot a \code{somRes} class object}
 \usage{
-\method{plot}{somRes}(x, what = c("obs", "prototypes", "energy", "add"),
-  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie",
-  energy = "energy"), variable = NULL, my.palette = NULL,
+\method{plot}{somRes}(
+  x,
+  what = c("obs", "prototypes", "energy", "add"),
+  type = switch(what, obs = "hitmap", prototypes = "color", add = "pie", energy =
+    "energy"),
+  variable = NULL,
+  my.palette = NULL,
   is.scaled = if (x$parameters$type == "numeric") TRUE else FALSE,
-  show.names = TRUE, names = if (what != "energy") switch(type, graph =
-  1:prod(x$parameters$the.grid$dim), 1:prod(x$parameters$the.grid$dim)),
-  proportional = TRUE, s.radius = 1, pie.graph = FALSE,
-  pie.variable = NULL, view = if (x$parameters$type == "korresp") "r"
-  else NULL, ...)
+  show.names = TRUE,
+  names = if (what != "energy") switch(type, graph = 1:prod(x$parameters$the.grid$dim),
+    1:prod(x$parameters$the.grid$dim)),
+  proportional = TRUE,
+  pie.graph = FALSE,
+  pie.variable = NULL,
+  s.radius = 1,
+  view = if (x$parameters$type == "korresp") "r" else NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{somRes} class object.}
@@ -42,7 +51,7 @@ to plotting or not. Default value is \code{TRUE} when \code{type="numeric"}
 and \code{FALSE} in the other cases.}
 
 \item{show.names}{Boolean used to indicate whether each neuron should have a
-title or not. Default value is \code{TRUE}. It is feasible on the following 
+title or not. Default to \code{TRUE}. It is feasible on the following 
 cases: all \code{"color"} types, all \code{"lines"} types, all 
 \code{"barplot"} types, all \code{"boxplot"} types,
 all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
@@ -55,14 +64,14 @@ all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"},
 \code{type="pie"}. It indicates if the pies should be proportional to the 
 number of observations in the class. Default value is \code{TRUE}.}
 
-\item{s.radius}{The size of the pies to be plotted (maximum size when 
-\code{proportional=TRUE}). The default value is \code{0.9}.}
-
 \item{pie.graph}{Boolean used when \code{what="add"} and \code{type="graph"}. 
 It indicates if the vertices should be pies or not.}
 
 \item{pie.variable}{The variable needed to plot the pies when 
 \code{what="add"}, \code{type="graph"} and argument \code{pie.graph=TRUE}.}
+
+\item{s.radius}{The size of the pies to be plotted (maximum size when 
+\code{proportional=TRUE}) for \code{what="add"}, \code{type="graph"} and \code{pie.graph=TRUE}. The default value is \code{0.9}.}
 
 \item{view}{Used only when the algorithm's type is \code{"korresp"}. It
 indicates whether rows (\code{"r"}) or columns (\code{"c"}) must be drawn.}
@@ -76,7 +85,20 @@ details).}
 Produce graphics to help interpreting a \code{somRes} object.
 }
 \details{
-See \code{\link{somRes.plotting}} for further details.
+See \code{\link{somRes.plotting}} for further details and more examples.
+}
+\examples{
+# run the SOM algorithm on the numerical data of 'iris' data set
+iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
+# plots
+# on energy
+plot(iris.som, what="energy") 
+# on observations
+plot(iris.som, what="obs", type="boxplot")
+# on prototypes
+plot(iris.som, what="prototypes", type="3d", variable="Sepal.Length")
+# on an additional variable: the flower species
+plot(iris.som, what="add", type="pie", variable=iris$Species)
 }
 \seealso{
 \code{\link{trainSOM}} to run the SOM algorithm, that returns a 

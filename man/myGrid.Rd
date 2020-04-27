@@ -5,14 +5,14 @@
 \alias{print.myGrid}
 \alias{summary.myGrid}
 \alias{plot.myGrid}
+\alias{myGrid-class}
 \title{Methods for 'myGrid' objects.}
 \usage{
 \method{print}{myGrid}(x, ...)
 
 \method{summary}{myGrid}(object, ...)
 
-\method{plot}{myGrid}(x, neuron.col = NULL, print.title = TRUE,
-  the.titles = 1:prod(x$dim), ...)
+\method{plot}{myGrid}(x, show.names = TRUE, names = 1:prod(x$dim), ...)
 }
 \arguments{
 \item{x}{\code{myGrid} object}
@@ -21,16 +21,16 @@
 
 \item{object}{\code{myGrid} object}
 
+\item{show.names}{Whether the cluster names must be printed in center of
+the grid or not. Default to \code{TRUE} (names not displayed).}
+
+\item{names}{If \code{show.names = TRUE}, values of the names to 
+display. Default to the cluster number.}
+
 \item{neuron.col}{Color(s) used to depict the neurons. Default value is 
 \code{white}. If the argument is composed of one single color, neurons will 
 all be filled with the same color. If the argument is composed of many 
 colors, the number of colors must match the total number of neurons.}
-
-\item{print.title}{Whether the cluster titles must be printed in center of
-the grid or not. Default to \code{FALSE} (titles not displayed).}
-
-\item{the.titles}{If \code{print.title = TRUE}, values of the title to 
-display. Default to "Cluster " followed by the cluster number.}
 }
 \description{
 Methods for the result of \code{\link{initGrid}}
@@ -59,7 +59,7 @@ a.grid <- initGrid(dimension=c(5,5), topo="square", dist.type="maximum")
 plot(a.grid)
 # generating colors from rainbow() function
 my.colors <- rainbow(5*5)
-plot(a.grid, neuron.col=my.colors)
+plot(a.grid) + scale_fill_manual(my.colors)
 }
 \seealso{
 \code{\link{initGrid}} to define a \code{myGrid} class object.

@@ -4,17 +4,26 @@
 \alias{initSOM}
 \alias{summary.paramSOM}
 \alias{print.paramSOM}
+\alias{paramSOM-class}
 \title{Initialize parameters for the SOM algorithm}
 \usage{
-initSOM(dimension = c(5, 5), topo = c("square", "hexagonal"),
+initSOM(
+  dimension = c(5, 5),
+  topo = c("square", "hexagonal"),
   radius.type = c("gaussian", "letremy"),
-  dist.type = switch(match.arg(radius.type), letremy = "letremy",
-  gaussian = "euclidean"), type = c("numeric", "relational", "korresp"),
-  mode = c("online"), affectation = c("standard", "heskes"),
-  maxit = 500, nb.save = 0, verbose = FALSE, proto0 = NULL,
-  init.proto = switch(type, numeric = "random", relational = "obs",
-  korresp = "random"), scaling = switch(type, numeric = "unitvar",
-  relational = "none", korresp = "chi2"), eps0 = 1)
+  dist.type = switch(match.arg(radius.type), letremy = "letremy", gaussian =
+    "euclidean"),
+  type = c("numeric", "relational", "korresp"),
+  mode = c("online"),
+  affectation = c("standard", "heskes"),
+  maxit = 500,
+  nb.save = 0,
+  verbose = FALSE,
+  proto0 = NULL,
+  init.proto = switch(type, numeric = "random", relational = "obs", korresp = "random"),
+  scaling = switch(type, numeric = "unitvar", relational = "none", korresp = "chi2"),
+  eps0 = 1
+)
 
 \method{print}{paramSOM}(x, ...)
 
@@ -27,7 +36,7 @@ values are: \code{(5,5)}. Other data-driven defaults are set by function
 \code{trainSOM}.}
 
 \item{topo}{The topology to be used to build the grid of the \code{myGrid} 
-class object. Default value is \code{square}.}
+class object. Accept values \code{"square"} (Default) or \code{"hexagonal"}.}
 
 \item{radius.type}{The neighbourhood type. Default value is 
 \code{"gaussian"}, which corresponds to a Gaussian neighbourhood. The 
@@ -35,15 +44,6 @@ annealing of the neighbourhood during the training step is similar to the one
 implemented in \href{https://github.com/fabrice-rossi/yasomi}{yasomi}. The 
 alternative value corresponds to an piecewise linear neighbourhood as 
 implementated by Patrick Letremy in his SAS scripts.}
-
-\item{dist.type}{The neighborhood relationship on the grid. When 
-\code{radius.type} is \code{letremy}, default value is \code{letremy} which 
-is the original implementation by Patrick Letremy. When \code{radius.type} is
-\code{gaussian}, default value is \code{euclidean}. The other possible values
-(\code{maximum}, \code{manhattan}, \code{canberra}, \code{minkowski}) are 
-passed to \code{method} in function \code{\link[stats]{dist}}. 
-\code{dist.type="letremy"} is not permitted with 
-\code{radius.type="gaussian"}.}
 
 \item{type}{The SOM algorithm type. Possible values are: \code{numeric} 
 (default value), \code{korresp} and \code{relational}.}
@@ -67,8 +67,8 @@ SOM algorithm process. Default value is \code{FALSE}.}
 \item{proto0}{The initial prototypes. Default value is \code{NULL}.}
 
 \item{init.proto}{The method to be used to initialize the prototypes, which
-may be \code{random} (randomization), \code{obs} (each prototype is assigned
-a random observation) or \code{pca}. In \code{pca} the prototypes are 
+may be \code{"random"} (randomization), \code{"obs"} (each prototype is assigned
+a random observation) or \code{"pca"}. In \code{pca} the prototypes are 
 initialized to the observations closest to a grid along the two first 
 principal components of the data (\code{numeric} case) or along a
 two-dimensional multidimensional scaling (\code{relational} case, equivalent
