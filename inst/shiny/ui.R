@@ -261,7 +261,7 @@ pseudo-random generators at
                  ),
           column(9,
                  disabled(actionButton("trainbutton", "Train SOM", class="btn-primary")),
-                 hidden(actionButton("nextplot", "Next : plot the SOM map", class="btn-primary")),
+                 hidden(actionButton("nextplot", "Next: plot the SOM map", class="btn-primary")),
                  br(),
                  br(),
                  verbatimTextOutput("runcodesom"),
@@ -331,8 +331,7 @@ map."
                    input.somplottype == 'lines' || input.somplottype == 'meanline'",
                    selectInput(
                      "somplotvar2",
-                     "Variables: (hold Ctrl to select
-multiple variables)",
+                     "Variables:",
                      choices = "(Not Available)",
                      multiple = TRUE
                    )
@@ -381,7 +380,7 @@ plot can help you determine the adequate number of superclasses."
                                                    actionButton("superclassbutton", "Compute superclasses", class="btn-primary"),
                                                    br(),
                                                    br(),
-                                                   shinyjs::hidden(actionButton("nextplotsc", "Next : plot the superclasses", class="btn-primary")),
+                                                   shinyjs::hidden(actionButton("nextplotsc", "Next: plot the superclasses", class="btn-primary")),
                                                    br(),
                                                    br(),
                                                    disabled(downloadButton("sc.download", "Download superclass classification"))
@@ -451,7 +450,7 @@ plot can help you determine the adequate number of superclasses."
                                             ),
                                             column(9,
                                                    verbatimTextOutput("runcodescplot"),
-                                                   jqui_resizable(plotOutput("scplot", width = 750, height = 600))
+                                                   jqui_resizable(plotOutput("scplot"))
                                             )
                                           ),
                                           br(),
@@ -563,9 +562,7 @@ to the number of rows ."
                                    input.addplottype != 'graph'",
                                                 selectInput(
                                                   "addplotvar2",
-                                                  "Select variables:
-                                               (hold Ctrl to select multiple
-                                               variables)",
+                                                  "Select variables:",
                                                   choices = "(first import file)",
                                                   multiple = TRUE
                                                 )
@@ -573,7 +570,7 @@ to the number of rows ."
                                             )),
                                             column(9,
                                                    verbatimTextOutput("runcodeaddplot"),
-                                                   jqui_resizable(plotOutput("addplot", width=750, height = 600))
+                                                   jqui_resizable(plotOutput("addplot", width = 750, height = 600))
                                             ),
                                             br(),
                                             br(),

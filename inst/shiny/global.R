@@ -2,10 +2,7 @@
 # Libraries
 ####################################################################################
 
-#library(shinyBS)  # for bsCollapse
-#library(shinyjs) # Version hide/show/toggle
-#library(shinyjqui)
-#library(SOMbrero) # Version 0.4
+library(shinyBS)  # for bsCollapse 
 
 ####################################################################################
 # Loading the data from environment and examples

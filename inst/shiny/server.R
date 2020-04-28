@@ -4,10 +4,6 @@ shinyServer(function(input, output, session) {
 
   #############################################################################
   ## Server variables
-  #server.env <- environment() # used to allocate in functions
-  #current.som <- NULL # this variable will contain the current SOM
-  #current.table <- NULL
-  
   RVserver.env <- reactiveValues(current.som = NULL, current.call = NULL) # used to allocate in functions
   val <- reactiveValues(data=NULL, dataadd=NULL)  
 
@@ -182,7 +178,6 @@ shinyServer(function(input, output, session) {
       updateSelectInput(session, inputId="disttype", label="Distance scaling (only euclidean authorized for hexagonal topology):",
                         choices = "euclidean", selected="euclidean")
     }
-    
   })
   
   observe({
@@ -233,7 +228,7 @@ shinyServer(function(input, output, session) {
                                          "nb.save=", input$nb.save, ", ",
                                          "radius.type='", input$radiustype, "', ",
                                          "eps0=", input$eps0,
-                                         ")\n\n\n")
+                                         ")\n")
       updatePlotSomVar() # update variable choice for som plots
       updatePlotScVar() # update variable choice for sc plots
   })
@@ -325,7 +320,8 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "somplotvar2", choices=tmp.names, selected=tmp.names)
   })
   
-  varsomplot <- debounce(reactive({
+ 
+  varsomplot <- reactive({
     tmp.var <- 1
     if(input$somplottype %in% c("color", "3d")){
       tmp.var <- input$somplotvar
@@ -337,7 +333,7 @@ shinyServer(function(input, output, session) {
       tmp.var <- "row.names"
     }
     tmp.var
-  }) , 1000)
+  })
   
   
   output$runcodeplot <- renderText({
@@ -361,28 +357,34 @@ shinyServer(function(input, output, session) {
       } else {
         textevar <- paste0("c('", paste(variable, collapse="','"), "')")
       }
-      codeplot <- paste0(codeplot, ", variable=", textevar)
+      codeplot <- paste0(codeplot, ",\nvariable=", textevar)
     }
     if(input$somtype == "korresp" & 
        input$somplottype %in% c("lines", "meanline", "barplot", "boxplot", "color", "3d")){
-      codeplot <- paste0(codeplot, ", view='", input$somplotrowcol, "'")
+      codeplot <- paste0(codeplot, ",\nview='", input$somplotrowcol, "'")
     }
     if(input$somplottype =="3d"){
-      codeplot <- paste0(codeplot, ", theta=", input$theta, ", phi=", input$phi)
+      codeplot <- paste0(codeplot, ",\ntheta=", input$theta, ", phi=", input$phi)
     }
     codeplot <- paste0(codeplot, ")")
+    if(input$somplotlegend==T){
+      codeplot <- paste0(codeplot, " + ggplot2::theme(legend.position = 'none')")
+    }
+    codeplot <- paste0(codeplot, "\n")
     codeplot
   })
 
   # Plot the SOM
   output$somplot <- renderPlot({
-    # Add validates to wait until the var inputs are updates
+    # Add validates to wait until the var inputs are updated
+    shiny::validate(need(input$somplottype %in% all.somplot.types[[input$somtype]][[input$somplotwhat]],
+                         "wait..."))
     if(input$somplottype %in% c("boxplot", "barplot", "lines", "meanline"))
-      validate(need(identical(varsomplot(), input$somplotvar2), "wait..."))
+      shiny::validate(need(identical(varsomplot(), input$somplotvar2), "wait..."))
     if(input$somplottype %in% c("color", "3d"))
-      validate(need(identical(varsomplot(), input$somplotvar), "wait..."))
+      shiny::validate(need(identical(varsomplot(), input$somplotvar), "wait..."))
     if(input$somplottype %in% c("names"))
-      validate(need(identical(varsomplot(), "row.names"), "wait..."))
+      shiny::validate(need(identical(varsomplot(), "row.names"), "wait..."))
     
     if(is.null(dInput()))
       return(NULL)
@@ -510,36 +512,40 @@ shinyServer(function(input, output, session) {
       } else {
         textevar <- paste0("c('", paste(tmp.var, collapse="',"), "')")
       }
-      codeplot <- paste0(codeplot, ", variable=", textevar)
+      codeplot <- paste0(codeplot, ",\nvariable=", textevar)
     }
     if(input$somtype == "korresp"  & input$scplottype %in% c("lines", "meanline", "barplot", "boxplot", "color")){
-      codeplot <- paste0(codeplot, ", view='", input$scplotrowcol, "'")
+      codeplot <- paste0(codeplot, ",\nview='", input$scplotrowcol, "'")
     }
-    if(input$somplottype =="dendro3d"){
-      codeplot <- paste0(codeplot, ", angle=", input$angle3d)
+    if(input$scplottype =="dendro3d"){
+      codeplot <- paste0(codeplot, ",\nangle=", input$scangle3d)
     }
-    codeplot <- paste0(codeplot, ")")
+    codeplot <- paste0(codeplot, ")\n")
     codeplot
   })
   
   # Update SuperClass plot
   output$scplot <- renderPlot({
+    validate(need(input$scplottype %in% all.scplot.types[[input$somtype]][[input$scplotwhat]],
+                  "wait..."))
     if(is.null(dInput()))
       return(NULL)
-    
     the.sc <- computeSuperclasses()
     if(input$superclassbutton ==0)
       return(NULL)
 
-    if (input$scplottype %in% c("dendrogram", "dendro3d"))
+    if (input$scplottype %in% c("dendrogram"))
       return(plot(the.sc, type=input$scplottype))
+    
+    if (input$scplottype %in% c("dendro3d"))
+      return(plot(the.sc, type=input$scplottype, angle = input$scangle3d))
 
     if (input$scplottype %in% c("lines", "meanline", "barplot", "boxplot")) {
       tmp.var <-  input$scplotvar2
     } else tmp.var <- input$scplotvar
     
     plot(x = the.sc, what = input$scplotwhat, type = input$scplottype,
-         variable = tmp.var, view = input$scplotrowcol, angle = input$scangle3d)
+         variable = tmp.var, view = input$scplotrowcol)
 
   })
 
@@ -635,7 +641,7 @@ shinyServer(function(input, output, session) {
       codeplot <- paste0(codeplot, "tmpGraph <- graph.adjacency(adjBin, mode='undirected')\n")
       codeplot <- paste0(codeplot, "plot(mysom, what='add', ",
                          "type='", input$addplottype, "',",
-                         "variable=tmpGraph)")
+                         "\nvariable=tmpGraph)")
     } else {
       if (input$addplottype %in% c("pie","color","names")) {
         tmp.var <- input$addplotvar
@@ -649,9 +655,9 @@ shinyServer(function(input, output, session) {
         } else {
           textevar <- paste0("dataAdd[,c('", paste(tmp.var, collapse="',"), "')]")
         }
-        codeplot <- paste0(codeplot, ", variable=", textevar)
+        codeplot <- paste0(codeplot, ",\nvariable=", textevar)
       }
-      codeplot <- paste0(codeplot, ")")
+      codeplot <- paste0(codeplot, ")\n")
     }
     codeplot
   })
