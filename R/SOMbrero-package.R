@@ -81,7 +81,6 @@
 #' @import igraph
 #' @import shiny
 #' @import ggplot2
-#' @import shinycssloaders
 #' @import shinyBS
 #' @import shinyjqui
 #' @importFrom grDevices trans3d hcl

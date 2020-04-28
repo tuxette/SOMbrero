@@ -265,7 +265,7 @@ pseudo-random generators at
                  br(),
                  br(),
                  verbatimTextOutput("runcodesom"),
-                 withSpinner(verbatimTextOutput("summary")),
+                 verbatimTextOutput("summary"),
                  br(),
                  disabled(downloadButton("som.download", "Download the SOM file (rda)")),
                  disabled(downloadButton("clustering.download", "Download the clustering (txt)"))
