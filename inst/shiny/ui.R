@@ -217,7 +217,7 @@ adequate parameter values.'
                  #),
                  br(),
                  actionLink("showadvlink", "Show advanced options", icon=icon("gear")),
-                 hidden(div(id="divadvancedoptions",
+                 shinyjs::hidden(div(id="divadvancedoptions",
                             h4("Advanced options"),
                             fluidRow(
                               column(6, selectInput("affectation", "Affectation type:",
@@ -381,7 +381,7 @@ plot can help you determine the adequate number of superclasses."
                                                    actionButton("superclassbutton", "Compute superclasses", class="btn-primary"),
                                                    br(),
                                                    br(),
-                                                   hidden(actionButton("nextplotsc", "Next : plot the superclasses", class="btn-primary")),
+                                                   shinyjs::hidden(actionButton("nextplotsc", "Next : plot the superclasses", class="btn-primary")),
                                                    br(),
                                                    br(),
                                                    disabled(downloadButton("sc.download", "Download superclass classification"))
@@ -444,7 +444,7 @@ plot can help you determine the adequate number of superclasses."
                                                    conditionalPanel(
                                                      "input.scplottype == 'dendro3d'",
                                                      sliderInput(
-                                                       "angle3d",
+                                                       "scangle3d",
                                                        "Angle between x and y axes", min = 10, max=170, value = 40
                                                      )
                                                    )

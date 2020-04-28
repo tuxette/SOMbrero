@@ -2,16 +2,10 @@
 # Libraries
 ####################################################################################
 
-library(shinyBS)  # for bsCollapse
-library(shinyjs) # Version hide/show/toggle
-library(shinyjqui)
-library(gridExtra)
-library(SOMbrero) # Version 0.4
-
-jscode <- "
-shinyjs.refocus = function() {
-  window.scrollTo(0,0);
-}"
+#library(shinyBS)  # for bsCollapse
+#library(shinyjs) # Version hide/show/toggle
+#library(shinyjqui)
+#library(SOMbrero) # Version 0.4
 
 ####################################################################################
 # Loading the data from environment and examples
@@ -25,11 +19,14 @@ data("presidentielles2002")
 dataframes <- ls()[sapply(ls(envir = .GlobalEnv), function(x) 'data.frame' %in% class(get(x)) | 'matrix' %in% class(get(x)))]
 
 ###############################################################################
-## Global variables
+## Global variables & functions
 ####################################################################################
 
 # Max file input size :
 options(shiny.maxRequestSize=30*1024^2)
+
+# Function %notin%
+`%notin%` <- Negate(`%in%`)
 
 # SOM training function
 trainTheSom <- function(data, type, topo, dimx, dimy, affectation, disttype, maxit,
