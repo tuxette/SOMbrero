@@ -332,7 +332,6 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
         if(is.null(variable)) variable <- "row.names"
         if(variable=="row.names"){
             values <- names(sommap$clustering)
-            print(values)
         } else {
           if(is.numeric(variable)) variable <- colnames(sommap$data)[variable]
             values <- sommap$data[,variable]
