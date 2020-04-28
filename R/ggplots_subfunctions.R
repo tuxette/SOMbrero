@@ -167,6 +167,9 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
     labely <- "frequency of values"
     if(type == "names" & !is.null(args$varname)) {
       labely <- paste("frequency of", args$varname, "values")
+    }    
+    if(type == "names" & args$varname %in% c("row.names", "names")) {
+      labely <- paste("repartition of", args$varname, "values")
     }
   }
 

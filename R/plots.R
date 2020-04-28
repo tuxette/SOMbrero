@@ -162,17 +162,16 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
                            names, is.scaled, view, args) {
   ## types : 3d, lines, barplot, color, smooth.dist, poly.dist, umatrix,
   # mds
-  
-  # default value for type="lines"
   if (!is.element(type,c("3d","lines", "meanline", "barplot","color", "poly.dist",
                          "umatrix", "smooth.dist", "mds", "grid.dist"))) {
-    warning("incorrect type replaced by 'lines'\n", call.=TRUE, 
+    stop(paste0("Incorrect type. Prototypes plots can be '3d','lines', 'meanline', 'barplot',\n",
+                "'color','poly.dist','umatrix', 'smooth.dist', 'mds' or 'grid.dist'"), call.=TRUE, 
             immediate.=TRUE)
-    type <- "lines"
   }
+  
   # relational control
   if (sommap$parameters$type=="relational" && type %in% c("color", "3d"))
-    stop("prototypes/", type, " plot is not available for 'relational'\n", 
+    stop(paste0("prototypes", type, " plot is not available for 'relational'\n"), 
          call.=TRUE)
   
   if(type %in% c("3d", "color")){
@@ -184,32 +183,45 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
   }
   
   tmp.var <- variable
-  if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
-    if(view=="r"){
-      tmp.var <- rownames(sommap$data)[variable]
-    } else tmp.var <- colnames(sommap$data)[variable]
-  } 
+  
+  # Append in the case where wrong type is provided
+  if(is.null(variable)){ 
+    if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
+      if(view=="r"){
+        tmp.var <- rownames(sommap$data)
+      } else tmp.var <- colnames(sommap$data)
+    } else {
+      tmp.var <- colnames(sommap$data)
+    }
+  }
+  
+  if(is.numeric(variable)){
+    if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
+      if(view=="r"){
+        tmp.var <- rownames(sommap$data)[variable]
+      } else tmp.var <- colnames(sommap$data)[variable]
+    } else {
+      tmp.var <- colnames(sommap$data)[variable]
+    }
+  }
 
   if (type == "lines" || type == "barplot" || type == "meanline") {
     ggplotFacet("prototypes", type, sommap$prototypes[,tmp.var], as.numeric(rownames(sommap$prototypes)),
                 show.names, names, is.scaled,
                 sommap$parameters$the.grid, args)
+    
   } else if (type=="color" | type=="3d") {
     args$varname <- tmp.var
+
     if(type=="color"){
       ggplotGrid("prototypes", "color", sommap$prototypes[,tmp.var], 
                  as.numeric(rownames(sommap$prototypes)), show.names, 
                  names, sommap$parameters$the.grid, args)
+
     } else if (type=="3d"){
       plot3d(sommap$prototypes, sommap$parameters$the.grid, type, tmp.var, args)
     }
 
-  } else if (type=="3d") {
-    tmp.var <- variable
-    if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
-      if (view=="r") tmp.var <- variable+ncol(sommap$data)
-    }
-    plot3d(sommap$prototypes, sommap$parameters$the.grid, type, tmp.var, args)
   } else if (type=="poly.dist") {
     values <- protoDist(sommap, "neighbors")
     if (sommap$parameters$type=="relational") {
@@ -219,6 +231,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     }
     ggplotGrid("prototypes", type, values, sommap$clustering, show.names,
                    names, sommap$parameters$the.grid, args)
+    
   } else if (type=="umatrix" || type=="smooth.dist") {
     values <- protoDist(sommap, "neighbors")
 
@@ -230,12 +243,12 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     values <- unlist(lapply(values,mean))
     if (type=="umatrix") {
       args$labelcolor <- "umatrix\nbetween\nprototypes"
-      args$varname <- variable
       ggplotGrid("prototypes", "color", values,
                  as.numeric(as.character(rownames(sommap$prototypes))), 
                  show.names, names, 
                  sommap$parameters$the.grid, args)
     } else {
+      # smooth.dist
       if(sommap$parameters$the.grid$topo=="hexagonal"){
         warning("Hexagonal topograpy: imputing missing values to make a full squared grid\n", call.=TRUE, 
                 immediate.=TRUE)
@@ -247,6 +260,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
         metR::geom_contour_fill(na.fill = TRUE) + 
       labs(title="Distances between prototypes") + scale_fill_distiller(palette="PRGn")
     }
+    
   } else if (type=="mds") {
     if (sommap$parameters$type=="relational") {
       the.distances <- protoDist(sommap, "complete")
@@ -258,14 +272,16 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     proj.coord <- cmdscale(the.distances, 2)
     if (is.null(args$labels)) args$labels <- as.character(1:nrow(sommap$prototypes))
     if (is.null(args$cex)) args$cex <- 4
-    if(is.null(args$sc)){
+
+    if(is.null(args$sc)){  #### Super cluster case
       dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], 
                              "labels"=args$labels)
       ggplot(dataplot, aes_string(x="x", y="y")) + 
         geom_text(aes_string(label="labels"), alpha=0.7, size=args$cex, 
                   fontface="bold") +
         labs(x="x", y="y", title="Prototypes visualization by MDS")
-    } else {
+      
+    } else {  #### Regular case
       dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels, "Super_Cluster"=as.factor(args$sc))
       ggplot(dataplot, aes_string(x="x", y="y")) + 
         geom_text(aes_string(label="labels", col="Super_Cluster"), alpha=0.7, 
@@ -295,67 +311,73 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
 plotObs <- function(sommap, type, variable, my.palette, show.names, names,
                     is.scaled, view, args) {
   ## types : hitmap, lines, names, color, barplot, boxplot
-  # default value is type="hitmap"
   if (!is.element(type,c("hitmap", "lines", "names", "color",
                          "barplot", "boxplot", "meanline"))) {
-    warning("incorrect type replaced by 'hitmap'\n", call.=TRUE, 
-            immediate.=TRUE)
-    type <- "hitmap"
+    stop(paste0("Incorrect type. Observations plots can be 'hitmap', 'lines', 'names', 'color',\n",
+    "'barplot', 'boxplot' or 'meanline'"), call.=TRUE)
   }
-  # korresp control
-  if (sommap$parameters$type=="korresp" && !(type%in%c("hitmap", "names"))) {
-    warning("korresp SOM: incorrect type replaced by 'hitmap'\n", call.=TRUE, 
-            immediate.=TRUE)
-    type <- "hitmap"
+ 
+  # korresp and relational control
+  if (sommap$parameters$type %in% c("korresp", "relational") && !(type %in% c("hitmap", "names"))) {
+    stop(paste0(sommap$parameters$type, " SOM: observations plots can be 'hitmap' or 'names'"), 
+         call.=TRUE)
   }
-  # relational control
-  if (sommap$parameters$type=="relational" && !(type%in%c("hitmap", "names"))) {
-    warning("relational SOM: incorrect type replaced by 'hitmap'\n", 
-            call.=TRUE, immediate.=TRUE)
-    type <- "hitmap"
+
+  tmp.var <- variable
+  
+  # Append in the case where wrong type is provided
+  if(is.null(variable)){ 
+    if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
+      if(view=="r"){
+        tmp.var <- rownames(sommap$data)
+      } else tmp.var <- colnames(sommap$data)
+    } else {
+      tmp.var <- colnames(sommap$data)
+    }
+  }
+  
+  if(is.numeric(variable)){
+    if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
+      if(view=="r"){
+        tmp.var <- rownames(sommap$data)[variable]
+      } else tmp.var <- colnames(sommap$data)[variable]
+    } else {
+      tmp.var <- colnames(sommap$data)[variable]
+    }
+  }
+  
+  if(type %in% c("names", "color")){
+    if (length(tmp.var)>1) {
+      warning("length(variable)>1, only first element will be considered\n", 
+              call.=TRUE, immediate.=TRUE)
+      tmp.var <- tmp.var[1]
+    }
   }
   
   if(type %in% c("lines", "barplot", "boxplot", "names", "meanline")){
     if (type %in% c("lines", "barplot", "boxplot", "meanline")) {
-      values <- sommap$data[,variable]
+      values <- sommap$data[,tmp.var]
     } else if (type=="names") {
       if (sommap$parameters$type %in% c("relational", "korresp")) {
+        tmp.var <- "names"
         values <- names(sommap$clustering)
-        args$varname <- "names"
       }
       if(sommap$parameters$type=="numeric") {
-        if (length(variable)>1) {
-          warning("length(variable)>1, only first element will be considered\n", 
-                  call.=TRUE, immediate.=TRUE)
-          variable <- variable[1]
-        }
-        if(is.null(variable)) variable <- "row.names"
-        if(variable=="row.names"){
+        if(is.null(variable)) tmp.var <- "row.names"
+        if(tmp.var=="row.names"){
             values <- names(sommap$clustering)
         } else {
-          if(is.numeric(variable)) variable <- colnames(sommap$data)[variable]
-            values <- sommap$data[,variable]
+          values <- sommap$data[,tmp.var]
         }
-        args$varname <- variable
       }
     }
+    args$varname <- tmp.var
     ggplotFacet("obs", type, values, sommap$clustering,
                 show.names, names, is.scaled,
                 sommap$parameters$the.grid, args)
+    
   } else if(type %in% c("color", "hitmap")){
       if (type=="color") {
-      if (length(variable)>1) {
-        warning("length(variable)>1, only first element will be considered\n", 
-                call.=TRUE, immediate.=TRUE)
-        variable <- variable[1]
-      } 
-        if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
-          if(view=="r"){
-            tmp.var <- rownames(sommap$data)[variable]
-          } else tmp.var <- colnames(sommap$data)[variable]
-        } else if (sommap$parameters$type=="numeric" & (is.numeric(variable))) {
-          tmp.var <- colnames(sommap$data)[variable]
-        } else tmp.var <- variable
         args$varname <- tmp.var
       values <- sommap$data[,tmp.var]
     }  else if (type=="hitmap") {
@@ -411,23 +433,21 @@ plotProjGraph <- function(proj.graph, show.names=FALSE, names=NULL,
 plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     show.names, names, is.scaled, s.radius, pie.graph,
                     pie.variable, args) {
+  # korresp control
+  if (sommap$parameters$type=="korresp") 
+    stop("graphics of type 'add' do not exist for 'korresp'\n", call.=TRUE)
+  
   ## types : pie, color, lines, boxplot, names, words, graph, barplot
-
-  # default value is type="pie"
   if (!is.element(type,c("pie", "color", "lines", "meanline", "barplot", "words",
                          "boxplot", "names", "graph"))) {
-    warning("incorrect type replaced by 'pie'\n", call.=TRUE, 
-            immediate.=TRUE)
-    type <- "pie"
+    stop(paste0("Incorrect plot type. Additional plots types can be : 'pie', 'color',\n",
+    "'lines', 'meanline', 'barplot', 'words', 'boxplot', 'names' or 'graph'"), call.=TRUE)
   }
+  
   if (is.null(variable)) {
     stop("for what='add', the argument 'variable' must be supplied\n", 
          call.=TRUE)
   }
-  
-  # korresp control
-  if (sommap$parameters$type=="korresp") 
-    stop("graphics of type 'add' do not exist for 'korresp'\n", call.=TRUE)
   
   if(type!="graph" && nrow(variable)!=nrow(sommap$data)){
     stop("length of additional variable does not fit length of the original
@@ -618,7 +638,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
     }
   }
 
-  if ((x$parameters$type=="korresp")&&!(view%in%c("r","c")))
+  if ((x$parameters$type=="korresp") && !(view%in%c("r","c")))
       stop("view must be one of 'r'/'c'",call.=TRUE)
   if (length(names)!=prod(x$parameters$the.grid$dim) & what!="energy") {
     names=switch(type,

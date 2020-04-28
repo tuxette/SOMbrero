@@ -85,7 +85,7 @@ calculateRadius <- function(the.grid, radius.type, ind.t, maxit) {
   } else if (radius.type=="gaussian") {
     #if (the.grid$topo=="square")
       r0 <- 1+(2/3)*sqrt(sum(the.grid$dim^2))
-    r <- r0*(1/r0)^((ind.t-1)/(maxit-1))-1 # power decrease 
+      r <- r0*(1/r0)^((ind.t-1)/(maxit-1))-1 # power decrease 
   }
   
   r
