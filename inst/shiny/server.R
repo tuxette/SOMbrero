@@ -187,9 +187,9 @@ shinyServer(function(input, output, session) {
   
   observe({
     if(is.null(input$somtype) | is.null(dInput())){
-      disable("trainbutton")
+      shinyjs::disable("trainbutton")
     } else {
-      enable("trainbutton")
+      shinyjs::enable("trainbutton")
     }
   })
   
@@ -325,11 +325,10 @@ shinyServer(function(input, output, session) {
   
   varsomplot <- debounce(reactive({
     tmp.var <- 1
-    if(input$somplottype == 'color' || input$somplottype == '3d'){
+    if(input$somplottype %in% c("color", "3d")){
       tmp.var <- input$somplotvar
     }
-    if(input$somplottype == 'boxplot' || input$somplottype == 'barplot' || 
-       input$somplottype == 'lines' || input$somplottype == 'meanline'){
+    if(input$somplottype %in% c("boxplot", "barplot", "lines", "meanline")){
       tmp.var <- input$somplotvar2
     }
     if(input$somplottype == 'names'){
@@ -340,6 +339,14 @@ shinyServer(function(input, output, session) {
   
   # Plot the SOM
   output$somplot <- renderPlot({
+    # Add validates to wait until the var inputs are updates
+    if(input$somplottype %in% c("boxplot", "barplot", "lines", "meanline"))
+      validate(need(varsomplot() == input$somplotvar2, "wait..."))
+    if(input$somplottype %in% c("color", "3d"))
+      validate(need(varsomplot() == input$somplotvar, "wait..."))
+    if(input$somplottype %in% c("names"))
+      validate(need(varsomplot() == "row.names", "wait..."))
+    
     if(is.null(dInput()))
       return(NULL)
     if(input$trainbutton ==0)
