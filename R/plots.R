@@ -160,8 +160,7 @@ coords_polydist <- function(ind, values, the.grid) {
 ### SOM algorithm graphics
 plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
                            names, is.scaled, view, args) {
-  ## types : 3d, lines, barplot, color, smooth.dist, poly.dist, umatrix,
-  # mds
+  ## types : 3d, lines, barplot, color, smooth.dist, poly.dist, umatrix, mds
   if (!is.element(type,c("3d","lines", "meanline", "barplot","color", "poly.dist",
                          "umatrix", "smooth.dist", "mds", "grid.dist"))) {
     stop(paste0("Incorrect type. Prototypes plots can be '3d','lines', 'meanline', 'barplot',\n",
@@ -174,6 +173,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     stop(paste0("prototypes", type, " plot is not available for 'relational'\n"), 
          call.=TRUE)
   
+  # Handling variable(s) --> used in tmp.var
   if(type %in% c("3d", "color")){
     if (length(variable)>1) {
       warning("length(variable)>1, only first element will be considered\n", 
@@ -181,20 +181,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
       variable <- variable[1]
     }
   }
-  
   tmp.var <- variable
-  
-  # Append in the case where wrong type is provided
-  if(is.null(variable)){ 
-    if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
-      if(view=="r"){
-        tmp.var <- rownames(sommap$data)
-      } else tmp.var <- colnames(sommap$data)
-    } else {
-      tmp.var <- colnames(sommap$data)
-    }
-  }
-  
   if(is.numeric(variable)){
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if(view=="r"){
@@ -205,6 +192,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     }
   }
 
+  # Switching between plot types
   if (type == "lines" || type == "barplot" || type == "meanline") {
     ggplotFacet("prototypes", type, sommap$prototypes[,tmp.var], as.numeric(rownames(sommap$prototypes)),
                 show.names, names, is.scaled,
@@ -323,19 +311,15 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
          call.=TRUE)
   }
 
-  tmp.var <- variable
-  
-  # Append in the case where wrong type is provided
-  if(is.null(variable)){ 
-    if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
-      if(view=="r"){
-        tmp.var <- rownames(sommap$data)
-      } else tmp.var <- colnames(sommap$data)
-    } else {
-      tmp.var <- colnames(sommap$data)
+  # Handling variable(s) -> used in tmp.var
+  if(type %in% c("names", "color")){
+    if (length(variable)>1) {
+      warning("length(variable)>1, only first element will be considered\n", 
+              call.=TRUE, immediate.=TRUE)
+      variable <- variable[1]
     }
   }
-  
+  tmp.var <- variable
   if(is.numeric(variable)){
     if (sommap$parameters$type=="korresp" & (is.numeric(variable))) {
       if(view=="r"){
@@ -346,14 +330,7 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
     }
   }
   
-  if(type %in% c("names", "color")){
-    if (length(tmp.var)>1) {
-      warning("length(variable)>1, only first element will be considered\n", 
-              call.=TRUE, immediate.=TRUE)
-      tmp.var <- tmp.var[1]
-    }
-  }
-  
+  # Switching between plot types
   if(type %in% c("lines", "barplot", "boxplot", "names", "meanline")){
     if (type %in% c("lines", "barplot", "boxplot", "meanline")) {
       values <- sommap$data[,tmp.var]
@@ -375,7 +352,6 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
     ggplotFacet("obs", type, values, sommap$clustering,
                 show.names, names, is.scaled,
                 sommap$parameters$the.grid, args)
-    
   } else if(type %in% c("color", "hitmap")){
       if (type=="color") {
         args$varname <- tmp.var
@@ -387,7 +363,6 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
                show.names, names, sommap$parameters$the.grid, args)
   }
 }
-
 
 
 projectFactor <- function(the.graph, clustering, the.factor, pie.color=NULL) {
@@ -629,7 +604,8 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
   }
   
   if(is.null(variable)){
-    if (what!="add" & type!="names"){
+    if (what!="add" & !(type %in% c("names", "umatrix", "smooth.dist", 
+                                    "mds", "grid.dist", "poly.dist"))){
       if(x$parameters$type %in% c("numeric", "relational")){
         variable <- colnames(x$data)[1:ncol(x$data)]
       } else if(x$parameters$type == "korresp"){

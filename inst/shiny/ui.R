@@ -22,7 +22,6 @@ shinyUI(
     #"SOMbrero Web User Interface (v2.0)",
              windowTitle="SOMbrero",
              useShinyjs(),  # Set up shinyjs
-             extendShinyjs(text = jscode, functions = "refocus"),
              id="tabs",
              selected="Intro",
 
@@ -450,7 +449,7 @@ plot can help you determine the adequate number of superclasses."
                                             ),
                                             column(9,
                                                    verbatimTextOutput("runcodescplot"),
-                                                   jqui_resizable(plotOutput("scplot"))
+                                                   jqui_resizable(plotOutput("scplot", width = 750, height = 600))
                                             )
                                           ),
                                           br(),
