@@ -12,7 +12,7 @@ lesmis.som <- trainSOM(x.data=dissim.lesmis, type="relational")
 # overview of the prototypes values
 plot(lesmis.som, what="prototypes", type="barplot")
 # Plots are ggplot2 likes so you can manipulate plot elements afterwards
-plot(lesmis.som, what="prototypes", type="barplot") +    
+plot(lesmis.som, what="prototypes", type="barplot") + 
   guides(fill=guide_legend(keywidth=0.1, keyheight=0.1, default.unit="cm", ncol=2,
                            label.theme=element_text(size=6))) + 
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
@@ -35,3 +35,4 @@ plot(lesmis.sc, type="barplot", show.names=TRUE)
 quality(lesmis.som, quality.type="topographic")
 ## or the quantization error
 quality(lesmis.som, quality.type="quantization")
+

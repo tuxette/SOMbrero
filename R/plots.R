@@ -161,17 +161,21 @@ coords_polydist <- function(ind, values, the.grid) {
 plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
                            names, is.scaled, view, args) {
   ## types : 3d, lines, barplot, color, smooth.dist, poly.dist, umatrix, mds
-  if (!is.element(type,c("3d","lines", "meanline", "barplot","color", "poly.dist",
-                         "umatrix", "smooth.dist", "mds", "grid.dist"))) {
-    stop(paste0("Incorrect type. Prototypes plots can be '3d','lines', 'meanline', 'barplot',\n",
-                "'color','poly.dist','umatrix', 'smooth.dist', 'mds' or 'grid.dist'"), call.=TRUE, 
-            immediate.=TRUE)
-  }
   
-  # relational control
-  if (sommap$parameters$type=="relational" && type %in% c("color", "3d"))
-    stop(paste0("prototypes", type, " plot is not available for 'relational'\n"), 
-         call.=TRUE)
+  authorizedtypes <- list("numeric" = c("3d","lines", "meanline", "barplot", 
+                                        "color", "poly.dist", "umatrix", 
+                                        "smooth.dist", "mds", "grid.dist"),
+                          "korresp" = c("3d","lines", "meanline", "barplot",
+                                        "color", "poly.dist", "umatrix", 
+                                        "smooth.dist", "mds", "grid.dist"),
+                          "relational" = c("lines", "meanline", "barplot", "poly.dist",
+                                           "umatrix", "smooth.dist", "mds", "grid.dist")) 
+  
+  if (!is.element(type, authorizedtypes[[sommap$parameters$type]])) {
+    stop(paste0("Incorrect type. For ", sommap$parameters$type, " SOM, prototypes plots can be '", 
+                paste(authorizedtypes[[sommap$parameters$type]], collapse="', '"),
+                "'"), call.=TRUE)
+  }
   
   # Handling variable(s) --> used in tmp.var
   if(type %in% c("3d", "color")){
@@ -298,19 +302,18 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
 
 plotObs <- function(sommap, type, variable, my.palette, show.names, names,
                     is.scaled, view, args) {
-  ## types : hitmap, lines, names, color, barplot, boxplot
-  if (!is.element(type,c("hitmap", "lines", "names", "color",
-                         "barplot", "boxplot", "meanline"))) {
-    stop(paste0("Incorrect type. Observations plots can be 'hitmap', 'lines', 'names', 'color',\n",
-    "'barplot', 'boxplot' or 'meanline'"), call.=TRUE)
+  
+  authorizedtypes <- list("numeric" = c("hitmap", "lines", "names", "color",
+                                        "barplot", "boxplot", "meanline"),
+                          "korresp" = c("hitmap", "names"),
+                          "relational" = c("hitmap", "names")) 
+  
+  if (!is.element(type, authorizedtypes[[sommap$parameters$type]])) {
+    stop(paste0("Incorrect type. For ", sommap$parameters$type, " SOM, observation plots can be '", 
+                paste(authorizedtypes[[sommap$parameters$type]], collapse="', '"),
+                "'"), call.=TRUE)
   }
- 
-  # korresp and relational control
-  if (sommap$parameters$type %in% c("korresp", "relational") && !(type %in% c("hitmap", "names"))) {
-    stop(paste0(sommap$parameters$type, " SOM: observations plots can be 'hitmap' or 'names'"), 
-         call.=TRUE)
-  }
-
+  
   # Handling variable(s) -> used in tmp.var
   if(type %in% c("names", "color")){
     if (length(variable)>1) {
@@ -408,17 +411,26 @@ plotProjGraph <- function(proj.graph, show.names=FALSE, names=NULL,
 plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     show.names, names, is.scaled, s.radius, pie.graph,
                     pie.variable, args) {
+  
   # korresp control
   if (sommap$parameters$type=="korresp") 
     stop("graphics of type 'add' do not exist for 'korresp'\n", call.=TRUE)
   
-  ## types : pie, color, lines, boxplot, names, words, graph, barplot
-  if (!is.element(type,c("pie", "color", "lines", "meanline", "barplot", "words",
-                         "boxplot", "names", "graph"))) {
-    stop(paste0("Incorrect plot type. Additional plots types can be : 'pie', 'color',\n",
-    "'lines', 'meanline', 'barplot', 'words', 'boxplot', 'names' or 'graph'"), call.=TRUE)
+  authorizedtypes <- list("numeric" = c("pie", "color", "lines", "meanline", 
+                                        "barplot", "words", "boxplot", "names", 
+                                        "graph"),
+                          "relational" = c("pie", "color", "lines", "meanline", 
+                                           "barplot", "words", "boxplot", "names", 
+                                           "graph")) 
+  
+  if (!is.element(type, authorizedtypes[[sommap$parameters$type]])) {
+    stop(paste0("Incorrect type. For ", sommap$parameters$type, 
+                " SOM, plots for additional variables can be '", 
+                paste(authorizedtypes[[sommap$parameters$type]], collapse="', '"),
+                "'"), call.=TRUE)
   }
   
+  # Variable controls
   if (is.null(variable)) {
     stop("for what='add', the argument 'variable' must be supplied\n", 
          call.=TRUE)
@@ -492,8 +504,7 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
     args$pie.graph <- pie.graph
     args$pie.variable <- pie.variable
     do.call("plotProjGraph", args)
-  } else 
-    stop("Sorry: this type is still to be implemented.", call.=TRUE)
+  }
 }
 
 #' @title Plot a \code{somRes} class object
@@ -572,7 +583,6 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
                                     "prototypes"="color",
                                     "add"="pie",
                                     "energy"="energy"),
-                        # variable = if (what=="add" | type=="names") NULL else 1:ncol(x$data),
                         variable = NULL,
                         my.palette=NULL, 
                         is.scaled = if (x$parameters$type=="numeric") TRUE else
@@ -589,6 +599,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
   args <- list(...)
   what <- match.arg(what)
 
+  # To deprecate 
   calls <- names(sapply(match.call(), deparse))[-1]
   if(any("print.title" %in% calls)) {
     warning("'print.title' will be deprecated, please use 'show.names' instead", call. = F, immediate. = T)
@@ -599,6 +610,11 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
     names <- args$the.titles
   }
   
+  # Korresp control
+  if ((x$parameters$type=="korresp") && !(view%in%c("r","c")))
+    stop("view must be one of 'r'/'c'",call.=TRUE)
+  
+  # Variable control
   if(is.null(variable)==F){
     if(is.null(args$varname)) args$varname <- deparse(substitute(variable))
   }
@@ -614,8 +630,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
     }
   }
 
-  if ((x$parameters$type=="korresp") && !(view%in%c("r","c")))
-      stop("view must be one of 'r'/'c'",call.=TRUE)
+  # Names control
   if (length(names)!=prod(x$parameters$the.grid$dim) & what!="energy") {
     names=switch(type,
                       "graph"=1:prod(x$parameters$the.grid$dim),
@@ -623,6 +638,7 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
     warning("unadequate length for 'names'; replaced by default",
             call.=TRUE, immediate.=TRUE)
   }
+  
   switch(what,
          "prototypes"=plotPrototypes(x, type, variable, my.palette, show.names,
                                      names, is.scaled, view, args),
