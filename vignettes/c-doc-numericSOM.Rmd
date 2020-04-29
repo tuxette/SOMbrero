@@ -97,7 +97,7 @@ It is stabilized during the last 500 iterations.
 
 The resulting clustering distribution can be visualized by the hitmap:
 ```{r hitmapObs}
-plot(my.som, what="obs", type="hitmap", maxsize=30)
+plot(my.som, what="obs", type="hitmap")
 ```
 
 The observations are almost uniformly distributed on the map.
@@ -483,15 +483,15 @@ plot(my.sc, what="prototypes", type="mds")
 
 And some others identify the super clusters with titles:
 ```{r irisSCplot3}
-plot(my.sc, what="prototypes", type="color", var="Sepal.Length")
+plot(my.sc, what="prototypes", type="color", variable="Sepal.Length")
 plot(my.sc, what="prototypes", type="poly.dist")
-plot(my.sc, what="add", type="pie", variable=iris$Species)
 ```
 
 It is also possible to consider an additional variable using the 
-argument ```add.variable```:
+argument ```what='add'```:
 ```{r irisSCplot4}
-plot(my.sc, type="color", add.type=TRUE, variable=iris$Sepal.Length)
+plot(my.sc, what="add", type="pie", variable=iris$Species)
+plot(my.sc, what="add", type="color", variable=iris$Sepal.Length)
 ```
 
 All these graphics help to see that super-cluster number 2 is found in the top
