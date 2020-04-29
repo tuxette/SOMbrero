@@ -88,7 +88,7 @@ no type     |   x       |       |               |         |
 hitmap      |           |   x   |               |         |         x
 color       |           |       |       x2      |         |         x2
 lines       |           |       |       x2      |         |         x2
-barplot     |           |       |       x       |         |
+barplot     |           |       |       x       |         |         x
 pie         |           |       |               |         |
 boxplot     |           |       |               |         |
 3d          |           |       |       x2      |         |
