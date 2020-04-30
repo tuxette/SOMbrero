@@ -243,7 +243,7 @@ super-clusters and to display it:
 ```{r lesmisSCProjGraph}
 projectIGraph(sc.mis, lesmis)
 par(mar=rep(0,4))
-plot(sc.mis, type="projgraph", variable=lesmis, s.radius=2)
+plot(sc.mis, what="add", type="projgraph", variable=lesmis, s.radius=2)
 ```
 
 
