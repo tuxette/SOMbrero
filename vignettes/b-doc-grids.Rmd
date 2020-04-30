@@ -16,8 +16,7 @@ output:
 -->
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-library(SOMbrero)
-library(ggplot2)
+library("SOMbrero")
 ```
 
 ## Definition and purpose of a `myGrid` class object

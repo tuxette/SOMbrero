@@ -121,13 +121,7 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
   }
   
   tp <- tp +  ggtitle(myTitle(args, what)) + coord_fixed() + 
-    labs(fill = labelcolor) +
-    theme(axis.title.x = element_blank(),
-          axis.text.x = element_blank(),
-          axis.ticks.x = element_blank(),
-          axis.title.y = element_blank(),
-          axis.text.y = element_blank(),
-          axis.ticks.y = element_blank())
+    labs(fill = labelcolor) + theme_void() 
 
   if (show.names) {
     datagrid <- data.frame(the.grid$coord, names)
@@ -290,8 +284,8 @@ ggplotEnergy <- function(sommap) {
     dataenergy <- data.frame("Steps" = sommap$backup$steps, 
                              "Energy" = sommap$backup$energy)
     p <- ggplot(dataenergy, aes_string(x = "Steps", y = "Energy")) + 
-      geom_line() + geom_point() + 
-      ggtitle("Energy evolution") 
+      geom_line() + geom_point() + ggtitle("Energy evolution") +
+      theme_bw() 
     p
   }
 }

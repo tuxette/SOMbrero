@@ -20,7 +20,7 @@ tables, graphs or any 'relational' data described by a dissimilarity matrix).
 See ```help(SOMbrero)``` for further details.
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
-library(SOMbrero)
+library("SOMbrero")
 ```
 
 ### Numeric SOM
