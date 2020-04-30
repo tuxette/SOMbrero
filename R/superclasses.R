@@ -278,12 +278,12 @@ summary.somSC <- function(object, ...) {
 
 #' @export
 #' @rdname superClass
-plot.somSC <- function(x, what=c("prototypes", "obs", "add"), 
-                       type=c("dendrogram", "grid", "hitmap", "lines", "meanline",
-                                 "barplot", "boxplot", "mds", "color", 
-                                 "poly.dist", "pie", "graph", "dendro3d", 
-                                 "projgraph"),
-                       plot.var=TRUE, 
+plot.somSC <- function(x, what = c("prototypes", "obs", "add"), 
+                       type = c("dendrogram", "grid", "hitmap", "lines", 
+                                "meanline", "barplot", "boxplot", "mds", 
+                                "color", "poly.dist", "pie", "graph", 
+                                "dendro3d", "projgraph"),
+                       plot.var = TRUE, 
                        show.names = TRUE, 
                        names = 1:prod(x$som$parameters$the.grid$dim),
                        ...) {
@@ -292,38 +292,43 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
   type <- match.arg(type)
   
   calls <- names(sapply(match.call(), deparse))[-1]
-  if(any("print.title" %in% calls)) {
-    warning("'print.title' will be deprecated, please use 'show.names' instead", call. = F, immediate. = T)
+  if (any("print.title" %in% calls)) {
+    warning("'print.title' will be deprecated, please use 'show.names' instead",
+            call. = FALSE, immediate. = TRUE)
     show.names <- args$print.title
   }
-  if(any("the.titles" %in% calls)) {
-    warning("'the.titles' will be deprecated, please use 'names' instead", call. = F, immediate. = T)
+  if (any("the.titles" %in% calls)) {
+    warning("'the.titles' will be deprecated, please use 'names' instead", 
+            call. = FALSE, immediate. = TRUE)
     names <- args$the.titles
   }
-  if(any("add.type" %in% calls)) {
-    warning("'add.type' will be deprecated, please use `what='add'` instead", call. = F, immediate. = T)
+  if (any("add.type" %in% calls)) {
+    warning("'add.type' will be deprecated, please use `what='add'` instead", 
+            call. = FALSE, immediate. = TRUE)
     what <- "add"
   }
   
   args$what <- what[1]
-  if(!(type %in% c("dendrogram", "dendro3d"))){
+  if (!(type %in% c("dendrogram", "dendro3d"))) {
     # Type control (if not in dendro, dendro3d)
     authorizedtypes <-
-      list("numeric" = list("obs"=c("hitmap", "lines", "meanline", 
-                                   "barplot", "boxplot","color"),
-                           "prototypes"=c("grid", "lines", "meanline","barplot", "mds", 
-                                          "color", "poly.dist"),
-                           "add"=c("lines", "meanline", "barplot", "boxplot","color",
-                                   "pie", "graph", "projgraph")),
-           "korresp"= list("obs"=c("hitmap"),
-                            "prototypes"=c("grid", "lines", "meanline", "barplot", "mds", 
-                                           "color", "poly.dist"),
-                           "add"=NULL),
-           "relational" = list("obs"=c("hitmap"),
-                               "prototypes"=c("grid", "lines", "meanline", "barplot", "mds", 
-                                              "poly.dist"),
-                               "add"=c("lines", "meanline", "barplot", "pie", "graph", 
-                                       "projgraph"))
+      list("numeric" = list("obs" = c("hitmap", "lines", "meanline", "barplot",
+                                      "boxplot","color"),
+                            "prototypes" = c("grid", "lines", "meanline",
+                                             "barplot", "mds", "color", 
+                                             "poly.dist"),
+                            "add" = c("lines", "meanline", "barplot", "boxplot",
+                                      "color", "pie", "graph", "projgraph")),
+           "korresp" = list("obs" = c("hitmap"),
+                            "prototypes" = c("grid", "lines", "meanline",
+                                             "barplot", "mds", "color", 
+                                             "poly.dist"),
+                            "add" = NULL),
+           "relational" = list("obs" = c("hitmap"),
+                               "prototypes" = c("grid", "lines", "meanline",
+                                                "barplot", "mds", "poly.dist"),
+                               "add" = c("lines", "meanline", "barplot", "pie",
+                                         "graph", "projgraph"))
            )
     
     if (!is.element(type, authorizedtypes[[x$som$parameters$type]][[args$what]])) {
@@ -332,22 +337,24 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         "prototypes" = "prototypes",
         "add" = "additional variables"
       )
-      if(args$what == "add" && x$som$parameters$type == "korresp"){
+      if (args$what == "add" && x$som$parameters$type == "korresp") {
         stop(paste0("Incorrect type. For ", x$som$parameters$type,
-                    " super classes, plots for ", namedwhat, " are not authorized"), call.=TRUE)
+                    " super classes, plots for ", namedwhat, 
+                    " are not authorized"), call. = TRUE)
       } else {
         stop(paste0("Incorrect type. For ", x$som$parameters$type,
                     " super classes, plots for ", namedwhat, " can be '",
-                    paste(authorizedtypes[[x$som$parameters$type]][[args$what]], collapse="', '"),
-                    "'"), call.=TRUE)
+                    paste(authorizedtypes[[x$som$parameters$type]][[args$what]],
+                          collapse="', '"),
+                    "'"), call. = TRUE)
       }
     }
   }
 
   # Colors (used only for dendrogram, dendro3d, graph and projgraph)
-  if(is.null(x$cluster)==F){
+  if (!is.null(x$cluster)) {
     nbclust <- max(x$cluster)
-    if ((!is.null(args$col)) & (length(args$col)==nbclust)) {
+    if ((!is.null(args$col)) & (length(args$col) == nbclust)) {
       clust.col.pal <- args$col
     } else {
       if (!is.null(args$col))
@@ -361,10 +368,10 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
     nbclust <- 1
   }
   
-  if (type=="dendrogram") {
+  if (type == "dendrogram") {
     args$x <- x$tree
     if (is.null(args$main)) args$main <- "Super-clusters dendrogram"
-    if ((x$tree$method=="ward.D") & (plot.var)) {
+    if ((x$tree$method == "ward.D") & (plot.var)) {
       layout(matrix(c(2,2,1),ncol=3))
       Rsq <- cumsum(x$tree$height/sum(x$tree$height))
       plot(length(x$tree$height):1, Rsq, type="b", pch="+",
@@ -374,7 +381,7 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
     } else  {
       do.call("plot", args)
     }
-    if (length(x)>2) {
+    if (length(x) > 2) {
       rect.hclust(x$tree, k = max(x$cluster), cluster = x$cluster,
                   border = clust.col.pal[unique(x$cluster[x$tree$order])])
       legend("topright", col = clust.col.pal, pch = 19, 
@@ -383,19 +390,19 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
                    call.=TRUE, immediate.=TRUE)
     layout(1)
     
-  } else if (type=="dendro3d") {
-    if (length(x)<3) {
+  } else if (type == "dendro3d") {
+    if (length(x) < 3) {
       clust.col <- "black"
     } 
      x.y.coord <- x$som$parameters$the.grid$coord + 0.5
-    if (floor(max(x$tree$height[-which.max(x$tree$height)]))==0) {
+    if (floor(max(x$tree$height[-which.max(x$tree$height)])) == 0) {
       z.max <- max(x$tree$height[-which.max(x$tree$height)])
     } else {
       z.max <- ceiling(max(x$tree$height[-which.max(x$tree$height)]))
     }
-    if(is.null(args$angle)) args$angle <- 40
+    if (is.null(args$angle)) args$angle <- 40
     posleg <- "bottomright"
-    if(args$angle>80) posleg <- "topright"
+    if (args$angle > 80) posleg <- "topright"
     spt <- scatterplot3d(x=x.y.coord[,1], y=x.y.coord[,2], 
                          z=rep(0,prod(x$som$parameters$the.grid$dim)), 
                          xlim=c(min(x.y.coord[,1])-0.5, max(x.y.coord[,1])+0.5), 
@@ -404,7 +411,7 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
                          angle=args$angle,
                          pch=19, color=clust.col, xlab="x", ylab="y",  
                          zlab="", x.ticklabs="", y.ticklabs="")
-    if(length(x)>2){
+    if (length(x) > 2) {
       legend(posleg, col = clust.col.pal, pch = 19, 
              legend = paste("SC", 1:nbclust), cex = 1)
     }
@@ -418,25 +425,27 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
                           byrow=TRUE), type="l")
     }
   } else {
-    if (length(x)<3) {
+    if (length(x) < 3) {
       stop("No super clusters: plot unavailable.\n")
     } else {
-      
-      if (type=="grid") {
+      if (type == "grid") {
         args$sc <- max(x$cluster)
-        ggplotGrid("prototypes", type="grid", values=x$cluster, clustering=as.numeric(as.character(rownames(x$som$prototypes))), 
-                   show.names, names,
-                   the.grid=x$som$parameters$the.grid , args)
+        ggplotGrid("prototypes", type="grid", values=x$cluster, 
+                   clustering=as.numeric(as.character(rownames(x$som$prototypes))), 
+                   show.names=show.names, names=names, 
+                   the.grid=x$som$parameters$the.grid, args)
         
       } else if (type=="hitmap") {
         args$sc <- max(x$cluster)
-        ggplotGrid("observations", type="hitmap", values=x$cluster[x$som$clustering], clustering=x$som$clustering, 
-                   show.names, names,
-                   the.grid=x$som$parameters$the.grid , args)
+        ggplotGrid("observations", type="hitmap", 
+                   values=x$cluster[x$som$clustering], 
+                   clustering=x$som$clustering, 
+                   show.names=show.names, names=names, 
+                   the.grid=x$som$parameters$the.grid, args)
         
       } else if (type %in% c("lines", "meanline", "barplot", "boxplot", "mds",
                              "color", "poly.dist", "pie", "graph")) {
-        if (type=="graph") {
+        if (type == "graph") {
           neclust <- which(!is.na(match(1:prod(x$som$parameters$the.grid$dim),
                                         unique(x$som$clustering))))
           if (is.null(args$pie.graph)) args$pie.graph <- FALSE
@@ -454,24 +463,24 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         
         # manage titles
         args$show.names <- show.names
-        if(type %in% c("lines", "meanline", "barplot", "boxplot", "poly.dist")){
+        if (type %in% c("lines", "meanline", "barplot", "boxplot", "poly.dist")) {
           args$names <- names
         } else {
           args$names <- paste("SC", x$cluster)
         }
   
         # manage colors 
-        if(args$what=="obs"){
+        if (args$what == "obs") {
           args$varcolor <- x$cluster[x$som$clustering]
           args$sc <- x$cluster[x$som$clustering] 
         }
-        if(args$what=="prototypes"){
+        if (args$what == "prototypes") {
           args$varcolor <- x$cluster
           args$sc <-  x$cluster
         }
 
-        if(args$what=="add"){
-          if(is.null(args$variable)){
+        if (args$what == "add") {
+          if (is.null(args$variable)) {
             stop("Specify the variable to plot", call. = TRUE)
           }
           callvar <- match.call(expand.dots = FALSE)$...[["variable"]]
@@ -480,21 +489,22 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         
        do.call("plot.somRes", args)
        
-      } else if (type=="projgraph") {
+      } else if (type == "projgraph") {
         # check arguments
-        if (x$som$parameters$type=="korresp")
+        if (x$som$parameters$type == "korresp")
           stop(type, " plot is not available for 'korresp' super classes\n",
-               call.=TRUE)
+               call. = TRUE)
         if (is.null(args$variable)) {
           stop("for type='projgraph', the argument 'variable' must be supplied (igraph object)\n",
-               call.=TRUE)
+               call. = TRUE)
         }
-        if (!is.igraph(args$variable)){
+        if (!is.igraph(args$variable)) {
           stop("for type='projgraph', argument 'variable' must be an igraph object\n",
-               call.=TRUE)
+               call. = TRUE)
         }
-        if (length(V(args$variable)) != nrow(x$som$data)){
-          stop("number of nodes in graph does not fit length of the original data", call.=TRUE)
+        if (length(V(args$variable)) != nrow(x$som$data)) {
+          stop("number of nodes in graph does not fit length of the original data", 
+               call. = TRUE)
         }
         
         args$vertex.color <- clust.col.pal
@@ -505,10 +515,10 @@ plot.somSC <- function(x, what=c("prototypes", "obs", "add"),
         if (args$pie.graph) {
           if (is.null(args$pie.variable))
             stop("pie.graph is TRUE, you must supply argument 'pie.variable'\n",
-               call.=TRUE)
+                 call.=TRUE)
           if (nrow(as.matrix(args$pie.variable)) != nrow(x$som$data)) {
-            stop("length of argument 'pie.variable' does not fit length of the
-             original data", call.=TRUE)
+            stop("length of argument 'pie.variable' does not fit length of the original data",
+                 call.=TRUE)
           }
           args$vertex.shape <- "pie"
           if (is.null(args$vertex.pie.color)) args$vertex.pie.color <- NULL

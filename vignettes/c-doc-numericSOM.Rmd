@@ -468,7 +468,7 @@ Case ```"dendro3d"``` plots a 3d dendrogram.
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:
 ```{r irisSCplot2, fig.width=6, fig.height=4}
-plot(my.sc, type="hitmap", maxsize=20)
+plot(my.sc, what = "obs", type="hitmap", maxsize=20)
 ```
 
 ```{r irisSCplot2B}

@@ -301,7 +301,7 @@ The three super-clusters correspond to traditional votes (blue), far right votes
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:
 ```{r presiSC4}
-plot(my.sc, what="prototypes", type="hitmap")
+plot(my.sc, what="obs", type="hitmap")
 plot(my.sc, what="prototypes", type="lines", show.names=F, view="c")
 plot(my.sc, what="prototypes", type="poly.dist")
 plot(my.sc, what="prototypes", type="mds")
