@@ -130,6 +130,7 @@ print.myGrid <-function(x,...) {
   cat("\n")
 }
 
+#' @method summary myGrid
 #' @export
 #' @rdname myGrid
 summary.myGrid <- function(object,...) {

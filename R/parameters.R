@@ -229,6 +229,7 @@ print.paramSOM <- function(x,...){
   cat("\n")
 }
 
+#' @method summary paramSOM
 #' @export
 #' @rdname initSOM
 summary.paramSOM <- function(object,...){

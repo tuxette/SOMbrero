@@ -5,21 +5,27 @@
 \alias{superClass.somRes}
 \alias{print.somSC}
 \alias{summary.somSC}
-\alias{plot.somSC}
 \alias{projectIGraph.somSC}
+\alias{plot.somSC}
+\alias{somSC-class}
 \title{Create super-clusters from SOM results}
 \usage{
 superClass(sommap, method, members, k, h, ...)
 
 \method{print}{somSC}(x, ...)
 
-summary.somSC(object, ...)
+\method{summary}{somSC}(object, ...)
 
-\method{plot}{somSC}(x, what = c("prototypes", "obs", "add"),
-  type = c("dendrogram", "grid", "hitmap", "lines", "meanline",
-  "barplot", "boxplot", "mds", "color", "poly.dist", "pie", "graph",
-  "dendro3d", "projgraph"), plot.var = TRUE, show.names = TRUE,
-  names = 1:prod(x$som$parameters$the.grid$dim), ...)
+\method{plot}{somSC}(
+  x,
+  what = c("prototypes", "obs", "add"),
+  type = c("dendrogram", "grid", "hitmap", "lines", "meanline", "barplot", "boxplot",
+    "mds", "color", "poly.dist", "pie", "graph", "dendro3d", "projgraph"),
+  plot.var = TRUE,
+  show.names = TRUE,
+  names = 1:prod(x$som$parameters$the.grid$dim),
+  ...
+)
 
 \method{projectIGraph}{somSC}(object, init.graph, ...)
 }
@@ -155,16 +161,16 @@ individuals in the original dataset (or, equivalently, to the vertexes of the
 }
 \examples{
 set.seed(11051729)
-my.som <- trainSOM(x.data=iris[,1:4])
+my.som <- trainSOM(x.data = iris[,1:4])
 # choose the number of super-clusters
 sc <- superClass(my.som)
 plot(sc)
 # cut the clustering
-sc <- superClass(my.som, k=4)
+sc <- superClass(my.som, k = 4)
 summary(sc)
 plot(sc)
-plot(sc, type="grid")
-plot(sc, type="hitmap")
+plot(sc, type = "grid")
+plot(sc, what = "obs", type = "hitmap")
 }
 \references{
 Anderson M.J. (2001). A new method for non-parametric multivariate analysis 

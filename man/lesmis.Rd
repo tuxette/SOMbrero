@@ -5,7 +5,8 @@
 \alias{lesmis}
 \alias{dissim.lesmis}
 \title{Dataset "Les Misérables"}
-\format{\code{lesmis} is an \code{\link[igraph]{igraph}} object. Its vertices
+\format{
+\code{lesmis} is an \code{\link[igraph]{igraph}} object. Its vertices
 are the characters of the novel and an edge indicates that the two characters
 appear together in the same chapter of the novel, at least once. Vertex 
 attributes for this graph are \option{id}, a vertex number between 1 and 77, 
@@ -19,7 +20,8 @@ visualizing the graph.
 
 \code{dissim.lesmis} is a dissimilarity matrix computed with the function 
 \code{\link[igraph]{shortest_paths}} and containing the length of the 
-shortest paths between pairs of nodes.}
+shortest paths between pairs of nodes.
+}
 \description{
 This dataset contains the coappearance network (igraph object) 
 of characters in the novel Les Misérables (written by the French writter 

@@ -874,6 +874,7 @@ print.somRes <- function(x, ...) {
   cat("         distance type:", x$parameters$the.grid$dist.type,"\n")
 }
 
+#' @method summary somRes
 #' @export
 #' @rdname trainSOM
 summary.somRes <- function(object, ...) {

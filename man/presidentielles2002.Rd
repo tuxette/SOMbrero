@@ -4,9 +4,11 @@
 \name{presidentielles2002}
 \alias{presidentielles2002}
 \title{2002 French presidential election data set}
-\format{\code{presidentielles2002} is a data frame of 106 rows (the French
+\format{
+\code{presidentielles2002} is a data frame of 106 rows (the French
 administrative districts called "Departements") and 16 columns (the 
-candidates).}
+candidates).
+}
 \source{
 The data are provided by the French ministry "Ministère de 
 l'Intérieur". The original data can be downloaded at

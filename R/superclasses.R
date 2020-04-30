@@ -158,16 +158,16 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' 
 #' @examples 
 #' set.seed(11051729)
-#' my.som <- trainSOM(x.data=iris[,1:4])
+#' my.som <- trainSOM(x.data = iris[,1:4])
 #' # choose the number of super-clusters
 #' sc <- superClass(my.som)
 #' plot(sc)
 #' # cut the clustering
-#' sc <- superClass(my.som, k=4)
+#' sc <- superClass(my.som, k = 4)
 #' summary(sc)
 #' plot(sc)
-#' plot(sc, type="grid")
-#' plot(sc, type="hitmap")
+#' plot(sc, type = "grid")
+#' plot(sc, what = "obs", type = "hitmap")
 
 superClass <- function(sommap, method, members, k, h,...) {
   UseMethod("superClass")
@@ -211,6 +211,7 @@ print.somSC <- function(x, ...) {
   } else cat("     Number of super clusters not chosen yet.\n\n")
 }
 
+#' @method summary somSC
 #' @export
 #' @rdname superClass
 summary.somSC <- function(object, ...) {
@@ -308,8 +309,8 @@ plot.somSC <- function(x, what = c("prototypes", "obs", "add"),
     what <- "add"
   }
   
-  args$what <- what[1]
   if (!(type %in% c("dendrogram", "dendro3d"))) {
+    args$what <- match.arg(what)
     # Type control (if not in dendro, dendro3d)
     authorizedtypes <-
       list("numeric" = list("obs" = c("hitmap", "lines", "meanline", "barplot",
