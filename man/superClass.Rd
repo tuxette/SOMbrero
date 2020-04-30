@@ -5,28 +5,21 @@
 \alias{superClass.somRes}
 \alias{print.somSC}
 \alias{summary.somSC}
-\alias{projectIGraph.somSC}
 \alias{plot.somSC}
-\alias{somSC-class}
+\alias{projectIGraph.somSC}
 \title{Create super-clusters from SOM results}
 \usage{
 superClass(sommap, method, members, k, h, ...)
 
 \method{print}{somSC}(x, ...)
 
-\method{summary}{somSC}(object, ...)
+summary.somSC(object, ...)
 
-\method{plot}{somSC}(
-  x,
-  what = c("prototypes", "obs", "add"),
-  type = c("dendrogram", "grid", "hitmap", "lines", "meanline", "barplot", "boxplot",
-    "mds", "color", "poly.dist", "pie", "graph", "dendro3d", "projgraph"),
-  plot.var = TRUE,
-  add.type = FALSE,
-  show.names = TRUE,
-  names = 1:prod(x$som$parameters$the.grid$dim),
-  ...
-)
+\method{plot}{somSC}(x, what = c("prototypes", "obs", "add"),
+  type = c("dendrogram", "grid", "hitmap", "lines", "meanline",
+  "barplot", "boxplot", "mds", "color", "poly.dist", "pie", "graph",
+  "dendro3d", "projgraph"), plot.var = TRUE, show.names = TRUE,
+  names = 1:prod(x$som$parameters$the.grid$dim), ...)
 
 \method{projectIGraph}{somSC}(object, init.graph, ...)
 }
@@ -57,8 +50,9 @@ observations (\code{obs}), the prototypes (\code{prototypes}) or an
 additional variable (\code{add}), or \code{NULL} if not appropriate. Default
 to \code{prototypes} for 'lines', 'barplot', and 'color' types. 
 Automatically set for types 'boxplot' (to \code{"obs"}), 'mds', and 
-'poly.dist' (to \code{"prototypes"}), 'graph' and 'pie' (to \code{"add"}). 
-Set to \code{"add"} if \code{add.type = TRUE}.}
+'poly.dist' (to \code{"prototypes"}), 'graph' and 'pie' (to \code{"add"}).
+If \code{what='add'}, the function \code{\link{plot.somRes}} will be called with
+the argument \code{what} set to \code{"add"}.}
 
 \item{type}{The type of plot to draw. Default value is \code{"dendrogram"}, 
 to plot the dendrogram of the clustering. Case \code{"grid"} plots the grid 
@@ -71,11 +65,6 @@ and surimpose the super-clusters over these plots.}
 \item{plot.var}{A boolean indicating whether a graph showing the evolution of
 the explained variance should be plotted. This argument is only used when 
 \code{type="dendrogram"}, its default value is \code{TRUE}.}
-
-\item{add.type}{A boolean, which default value is \code{FALSE}, indicating 
-whether you are giving an additional variable to the argument \code{variable}
-or not. If you do, the function \code{\link{plot.somRes}} will be called with
-the argument \code{what} set to \code{"add"}.}
 
 \item{show.names}{Whether the cluster titles must be printed in center of
 the grid or not for \code{type="grid"}. Default to \code{FALSE} (titles not 

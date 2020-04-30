@@ -4,30 +4,21 @@
 \alias{initSOM}
 \alias{summary.paramSOM}
 \alias{print.paramSOM}
-\alias{paramSOM-class}
 \title{Initialize parameters for the SOM algorithm}
 \usage{
-initSOM(
-  dimension = c(5, 5),
-  topo = c("square", "hexagonal"),
+initSOM(dimension = c(5, 5), topo = c("square", "hexagonal"),
   radius.type = c("gaussian", "letremy"),
-  dist.type = switch(match.arg(radius.type), letremy = "letremy", gaussian =
-    "euclidean"),
-  type = c("numeric", "relational", "korresp"),
-  mode = c("online"),
-  affectation = c("standard", "heskes"),
-  maxit = 500,
-  nb.save = 0,
-  verbose = FALSE,
-  proto0 = NULL,
-  init.proto = switch(type, numeric = "random", relational = "obs", korresp = "random"),
-  scaling = switch(type, numeric = "unitvar", relational = "none", korresp = "chi2"),
-  eps0 = 1
-)
+  dist.type = switch(match.arg(radius.type), letremy = "letremy",
+  gaussian = "euclidean"), type = c("numeric", "relational", "korresp"),
+  mode = c("online"), affectation = c("standard", "heskes"),
+  maxit = 500, nb.save = 0, verbose = FALSE, proto0 = NULL,
+  init.proto = switch(type, numeric = "random", relational = "obs",
+  korresp = "random"), scaling = switch(type, numeric = "unitvar",
+  relational = "none", korresp = "chi2"), eps0 = 1)
 
 \method{print}{paramSOM}(x, ...)
 
-\method{summary}{paramSOM}(object, ...)
+summary.paramSOM(object, ...)
 }
 \arguments{
 \item{dimension}{Vector of two integer points corresponding to the x 

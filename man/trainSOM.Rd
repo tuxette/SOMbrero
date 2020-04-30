@@ -10,7 +10,7 @@ trainSOM(x.data, ...)
 
 \method{print}{somRes}(x, ...)
 
-\method{summary}{somRes}(object, ...)
+summary.somRes(object, ...)
 }
 \arguments{
 \item{x.data}{a data frame or matrix containing the observations to be mapped

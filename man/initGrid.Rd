@@ -4,11 +4,9 @@
 \alias{initGrid}
 \title{Create an empty grid}
 \usage{
-initGrid(
-  dimension = c(5, 5),
-  topo = c("square", "hexagonal"),
-  dist.type = c("euclidean", "maximum", "manhattan", "canberra", "minkowski", "letremy")
-)
+initGrid(dimension = c(5, 5), topo = c("square", "hexagonal"),
+  dist.type = c("euclidean", "maximum", "manhattan", "canberra",
+  "minkowski", "letremy"))
 }
 \arguments{
 \item{dimension}{a 2-dimensional vector giving the dimensions (width, length)

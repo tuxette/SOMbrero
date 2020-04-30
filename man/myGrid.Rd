@@ -5,12 +5,11 @@
 \alias{print.myGrid}
 \alias{summary.myGrid}
 \alias{plot.myGrid}
-\alias{myGrid-class}
 \title{Methods for 'myGrid' objects.}
 \usage{
 \method{print}{myGrid}(x, ...)
 
-\method{summary}{myGrid}(object, ...)
+summary.myGrid(object, ...)
 
 \method{plot}{myGrid}(x, show.names = TRUE, names = 1:prod(x$dim), ...)
 }
