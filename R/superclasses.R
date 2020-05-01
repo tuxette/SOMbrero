@@ -279,7 +279,7 @@ summary.somSC <- function(object, ...) {
 
 #' @export
 #' @rdname superClass
-plot.somSC <- function(x, what = c("prototypes", "obs", "add"), 
+plot.somSC <- function(x, what = c("obs", "prototypes", "add"), 
                        type = c("dendrogram", "grid", "hitmap", "lines", 
                                 "meanline", "barplot", "boxplot", "mds", 
                                 "color", "poly.dist", "pie", "graph", 
@@ -309,7 +309,7 @@ plot.somSC <- function(x, what = c("prototypes", "obs", "add"),
     what <- "add"
   }
   
-  if (!(type %in% c("dendrogram", "dendro3d"))) {
+  if (!(type %in% c("dendrogram", "dendro3d", "grid"))) {
     args$what <- match.arg(what)
     # Type control (if not in dendro, dendro3d)
     authorizedtypes <-
