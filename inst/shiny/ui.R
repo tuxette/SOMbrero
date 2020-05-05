@@ -21,7 +21,7 @@ shinyUI(
   navbarPage(PAGE_TITLE_NAV,
     #"SOMbrero Web User Interface (v2.0)",
              windowTitle="SOMbrero",
-             useShinyjs(),  # Set up shinyjs
+             shinyjs::useShinyjs(),  # Set up shinyjs
              id="tabs",
              selected="Intro",
 
@@ -94,8 +94,8 @@ shinyUI(
       #### Panel 'SOM'
       #########################################################################
       tabPanel("Self Organize", value="SelfOrganize",
-        bsCollapse(id = "collapsestep1", multiple = F, open = "bscoll1",
-        bsCollapsePanel(title = uiOutput("typealgo"), value="bscoll1", style="success",
+               shinyBS::bsCollapse(id = "collapsestep1", multiple = F, open = "bscoll1",
+                                   shinyBS::bsCollapsePanel(title = uiOutput("typealgo"), value="bscoll1", style="success",
           selectizeInput(
             'somtype',
             label = NULL,
@@ -109,18 +109,18 @@ shinyUI(
             )
           )
         ),
-        bsCollapsePanel(title = HTML("2. Data preparation"), value="bscoll2", style="success",
+        shinyBS::bsCollapsePanel(title = HTML("2. Data preparation"), value="bscoll2", style="success",
           uiOutput("texttypedata"),
           br(),
           fluidRow(
             column(3,
-              bsCollapse(open='envir',
-                bsCollapsePanel(title=HTML('Choose from the environment/examples'), value="envir",
+                   shinyBS::bsCollapse(open='envir',
+                                       shinyBS::bsCollapsePanel(title=HTML('Choose from the environment/examples'), value="envir",
                                 selectInput('file1envir', label=NULL, choices=dataframes),
                                 actionButton("loaddatabutton", "Load", class="btn-primary")
                                 )
                 ,
-                bsCollapsePanel(title=HTML('OR Choose CSV/TXT File'),
+                shinyBS::bsCollapsePanel(title=HTML('OR Choose CSV/TXT File'),
                                 p(
                                   HTML(
                                     'The interface can be tested using example data files for
@@ -173,7 +173,7 @@ shinyUI(
       
       #### Panel 'Self-organize'
       #########################################################################2
-      bsCollapsePanel(title = HTML("3. Train the self-organizing map"), value="bscoll3", style="success",
+      shinyBS::bsCollapsePanel(title = HTML("3. Train the self-organizing map"), value="bscoll3", style="success",
         p(
           HTML(
             "Once your dataset is loaded, you can train a
@@ -259,15 +259,15 @@ pseudo-random generators at
                             )))
                  ),
           column(9,
-                 disabled(actionButton("trainbutton", "Train SOM", class="btn-primary")),
-                 hidden(actionButton("nextplot", "Next: plot the SOM map", class="btn-primary")),
+                 shinyjs::disabled(actionButton("trainbutton", "Train SOM", class="btn-primary")),
+                 shinyjs::hidden(actionButton("nextplot", "Next: plot the SOM map", class="btn-primary")),
                  br(),
                  br(),
                  verbatimTextOutput("runcodesom"),
                  verbatimTextOutput("summary"),
                  br(),
-                 disabled(downloadButton("som.download", "Download the SOM file (rda)")),
-                 disabled(downloadButton("clustering.download", "Download the clustering (txt)"))
+                 shinyjs::disabled(downloadButton("som.download", "Download the SOM file (rda)")),
+                 shinyjs::disabled(downloadButton("clustering.download", "Download the clustering (txt)"))
                  )
         )
         
@@ -345,7 +345,7 @@ map."
                  ),
           column(9,
                  verbatimTextOutput("runcodeplot"),
-                 jqui_resizable(plotOutput("somplot", width = 750, height = 600))
+                 shinyjqui::jqui_resizable(plotOutput("somplot", width = 750, height = 600))
                  )
         ),
         br(),
@@ -361,8 +361,8 @@ map."
 resulting clustering in csv format and visualize it on charts. The 'dendrogram'
 plot can help you determine the adequate number of superclasses."
                ),
-               bsCollapse(id = "collapsesuperclass", multiple = F, open = "computesc",
-                          bsCollapsePanel(title = "1. Group prototypes into superclasses", value="computesc", style="success",
+               shinyBS::bsCollapse(id = "collapsesuperclass", multiple = F, open = "computesc",
+                                   shinyBS::bsCollapsePanel(title = "1. Group prototypes into superclasses", value="computesc", style="success",
                                           fluidRow(
                                             column(3,
                                                    selectInput("scmethod", "Method for hclust", choices=c("ward.D", "single", "complete", "average", "mcquitty","median","centroid" ), selected="complete"),
@@ -382,16 +382,16 @@ plot can help you determine the adequate number of superclasses."
                                                    shinyjs::hidden(actionButton("nextplotsc", "Next: plot the superclasses", class="btn-primary")),
                                                    br(),
                                                    br(),
-                                                   disabled(downloadButton("sc.download", "Download superclass classification"))
+                                                   shinyjs::disabled(downloadButton("sc.download", "Download superclass classification"))
                                             ),
                                             column(9,
-                                                   jqui_resizable(plotOutput("somplotscdendro")),
+                                                   shinyjqui::jqui_resizable(plotOutput("somplotscdendro")),
                                                    verbatimTextOutput("runcodesc"),
                                                    verbatimTextOutput("sc.summary")
                                             )
                                           )
                                           ),
-                          bsCollapsePanel(title = "2. Plot the superclasses", value="plotsc", style="success",
+                          shinyBS::bsCollapsePanel(title = "2. Plot the superclasses", value="plotsc", style="success",
                                           fluidRow(
                                             column(3,
                                                    selectInput(
@@ -449,7 +449,7 @@ plot can help you determine the adequate number of superclasses."
                                             ),
                                             column(9,
                                                    verbatimTextOutput("runcodescplot"),
-                                                   jqui_resizable(plotOutput("scplot", width = 750, height = 600))
+                                                   shinyjqui::jqui_resizable(plotOutput("scplot", width = 750, height = 600))
                                             )
                                           ),
                                           br(),
@@ -476,21 +476,21 @@ number of rows as the file used for training (in the same order), or a (square)
 adjacency matrix  for 'graph' plots (the adjacency matrix has a dimension equal
 to the number of rows ."
                ),
-               bsCollapse(id = "collapseadd", multiple = F, open = "loadadd",
-                          bsCollapsePanel(title = "1. Load additional information", value="loadadd", style="success",
+               shinyBS::bsCollapse(id = "collapseadd", multiple = F, open = "loadadd",
+                                   shinyBS::bsCollapsePanel(title = "1. Load additional information", value="loadadd", style="success",
                                           fluidRow(
                                             column(3,
-                                                   bsCollapse(open='unused',
-                                                              bsCollapsePanel(title = HTML("From unused variales"), value="unused",
+                                                   shinyBS::bsCollapse(open='unused',
+                                                              shinyBS::bsCollapsePanel(title = HTML("From unused variales"), value="unused",
                                                                               selectInput('unusedvar', label=NULL, choices=c("No unused variable"=""), multiple = T),
                                                                               actionButton("loadunusedvarbutton", "Select", class="btn-primary")
                                                               ),
-                                                              bsCollapsePanel(title = HTML("Choose from the environment/examples"), value="envir",
+                                                              shinyBS::bsCollapsePanel(title = HTML("Choose from the environment/examples"), value="envir",
                                                                               selectInput('file2envir', label=NULL, choices=dataframes),
                                                                               actionButton("loaddatabuttonadd", "Load", class="btn-primary")
                                                               )
                                                               ,
-                                                              bsCollapsePanel(title=HTML("OR Choose CSV/TXT File"),
+                                                              shinyBS::bsCollapsePanel(title=HTML("OR Choose CSV/TXT File"),
                                                                               fileInput('file2', label=NULL),
                                                                               checkboxInput('header2', ' Header?', TRUE),
                                                                               checkboxInput('rownames2', ' Row names?', FALSE),
@@ -523,7 +523,7 @@ to the number of rows ."
                                                    )
                                             )
                                           )),
-                          bsCollapsePanel(title = "2. Plot additional variables", value="plotadd", style="success",
+                          shinyBS::bsCollapsePanel(title = "2. Plot additional variables", value="plotadd", style="success",
                                           fluidRow(
                                             column(3,conditionalPanel(
                                               "input.somtype == 'korresp'",
@@ -569,7 +569,7 @@ to the number of rows ."
                                             )),
                                             column(9,
                                                    verbatimTextOutput("runcodeaddplot"),
-                                                   jqui_resizable(plotOutput("addplot", width = 750, height = 600))
+                                                   shinyjqui::jqui_resizable(plotOutput("addplot", width = 750, height = 600))
                                             ),
                                             br(),
                                             br(),

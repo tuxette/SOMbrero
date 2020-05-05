@@ -23,7 +23,7 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$somtype, {
     if(input$somtype!=""){
-      updateCollapse(session, "collapsestep1", open = "bscoll2")
+      shinyBS::updateCollapse(session, "collapsestep1", open = "bscoll2")
     }
   })
 
@@ -139,7 +139,7 @@ shinyServer(function(input, output, session) {
   #############################################################################
 
   observeEvent(input$showadvlink, {
-    toggleElement(id='divadvancedoptions')
+    shinyjs::toggleElement(id='divadvancedoptions')
   })
   
   observe({
@@ -453,7 +453,7 @@ shinyServer(function(input, output, session) {
   })
   
   observeEvent(input$nextplotsc, {
-    updateCollapse(session, "collapsesuperclass", open = "plotsc")
+    shinyBS::updateCollapse(session, "collapsesuperclass", open = "plotsc")
   })
   
   # Download the superclass classification
@@ -526,7 +526,7 @@ shinyServer(function(input, output, session) {
   
   # Update SuperClass plot
   output$scplot <- renderPlot({
-    validate(need(input$scplottype %in% all.scplot.types[[input$somtype]][[input$scplotwhat]],
+    shiny::validate(need(input$scplottype %in% all.scplot.types[[input$somtype]][[input$scplotwhat]],
                   "wait..."))
     if(is.null(dInput()))
       return(NULL)
