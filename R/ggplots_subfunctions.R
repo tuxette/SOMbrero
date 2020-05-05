@@ -139,7 +139,6 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
 ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
                         names, is.scaled, the.grid, args){
   ordered.index <- orderIndexes(the.grid, type)
-
   # Axes labels 
   ################################################
   vary <- "values"

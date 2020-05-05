@@ -162,13 +162,13 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
                            names, is.scaled, view, args) {
   ## types : 3d, lines, barplot, color, smooth.dist, poly.dist, umatrix, mds
   
-  authorizedtypes <- list("numeric" = c("3d","lines", "meanline", "barplot", 
+  authorizedtypes <- list("numeric" = c("3d","lines", "barplot", 
                                         "color", "poly.dist", "umatrix", 
                                         "smooth.dist", "mds", "grid.dist"),
-                          "korresp" = c("3d","lines", "meanline", "barplot",
+                          "korresp" = c("3d","lines", "barplot",
                                         "color", "poly.dist", "umatrix", 
                                         "smooth.dist", "mds", "grid.dist"),
-                          "relational" = c("lines", "meanline", "barplot", "poly.dist",
+                          "relational" = c("lines", "barplot", "poly.dist",
                                            "umatrix", "smooth.dist", "mds", "grid.dist")) 
   
   if (!is.element(type, authorizedtypes[[sommap$parameters$type]])) {
@@ -176,6 +176,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
                 paste(authorizedtypes[[sommap$parameters$type]], collapse="', '"),
                 "'"), call.=TRUE)
   }
+  if(type == "lines") type <- "meanline" # Correct type of plot
   
   # Handling variable(s) --> used in tmp.var
   if(type %in% c("3d", "color")){

@@ -23,11 +23,12 @@ nothing will be plotted at its location.
 \item \code{"hitmap"} (*, #) plots proportional areas according to the number of
 observations per neuron. It is the default plot when \code{what="obs"}.
 \item \code{"color"} can have one more argument, \code{variable}, the name or index of thevariable to be considered (default, \code{1}). Neurons are filled using the given colors according to the average value level of the observations for the chosen variable.
-\item \code{"lines"} plots, for each neuron, the average value level of the
+\item \code{"meanline"} plots, for each neuron, the average value level of the
 observations, with lines. One point represents a variable. By default, all variables of the dataset used to train the algorithm are plotted but a vector of variables (names or indexes) can be provided with the argument \code{variable}.
 \item \code{"barplot"} is similar to \code{"lines"} but using barplots. Then, 
 a bar represents a variable.
 \item \code{"boxplot"} plots boxplots for the observations in every neuron, by variable. Like \code{"lines"} and \code{"barplot"} a vector of variables (names or indexes) can be provided with the argument \code{variable}
+\item \code{"lines"} plots a line for each observation in every neuron, between variables. A vector of variables (names or indexes) can be provided with the argument \code{variable}
 \item \code{"names"} (*, #) prints on the grid the element names (i.e., the
 row names or row and column names in the case of \code{korresp}) in the neuron to which it belongs.}
 
@@ -128,36 +129,36 @@ All these graphics are available for a \code{relational} SOM.}
 \section{Further arguments via \dots}{
 Further arguments, their reference functions and the \code{plot.somRes} cases 
 are summarized in the following list:
+
 \itemize{
-\item \code{\link{plot}} is called by the cases:
+\item \code{\link[igraph]{plot.igraph}} is called by the cases:
 \itemize{
-\item \code{what="energy"}
-\item \code{type="lines"}
-\item \code{what="prototypes"/type="mds"}
+\item \code{what="add"/type="graph"}
+\item \code{what="add"/type="projgraph"} (for a superclass object)
 }
-\item \code{\link{plot.myGrid}} is called by the cases:
-\itemize{
-\item \code{what="obs"/type="hitmap"}
-\item \code{type="color"}
-\item \code{what="prototypes"/type="poly.dist"}
-\item \code{what="prototypes"/type="umatrix"}
-}
-\item \code{\link[igraph]{plot.igraph}} is called by the case 
-\code{what="add"/type="graph"}
-\item \code{\link{pie}} is called by the case \code{what="add"/type="pie"}
-\item \code{\link{barplot}} is called by the cases \code{type="barplot"}
-\item \code{\link{boxplot}} is called by the cases \code{type="boxplot"}
+
 \item \code{\link{persp}} is called by the case 
 \code{what="prototypes"/type="3d"}
-\item \code{\link[wordcloud]{wordcloud}} is called by the cases:
+
+\item \code{\link[ggplot2]{ggplot}} is called in all the other cases. 
+}
+
+In complement to ggplot, 
+\itemize{
+\item \code{\link[ggwordcloud]{geom_text_wordcloud}} is called by the cases:
 \itemize{
 \item \code{type="names"}
 \item \code{what="add"/type="words"}
 }
+
+\item \code{\link[metR]{geom_contour_fill} is called by the case
+\code{what="prototypes"/type="smooth.dist"}
+}
 }
 }
 
-\author{Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+\author{Elise Maigné \email{elise.maigne@inrae.fr}\cr
+Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 }
 
@@ -167,25 +168,35 @@ Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 # run the SOM algorithm on the numerical data of 'iris' data set
 iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
 
-# plots
-# on energy
+####### Plot on energy
+
 plot(iris.som, what="energy") # energy
-# on observations
-plot(iris.som, what="obs", type="boxplot")
+
+####### Plots on observations
+plot(iris.som, what="obs", type="hitmap")
+\dontrun{
 plot(iris.som, what="obs", type="lines")
 plot(iris.som, what="obs", type="barplot")
-plot(iris.som, what="obs", type="color", var=1)
+plot(iris.som, what="obs", type="boxplot")
+plot(iris.som, what="obs", type="meanline")
+plot(iris.som, what="obs", type="color", variable=1)
+plot(iris.som, what="obs", type="names")}
 
-# on prototypes
+####### plots on prototypes
 plot(iris.som, what="prototypes", type="3d", variable="Sepal.Length")
+\dontrun{
 plot(iris.som, what="prototypes", type="lines")
+plot(iris.som, what="prototypes", type="barplot)
+plot(iris.som, what="prototypes", type="umatrix")
+plot(iris.som, what="prototypes", type="color", variable="Petal.Length")
 plot(iris.som, what="prototypes", type="smooth.dist")
 plot(iris.som, what="prototypes", type="poly.dist")
-plot(iris.som, what="prototypes", type="umatrix")
 plot(iris.som, what="prototypes", type="grid.dist")
-plot(iris.som, what="prototypes", type="mds")
+plot(iris.som, what="prototypes", type="mds")}
 
-# on an additional variable: the flower species
+
+####### plots on an additional variable: the flower species
 plot(iris.som, what="add", type="pie", variable=iris$Species)
-plot(iris.som, what="add", type="names", variable=iris$Species)
+\dontrun{
+plot(iris.som, what="add", type="names", variable=iris$Species)}
 }

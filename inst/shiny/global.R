@@ -36,7 +36,7 @@ trainTheSom <- function(data, type, topo, dimx, dimy, affectation, disttype, max
 # List of somplot types options per SOM type and "what" :
 all.somplot.types <- list("numeric"=
                             list("prototypes"=
-                                   list("lines", "meanline", "barplot", "color", "3d", 
+                                   list("lines", "barplot", "color", "3d", 
                                         "smooth distances"="smooth.dist",
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
@@ -48,7 +48,7 @@ all.somplot.types <- list("numeric"=
                           
                           "korresp"=
                             list("prototypes"=
-                                   list("lines", "meanline", "barplot", "color", "3d", 
+                                   list("lines","barplot", "color", "3d", 
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",
@@ -58,7 +58,7 @@ all.somplot.types <- list("numeric"=
                           
                           "relational"=
                             list("prototypes"=
-                                   list("lines", "meanline", "barplot",
+                                   list("lines", "barplot",
                                         "polygon distances"="poly.dist",
                                         "grid distances"="grid.dist",
                                         "U matrix distances"="umatrix",
@@ -69,21 +69,21 @@ all.somplot.types <- list("numeric"=
 all.scplot.types <- list("numeric"=
                            list("prototypes"=
                                   list("grid", "dendrogram", "dendro3d", "color",
-                                       "lines","meanline", "barplot", 
+                                       "lines", "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds"),
                                 "obs"=c("hitmap", "color", "lines", "meanline", "barplot", 
                                         "boxplot")),
                          "korresp"=
                            list("prototypes"=
-                                  list("grid", "dendrogram", "color", "lines", "meanline", 
+                                  list("grid", "dendrogram", "color", "lines", 
                                        "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds", "dendro3d"),
                                 "obs"="hitmap"),
                          "relational"=
                            list("prototypes"=
-                                  list("grid", "dendrogram", "lines", "meanline", "barplot", 
+                                  list("grid", "dendrogram", "lines", "barplot", 
                                        "polygon distances"="poly.dist",
                                        "MDS"="mds",  "dendro3d"),
                                 "obs"="hitmap"))
