@@ -1,7 +1,7 @@
-bsCollapse(
+shinyBS::bsCollapse(
   id = "collapsehelp",
   open = "somtype",
-  bsCollapsePanel(
+  shinyBS::bsCollapsePanel(
     title = "Types of self-organizing maps",
     value = "somtype",
     style = "success",
@@ -42,7 +42,7 @@ network provided <a href=
       )
     )
   ),
-  bsCollapsePanel(
+  shinyBS::bsCollapsePanel(
     title = "Data loading",
     value = "importdata",
     style = "success",
@@ -65,7 +65,7 @@ change the file importation options."
       )
     )
   ),
-  bsCollapsePanel(
+  shinyBS::bsCollapsePanel(
     title = "Training options",
     value = "train",
     style = "success",
@@ -141,7 +141,7 @@ are 'random' for the 'Numeric' and the 'Korresp' algorithm and 'obs' for the
       )
     )
   ),
-  bsCollapsePanel(
+  shinyBS::bsCollapsePanel(
     title = "Types of plots",
     value = "plots",
     style = "success",
@@ -270,7 +270,7 @@ only works if a 'Number of intermediate backups' larger than 2 is chosen in the
     )
   ),
   
-  bsCollapsePanel(
+  shinyBS::bsCollapsePanel(
     title = "Grouping prototypes into Superclasses",
     value = "superclasses",
     style = "success",
@@ -286,7 +286,7 @@ dendrogram)."
     )
   ),
   
-  bsCollapsePanel(
+  shinyBS::bsCollapsePanel(
     title = "Combine with external information",
     value = "externalinfo",
     style = "success",

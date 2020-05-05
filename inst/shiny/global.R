@@ -1,4 +1,4 @@
-require(shinyBS)
+requireNamespace("shinyBS")
 
 ####################################################################################
 # Loading the data from environment and examples
