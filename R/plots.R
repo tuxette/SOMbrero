@@ -356,10 +356,10 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
                 show.names, names, is.scaled,
                 sommap$parameters$the.grid, args)
   } else if(type %in% c("color", "hitmap")){
-      if (type=="color") {
+      if (type == "color") {
         args$varname <- tmp.var
       values <- sommap$data[,tmp.var]
-    }  else if (type=="hitmap") {
+    }  else if (type == "hitmap") {
       values <- sommap$clustering
     }
     ggplotGrid("obs", type, values, sommap$clustering,

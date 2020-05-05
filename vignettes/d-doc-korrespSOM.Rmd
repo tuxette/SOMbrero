@@ -164,7 +164,7 @@ plot(korresp.som, what="prototypes", type="lines", view="r", show.names=F) +
                             label.theme=element_text(size=4))) + 
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
 # plot the column prototypes (16 candidates)
-plot(korresp.som, what="prototypes", type="lines", view="c", show.names=F) +
+plot(korresp.som, what="prototypes", type="meanline", view="c", show.names=F) +
   guides(color=guide_legend(keyheight=0.5, ncol=1, 
                             label.theme=element_text(size=6))) + 
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
