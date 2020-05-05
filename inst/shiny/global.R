@@ -2,7 +2,10 @@
 # Libraries
 ####################################################################################
 
-library(shinyBS)  # for bsCollapse 
+library(shiny)
+library(shinyBS)  # for bsPanel, bsCollapse 
+library(shinyjs) # for hide/show/toggle/hidden
+library(shinyjqui) # for resizable outputs
 
 ####################################################################################
 # Loading the data from environment and examples

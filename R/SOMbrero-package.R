@@ -79,10 +79,7 @@
 #' \code{\link{plot.somRes}} and \code{\link{sombreroGUI}}.
 #' 
 #' @import igraph
-#' @import shiny
 #' @import ggplot2
-#' @import shinyBS
-#' @import shinyjqui
 #' @import hexbin
 #' @importFrom grDevices trans3d hcl
 #' @importFrom graphics layout legend par plot rect text title points
@@ -94,7 +91,5 @@
 #' @importFrom metR geom_contour_fill	
 #' @importFrom interp interp
 #' @importFrom utils packageVersion
-#' @importFrom shinyjs disable enable disabled hidden hide extendShinyjs
-#' @importFrom shinyjs show toggle toggleElement useShinyjs
 
 NULL
