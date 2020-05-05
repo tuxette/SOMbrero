@@ -1,15 +1,16 @@
 ## These functions handle plots of somRes objects
 ## ----------------------------------------------------------------------------
-### subfunctions
-theme_set(theme_bw(base_size = 12) + 
-            theme(
-              panel.grid.major = element_blank(),
-              panel.grid.minor = element_blank(),
-              axis.text.x = element_text(angle = 90, hjust = 1),
-              strip.background = element_blank(),
-              strip.text = element_text(size=8, lineheight = 6)
-            )
-)
+theme_facet<- function (base_size = 11, base_family = "") {
+  theme_bw() %+replace% 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(angle = 90, hjust = 1),
+        strip.background = element_blank(),
+        strip.text = element_text(size=8, lineheight = 6),
+        panel.border = element_rect(fill = NA, colour = "grey"),
+        panel.spacing = unit(0,'lines')
+      )
+}
 
 ### Plots (ggplot2 version) grid-like : one graph using parameters$the.grid$coord as coordinates on the plan
 #############################################################################################
@@ -121,7 +122,7 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
   }
   
   tp <- tp +  ggtitle(myTitle(args, what)) + coord_fixed() + 
-    labs(fill = labelcolor) + theme_void() 
+    labs(fill = labelcolor) + theme_void() + theme(panel.border=element_rect(fill = NA, colour = "grey"))
 
   if (show.names) {
     datagrid <- data.frame(the.grid$coord, names)
@@ -252,10 +253,9 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
                                        fill="values", width="Nbcluster")) +
               geom_bar(position = "fill", stat="identity") + 
               coord_polar("y") + 
-              theme(axis.text.x = element_blank()) + 
               ylab(NULL) + xlab("Number of individuals in the cluster") + 
               guides(fill=guide_legend(title=labelcolor))
-  }
+  } 
   # Handling of the grid order
   mylabels <- names[ordered.index]
   names(mylabels) <- levels(dataplot$SOMclustering)
@@ -265,12 +265,16 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
                         nrow=the.grid$dim[2],
                         labeller=labeller(SOMclustering = mylabels),
                         dir = "h") +
-             ggtitle(myTitle(args, what)) 
+             ggtitle(myTitle(args, what)) +
+             theme_facet()
 
+  if(type == "pie"){
+    tp <- tp + theme(axis.text.x = element_blank()) 
+  } 
+  
   # Clusters titles
   if(show.names==F){
-    tp <- tp + theme(strip.background = element_blank(),
-                     strip.text = element_blank())
+    tp <- tp + theme(strip.text = element_blank())
   }
   return(tp)
 }
