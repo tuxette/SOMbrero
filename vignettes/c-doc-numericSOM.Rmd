@@ -156,14 +156,22 @@ they can be displayed on different graphics to see the evolution in the
 prototypes organization.
 ```{r protoEvoluation, fig.width=15, fig.height=6, echo=FALSE}
 # find out the prototypes to be linked
-tra <- NULL
-for (i in c(1,6,11,16,21)){
-  tra <- c(tra, i, i+1, i+1, i+2, i+2, i+3, i+3, i+4)
-}
-for (i in c(1:5)){
-  tra <- c(tra, i, i+5, i+5, i+10, i+10, i+15, i+15, i+20)
-}
-tmp <- matrix(tra, ncol=2, byrow=TRUE)
+# tra <- NULL
+# for (i in c(1,6,11,16,21)){
+#   tra <- c(tra, i, i+1, i+1, i+2, i+2, i+3, i+3, i+4)
+# }
+# for (i in c(1:5)){
+#   tra <- c(tra, i, i+5, i+5, i+10, i+10, i+15, i+15, i+20)
+# }
+# tmp <- matrix(tra, ncol=2, byrow=TRUE)
+
+# Get the neighbours between prototypes
+values <- protoDist(my.som, "neighbors")
+tmp <- data.frame("prot1" = rep.int(1:prod(my.som$parameters$the.grid$dim), 
+                                    times=sapply(values, length)), 
+                  "nei" = as.numeric(as.character(names(unlist(values)))))
+tmp <- tmp[tmp[,1]<tmp[,2],]
+
 # plot the prototypes
 par(mfrow=c(2, 5),mar=c(3,2,2,1))
 invisible(sapply(1:my.som$parameters$nb.save, function(ind){
