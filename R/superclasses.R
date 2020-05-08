@@ -308,25 +308,25 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
             call. = FALSE, immediate. = TRUE)
     what <- "add"
   }
-  
+  print(what)
   if (!(type %in% c("dendrogram", "dendro3d", "grid"))) {
     args$what <- match.arg(what)
     # Type control (if not in dendro, dendro3d)
     authorizedtypes <-
       list("numeric" = list("obs" = c("hitmap", "lines", "meanline", "barplot",
                                       "boxplot","color"),
-                            "prototypes" = c("grid", "lines", "meanline",
+                            "prototypes" = c("grid", "lines", 
                                              "barplot", "mds", "color", 
                                              "poly.dist"),
                             "add" = c("lines", "meanline", "barplot", "boxplot",
                                       "color", "pie", "graph", "projgraph")),
            "korresp" = list("obs" = c("hitmap"),
-                            "prototypes" = c("grid", "lines", "meanline",
+                            "prototypes" = c("grid", "lines", 
                                              "barplot", "mds", "color", 
                                              "poly.dist"),
                             "add" = NULL),
            "relational" = list("obs" = c("hitmap"),
-                               "prototypes" = c("grid", "lines", "meanline",
+                               "prototypes" = c("grid", "lines", 
                                                 "barplot", "mds", "poly.dist"),
                                "add" = c("lines", "meanline", "barplot", "pie",
                                          "graph", "projgraph"))

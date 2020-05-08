@@ -83,47 +83,29 @@ candidates) and then the row variables (here, the departements).__
 The following table indicates which graphics are available for a korresp SOM.
 
 | SOM or SC<br>Type\\What | SOM<br>Energy  | Obs  | Prototypes  | Add  | SuperCluster<br>(no what)    | Obs  | Prototypes  | Add  |
+<!-- |  What  | Energy  | Obs  | Prototypes  | Add  | (no what)    | Obs  | Prototypes  | Add  | -->
 |:------------|:--------|:-----|:------------|:-----|:-------------|:-----|:------------|:-----|
 | (no type)   | x       |      |             |      |              |      |             |      |
 | hitmap      |         | x    |             |      |              | x    |             |      |
 | color       |         |      | x           |      |              |      | x           |      |
 | lines       |         |      | x           |      |              |      | x           |      |
+<!-- | meanline    |         |      |             |      |              |      |             |      | -->
 | barplot     |         |      | x           |      |              |      | x           |      |
+<!-- | pie         |         |      |             |      |              |      |             |      | -->
+<!-- | boxplot     |         |      |             |      |              |      |             |      | -->
 | 3d          |         |      | x           |      |              |      |             |      |
 | poly.dist   |         |      | x           |      |              |      | x           |      |
 | umatrix     |         |      | x           |      |              |      |             |      |
 | smooth.dist |         |      | x           |      |              |      |             |      |
-| names       |         | x    |             |      |              |      |             |      |
 | mds         |         |      | x           |      |              |      | x           |      |
 | grid.dist   |         |      | x           |      |              |      |             |      |
+<!-- | words       |         |      |             |      |              |      |             |      | -->
+| names       |         | x    |             |      |              |      |             |      |
+<!-- | graph       |         |      |             |      |              |      |             |      | -->
+<!-- | projgraph   |         |      |             |      |              |      |             |      | -->
 | grid        |         |      |             |      |              |      | x           |      |
 | dendrogram  |         |      |             |      | x            |      |             |      |
 | dendro3d    |         |      |             |      | x            |      |             |      |
-
-<!-- With empty lines -->
-<!-- | SOM or SC<br>Type\\What | SOM<br>Energy  | Obs  | Prototypes  | Add  | SuperCluster<br>(no what)    | Obs  | Prototypes  | Add  | -->
-<!-- |:------------|:--------|:-----|:------------|:-----|:-------------|:-----|:------------|:-----| -->
-<!-- | (no type)   | x       |      |             |      |              |      |             |      | -->
-<!-- | hitmap      |         | x    |             |      |              | x    |             |      | -->
-<!-- | color       |         |      | x           |      |              |      | x           |      | -->
-<!-- | lines       |         |      | x           |      |              |      | x           |      | -->
-<!-- | meanline    |         |      |             |      |              |      |             |      | -->
-<!-- | barplot     |         |      | x           |      |              |      | x           |      | -->
-<!-- | pie         |         |      |             |      |              |      |             |      | -->
-<!-- | boxplot     |         |      |             |      |              |      |             |      | -->
-<!-- | 3d          |         |      | x           |      |              |      |             |      | -->
-<!-- | poly.dist   |         |      | x           |      |              |      | x           |      | -->
-<!-- | umatrix     |         |      | x           |      |              |      |             |      | -->
-<!-- | smooth.dist |         |      | x           |      |              |      |             |      | -->
-<!-- | words       |         |      |             |      |              |      |             |      | -->
-<!-- | names       |         | x    |             |      |              |      |             |      | -->
-<!-- | graph       |         |      |             |      |              |      |             |      | -->
-<!-- | projgraph   |         |      |             |      |              |      |             |      | -->
-<!-- | mds         |         |      | x           |      |              |      | x           |      | -->
-<!-- | grid.dist   |         |      | x           |      |              |      |             |      | -->
-<!-- | grid        |         |      |             |      |              |      | x           |      | -->
-<!-- | dendrogram  |         |      |             |      | x            |      |             |      | -->
-<!-- | dendro3d    |         |      |             |      | x            |      |             |      | -->
 
 
 In the column "Prototypes", a plot marked "x2" means that this plot is 

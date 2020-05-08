@@ -50,27 +50,33 @@ The ```trainSOM``` function returns an object of class ```somRes``` (see
 
 The following table indicates which graphics are available for a numeric SOM.
 
-Type        |   Energy  |   Obs |   Prototypes  |   Add   |   Super Cluster
-------------|:---------:|:-----:|:-------------:|:-------:|:----------------:
-no type     |   x       |       |               |         |
-hitmap      |           |   x   |               |         |         x
-color       |           |   x   |       x       |   x     |         x2
-lines       |           |   x   |       x       |   x     |         x2
-barplot     |           |   x   |       x       |   x     |         x2
-pie         |           |       |               |   x     |         x
-boxplot     |           |   x   |               |   x     |         x2
-3d          |           |       |       x       |         |
-poly.dist   |           |       |       x       |         |         x
-umatrix     |           |       |       x       |         |
-smooth.dist |           |       |       x       |         |
-words       |           |       |               |   x     |
-names       |           |   x   |               |   x     |
-graph       |           |       |               |   x     |         x
-mds         |           |       |       x       |         |         x
-grid.dist   |           |       |       x       |         |         
-grid        |           |       |               |         |         x
-dendrogram  |           |       |               |         |         x
-dendro3d    |           |       |               |         |         x
+| SOM or SC<br>Type\\What | SOM<br>Energy  | Obs  | Prototypes  | Add  | SuperCluster<br>(no what)    | Obs  | Prototypes  | Add  |
+<!-- | SOM or SC<br> -->
+<!-- Type\\What    | SOM<br> -->
+<!--                 Energy  | Obs  | Prototypes  | Add  | SuperCluster<br> -->
+<!--                                                       (no what)    | Obs  | Prototypes  | Add  | -->
+<!-- |  What  | Energy  | Obs  | Prototypes  | Add  | (no what)    | Obs  | Prototypes  | Add  | -->
+|:------------|:--------|:-----|:------------|:-----|:-------------|:-----|:------------|:-----|
+| (no type)   | x       |      |             |      |              |      |             |      |
+| hitmap      |         | x    |             |      |              | x    |             |      |
+| color       |         | x    | x           | x    |              | x    | x           |      |
+| lines       |         | x    | x           | x    |              | x    | x           | x    |
+| meanline    |         | x    |             | x    |              | x    |             | x    |
+| barplot     |         | x    | x           | x    |              | x    | x           | x    |
+| pie         |         |      |             | x    |              |      |             | x    |
+| boxplot     |         | x    |             | x    |              | x    |             | x    |
+| 3d          |         |      | x           |      |              |      |             |      |
+| poly.dist   |         |      | x           |      |              |      | x           |      |
+| umatrix     |         |      | x           |      |              |      |             |      |
+| smooth.dist |         |      | x           |      |              |      |             |      |
+| mds         |         |      | x           |      |              |      | x           |      |
+| grid.dist   |         |      | x           |      |              |      |             |      |
+| words       |         |      |             | x    |              |      |             |      |
+| names       |         | x    |             | x    |              |      |             |      |
+| grid        |         |      |             |      |              |      | x           |      |
+| dendrogram  |         |      |             |      | x            |      |             |      |
+| dendro3d    |         |      |             |      | x            |      |             |      |
+
 
 The plots marked by "x2", in the "Super Cluster" column, are available for 
 the variables in the dataset used for training and also for external additional 

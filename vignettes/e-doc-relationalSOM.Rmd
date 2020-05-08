@@ -56,12 +56,12 @@ The following table indicates which graphics are available for a relational SOM.
 | poly.dist   |         |      | x           |      |              |      | x           |      |
 | umatrix     |         |      | x           |      |              |      |             |      |
 | smooth.dist |         |      | x           |      |              |      |             |      |
+| mds         |         |      | x           |      |              |      | x           |      |
+| grid.dist   |         |      | x           |      |              |      |             |      |
 | words       |         |      |             | x    |              |      |             |      |
 | names       |         | x    |             | x    |              | x    |             |      |
 | graph       |         |      |             | x    |              |      |             | x    |
 | projgraph   |         |      |             | x    |              |      |             | x    |
-| mds         |         |      | x           |      |              |      | x           |      |
-| grid.dist   |         |      | x           |      |              |      |             |      |
 | grid        |         |      |             |      |              |      | x           |      |
 | dendrogram  |         |      |             |      | x            |      |             |      |
 | dendro3d    |         |      |             |      | x            |      |             |      |
