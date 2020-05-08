@@ -44,7 +44,6 @@ The following table indicates which graphics are available for a relational SOM.
 
 | SOM or SC<br>Type\\What | SOM<br>Energy  | Obs  | Prototypes  | Add  | SuperCluster<br>(no what)    | Obs  | Prototypes  | Add  |
 |:------------|:--------|:-----|:------------|:-----|:-------------|:-----|:------------|:-----|
-| Types:      | x       |      |             |      |              |      |             |      |
 | (no type)   | x       |      |             |      |              |      |             |      |
 | hitmap      |         | x    |             |      |              | x    |             |      |
 | color       |         |      |             | x    |              |      |             |      |
@@ -53,7 +52,7 @@ The following table indicates which graphics are available for a relational SOM.
 | barplot     |         |      | x           | x    |              |      | x           | x    |
 | pie         |         |      |             | x    |              |      |             | x    |
 | boxplot     |         |      |             | x    |              |      |             | x    |
-| 3d          |         |      |             |      |              |      |             |      |
+<!-- | 3d          |         |      |             |      |              |      |             |      | -->
 | poly.dist   |         |      | x           |      |              |      | x           |      |
 | umatrix     |         |      | x           |      |              |      |             |      |
 | smooth.dist |         |      | x           |      |              |      |             |      |
