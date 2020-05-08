@@ -42,31 +42,31 @@ The ```trainSOM``` function returns an object of class ```somRes``` (see
 
 The following table indicates which graphics are available for a relational SOM.
 
-SOM         |             SOM                 ||      Super Cluster 
-------------|:--------------------------------||-------------------------------:
-Type \ What | Energy | Obs | Prototypes | Add ||      | Obs | Prototypes | Add |
-------------|:------:|:---:|:----------:|:---:||:----:|:---:|:----------:|:---:|
-no type     |   x    |     |            |     ||      |     |            |     |  
-hitmap      |        |  x  |            |     ||      |  x  |            |     |
-color       |        |     |            |  x  ||      |     |            |     |
-lines       |        |     |     x      |  x  ||      |     |     x      |  x  |
-meanline    |        |     |            |  x  ||      |     |            |  x  |
-barplot     |        |     |     x      |  x  ||      |     |     x      |  x  |
-pie         |        |     |            |  x  ||      |     |            |  x  |
-boxplot     |        |     |            |  x  ||      |     |            |  x  |
-3d          |        |     |            |     ||      |     |            |     |
-poly.dist   |        |     |     x      |     ||      |     |     x      |     |
-umatrix     |        |     |     x      |     ||      |     |            |     |
-smooth.dist |        |     |     x      |     ||      |     |            |     |
-words       |        |     |            |  x  ||      |     |            |     |
-names       |        |  x  |            |  x  ||      |  x  |            |     |
-graph       |        |     |            |  x  ||      |     |            |  x  |
-projgraph   |        |     |            |  x  ||      |     |            |  x  |
-mds         |        |     |     x      |     ||      |     |     x      |     |
-grid.dist   |        |     |     x      |     ||      |     |            |     |
-grid        |        |     |            |     ||      |     |     x      |     |
-dendrogram  |        |     |            |     ||  x   |     |            |     |
-dendro3d    |        |     |            |     ||  x   |     |            |     |
+| SOM or SC<br>Type\\What | SOM<br>Energy  | Obs  | Prototypes  | Add  | SuperCluster<br>(no what)    | Obs  | Prototypes  | Add  |
+|:------------|:--------|:-----|:------------|:-----|:-------------|:-----|:------------|:-----|
+| Types:      | x       |      |             |      |              |      |             |      |
+| (no type)   | x       |      |             |      |              |      |             |      |
+| hitmap      |         | x    |             |      |              | x    |             |      |
+| color       |         |      |             | x    |              |      |             |      |
+| lines       |         |      | x           | x    |              |      | x           | x    |
+| meanline    |         |      |             | x    |              |      |             | x    |
+| barplot     |         |      | x           | x    |              |      | x           | x    |
+| pie         |         |      |             | x    |              |      |             | x    |
+| boxplot     |         |      |             | x    |              |      |             | x    |
+| 3d          |         |      |             |      |              |      |             |      |
+| poly.dist   |         |      | x           |      |              |      | x           |      |
+| umatrix     |         |      | x           |      |              |      |             |      |
+| smooth.dist |         |      | x           |      |              |      |             |      |
+| words       |         |      |             | x    |              |      |             |      |
+| names       |         | x    |             | x    |              | x    |             |      |
+| graph       |         |      |             | x    |              |      |             | x    |
+| projgraph   |         |      |             | x    |              |      |             | x    |
+| mds         |         |      | x           |      |              |      | x           |      |
+| grid.dist   |         |      | x           |      |              |      |             |      |
+| grid        |         |      |             |      |              |      | x           |      |
+| dendrogram  |         |      |             |      | x            |      |             |      |
+| dendro3d    |         |      |             |      | x            |      |             |      |
+
 
 In the "Super Cluster" column, a plot marked by "x2" means it is available for 
 both data set variables and additional variables.
