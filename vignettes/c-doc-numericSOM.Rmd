@@ -25,6 +25,7 @@ The standard numeric SOM and its use in `SOMbrero` are illustrated below.
 __This documentation only considers the case of numerical data.__
 
 ```{r loading, results='hide', echo=FALSE, warning=FALSE, message=FALSE}
+library(ggplot2)
 library("SOMbrero")
 ```
 
