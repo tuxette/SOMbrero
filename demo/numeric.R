@@ -24,8 +24,7 @@ plot(iris.som, what="obs", type="hitmap")
 ## or with a table
 table(iris.som$clustering)
 ## or more precisely by printing the names of the rows in their assigned neuron
-### WARNING: this graphic may produce some warnings when all row names can not fit on the plot
-### they can be solved by using the 'scale' argument (see 'help(wordcloud)')
+### WARNING: this graphic may produce some warnings when all row names can not fit correctly on the plot
 plot(iris.som, what="obs", type="names")
 
 # the flower species distribution can be plotted by passing the 'Species' variable as an additional variable
