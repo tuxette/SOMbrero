@@ -172,12 +172,15 @@ for the considered variable.</li>
 
 <li><b>boxplot:</b>  plots boxplots for the observations in every neuron.</li>
 
-<li><b>lines:</b>  plots, for each neuron, the prototype value or the average
-value level of the observations, with lines. Each point on the line represents a
-variable. </li>
+<li><b>lines:</b>  plots a line for each observation in every neuron, between 
+variables.</li>
 
 <li><b>barplot:</b>  similar to lines, here each variable value is represented
 by a bar. </li>
+
+<li><b>mealine:</b>  plots, for each neuron, the prototype value or the average
+value level of the observations, with lines. Each point on the line represents a
+variable. </li>
 
 <li><b>names:</b>  prints on the grid the names of the observations in the
 neuron to which they belong. <strong>Warning!</strong> If the number of

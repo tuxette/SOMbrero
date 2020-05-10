@@ -290,7 +290,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
                        ...) {
   # TODO: add types "names" and "words"
   args <- list(...)
-  type <- match.arg(type)
+  #type <- match.arg(type)
   
   calls <- names(sapply(match.call(), deparse))[-1]
   if (any("print.title" %in% calls)) {
@@ -308,7 +308,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
             call. = FALSE, immediate. = TRUE)
     what <- "add"
   }
-  print(what)
+  
   if (!(type %in% c("dendrogram", "dendro3d", "grid"))) {
     args$what <- match.arg(what)
     # Type control (if not in dendro, dendro3d)
@@ -471,7 +471,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
         }
   
         # manage colors 
-        if (args$what == "obs") {
+        if (args$what == "obs" | args$what == "add") {
           args$varcolor <- x$cluster[x$som$clustering]
           args$sc <- x$cluster[x$som$clustering] 
         }

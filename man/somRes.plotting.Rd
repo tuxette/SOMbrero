@@ -24,7 +24,7 @@ nothing will be plotted at its location.
 observations per neuron. It is the default plot when \code{what="obs"}.
 \item \code{"color"} can have one more argument, \code{variable}, the name or index of thevariable to be considered (default, \code{1}). Neurons are filled using the given colors according to the average value level of the observations for the chosen variable.
 \item \code{"meanline"} plots, for each neuron, the average value level of the
-observations, with lines. One point represents a variable. By default, all variables of the dataset used to train the algorithm are plotted but a vector of variables (names or indexes) can be provided with the argument \code{variable}.
+observations, with lines and points. One point represents a variable. By default, all variables of the dataset used to train the algorithm are plotted but a vector of variables (names or indexes) can be provided with the argument \code{variable}.
 \item \code{"barplot"} is similar to \code{"lines"} but using barplots. Then, 
 a bar represents a variable.
 \item \code{"boxplot"} plots boxplots for the observations in every neuron, by variable. Like \code{"lines"} and \code{"barplot"} a vector of variables (names or indexes) can be provided with the argument \code{variable}
@@ -169,7 +169,6 @@ Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
 
 ####### Plot on energy
-
 plot(iris.som, what="energy") # energy
 
 ####### Plots on observations
@@ -198,5 +197,6 @@ plot(iris.som, what="prototypes", type="mds")}
 ####### plots on an additional variable: the flower species
 plot(iris.som, what="add", type="pie", variable=iris$Species)
 \dontrun{
-plot(iris.som, what="add", type="names", variable=iris$Species)}
+plot(iris.som, what="add", type="names", variable=iris$Species)
+plot(iris.som, what="add", type="words", variable=iris[,1:2])}
 }
