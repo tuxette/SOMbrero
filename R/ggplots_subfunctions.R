@@ -90,7 +90,8 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
     
     tp <- ggplot(dataplot, aes_string(x = "x", y = "y")) + 
       geom_point(aes_string(size = "Nb", color = "varname")) +
-      scale_size_area(max_size=min(25,max(dataplot$Nb)))+
+      scale_size_area(breaks=c(min(dataplot$Nb), median(dataplot$Nb), max(dataplot$Nb)),
+                                   max_size=min(25,max(dataplot$Nb)))+
       labs(size = "Number of\nobservations") + labs(color=labelcolor)
   }
   
@@ -257,7 +258,6 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
     }
     dataplot$halfNbCluster <- dataplot$Nbcluster/2
 
-    
     tp <-  ggplot(dataplot, aes_string(x="halfNbCluster", y="Share", 
                                        fill="values", width="Nbcluster")) +
               geom_bar(position = "fill", stat="identity") + 
