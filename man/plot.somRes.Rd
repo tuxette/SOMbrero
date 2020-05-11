@@ -51,10 +51,9 @@ to plotting or not. Default value is \code{TRUE} when \code{type="numeric"}
 and \code{FALSE} in the other cases.}
 
 \item{show.names}{Boolean used to indicate whether each neuron should have a
-title or not. Default to \code{TRUE}. It is feasible on the following 
-cases: all \code{"color"} types, all \code{"lines"} types, all 
-\code{"barplot"} types, all \code{"boxplot"} types,
-all \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
+title or not, if relevant. Default to \code{TRUE}. It is feasible on the following 
+cases: all \code{"color"}, \code{"lines"}, \code{"meanline"}, \code{"barplot"},
+\code{"boxplot"}, \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
 \code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.}
 
 \item{names}{The names to be printed for each neuron if 
@@ -94,7 +93,7 @@ iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
 # on energy
 plot(iris.som, what="energy") 
 # on observations
-plot(iris.som, what="obs", type="boxplot")
+plot(iris.som, what="obs", type="lines")
 # on prototypes
 plot(iris.som, what="prototypes", type="3d", variable="Sepal.Length")
 # on an additional variable: the flower species
