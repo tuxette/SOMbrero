@@ -27,5 +27,14 @@
 #' version 0.7.0. \url{https://cran.r-project.org/package=shiny}
 
 sombreroGUI <- function() {
-  shiny::runApp(system.file('shiny', package='SOMbrero'))
+  
+  if (all(requireNamespace("shinycssloaders", quietly = TRUE),
+          requireNamespace("shinyBS", quietly = TRUE), 
+          requireNamespace("shinyjs", quietly = TRUE), 
+          requireNamespace("shinyjqui", quietly = TRUE))) {
+    shiny::runApp(system.file('shiny', package='SOMbrero'))
+  } else {
+    stop("The packages 'shinycssloaders', 'shinyBS', 'shinyjs' and 'shinyjqui' are required to launch the graphical interface.", call. = TRUE)
+  }
+  
 }
