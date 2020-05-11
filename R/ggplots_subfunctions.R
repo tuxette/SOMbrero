@@ -19,7 +19,9 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
   
   # Axes labels 
   ################################################
-  if(is.null(args$varname)) varname <- colnames(values)[1] else varname <- args$varname
+  if(is.null(args$varname)) {
+    varname <- colnames(values)[1] 
+  } else varname <- args$varname
 
   labelcolor <- ""
   if (is.null(args$labelcolor)) {
@@ -98,8 +100,12 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
       tp <- ggplot(dataplot, aes_string(x = "x", y = "y", fill = "varname")) + 
         geom_bin2d(stat = "identity", linetype = 1, color = "grey")
     } else {
-      tp <- ggplot(dataplot, aes_string(x = "x", y = "y", fill = "varname")) + 
-        geom_hex(stat = "identity", linetype = 1, color = "grey")
+      if (requireNamespace("hexbin", quietly = TRUE)) {
+        tp <- ggplot(dataplot, aes_string(x = "x", y = "y", fill = "varname")) + 
+          geom_hex(stat = "identity", linetype = 1, color = "grey")
+      } else {
+        stop("'hexbin' package required for this plot.", call. = TRUE)
+      }
     }
   }
   
@@ -111,9 +117,13 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
         geom_bin2d(stat = "identity", linetype = 1, color = "grey", size = 0.6)
     } else {
       dataplot$varname <- factor(dataplot$varname)
-      tp <- ggplot(dataplot, aes_string(x = "x", y = "y", fill = "varname",
-                                        group = "1")) + 
-        geom_hex(stat = "identity", linetype = 1, color = "grey", size = 0.6)
+      if (requireNamespace("hexbin", quietly = TRUE)) {
+        tp <- ggplot(dataplot, aes_string(x = "x", y = "y", fill = "varname",
+                                          group = "1")) + 
+          geom_hex(stat = "identity", linetype = 1, color = "grey", size = 0.6)
+      } else {
+        stop("'hexbin' package required for this plot.", call. = TRUE)
+      }
     }
   }
 
