@@ -5,12 +5,16 @@
 \alias{protoDist.somRes}
 \title{Compute distances between prototypes}
 \usage{
-protoDist(object, mode, ...)
+protoDist(object, mode = c("complete", "neighbors"), radius = 1, ...)
 }
 \arguments{
 \item{object}{a \code{somRes} object.}
 
-\item{mode}{Specifies which distances should be computed.}
+\item{mode}{Specifies which distances should be computed (default to 
+\code{"complete"}).}
+
+\item{radius}{Radius used to fetch the neighbors (default to 1). The distance
+used to compute the neighbors is the Euclidean distance.}
 
 \item{\dots}{Not used.}
 }
@@ -21,8 +25,10 @@ which dimensions are equal to the product of the grid dimensions.
 When \code{mode = "neighbors"}, the function returns a list which length is 
 equal to the product of the grid dimensions; the length of each item is equal
 to the number of neighbors. Neurons are considered to have 8 neighbors at 
-most (\emph{i.e.}, two neurons are neighbors if they have a distance of type 
-'maximum' which is equal to 1).
+most (\emph{i.e.}, two neurons are neighbors if they have an Euclidean 
+distance smaller than \code{radius}. Natural choice for \code{radius} is
+1 for hexagonal topology and 1 or \eqn{\sqrt{2}}{sqrt(2)} for square 
+topology (4 and 8 neighbors respectively).
 }
 \description{
 Compute distances, either between all prototypes 
@@ -38,7 +44,7 @@ of the prototypes.
 }
 \examples{
 set.seed(2343)
-my.som <- trainSOM(x.data=iris[,1:4], dimension=c(5,5))
+my.som <- trainSOM(x.data = iris[,1:4], dimension = c(5,5))
 protoDist(my.som)
 }
 \seealso{

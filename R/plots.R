@@ -216,17 +216,19 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     }
 
   } else if (type=="poly.dist") {
-    values <- protoDist(sommap, "neighbors")
-    if (sommap$parameters$type=="relational") {
-      if (sum(unlist(values)<0)>0) {
+    radius <- ifelse(sommap$parameters$the.grid$topo == "square", sqrt(2), 1)
+    values <- protoDist(sommap, "neighbors", radius)
+    if (sommap$parameters$type == "relational") {
+      if (sum(unlist(values)<0) > 0) {
         stop("Impossible to plot 'poly.dist'!", call.=TRUE)
-      } else values <- lapply(values,sqrt)
+      } else values <- lapply(values, sqrt)
     }
     ggplotGrid("prototypes", type, values, sommap$clustering, show.names,
                    names, sommap$parameters$the.grid, args)
     
   } else if (type=="umatrix" || type=="smooth.dist") {
-    values <- protoDist(sommap, "neighbors")
+    radius <- ifelse(sommap$parameters$the.grid$topo == "square", sqrt(2), 1)
+    values <- protoDist(sommap, "neighbors", radius)
 
     if (sommap$parameters$type=="relational") {
       if (sum(unlist(values)<0)>0) {
@@ -272,14 +274,16 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
       ggplot(dataplot, aes_string(x="x", y="y")) + 
         geom_text(aes_string(label="labels"), alpha=0.7, size=args$cex, 
                   fontface="bold") +
-        labs(x="x", y="y", title="Prototypes visualization by MDS")
+        labs(x="x", y="y", title="Prototypes visualization by MDS") +
+        theme_bw()
       
     } else {  #### Regular case
       dataplot <- data.frame(x = proj.coord[,1], y = proj.coord[,2], "labels"=args$labels, "Super_Cluster"=as.factor(args$sc))
       ggplot(dataplot, aes_string(x="x", y="y")) + 
         geom_text(aes_string(label="labels", col="Super_Cluster"), alpha=0.7, 
                   size=args$cex, fontface="bold") +
-        labs(x="x", y="y", title="Prototypes visualization by MDS")
+        labs(x="x", y="y", title="Prototypes visualization by MDS") +
+        theme_bw()
     }
    
   } else if (type=="grid.dist") {
@@ -295,9 +299,10 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     dataplot <- data.frame("x" = as.vector(the.distances), 
                            "y" = as.vector(dist(sommap$parameters$the.grid$coord)))
     ggplot(dataplot, aes_string(x="x", y="y")) + 
-      geom_point(shape=21, alpha=0.7, size=1) +
+      geom_point(shape=19, alpha=0.7, size=1) +
       labs(x="prototype distances", y="grid distances", 
-           title="Distances between protoypes (input space vs. grid)")
+           title="Distances between protoypes (input space vs. grid)") +
+      theme_bw()
   } else stop("Sorry: this type is still to be implemented.", call.=TRUE)
 }
 

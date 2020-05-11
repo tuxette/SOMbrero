@@ -95,19 +95,21 @@ selectNei <- function(the.neuron, the.grid, radius, radius.type,
                       dist.type=the.grid$dist.type) {
   if (radius.type=="letremy") {
     if (dist.type=="letremy") {
-      if (radius==0.5) {
+      if (radius == 0.5) {
         the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
-                                   method="euclidean"))[the.neuron,]
-        the.nei <- which(the.dist<=1)
+                              method = "euclidean"))[the.neuron,]
+        the.nei <- which(the.dist <= 1)
       } else {
         the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
                                    method="maximum"))[the.neuron,]
         the.nei <- which(the.dist<=radius)
       }
     } else {
-      the.dist <- as.matrix(dist(the.grid$coord, diag=TRUE, upper=TRUE,
-                                 method=dist.type))[the.neuron,]
-      the.nei <- which(the.dist<=radius)
+      dist.grid <- dist(the.grid$coord, diag = TRUE, upper = TRUE,
+                        method = "euclidean")
+      dist.grid <- round(as.matrix(dist.grid), 7) # handle numerical approximations for "hexagonal"
+      the.dist <- dist.grid[the.neuron, ]
+      the.nei <- which(the.dist <= radius)
     }
   } else if (radius.type=="gaussian") {
     proto.dist <- as.matrix(dist(the.grid$coord, upper=TRUE, 
@@ -127,44 +129,6 @@ distEuclidean <- function(x,y) {
 distRelationalProto <- function(proto1, proto2, x.data) {
   -0.5*t(proto1-proto2)%*%x.data%*%(proto1-proto2)
 }
-
-calculateProtoDist <- function(prototypes, the.grid, type, complete=FALSE,
-                               x.data=NULL) {
-  if (!complete) {
-    all.nei <- sapply(1:prod(the.grid$dim), selectNei, the.grid=the.grid,
-                      radius=1, radius.type="letremy", dist.type="letremy")
-    all.nei <- sapply(1:prod(the.grid$dim), function(neuron) 
-      setdiff(all.nei[[neuron]], neuron))
-    if (type!="relational") {# euclidean case
-      distances <- sapply(1:prod(the.grid$dim), function(one.neuron) {
-        apply(prototypes[all.nei[[one.neuron]],],1,distEuclidean,
-              y=prototypes[one.neuron,])
-      })
-    } else {
-      distances <- sapply(1:prod(the.grid$dim), function(one.neuron) {
-        apply(prototypes[all.nei[[one.neuron]],],1,distRelationalProto,
-              proto2=prototypes[one.neuron,], x.data=x.data)
-      })
-      if (sum(unlist(distances)<0)>0)
-        warning("some of the relational 'distances' are negatives\n
-                plots, qualities, super-clustering... may not work!",
-                immediate.=TRUE, call.=TRUE)
-    }
-  } else {
-    if (type=="relational") {# non euclidean case
-      distances <- apply(prototypes,1,function(one.proto) {
-        apply(prototypes, 1, distRelationalProto, proto2=one.proto,
-              x.data=x.data)
-      })
-      if (sum(distances<0)>0)
-        warning("some of the relational 'distances' are negatives\n
-                plots, qualities, super-clustering... may not work!",
-                immediate.=TRUE, call.=TRUE)
-    } else distances <- as.matrix(dist(prototypes, upper=TRUE, diag=TRUE))
-  }
-  
-  distances
-  }
 
 ## Functions used during training of SOM
 # Step 2: Preprocess data ("korresp" case)
@@ -1119,7 +1083,10 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0,
 #' (\code{mode = "neighbors"}).
 #' 
 #' @param object a \code{somRes} object.
-#' @param mode Specifies which distances should be computed.
+#' @param mode Specifies which distances should be computed (default to 
+#' \code{"complete"}).
+#' @param radius Radius used to fetch the neighbors (default to 1). The distance
+#' used to compute the neighbors is the Euclidean distance.
 #' @param \dots Not used.
 #' 
 #' @details When \code{mode="complete"}, distances between all prototypes are
@@ -1134,8 +1101,10 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0,
 #' When \code{mode = "neighbors"}, the function returns a list which length is 
 #' equal to the product of the grid dimensions; the length of each item is equal
 #' to the number of neighbors. Neurons are considered to have 8 neighbors at 
-#' most (\emph{i.e.}, two neurons are neighbors if they have a distance of type 
-#' 'maximum' which is equal to 1).
+#' most (\emph{i.e.}, two neurons are neighbors if they have an Euclidean 
+#' distance smaller than \code{radius}. Natural choice for \code{radius} is
+#' 1 for hexagonal topology and 1 or \eqn{\sqrt{2}}{sqrt(2)} for square 
+#' topology (4 and 8 neighbors respectively).
 #' 
 #' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
@@ -1144,26 +1113,62 @@ predict.somRes <- function(object, x.new=NULL, ..., radius=0,
 #' 
 #' @examples
 #' set.seed(2343)
-#' my.som <- trainSOM(x.data=iris[,1:4], dimension=c(5,5))
+#' my.som <- trainSOM(x.data = iris[,1:4], dimension = c(5,5))
 #' protoDist(my.som)
 
-protoDist <- function(object, mode,...) {
+protoDist <- function(object, mode = c("complete", "neighbors"), radius = 1, ...) {
   UseMethod("protoDist")
 }
 
 #' @export
 
-protoDist.somRes <- function(object, mode=c("complete","neighbors"), ...) {
+protoDist.somRes <- function(object, mode = c("complete", "neighbors"), 
+                             radius = 1, ...) {
   mode <- match.arg(mode)
-  complete <- (mode=="complete")
-  norm.proto <- preprocessProto(object$prototypes, object$parameters$scaling, 
+  complete <- (mode == "complete")
+  prototypes <- preprocessProto(object$prototypes, object$parameters$scaling, 
                                 object$data)
-  if (object$parameters$type=="relational") {
+  if (object$parameters$type == "relational") {
     x.data <- preprocessData(object$data, object$parameters$scaling)
   } else x.data <- NULL
   
-  distances <- calculateProtoDist(norm.proto, object$parameters$the.grid,
-                                  object$parameters$type, complete, x.data)
+  the.grid <- object$parameters$the.grid
+  type <- object$parameters$type
+  
+  if (!complete) {
+    all.nei <- sapply(1:prod(the.grid$dim), selectNei, the.grid = the.grid,
+                      radius = radius, radius.type = "letremy", 
+                      dist.type = "euclidean")
+    all.nei <- sapply(1:prod(the.grid$dim), function(neuron) 
+      setdiff(all.nei[[neuron]], neuron))
+    if (type != "relational") {# euclidean case
+      distances <- sapply(1:prod(the.grid$dim), function(one.neuron) {
+        apply(prototypes[all.nei[[one.neuron]], ], 1, distEuclidean,
+              y = prototypes[one.neuron, ])
+      })
+    } else {
+      distances <- sapply(1:prod(the.grid$dim), function(one.neuron) {
+        apply(prototypes[all.nei[[one.neuron]],], 1, distRelationalProto,
+              proto2 = prototypes[one.neuron,], x.data = x.data)
+      })
+      if (sum(unlist(distances) < 0) > 0)
+        warning("some of the relational 'distances' are negatives\n
+                plots, qualities, super-clustering... may not work!",
+                immediate. = TRUE, call. = TRUE)
+    }
+  } else {
+    if (type == "relational") {# non euclidean case
+      distances <- apply(prototypes, 1, function(one.proto) {
+        apply(prototypes, 1, distRelationalProto, proto2 = one.proto,
+              x.data = x.data)
+      })
+      if (sum(distances < 0) > 0)
+        warning("some of the relational 'distances' are negatives\n
+                plots, qualities, super-clustering... may not work!",
+                immediate. = TRUE, call. = TRUE)
+    } else distances <- as.matrix(dist(prototypes, upper = TRUE, diag = TRUE))
+  }
+  
   return(distances)
 }
 
