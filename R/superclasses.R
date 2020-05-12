@@ -290,7 +290,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
                        ...) {
   # TODO: add types "names" and "words"
   args <- list(...)
-  #type <- match.arg(type)
+  type <- type[1]
   
   calls <- names(sapply(match.call(), deparse))[-1]
   if (any("print.title" %in% calls)) {
