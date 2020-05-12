@@ -6,12 +6,12 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
   if (tree$merge[ind,v.ind]<0) {
     res <- coord[abs(tree$merge[ind,v.ind]),]
     scatter$points3d(matrix(c(res,0,res,tree$height[ind]), 
-                        ncol=3, byrow=TRUE), type="l")
+                            ncol=3, byrow=TRUE), type="l")
   } else {
     res <- mat.moy[tree$merge[ind,v.ind],]
     scatter$points3d(matrix(c(res,tree$height[tree$merge[ind,v.ind]],
-                          res,tree$height[ind]), ncol=3, 
-                        byrow=TRUE), type="l")
+                              res,tree$height[ind]), ncol=3, 
+                            byrow=TRUE), type="l")
   }
   return(res)
 }
@@ -49,10 +49,9 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' super-clusters (more details in the section \strong{Details} below).
 #' @param what What you want to plot for superClass object. Either the 
 #' observations (\code{obs}), the prototypes (\code{prototypes}) or an 
-#' additional variable (\code{add}), or \code{NULL} if not appropriate. Default
-#' to \code{prototypes} for 'lines', 'barplot', and 'color' types. 
-#' Automatically set for types 'boxplot' (to \code{"obs"}), 'mds', and 
-#' 'poly.dist' (to \code{"prototypes"}), 'graph' and 'pie' (to \code{"add"}).
+#' additional variable (\code{add}), or \code{NULL} if not appropriate. 
+#' Automatically set for types "hitmap" (to \code{"obs"}), 'grid' 
+#' (to \code{"prototypes"}), default to "obs" otherwise.
 #' If \code{what='add'}, the function \code{\link{plot.somRes}} will be called with
 #' the argument \code{what} set to \code{"add"}.
 #' @param type The type of plot to draw. Default value is \code{"dendrogram"}, 
@@ -98,21 +97,22 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' On plots, the different super classes are identified in the following ways:
 #' \itemize{
 #'   \item either with different color, when \code{type} is set among: 
-#'   \code{"grid"} (*, #), \code{"hitmap"} (*, #), \code{"lines"} (*, #), 
-#'   \code{"barplot"} (*, #), \code{"boxplot"}, \code{"mds"} (*, #), 
-#'   \code{"dendro3d"} (*, #), \code{"graph"} (*, #)
-#'   \item or with title, when \code{type} is set among: \code{"color"} (*),
-#'   \code{"poly.dist"} (*, #), \code{"pie"} (#)
+#'   \code{"grid"} (N, K, R), \code{"hitmap"} (N, K, R), \code{"lines"} (N, K, R), 
+#'   \code{"barplot"} (N, K, R), \code{"boxplot"}, \code{"poly.dist"} (N, K, R), 
+#'   \code{"mds"} (N, K, R), \code{"dendro3d"} (N, K, R), \code{"graph"} (R),
+#'   \code{"projgraph"} (R)
+#'   \item or with title, when \code{type} is set among: \code{"color"} (N, K),
+#'   \code{"pie"} (N, R)
 #' }
-#' In the list above, the charts available for a \code{korresp} SOM are marked 
-#' with a * whereas those available for a \code{relational} SOM are marked with 
-#' a #.
 #' 
-#' \code{projectIGraph.somSC} produces a projected graph from the 
+#' In the list above, the charts available for a \code{numerical} SOM are maked
+#' with a N, with a K for a \code{korresp} SOM and with a R for \code{relational} SOM.
+#' 
+#' \code{\link{projectIGraph.somSC}} produces a projected graph from the 
 #' \link[igraph]{igraph} object passed to the argument \code{variable} as 
 #' described in (Olteanu and Villa-Vialaneix, 2015). The attributes of this 
 #' graph are the same than the ones obtained from the SOM map itself in the 
-#' function \code{\link{projectIGraph.somRes}}. \code{plot.somSC} used with 
+#' function \code{\link{projectIGraph.somRes}}. \code{\link{plot.somSC}} used with 
 #' \code{type="projgraph"} calculates this graph and represents it by 
 #' positionning the super-vertexes at the center of gravity of the 
 #' super-clusters. This feature can be combined with \code{pie.graph=TRUE} to 
@@ -224,7 +224,7 @@ summary.somSC <- function(object, ...) {
     names(output.clustering) <- seq_along(object$cluster)
     print(output.clustering)
     cat("\n")
-  
+    
     if (object$som$parameters$type=="numeric") {
       sc.clustering <- object$cluster[object$som$clustering]
       cat("\n  ANOVA\n")
@@ -330,13 +330,13 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
                                                 "barplot", "mds", "poly.dist"),
                                "add" = c("lines", "meanline", "barplot", "pie",
                                          "graph", "projgraph"))
-           )
+      )
     
     if (!is.element(type, authorizedtypes[[x$som$parameters$type]][[args$what]])) {
       namedwhat <- switch (args$what,
-        "obs" = "observations",
-        "prototypes" = "prototypes",
-        "add" = "additional variables"
+                           "obs" = "observations",
+                           "prototypes" = "prototypes",
+                           "add" = "additional variables"
       )
       if (args$what == "add" && x$som$parameters$type == "korresp") {
         stop(paste0("Incorrect type. For ", x$som$parameters$type,
@@ -351,7 +351,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
       }
     }
   }
-
+  
   # Colors (used only for dendrogram, dendro3d, graph and projgraph)
   if (!is.null(x$cluster)) {
     nbclust <- max(x$cluster)
@@ -395,7 +395,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
     if (length(x) < 3) {
       clust.col <- "black"
     } 
-     x.y.coord <- x$som$parameters$the.grid$coord + 0.5
+    x.y.coord <- x$som$parameters$the.grid$coord + 0.5
     if (floor(max(x$tree$height[-which.max(x$tree$height)])) == 0) {
       z.max <- max(x$tree$height[-which.max(x$tree$height)])
     } else {
@@ -469,7 +469,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
         } else {
           args$names <- paste("SC", x$cluster)
         }
-  
+        
         # manage colors 
         if (args$what == "obs" | args$what == "add") {
           args$varcolor <- x$cluster[x$som$clustering]
@@ -479,7 +479,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
           args$varcolor <- x$cluster
           args$sc <-  x$cluster
         }
-
+        
         if (args$what == "add") {
           if (is.null(args$variable)) {
             stop("Specify the variable to plot", call. = TRUE)
@@ -488,8 +488,8 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
           args$varname <- deparse(substitute(callvar))
         }
         
-       do.call("plot.somRes", args)
-       
+        do.call("plot.somRes", args)
+        
       } else if (type == "projgraph") {
         # check arguments
         if (x$som$parameters$type == "korresp")
@@ -510,7 +510,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
         
         args$vertex.color <- clust.col.pal
         args$vertex.frame.color <- clust.col.pal
-
+        
         # case of pie
         if (is.null(args$pie.graph)) args$pie.graph <- FALSE
         if (args$pie.graph) {
@@ -529,14 +529,14 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
           args$vertex.pie <- proj.pie$vertex.pie
           args$vertex.pie.color <- proj.pie$vertex.pie.color
         } else if (is.null(args$vertex.shape)) args$vertex.shape <- "circle"
-
+        
         # find projected graph
         proj.graph <- projectIGraph.somSC(x, args$variable)
         args$proj.graph <- proj.graph
         args$variable <- NULL
         do.call("plotProjGraph", args)
-
-       } else stop("Sorry, this type is not implemented yet\n", call.=TRUE) 
+        
+      } else stop("Sorry, this type is not implemented yet\n", call.=TRUE) 
     }
   }
 }
