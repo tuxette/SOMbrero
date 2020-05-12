@@ -242,18 +242,20 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
     dataplot <- merge(dataplot, datatot, by="SOMclustering", all.x=TRUE)
     labely <- "Number of observations in the cluster"
     dataplot$Share <- dataplot$Nb/dataplot$Nbcluster
+    # change scle to have proportional areas
+    dataplot$Nbcluster <- sqrt(dataplot$Nbcluster)/pi
     if(args$proportional==F){
         labely <- ""
         dataplot$Nbcluster <- max(dataplot$Nbcluster)
     }
-    dataplot$halfNbCluster <- dataplot$Nbcluster/2
+    dataplot$halfNbcluster <- dataplot$Nbcluster/2
 
-    tp <-  ggplot(dataplot, aes_string(x="halfNbCluster", y="Share", 
+    tp <-  ggplot(dataplot, aes_string(x="halfNbcluster", y="Share", 
                                        fill="values", width="Nbcluster")) +
               geom_bar(position = "fill", stat="identity") + 
               coord_polar("y") + 
               ylab(NULL) + xlab("Number of individuals in the cluster") + 
-              guides(fill=guide_legend(title=labelcolor))
+              guides(fill=guide_legend(title=labelcolor)) 
   } 
   # Handling of the grid order
   mylabels <- names[ordered.index]
@@ -268,7 +270,10 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
              theme_facet()
 
   if(type == "pie"){
-    tp <- tp + theme(axis.text.x = element_blank()) 
+    tp <- tp + theme(axis.text.x=element_blank(),
+                     axis.title.y=element_blank(),
+                     axis.text.y=element_blank(),
+                     axis.ticks.y=element_blank()) 
   } 
   
   # Clusters titles
