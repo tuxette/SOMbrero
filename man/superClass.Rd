@@ -18,7 +18,7 @@ superClass(sommap, method, members, k, h, ...)
 
 \method{plot}{somSC}(
   x,
-  what = c("prototypes", "obs", "add"),
+  what = c("obs", "prototypes", "add"),
   type = c("dendrogram", "grid", "hitmap", "lines", "meanline", "barplot", "boxplot",
     "mds", "color", "poly.dist", "pie", "graph", "dendro3d", "projgraph"),
   plot.var = TRUE,
