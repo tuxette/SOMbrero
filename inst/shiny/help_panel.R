@@ -215,33 +215,37 @@ Scaling (MDS) projection on a two-dimensional space.</li>
       )
     ),
     p(
-      HTML(
-        "The plot options offered in the 'superclasses' and
-'combine with  external information' panels are mostly the same as the ones
-listed above, but some are specific:
+      HTML("Plots in the SuperClasses panel: the plot options are mostly 
+      the same as the ones listed above, but some are specific:
 <ul>
-<li><b>grid:</b>  (in Superclasses panel) plots the grid of the neurons, grouped by
+<li><b>grid:</b> plots the grid of the neurons, grouped by
 superclasses (color).</li>
 
-<li><b>dendrogram:</b>  (in Superclasses panel) plots the dendrogram of the
+<li><b>dendrogram:</b> plots the dendrogram of the
 hierarchical clustering applied to the prototypes, along with the scree plot
 which shows the proportion of unexplained variance for incremental numbers of
 superclasses. These are helpful in determining the optimal number of
 superclasses.</li>
 
-<li><b>dendro3d:</b>  (in Superclasses panel) similar to 'dendrogram', but in
+<li><b>dendro3d:</b> similar to 'dendrogram', but in
 three dimensions and without the scree plot.</li>
-
-<li><b>pie:</b>  (in Combine panel) requires the selected variable to be a
+</ul>"
+      )
+    ),
+    p(
+      HTML("Plots in the 'Combine with external information' panel: 
+the plot options are mostly the same as the ones listed above, but some are specific:
+<ul>
+<li><b>pie:</b> requires the selected variable to be a
 categorical variable, and plots one pie for each neuron, corresponding to the
 values of this variable.</li>
 
-<li><b>words:</b>  (in Combine panel) needs the external data to be a
+<li><b>words:</b> needs the external data to be a
 contingency table or numerical values: names of the columns will be
 used as words and printed on the map with sizes proportional to the sum of values
 in the neuron.</li>
 
-<li><b>graph:</b>  (in Combine panel) needs the external data to be the
+<li><b>graph:</b> needs the external data to be the
 adjacency matrix of a graph. According to the existing edges in the graph and to
 the clustering obtained with the SOM algorithm, a clustered graph is built in
 which vertices represent neurons and edge are weighted by the number of edges in
@@ -251,7 +255,7 @@ plot can be tested with the supplied dataset <a href=
 >Les Miserables</a> that
 corresponds to the graph those adjacency table is provided at <a href=
 'http://nextcloud.nathalievilla.org/index.php/s/R2Vyt5Vkg3xlYPD'
->this link</a>.
+>this link</a>. 
 </li>
 </ul>"
       )

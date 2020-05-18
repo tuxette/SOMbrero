@@ -6,15 +6,17 @@
 \description{
 Useful details on how to produce graphics to help interpreting a \code{somRes}
 object.\cr
-Important: the graphics availables for a \code{numerical} SOM are marked with a N, 
-for a \code{korresp} SOM are marked by a K and for a \code{relational} SOM are 
-marked with a R.
+
+Important: the graphics availables for the different types of SOM are marked with a N, a K or a R. \cr
+(\bold{N} = numerical SOM, \bold{K} = korresp SOM and \bold{R} = relational SOM).
 }
 
 \section{Graphics on the observations: \code{what = "obs"}}{
 
 For the cases \code{what = "obs"} and \code{what = "add"}, if a neuron is empty,
 nothing will be plotted at its location.
+
+
 
 The possible values for \bold{\code{type}} are: 
 \describe{
@@ -49,7 +51,7 @@ to which it belongs.}
 }
 }
 
-\section{Graphic on the energy: \code{what = "energy"} (K, R)}{
+\section{Graphic on the energy: \code{what = "energy"} (N, K, R)}{
 This graphic is only available if some intermediate backups have been registered
 (i.e., with the argument \code{nb.save} of \code{trainSOM} or \code{initSOM} 
 resulting in \code{x$parameters$nb.save>1}). Graphic plots the evolution of the 
@@ -102,7 +104,7 @@ the grid distances.}
 }
 }
 
-\section{Graphics on an additional variable: \code{what="add"} (R)}{
+\section{Graphics on an additional variable: \code{what="add"}}{
 The case \code{what="add"} considers an additional variable, which has to be 
 given to the argument \code{variable}. Its length must match the number of
 observations in the original data. 
