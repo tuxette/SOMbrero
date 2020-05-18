@@ -117,17 +117,16 @@ coords_polydist <- function(ind, values, the.grid) {
   cur.values <- values[[ind]]
   neigh <- as.numeric(as.character(names(values[[ind]])))
   
-  maxnbneigh <- 8
-  if(the.grid$topo=="hexagonal"){
-    maxnbneigh <- 6
-  }
-  
   poly.coord <- matrix(nrow=length(neigh), ncol=2)
   for(i in 1:length(neigh)){
       n.coords <- the.grid$coord[neigh[i],]
       poly.coord[i,] <- cur.coords + (n.coords-cur.coords)*cur.values[i]
   }
   # For borders
+  maxnbneigh <- 8
+  if(the.grid$topo=="hexagonal"){
+    maxnbneigh <- 6
+  }
   if(length(neigh)<maxnbneigh){
     poly.coord <- rbind(poly.coord, cur.coords)
   }

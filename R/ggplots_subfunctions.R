@@ -53,8 +53,12 @@ ggplotGrid <- function(what, type, values, clustering, show.names,
   ################################################
   if (type == "poly.dist") {
     maxi <- max(unlist(values))
-    # Distance on the grid (min distance beween polygons = 1 --> 0.5 for each polygon)
-    values <- lapply(values, function(x) 0.429 * ((maxi-x)/maxi+0.05))
+    mini <- min(unlist(values))
+    # reverse scale (big distance = small proximity)
+    values <- lapply(values, function(x) (maxi-x)/(maxi-mini))
+    # Project on [0.05 - 0.45] interval
+    values <- lapply(values, function(x) x*(0.45-0.05) + 0.05)
+    #values <- lapply(values, function(x) 0.429 * ((maxi-x)/maxi+0.05))
     
     dataplot <- lapply(1:length(values), function(x) 
       coords_polydist(x, values, the.grid))
