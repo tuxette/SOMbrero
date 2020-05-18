@@ -51,7 +51,7 @@ to which it belongs.}
 }
 }
 
-\section{Graphic on the energy: \code{what = "energy"} (K, R)}{
+\section{Graphic on the energy: \code{what = "energy"} (N, K, R)}{
 This graphic is only available if some intermediate backups have been registered
 (i.e., with the argument \code{nb.save} of \code{trainSOM} or \code{initSOM} 
 resulting in \code{x$parameters$nb.save>1}). Graphic plots the evolution of the 
@@ -104,7 +104,7 @@ the grid distances.}
 }
 }
 
-\section{Graphics on an additional variable: \code{what="add"} (R)}{
+\section{Graphics on an additional variable: \code{what="add"}}{
 The case \code{what="add"} considers an additional variable, which has to be 
 given to the argument \code{variable}. Its length must match the number of
 observations in the original data. 
