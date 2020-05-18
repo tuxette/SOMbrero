@@ -53,10 +53,9 @@ the function \code{\link{plot}} (case \code{type="dendro"}) or to
 
 \item{what}{What you want to plot for superClass object. Either the 
 observations (\code{obs}), the prototypes (\code{prototypes}) or an 
-additional variable (\code{add}), or \code{NULL} if not appropriate. Default
-to \code{prototypes} for 'lines', 'barplot', and 'color' types. 
-Automatically set for types 'boxplot' (to \code{"obs"}), 'mds', and 
-'poly.dist' (to \code{"prototypes"}), 'graph' and 'pie' (to \code{"add"}).
+additional variable (\code{add}), or \code{NULL} if not appropriate. 
+Automatically set for types "hitmap" (to \code{"obs"}), 'grid' 
+(to \code{"prototypes"}), default to "obs" otherwise.
 If \code{what='add'}, the function \code{\link{plot.somRes}} will be called with
 the argument \code{what} set to \code{"add"}.}
 
@@ -137,21 +136,22 @@ the Fisher distribution and not on a permutation test.
 On plots, the different super classes are identified in the following ways:
 \itemize{
   \item either with different color, when \code{type} is set among: 
-  \code{"grid"} (*, #), \code{"hitmap"} (*, #), \code{"lines"} (*, #), 
-  \code{"barplot"} (*, #), \code{"boxplot"}, \code{"mds"} (*, #), 
-  \code{"dendro3d"} (*, #), \code{"graph"} (*, #)
-  \item or with title, when \code{type} is set among: \code{"color"} (*),
-  \code{"poly.dist"} (*, #), \code{"pie"} (#)
+  \code{"grid"} (N, K, R), \code{"hitmap"} (N, K, R), \code{"lines"} (N, K, R), 
+  \code{"barplot"} (N, K, R), \code{"boxplot"}, \code{"poly.dist"} (N, K, R), 
+  \code{"mds"} (N, K, R), \code{"dendro3d"} (N, K, R), \code{"graph"} (R),
+  \code{"projgraph"} (R)
+  \item or with title, when \code{type} is set among: \code{"color"} (N, K),
+  \code{"pie"} (N, R)
 }
-In the list above, the charts available for a \code{korresp} SOM are marked 
-with a * whereas those available for a \code{relational} SOM are marked with 
-a #.
 
-\code{projectIGraph.somSC} produces a projected graph from the 
+In the list above, the charts available for a \code{numerical} SOM are maked
+with a N, with a K for a \code{korresp} SOM and with a R for \code{relational} SOM.
+
+\code{\link{projectIGraph.somSC}} produces a projected graph from the 
 \link[igraph]{igraph} object passed to the argument \code{variable} as 
 described in (Olteanu and Villa-Vialaneix, 2015). The attributes of this 
 graph are the same than the ones obtained from the SOM map itself in the 
-function \code{\link{projectIGraph.somRes}}. \code{plot.somSC} used with 
+function \code{\link{projectIGraph.somRes}}. \code{\link{plot.somSC}} used with 
 \code{type="projgraph"} calculates this graph and represents it by 
 positionning the super-vertexes at the center of gravity of the 
 super-clusters. This feature can be combined with \code{pie.graph=TRUE} to 
