@@ -619,17 +619,17 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
     stop("view must be one of 'r'/'c'",call.=TRUE)
   
   # Variable control
-  if(is.null(variable)==F){
-    if(is.null(args$varname)) args$varname <- deparse(substitute(variable))
+  if (!is.null(variable)) {
+    if (is.null(args$varname)) args$varname <- deparse(substitute(variable))
   }
   
-  if(is.null(variable)){
+  if (is.null(variable)) {
     if (what!="add" & !(type %in% c("names", "umatrix", "smooth.dist", 
                                     "mds", "grid.dist", "poly.dist"))){
       if(x$parameters$type %in% c("numeric", "relational")){
         variable <- colnames(x$data)[1:ncol(x$data)]
       } else if(x$parameters$type == "korresp"){
-        if(view=="c") variable <- 1:ncol(x$data) else variable <- 1:nrow(x$data)
+        if (view=="c") variable <- 1:ncol(x$data) else variable <- 1:nrow(x$data)
       } 
     }
   }

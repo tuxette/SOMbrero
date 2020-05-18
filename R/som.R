@@ -93,6 +93,7 @@ calculateRadius <- function(the.grid, radius.type, ind.t, maxit) {
 
 selectNei <- function(the.neuron, the.grid, radius, radius.type, 
                       dist.type=the.grid$dist.type) {
+  tolerance <- 10^(-13) # numerical tolerance
   if (radius.type=="letremy") {
     if (dist.type=="letremy") {
       if (radius == 0.5) {
@@ -107,9 +108,8 @@ selectNei <- function(the.neuron, the.grid, radius, radius.type,
     } else {
       dist.grid <- dist(the.grid$coord, diag = TRUE, upper = TRUE,
                         method = "euclidean")
-      dist.grid <- round(as.matrix(dist.grid), 7) # handle numerical approximations for "hexagonal"
-      the.dist <- dist.grid[the.neuron, ]
-      the.nei <- which(the.dist <= radius)
+      the.dist <- as.matrix(dist.grid)[the.neuron, ]
+      the.nei <- which(the.dist - radius <= tolerance)
     }
   } else if (radius.type=="gaussian") {
     proto.dist <- as.matrix(dist(the.grid$coord, upper=TRUE, 

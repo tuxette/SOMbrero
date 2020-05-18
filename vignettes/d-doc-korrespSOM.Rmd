@@ -1,5 +1,12 @@
 ---
-title: "Self-Organizing Map for contingency tables"
+title: "Using Self-Organizing Maps with SOMbrero for contingency tables"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    theme: journal
+    toc: yes
+    toc_float:
+      collapsed: no
 ---
 
 <!--
@@ -10,9 +17,9 @@ title: "Self-Organizing Map for contingency tables"
 
 ## Basic package description
 
-To be able to run the SOM algorithm, you have to load the package called 
-```SOMbrero```. The function used to run it is called ```trainSOM()``` and is 
-detailed below.
+`SOMbrero` implements different variants of the Self-Organizing Map algorithm
+(also called Kohonen's algorithm). To process a given dataset with the SOM
+algorithm, you can use the function `trainSOM()`.
 
 __This documentation only considers the case of contingency tables.__
 
@@ -26,12 +33,13 @@ library("SOMbrero")
 The ```trainSOM``` function has several arguments, but only the first one is
 required. This argument is ```x.data``` which is the dataset used to train the 
 SOM. In this documentation, it is passed to the function as a matrix or a data
-frame. This set must be a contingency table, i.e., it must contain either 0 or 
-positive integers. Column and row names must be supplied.
+frame and encodes a contingency tables (the entries are the frequencies of joint
+observations for two factors). Column and row names must be supplied to ease the
+interpretation.
 
-The other arguments are the same as the arguments passed to the ```initSOM```
-function (they are parameters defining the algorithm, see ```help(initSOM)```
-for further details).
+The function handles over options, which are the same as the ones passed to
+```initSOM``` (they are parameters defining the algorithm, see 
+```help(initSOM)``` for further details).
 
 ### Outputs
 
@@ -40,11 +48,11 @@ The ```trainSOM``` function returns an object of class ```somRes``` (see
 
 ## Case study: the ```presidentielles2002``` data set
 
-The ```presidentielles2002``` data set provides the number of votes at the first
-round of the 2002 French presidential election for each of the 16 candidates in
-all of the 106 French administrative districts called "departements". Further
-details about this data set and the 2002 French presidential election are given
-with ```help(presidentielles2002)```.
+The ```presidentielles2002``` data set provides the number of votes for the 
+first round of the 2002 French presidential election for each of the 16 
+candidates in all of the 106 French administrative districts called 
+"départements". Further details about this data set and the 2002 French 
+presidential election are given with ```help(presidentielles2002)```.
 
 ```{r loadData}
 data(presidentielles2002)
@@ -57,19 +65,19 @@ Chirac and the far-right candidate Jean-Marie Le Pen)
 
 ```{r presiTrain, cache=TRUE}
 set.seed(01091407)
-korresp.som <- trainSOM(x.data=presidentielles2002, dimension=c(8,8),
-                        type="korresp", scaling="chi2", nb.save=10,
-                        radius.type="letremy", topo="square")
+korresp.som <- trainSOM(x.data = presidentielles2002, dimension = c(8,8),
+                        type = "korresp", scaling = "chi2", nb.save = 10,
+                        topo = "hexagonal", maxit = 500)
 korresp.som
 ```
 
-As the energy is registered during the intermediate backups, we can have a look
+As the energy is registered during the intermediate backups, we can take a look
 at its evolution
 ```{r energyPresi}
-plot(korresp.som, what="energy")
+plot(korresp.som, what = "energy")
 ```
 
-which is stabilized during the last 100 iterations.
+which has approximatively stabilized at iteration 500.
 
 ### Resulting clustering
 
@@ -78,53 +86,42 @@ both row and column variables are classified, the length of the resulting
 vector is equal to the sum of the number of rows and the number of columns.
 
 __NB: The clustering component shows first the column variables (here, the 
-candidates) and then the row variables (here, the departements).__
+candidates) and then the row variables (here, the départements).__
+
+```{r presiClusters}
+korresp.som$clustering
+```
 
 The following table indicates which graphics are available for a korresp SOM.
 
-| SOM or SC<br>Type\\What | SOM<br>Energy  | Obs  | Prototypes  | Add  | SuperCluster<br>(no what)    | Obs  | Prototypes  | Add  |
-<!-- |  What  | Energy  | Obs  | Prototypes  | Add  | (no what)    | Obs  | Prototypes  | Add  | -->
+| What <br> <br> SOM or SC<br>Type | SOM<br>Energy  <br> <br> <br>| Obs  <br> <br> <br> <br>| Prototypes  <br> <br> <br> <br>| Add  <br> <br> <br> <br>| SuperCluster<br>(no what) <br> <br> <br> | Obs <br> <br> <br> <br> | Prototypes <br> <br> <br> <br> | Add <br> <br> <br> <br> |
 |:------------|:--------|:-----|:------------|:-----|:-------------|:-----|:------------|:-----|
 | (no type)   | x       |      |             |      |              |      |             |      |
 | hitmap      |         | x    |             |      |              | x    |             |      |
 | color       |         |      | x           |      |              |      | x           |      |
 | lines       |         |      | x           |      |              |      | x           |      |
-<!-- | meanline    |         |      |             |      |              |      |             |      | -->
 | barplot     |         |      | x           |      |              |      | x           |      |
-<!-- | pie         |         |      |             |      |              |      |             |      | -->
-<!-- | boxplot     |         |      |             |      |              |      |             |      | -->
 | 3d          |         |      | x           |      |              |      |             |      |
 | poly.dist   |         |      | x           |      |              |      | x           |      |
 | umatrix     |         |      | x           |      |              |      |             |      |
 | smooth.dist |         |      | x           |      |              |      |             |      |
 | mds         |         |      | x           |      |              |      | x           |      |
 | grid.dist   |         |      | x           |      |              |      |             |      |
-<!-- | words       |         |      |             |      |              |      |             |      | -->
 | names       |         | x    |             |      |              |      |             |      |
-<!-- | graph       |         |      |             |      |              |      |             |      | -->
-<!-- | projgraph   |         |      |             |      |              |      |             |      | -->
 | grid        |         |      |             |      |              |      | x           |      |
 | dendrogram  |         |      |             |      | x            |      |             |      |
 | dendro3d    |         |      |             |      | x            |      |             |      |
 
-
-In the column "Prototypes", a plot marked "x2" means that this plot is 
-available for both row and column variables. In the "Super Cluster" column, a 
-"x2" cell means the plot is available for both data set variables and 
-additional variables. 
-
-```{r presiClusters}
-korresp.som$clustering
-```
 The resulting distribution of the clustering on the map can also be visualized
 by a hitmap:
 ```{r presiHitmap}
-plot(korresp.som, what="obs", type="hitmap", show.names = F)
+plot(korresp.som, what = "obs", type = "hitmap", show.names = FALSE)
 ```
 
-For a more precise view, ```"names"``` plot is implemented: it prints, 
-in each neuron, the names of the variables assigned to it ; in the korresp SOM, 
-both row and column variable names are printed.
+For a more precise view, ```"names"``` plot is implemented: the names of the 
+values assigned to every neuron is displayed in the corresponding cluster. In 
+`korresp` SOM, both row and column names are displayed.
+
 ```{r presiGraphObs, warning=FALSE, fig.width=12, fig.height=12}
 plot(korresp.som, what="obs", type="names")
 ```
@@ -134,16 +131,15 @@ top left hand side whereas the first main candidates CHIRAC, LE PEN and JOSPIN
 are classified at the bottom right hand side of the map, in three different 
 parts of this corner. Some strinking facts are:
 
-* the position of TAUBIRA, opposed to that of JOSPIN from who she is very close
-from a political point of view. She is associated with Guyane, Guadeloupe and 
-Martinique, overseas departements;
+* most of rural départements (Corrèze, Creuse, Jura, Cantal, Ariège, ...) are
+classified in the bottom right corner, in between CHIRAC and LE PEN, who have
+high number of votes (compared to the other candidates) in these département;
 
-* the position of HUE, LAGUILLER and BESANCENOT, far left candidates, all 
-associated in the same cluster and close to traditional departements voting for
-far left candidates: Nord, Pas de Calais and Seine Maritime ;
+* CHIRAC is characterized by higher votes for La Réunion (oversee département)
+whereas LE PEN has higher votes for Indre Et Loire, Aisne, Loiret, Côte d'Or;
 
-* the fact that most departement are classified at the bottom right hand side of
-the map with the three main candidates.
+* some well known associations, like HUE (communist party) in the Nord, are also
+visible on the map.
 
 
 ### Clustering interpretation
@@ -159,106 +155,81 @@ variables.
 
 Three representations are available:
 
-* with lines: either all row or all column variables are plotted (```view``` 
-argument is used)
+* with lines: either all rows or all columns are displayed (```view``` argument 
+is used)
 ```{r presiProtoL}
 # plot the line prototypes (106 French departements)
-plot(korresp.som, what="prototypes", type="lines", view="r", show.names=F) +    
-  guides(color=guide_legend(keyheight=0.5, ncol=2,
-                            label.theme=element_text(size=4))) + 
-  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
+plot(korresp.som, what = "prototypes", type = "lines", view = "r", 
+     show.names = TRUE) +    
+  guides(color = guide_legend(keyheight = 0.5, ncol = 2,
+                              label.theme = element_text(size = 4))) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 # plot the column prototypes (16 candidates)
-plot(korresp.som, what="prototypes", type="lines", view="c", show.names=F) +
-  guides(color=guide_legend(keyheight=0.5, ncol=1, 
-                            label.theme=element_text(size=6))) + 
-  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
+plot(korresp.som, what = "prototypes", type = "lines", view = "c", 
+     show.names = TRUE) +
+  guides(color = guide_legend(keyheight = 0.5, ncol = 1, 
+                              label.theme = element_text(size = 6))) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 ```
 
-The peaks in neurons 5 and 6 correspond, in the row view, to the overseas 
-departements and, in the column view, to the candidate TAUBIRA. In the column
-views, the two peaks clearly identified in the bottom right side clusters 
-correspond to the two "main" tranditional candidates JOSPIN and CHIRAC 
-(respectively, left and right candidates).
+The département profiles are much flater (and with low values) in the top left 
+corner of the map than in the bottom right corner which shows more differences 
+between département and globally higher number of votes.
+
+On the contrary, the candidate profiles are flater, with globally lower values
+in the bottom right corner of the map. 
 
 A more precise individual view are given with the graphics "color" and "3d",
-here drawn, as an example for the candidate "Le Pen" and for the departement
-"Martinique".
+here drawn, as an example for the candidate "LE PEN" and for the departement
+"La Réunion".
 * in color: one of the row or column variable (the variable is chosen with the 
 argument ```variable```) is represented on the map;
 * in 3d, which handling is similar to ```"color"```.
 ```{r presiProtoC3d, fig.width=12, fig.height=6}
-plot(korresp.som, what="prototypes", type="color", variable="LE_PEN")
-plot(korresp.som, what="prototypes", type="3d", variable="martinique")
+plot(korresp.som, what = "prototypes", type = "color", variable = "LE_PEN")
+plot(korresp.som, what = "prototypes", type = "3d", variable = "la_reunion")
 ```
 
-The first graphic shows that TAUBIRA obtained her best scores in the 
-departements located at the left hand side of the map. The second graphic shows
-that the candidates that obtained the higher scores in Martinique are located in
-the bottom right hand side of the map.
+The first graphic shows that LE_PEN obtained more votes in the departements 
+located at the top left corner of the map. The second graphic shows that the 
+candidates that obtained the highest scores in La Réunion are located at the 
+bottom of the map (like Chirac).
 
 The graphics can also be drawn by giving the variable number and its type,
 either "r" or "c" (here, as an example, CHIRAC who is the 5th candidate, 5th column):
 ```{r presiProtoNumber, fig.width=12, fig.height=6}
-plot(korresp.som, what="prototypes", type="color", variable=5, view="c")
-plot(korresp.som, what="prototypes", type="3d", variable=5, view="c")
+plot(korresp.som, what = "prototypes", type = "color", variable = 5, view = "c")
+plot(korresp.som, what = "prototypes", type = "3d", variable = 5, view = "c")
 ```
 
-Hence CHIRAC obtained more votes in departement located at the top of the map
-and has his lowest scores in departements Jura, Aubde, Haute Saone, Ardennes, 
-Alpes de Haute Provence, Ariege, ... located at the bottom (middle) of the map.
+Hence CHIRAC obtained more votes in departement located at the left hand side of
+the map.
+
 
 #### Graphic on prototype distances
 
-These graphics are exactly the same as in the numerical case:
-
-* ```"poly.dist"``` represents the distances between neighboring prototypes with
-polygons plotted for each cell of the grid. The smaller the distance between 
-a polygon's vertex and a cell border, the closer the pair of prototypes.
-The colors indicates the number of observations in the neuron (white=empty);
-
-* ```"umatrix"``` fills the neurons of the grid using colors that represent
-the average distance between the current prototype and its neighbors (darker
-colors for prototypes that are farther from their neighbors);
-
-* ```"smooth.dist"``` plots the mean distance between the current prototype and 
-its neighbors with a color gradation;
-
-* ```"mds"``` plots the number of the neuron on a map according to a Multi
-Dimensional Scaling (MDS) projection;
-
-* ```"grid.dist"``` plots a point for each pair of prototypes, with x 
-coordinates representing the distance between the prototypes in the 
-input space, and y coordinates representing the distance between the 
-corresponding neurons on the grid.
+These graphics are exactly the same as in the numerical case and provide various
+way to display the distance between prototypes on the grid.
 ```{r presiGraphProto2}
-plot(korresp.som, what="prototypes", type="poly.dist", show.names=F)
-plot(korresp.som, what="prototypes", type="umatrix")
-plot(korresp.som, what="prototypes", type="smooth.dist")
-plot(korresp.som, what="prototypes", type="mds")
-plot(korresp.som, what="prototypes", type="grid.dist")
+plot(korresp.som, what = "prototypes", type = "poly.dist", show.names = FALSE)
+plot(korresp.som, what = "prototypes", type = "umatrix")
+plot(korresp.som, what = "prototypes", type = "smooth.dist")
+plot(korresp.som, what = "prototypes", type = "mds")
+plot(korresp.som, what = "prototypes", type = "grid.dist")
 ```
 
-Neuron 6 which has been already picked out in the section 
-__Clustering interpretation__ for having prototypes rather different than the 
-rest of the map shows a larger distance to the others. 
+All these graphics show a clear separation between the top left corner of the
+map and the bottom right corner of the map. 
 
 
 ### Analyze the projection quality
 
+The quality of the projection is provided by the function `quality` that 
+outputs the same quality criteria than in the numeric case.
+
 ```{r presiQuality}
 quality(korresp.som)
 ```
-By default, the quality function calculates both quantization and topographic 
-errors. It is also possible to specify which one you want to obtain, by using
-the argument ```quality.type```.
-
-The topographic error value varies between 0 (good projection quality) and 1 
-(poor projection quality). Here, the topographic quality of the mapping is 
-rather good with a topographic error equal to 
-`r round(quality(korresp.som)$topographic, 3)`.
-
-The quantization error is an unbounded positive number. The closer from 0 it
-is, the better the projection quality is.
 
 ### Building super classes from the resulting SOM
 
@@ -287,42 +258,37 @@ summary(my.sc)
 plot(my.sc, plot.var=FALSE)
 ```
 
-Like ```plot.somRes```, the function ```plot.somSC``` has an 
-argument ```'type'``` which offers many different plots and can thus be 
-combined with most of the graphics produced by ```plot.somSC```:
+Like ```plot.somRes```, the function ```plot.somSC``` has an argument 
+```'type'``` which offers many different plots and can thus be combined with 
+most of the graphics produced by ```plot.somSC```:
 
-Case ```"grid"``` fills the grid with colors according to the super clustering 
+* Case ```"grid"``` fills the grid with colors according to the super clustering 
 (and can provide a legend).
-Case ```"dendro3d"``` plots a 3d dendrogram.
+* Case ```"dendro3d"``` plots a 3d dendrogram.
 ```{r presiSC3}
 plot(my.sc, type="grid")
 plot(my.sc, type="dendro3d")
 ```
 
-The three super-clusters correspond to traditional votes (blue), far right votes
-(green) and votes for minor candidates (orange).
+The three super-clusters correspond to most voted candidates (blue), less
+voted candidates (green) and, inbetween, départment with intermediate votes in 
+which BAYROU (from one of the center party) is classified.
 
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:
 ```{r presiSC4}
-plot(my.sc, what="obs", type="hitmap")
-plot(my.sc, what="prototypes", type="lines", show.names=F, view="c")
-plot(my.sc, what="prototypes", type="poly.dist")
-plot(my.sc, what="prototypes", type="mds")
+plot(my.sc, what = "obs", type = "hitmap")
+plot(my.sc, what = "prototypes", type = "lines", show.names = TRUE, view = "c")
+plot(my.sc, what = "prototypes", type = "poly.dist")
+plot(my.sc, what = "prototypes", type = "mds")
 ```
 
 And some others identify the super clusters with titles:
 ```{r presiSC5}
-plot(my.sc, what="prototypes", type="color", view="r", variable="correze")
-plot(my.sc, what="prototypes", type="color", view="c", variable="JOSPIN")
-```
-
-Let us consider the first super cluster. It contains departements which were 
-crucial in promoting the far right candidate LE PEN, unexpected winner of the
-first round:
-```{r DOM, echo=TRUE}
-names(korresp.som$clustering)[which(korresp.som$clustering %in%
-                                      which(my.sc$cluster==1))]
+plot(my.sc, what = "prototypes", type = "color", view = "r", 
+     variable = "correze")
+plot(my.sc, what = "prototypes", type = "color", view = "c", 
+     variable = "JOSPIN")
 ```
 
 
