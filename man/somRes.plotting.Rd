@@ -6,15 +6,17 @@
 \description{
 Useful details on how to produce graphics to help interpreting a \code{somRes}
 object.\cr
-Important: the graphics availables for a \code{numerical} SOM are marked with a N, 
-for a \code{korresp} SOM are marked by a K and for a \code{relational} SOM are 
-marked with a R.
+
+Important: the graphics availables for the different types of SOM are marked with a N, a K or a R. \cr
+(\bold{N} = numerical SOM, \bold{K} = korresp SOM and \bold{R} = relational SOM).
 }
 
 \section{Graphics on the observations: \code{what = "obs"}}{
 
 For the cases \code{what = "obs"} and \code{what = "add"}, if a neuron is empty,
 nothing will be plotted at its location.
+
+
 
 The possible values for \bold{\code{type}} are: 
 \describe{
