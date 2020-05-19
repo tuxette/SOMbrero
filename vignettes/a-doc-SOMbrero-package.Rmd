@@ -59,7 +59,8 @@ For those who have an **R** developer soul, and who want to help improve this
 package, the following picture provides an overview the current arborescence of
 the package:
 
-![fw](./foodweb.png)
+![dependencies](./dependencies.png)
+
 
 
 ### Session information
