@@ -237,9 +237,11 @@ ggplotFacet <- function(what, type, values, clustering=NULL, show.names,
   }
   if (type == "names") {
      dataplot$nb <- 1
+     sizewords <- 4
+     if(!is.null(args$size)) sizewords <- args$size
      dataplot <- aggregate(data=dataplot, nb ~ values + SOMclustering, length)
      tp <- ggplot(dataplot, aes_string(label = "values", size = "nb")) +
-      geom_text_wordcloud(stat="identity", alpha=0.7) + labs(subtitle = labely)
+      geom_text_wordcloud(stat="identity", alpha=0.7, size=sizewords) + labs(subtitle = labely)
   }
   if(type == "words"){
     dataplot <- aggregate(data=dataplot, values ~ variable + SOMclustering, sum)

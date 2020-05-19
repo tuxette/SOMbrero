@@ -139,7 +139,9 @@ be changed with the argument \code{proportional = FALSE}.}
 
 \item{\code{"names"} (N, R)}{has the same behavior as the \code{"names"} case 
 described in the observations section. Then, the names to be printed are the 
-elements of the variable given to the \code{variable} argument.}
+elements of the variable given to the \code{variable} argument.
+This case can take one more argument: \code{size} (default to \code{4}) for the 
+size of the words.}
 
 \item{\code{"words"} (N, R)}{needs the argument \code{variable} be a numeric matrix 
 or a \code{data.frame}: names of the columns will be used as words and the 
