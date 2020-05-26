@@ -1,5 +1,12 @@
 ---
 title: "SOMbrero Package description"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    theme: journal
+    toc: yes
+    toc_float:
+      collapsed: no
 ---
 
 <!--
