@@ -6,12 +6,13 @@ vers = paste('R package version', meta$Version)
 citEntry(
   entry = 'manual',
   title = paste('SOMbrero:', meta$Title),
-  author = personList(as.person("Nathalie Vialaneix"), as.person("Jerome Mariette"),
-                      as.person("Madalina Olteanu"), as.person("Fabrice Rossi"),
-                      as.person("Laura Bendhaiba"), as.person("Julie Bolaert")),
+  author = personList(as.person("Nathalie Vialaneix"), as.person("Elise Maigne"),
+                      as.person("Jerome Mariette"), as.person("Madalina Olteanu"), 
+                      as.person("Fabrice Rossi"), as.person("Laura Bendhaiba"),
+                      as.person("Julien Bolaert")),
   year = year,
   note = vers,
-  textVersion = paste('Vialaneix N., Mariette J., Olteanu M., Rossi F., Bendhaiba L., Bolaert J. (', year, ') SOMbrero: ', meta$Title, '. ', vers, '.', sep = '')
+  textVersion = paste('Vialaneix N., Maigne E., Mariette J., Olteanu M., Rossi F., Bendhaiba L., Bolaert J. (', year, ') SOMbrero: ', meta$Title, '. ', vers, '.', sep = '')
 )
 
 citEntry(
@@ -47,6 +48,20 @@ citEntry(
 )
 
 citEntry(
+  entry = 'article',
+  title = 'Using SOMbrero for clustering and visualizing graphs',
+  author = personList(as.person("Madalina Olteanu"), as.person("Nathalie Villa-Vialaneix")),
+  journal = 'Journal de la Societe Francaise de Statistique',
+  year = '2015b',
+  volume = '156',
+  pages = '95--119',
+
+  textVersion = paste('Olteanu M., Villa-Vialaneix N. (2015b)',
+                'Using SOMbrero for clustering and visualizing graphs.',
+                'Journal de la Societe Francaise de Statistique, 156, 95-119')
+)
+
+citEntry(
   entry = 'inProceedings',
   title = 'Accelerating stochastic kernel SOM',
   author = personList(as.person("Jerome Mariette"), as.person("Fabrice Rossi"), as.person("Madalina Olteanu"), as.person("Nathalie Villa-Vialaneix")),
@@ -59,4 +74,19 @@ citEntry(
   textVersion = paste('Mariette J., Rossi F., Olteanu M., Villa-Vialaneix N. (2016)',
                 'Accelerating stochastic kernel SOM.',
                 'XXVth European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning (ESANN 2017), Verleysen M. (ed), i6doc, Bruges, Belgium, 269-274')
+)
+
+citEntry(
+  entry = 'inProceedings',
+  title = 'Stochastic self-organizing map variants with the R package SOMbrero',
+  author = personList(as.person("Nathalie Villa-Vialaneix")),
+  year = '2017',
+  booktitle = 'Proceedings of the 12th International Workshop on Self-Organizing Maps and Learning Vector Quantization, Clustering and Data Visualization (WSOM 2017)',
+  publisher = 'IEEE, Nancy, France',
+  pages = '1--7',
+  editor = 'Lamirel JC, Cottrell M, Olteanu M',
+
+  textVersion = paste('Villa-Vialaneix N. (2017)',
+                      'Stochastic self-organizing map variants with the R package SOMbrero.',
+                      'Proceedings of the 12th International Workshop on Self-Organizing Maps and Learning Vector Quantization, Clustering and Data Visualization (WSOM 2017), Lamirel JC, Cottrell M, Olteanu M (ed), IEEE, Nancy, France, 1-7')
 )

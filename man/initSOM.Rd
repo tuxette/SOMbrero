@@ -150,6 +150,7 @@ See \code{\link{initGrid}} for creating a SOM prior structure
 (grid).
 }
 \author{
+Élise Maigné <elise.maigne@inrae.fr>\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

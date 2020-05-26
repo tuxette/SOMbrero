@@ -104,6 +104,7 @@ plot(iris.som, what="add", type="pie", variable=iris$Species)
 \code{somRes} class object.
 }
 \author{
+Élise Maigné <elise.maigne@inrae.fr>\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

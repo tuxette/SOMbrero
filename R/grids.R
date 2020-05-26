@@ -12,7 +12,8 @@
 #' @param dist.type distance type that defines the topology of the grid (see
 #' 'Details'). Default to \code{"euclidean"}
 #'
-#' @author Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
+#' @author Élise Maigné <elise.maigne@inrae.fr>\cr
+#' Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
 #' Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>
 #'
 #' @details The units (neurons) of the grid are positionned at coordinates 
@@ -91,7 +92,8 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' display. Default to the cluster number.
 #' @param \dots Further arguments to the \code{\link{plot}} function.
 #' 
-#' @author Madalina Olteanu, \email{madalina.olteanu@univ-paris1.fr}\cr
+#' @author Élise Maigné <elise.maigne@inrae.fr>\cr
+#' Madalina Olteanu, \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix, \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @details The \code{myGrid} class has the following entries:

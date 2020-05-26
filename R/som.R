@@ -83,7 +83,6 @@ calculateRadius <- function(the.grid, radius.type, ind.t, maxit) {
       r <- 0
     }
   } else if (radius.type=="gaussian") {
-    #if (the.grid$topo=="square")
       r0 <- 1+(2/3)*sqrt(sum(the.grid$dim^2))
       r <- r0*(1/r0)^((ind.t-1)/(maxit-1))-1 # power decrease 
   }
@@ -506,7 +505,8 @@ calculateEnergy <- function(x.data, clustering, prototypes, parameters, ind.t) {
 #' Neural Networks, Computational Intelligence and Machine Learning 
 #' (ESANN 2017)}, i6doc, Bruges, Belgium, 269-274.
 #' 
-#' @author Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
+#' @author Élise Maigné <elise.maigne@inrae.fr>\cr
+#' Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
 #' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
