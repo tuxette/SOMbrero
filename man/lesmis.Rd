@@ -40,6 +40,7 @@ plot(lesmis,vertex.size=0)}
 }
 \references{
 Hugo V. (1862) \emph{Les Miserables}.
+
 Knuth D.E. (1993) \emph{The Stanford GraphBase: A Platform for Combinatorial 
 Computing}. Reading (MA): Addison-Wesley.
 }

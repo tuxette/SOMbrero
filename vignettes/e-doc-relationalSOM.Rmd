@@ -1,5 +1,12 @@
 ---
-title: "Self-Organizing Map for dissimilarity matrices"
+title: "Using Self-Organizing Maps with SOMbrero for dissimilarity matrices"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    theme: journal
+    toc: yes
+    toc_float:
+      collapsed: no
 ---
 
 <!--
@@ -10,9 +17,9 @@ title: "Self-Organizing Map for dissimilarity matrices"
 
 ## Basic package description
 
-To be able to run the SOM algorithm, you have to load the package called 
-```SOMbrero```. The function used to run it is called ```trainSOM()``` and is 
-detailed below.
+`SOMbrero` implements different variants of the Self-Organizing Map algorithm
+(also called Kohonen's algorithm). To process a given dataset with the SOM
+algorithm, you can use the function `trainSOM()`.
 
 __This documentation only considers the case of dissimilarity matrices.__
 
@@ -25,9 +32,9 @@ library("SOMbrero")
 
 The ```trainSOM``` function has several arguments, but only the first one is
 required. This argument is ```x.data``` which is the dataset used to train the 
-SOM. In this documentation, it is passed to the function as a matrix or a data
-frame. This set must be a dissimilarity matrix, i.e., a symmetric matrix of
-positive numbers, with zero entries on the diagonal.
+SOM. In this documentation, it is passed to the function as a square matrix or
+data frame, which entries are dissimilarity measures between pairs of 
+observations. The diagonal of this matrix must contain only zeros.
 
 The other arguments are the same as the arguments passed to the ```initSOM```
 function (they are parameters defining the algorithm, see ```help(initSOM)```
@@ -42,7 +49,7 @@ The ```trainSOM``` function returns an object of class ```somRes``` (see
 
 The following table indicates which graphics are available for a relational SOM.
 
-| SOM or SC<br>Type\\What | SOM<br>Energy  | Obs  | Prototypes  | Add  | SuperCluster<br>(no what)    | Obs  | Prototypes  | Add  |
+| What <br> <br> SOM or SC<br>Type | SOM<br>Energy  <br> <br> <br>| Obs  <br> <br> <br> <br>| Prototypes  <br> <br> <br> <br>| Add  <br> <br> <br> <br>| SuperCluster<br>(no what) <br> <br> <br> | Obs <br> <br> <br> <br> | Prototypes <br> <br> <br> <br> | Add <br> <br> <br> <br> |
 |:------------|:--------|:-----|:------------|:-----|:-------------|:-----|:------------|:-----|
 | (no type)   | x       |      |             |      |              |      |             |      |
 | hitmap      |         | x    |             |      |              | x    |             |      |
@@ -52,7 +59,6 @@ The following table indicates which graphics are available for a relational SOM.
 | barplot     |         |      | x           | x    |              |      | x           | x    |
 | pie         |         |      |             | x    |              |      |             | x    |
 | boxplot     |         |      |             | x    |              |      |             | x    |
-<!-- | 3d          |         |      |             |      |              |      |             |      | -->
 | poly.dist   |         |      | x           |      |              |      | x           |      |
 | umatrix     |         |      | x           |      |              |      |             |      |
 | smooth.dist |         |      | x           |      |              |      |             |      |
@@ -67,18 +73,17 @@ The following table indicates which graphics are available for a relational SOM.
 | dendro3d    |         |      |             |      | x            |      |             |      |
 
 
-In the "Super Cluster" column, a plot marked by "x2" means it is available for 
-both data set variables and additional variables.
-
 ## Case study: the ```lesmis``` data set
 
-The ```lesmis``` data set provides the coappearance graph of the characters of 
-the novel Les Miserables (Victor Hugo). Each vertex stands for a character whose
-name is given by the vertex label. One edge means that the corresponding two
-characters appear in a common chapter in the book. Each edge also has a value
-indicating the number of coappearances. The ```lesmis``` data contain two
-objects: the first one ```lesmis``` is an ```igraph``` object (see [the igraph
-web page](http://igraph.sourceforge.net/)),
+The ```lesmis``` data set is based on the coappearance graph of the characters 
+of the novel Les Miserables (Victor Hugo). Each vertex stands for a character 
+whose name is given by the vertex label. One edge means that the corresponding 
+two characters appear in a common chapter in the book. Each edge also has a 
+value indicating the number of coappearances. The co-appearance network has been
+extracted by D.E. Knuth (1993).
+
+The ```lesmis``` data contain two objects: the first one,```lesmis```, is an 
+```igraph``` object (see [the igraph web page](http://igraph.sourceforge.net/)),
 with `r data(lesmis); vcount(lesmis)` nodes and `r ecount(lesmis)` edges.
 
 Further information on this data set is provided with ```help(lesmis)```.
@@ -86,27 +91,27 @@ Further information on this data set is provided with ```help(lesmis)```.
 ```{r lesmisDescr, fig.width=12, fig.height=12}
 data(lesmis)
 lesmis
-plot(lesmis, vertex.size=0)
+plot(lesmis, vertex.size = 0)
 ```
 
 The ```dissim.lesmis``` object is a matrix with entries equal to the length of 
 the shortest path between two characters (obtained with the function
 ```shortest.paths``` of package ```igraph```). Note that its row and column
-names have been initialized to the characters' names to ease the use of the 
+names have been initialized with the characters' names to ease the use of the 
 graphical functions of ```SOMbrero```.
 
 ### Training the SOM
 
 ```{r lesmisTrain, cache=TRUE}
 set.seed(622)
-mis.som <- trainSOM(x.data=dissim.lesmis, type="relational", nb.save=10,
-                   init.proto="random", radius.type="letremy")
+mis.som <- trainSOM(x.data=dissim.lesmis, type = "relational", nb.save = 10,
+                   init.proto = "random", radius.type = "letremy")
 plot(mis.som, what="energy")
 ```
 
 The dissimilarity matrix ```dissim.lesmis``` is passed to the ```trainSOM``` 
 function as input. As the SOM intermediate backups have been registered
-(```nb.save=10```), the energy evolution can be plotted: it stabilized in the
+(```nb.save = 10```), the energy evolution can be plotted: it stabilized in the
 last 100 iterations.
 
 ### Resulting clustering
@@ -120,133 +125,156 @@ table(mis.som$clustering)
 plot(mis.som)
 ```
 
-The clustering can be displayed using the ```plot``` function
-with ```type=names```.
+The clustering can be displayed using the ```plot``` function with 
+```type = names```.
 ```{r lesmisPseudoNamesPlot, fig.height=12, fig.width=12, warning=FALSE}
-plot(mis.som, what="obs", type="names")
+plot(mis.som, what = "obs", type = "names")
 ```
 
-or by sur-imposing the original igraph object on the map:
+In this clustering, the main character, Valjean, is in a central position (in 
+cluster 8) and some clusters are easily identified as sub-stories around 
+Javert. For instance, clusters 10, 15 and 20 are related to the Thénardier 
+family, with (for instance), cluster 20 being the cluster of Gavroche and his
+two brothers (named children 1 and 2).
+
+The original graph can also be superimposed on the map:
 ```{r lesmisProjGraph}
-plot(mis.som, what="add", type="graph", var=lesmis)
+plot(mis.som, what = "add", type = "graph", var = lesmis)
 ```
 
-Clusters profile overviews can be plotted either with *e.g.*, lines or barplot :
+In the latter plot (which is still messy at this stage of the analysis), nodes
+correspond to clusters and are positionned at the cluster location on the map. 
+The size of the nodes is proportional to the number of characters classified in
+this cluster and edges between nodes have a width proportional to the total 
+weight between any two characters from the two linked clusters.
+
+Clusters profile overviews can be plotted either with *e.g.*, lines or barplot, 
+that both provide an information similar to that given by `"names"`.
 ```{r lesmisProtoProfiles}
-plot(mis.som, what="prototypes", type="lines")  +
-  guides(color=guide_legend(keyheight=0.5,ncol=2, label.theme = element_text(size=6))) + 
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
-plot(mis.som, what="prototypes", type="barplot")  +
-  guides(fill=guide_legend(keyheight=0.5, ncol=2, label.theme = element_text(size=6))) + 
-  theme(axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+plot(mis.som, what = "prototypes", type = "lines")  +
+  guides(color = guide_legend(keyheight = 0.5, ncol = 2, label.theme = element_text(size = 6))) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+plot(mis.som, what = "prototypes", type = "barplot")  +
+  guides(fill = guide_legend(keyheight = 0.5, ncol = 2, label.theme = element_text(size = 6))) + 
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 ```
 
 On these graphics, one variable is represented respectively with a point or a 
 slice. It is therefore easy to see which variable affects which cluster.
 
 To see how different the clusters are, some graphics show the distances between 
-prototypes. These graphics have exactly the same behaviour as in the other SOM 
-types.
+prototypes. These graphics have exactly the same interpretation as for the other 
+data types processed by `SOMbrero`.
 
 * ```"poly.dist"``` represents the distances between neighboring prototypes with
-polygons plotted for each cell of the grid. The smaller the distance between 
-a polygon's vertex and a cell border, the closer the pair of prototypes.
-The colors indicates the number of observations in the neuron;
+polygons plotted for each cell of the grid. The smaller the distance between a 
+polygon's vertex and a cell border, the closer the pair of prototypes. The 
+colors encode the number of observations in the neuron;
 
-* ```"umatrix"``` fills the neurons of the grid using colors that represent
-the average distance between the current prototype and its neighbors;
+* ```"umatrix"``` fills the neurons of the grid using colors that represent the 
+average distance between the current prototype and its neighbors;
 
 * ```"smooth.dist"``` plots the mean distance between the current prototype and 
 its neighbors with a color gradation;
 
-* ```"mds"``` plots the number of the neuron on a map according to a Multi
-Dimensional Scaling (MDS) projection;
+* ```"mds"``` plots the number of the neuron on a map according to a 
+Multi-Dimensional Scaling (MDS) projection;
 
-* ```"grid.dist"``` plots a point for each pair of prototypes, with x 
-coordinates representing the distance between the prototypes in the 
-input space, and y coordinates representing the distance between the 
-corresponding neurons on the grid.
+* ```"grid.dist"``` plots a point for each pair of prototypes, with the $x$ 
+coordinates representing the distance between the prototypes in the input space,
+and $y$ coordinates representing the distance between the corresponding neurons 
+on the grid.
 
 ```{r lesmisProtoDist}
-plot(mis.som, what="prototypes", type="poly.dist")
-plot(mis.som, what="prototypes", type="smooth.dist")
-plot(mis.som, what="prototypes", type="umatrix")
-plot(mis.som, what="prototypes", type="mds")
-plot(mis.som, what="prototypes", type="grid.dist")
+plot(mis.som, what = "prototypes", type = "poly.dist")
+plot(mis.som, what = "prototypes", type = "smooth.dist")
+plot(mis.som, what = "prototypes", type = "umatrix")
+plot(mis.som, what = "prototypes", type = "mds")
+plot(mis.som, what = "prototypes", type = "grid.dist")
 ```
 
-Here we can see that the prototypes located in the top left corner of the map
-(*e.g.*, clusters 4 and 5) are far from the others.
+Here we can see that the prototypes located in the top left and top right 
+corners of the map (*e.g.*, clusters 5 and clusters 19-20 and 24-25) are further
+from the other neurons than in average.
 
 Finally, with a graphical overview of the clustering
 ```{r lesmisColorOverview, fig.height=12, fig.width=12}
-plot(lesmis, vertex.label.color=rainbow(25)[mis.som$clustering], vertex.size=0)
-legend(x="left", legend=1:25, col=rainbow(25), pch=19)
+plot(lesmis, vertex.label.color = rainbow(25)[mis.som$clustering], 
+     vertex.size = 0)
+legend(x = "left", legend = 1:25, col = rainbow(25), pch = 19)
 ```
 
-We can see that cluster 5 is very relevant to the story: as the characters of
-this cluster appear only in the sub-story of the Bishop ```Myriel```, he is the
-only connection for all other characters of cluster 5. The same kind of
-conclusion holds for cluster 11, among others. Most of the other clusters have a
-small number of observations: it thus seems relevant to compute super clusters.
+We can see that (for instance) cluster 25 is very relevant to the story: as the 
+characters of this cluster appear only in the sub-story of the Bishop 
+```Myriel```, he is the only connection for all other characters of cluster 25. 
+The same kind of conclusion holds for cluster 20 (with Gavroche), among others. 
+Most of the other clusters have a small number of observations: it thus seems 
+relevant to compute super clusters.
 
 ### Compute super clusters
 
-As the number of clusters is quite important with the SOM algorithm, it is 
-possible to perform a hierarchical clustering. First, let us have an overview of
-the dendrogram:
+As the number of clusters is rather large with the SOM algorithm, it is 
+possible to perform a hierarchical clustering on top of SOM results. First, let 
+us have an overview of the dendrogram:
 ```{r lesmisSCOverview}
 plot(superClass(mis.som))
 ```
 
 According to the proportion of variance explained by super clusters, 5 groups 
-seem to be a good choice.
+seem to be a good choice (4 groups would have been relevant also. The clustering
+with 5 groups creates a group with only one cluster in it).
 ```{r lesmisSC}
-sc.mis <- superClass(mis.som, k=5)
+sc.mis <- superClass(mis.som, k = 5)
 summary(sc.mis)
 table(sc.mis$cluster)
 plot(sc.mis)
-plot(sc.mis, what="prototypes", type="grid")
-plot(sc.mis, what="prototypes", type="lines")
-plot(sc.mis, what="prototypes", type="mds")
-plot(sc.mis, type="dendro3d")
+plot(sc.mis, what = "prototypes", type = "grid")
+plot(sc.mis, what = "prototypes", type = "lines")
+plot(sc.mis, what = "prototypes", type = "mds")
+plot(sc.mis, type = "dendro3d")
 ```
 
 ```{r lesmisSCColorOverview, fig.width=12, fig.height=12}
-plot(lesmis, vertex.size=0, vertex.label.color=
-       rainbow(5)[sc.mis$cluster[mis.som$clustering]])
-legend(x="left", legend=paste("SC",1:5), col=rainbow(5), pch=19)
+plot(lesmis, vertex.size = 0, 
+     vertex.label.color = rainbow(5)[sc.mis$cluster[mis.som$clustering]])
+legend(x = "left", legend = paste("SC", 1:5), col = rainbow(5), pch = 19)
 ```
 
-* cluster 1 constains ```Valjean``` which has a central position in the MDS
-visualization;
-
-* cluster 2 contains ```Myriel``` and the characters involved in his 
+* cluster 1 contains ```Myriel``` and the characters involved in his 
 sub-story;
 
-* cluster 3 contains ```Gavroche```, the abandonned child of the
-```Thenardier```, and the characters of his sub-story;
+* cluster 2 constains ```Valjean``` which has a central position in the graph
+visualization, and most of the important character of the novel (including
+Javert, Fantine and Cosette);
 
-* cluster 4 countains the Thenardier family: mister and misses ```Thenardier```,
-their daughter ```Eponine``` and also the characters involved in their story. It
-also contains ```Javert``` who is seeking to find the main character of the 
-story, ```Valjean```, and ```Marius```. All these characters are strongly 
-related to ```Cosette``` who is ```Marius```'s lover and has lived in the
-```Thenardier``` family during her childhood;
+* cluster 3 countains people almost only connected to ```Fantine``` who links
+them to the rest of the novel;
 
-* cluster 5 countains ```Fantine``` and the characters involved in her 
-sub-story.
+* cluster 4 contains ```Gavroche```, the abandonned child of the
+```Thenardier```, and the characters of his sub-story (including Mr Thénardier
+and Gavroche's two brothers and his sister, `Eponine`);
+
+* cluster 5 is a bit harder to interpret, with secondary characters related to
+`Thenardier` and to the main characters of the novel.
 
 SOMbrero also contains functions to compute a projected graph based on the
 super-clusters and to display it:
 
 ```{r lesmisSCProjGraph}
 projectIGraph(sc.mis, lesmis)
-par(mar=rep(0,4))
-plot(sc.mis, what="add", type="projgraph", variable=lesmis, s.radius=2)
+par(mar = rep(0,4))
+plot(sc.mis, what = "add", type = "projgraph", variable = lesmis, s.radius = 2)
 ```
+
+This representation provides a simplified and interpretable display of the graph
+where the super clusters are represented by nodes with sizes proportional to the
+number of characters classified in them. The nodes are positionned at the center
+of gravity of the map clusters included in each super cluster. They are linked
+to each other with edges with width proportional to the total number of links 
+between two characters of the correspondind super clusters. Here, the central
+brown/green node is the one of Valjean and the other main characters (super
+cluster 2), which appears to be strongly related to super cluster 4 in blue, 
+with Gavroche's neighbors.
 
 
 ### Session information

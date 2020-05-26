@@ -60,6 +60,7 @@ et dédiés à l'analyse des données. SAS/IML programs for 'korresp'.
 \code{\link{plot.myGrid}} for plotting the grid
 }
 \author{
+Élise Maigné <elise.maigne@inrae.fr>\cr
 Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
 Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>
 }

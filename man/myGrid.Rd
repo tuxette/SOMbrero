@@ -60,6 +60,7 @@ plot(a.grid) + ggplot2::scale_fill_manual(values = my.colors)
 \code{\link{initGrid}} to define a \code{myGrid} class object.
 }
 \author{
+Élise Maigné <elise.maigne@inrae.fr>\cr
 Madalina Olteanu, \email{madalina.olteanu@univ-paris1.fr}\cr
 Nathalie Vialaneix, \email{nathalie.vialaneix@inrae.fr}
 }

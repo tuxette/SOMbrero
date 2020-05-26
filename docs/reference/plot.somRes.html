@@ -98,10 +98,10 @@
       <a href="../articles/c-doc-numericSOM.html">Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</a>
     </li>
     <li>
-      <a href="../articles/d-doc-korrespSOM.html">Self-Organizing Map for contingency tables</a>
+      <a href="../articles/d-doc-korrespSOM.html">Using Self-Organizing Maps with SOMbrero for contingency tables</a>
     </li>
     <li>
-      <a href="../articles/e-doc-relationalSOM.html">Self-Organizing Map for dissimilarity matrices</a>
+      <a href="../articles/e-doc-relationalSOM.html">Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</a>
     </li>
   </ul>
 </li>
@@ -134,16 +134,24 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for somRes</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"obs"</span>, <span class='st'>"prototypes"</span>, <span class='st'>"energy"</span>, <span class='st'>"add"</span>),
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span>(<span class='no'>what</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='st'>"hitmap"</span>, <span class='kw'>prototypes</span> <span class='kw'>=</span> <span class='st'>"color"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"pie"</span>,
-  <span class='kw'>energy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>), <span class='kw'>variable</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>what</span> <span class='kw'>==</span> <span class='st'>"add"</span>) <span class='kw'>NULL</span> <span class='kw'>else</span> <span class='kw'>if</span> (<span class='no'>type</span> <span class='kw'>==</span>
-  <span class='st'>"boxplot"</span>) <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='fl'>5</span>, <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>ncol</a></span>(<span class='no'>x</span>$<span class='no'>data</span>)) <span class='kw'>else</span> <span class='fl'>1</span>, <span class='kw'>my.palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"obs"</span>, <span class='st'>"prototypes"</span>, <span class='st'>"energy"</span>, <span class='st'>"add"</span>),
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span>(<span class='no'>what</span>, <span class='kw'>obs</span> <span class='kw'>=</span> <span class='st'>"hitmap"</span>, <span class='kw'>prototypes</span> <span class='kw'>=</span> <span class='st'>"color"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='st'>"pie"</span>, <span class='kw'>energy</span> <span class='kw'>=</span>
+    <span class='st'>"energy"</span>),
+  <span class='kw'>variable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>my.palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>is.scaled</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>type</span> <span class='kw'>==</span> <span class='st'>"numeric"</span>) <span class='fl'>TRUE</span> <span class='kw'>else</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>print.title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>the.titles</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>what</span> <span class='kw'>!=</span> <span class='st'>"energy"</span>) <span class='fu'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span>(<span class='no'>type</span>,
-  <span class='kw'>graph</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"Cluster"</span>,
-  <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>))), <span class='kw'>proportional</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>s.radius</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>pie.graph</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>pie.variable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>view</span> <span class='kw'>=</span> <span class='kw'>if</span>
-  (<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>type</span> <span class='kw'>==</span> <span class='st'>"korresp"</span>) <span class='st'>"r"</span> <span class='kw'>else</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>show.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>names</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>what</span> <span class='kw'>!=</span> <span class='st'>"energy"</span>) <span class='fu'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span>(<span class='no'>type</span>, <span class='kw'>graph</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>),
+    <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>)),
+  <span class='kw'>proportional</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>pie.graph</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>pie.variable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>s.radius</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>view</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>type</span> <span class='kw'>==</span> <span class='st'>"korresp"</span>) <span class='st'>"r"</span> <span class='kw'>else</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,29 +195,23 @@ to plotting or not. Default value is <code>TRUE</code> when <code>type="numeric"
 and <code>FALSE</code> in the other cases.</p></td>
     </tr>
     <tr>
-      <th>print.title</th>
+      <th>show.names</th>
       <td><p>Boolean used to indicate whether each neuron should have a
-title or not. Default value is <code>FALSE</code>. It is feasible on the following 
-cases: all <code>"color"</code> types, all <code>"lines"</code> types, all 
-<code>"barplot"</code> types, all <code>"radar"</code> types, all <code>"boxplot"</code> types,
-all <code>"names"</code> types, <code>"add"/"pie"</code>, <code>"prototypes"/"umatrix"</code>, 
+title or not, if relevant. Default to <code>TRUE</code>. It is feasible on the following 
+cases: all <code>"color"</code>, <code>"lines"</code>, <code>"meanline"</code>, <code>"barplot"</code>,
+<code>"boxplot"</code>, <code>"names"</code> types, <code>"add"/"pie"</code>, <code>"prototypes"/"umatrix"</code>, 
 <code>"prototypes"/"poly.dist"</code> and <code>"add"/"words"</code>.</p></td>
     </tr>
     <tr>
-      <th>the.titles</th>
-      <td><p>The titles to be printed for each neuron if 
-<code>print.title=TRUE</code>. Default to a number which identifies the neuron.</p></td>
+      <th>names</th>
+      <td><p>The names to be printed for each neuron if 
+<code>show.names=TRUE</code>. Default to a number which identifies the neuron.</p></td>
     </tr>
     <tr>
       <th>proportional</th>
       <td><p>Boolean used when <code>what="add"</code> and 
 <code>type="pie"</code>. It indicates if the pies should be proportional to the 
 number of observations in the class. Default value is <code>TRUE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>s.radius</th>
-      <td><p>The size of the pies to be plotted (maximum size when 
-<code>proportional=TRUE</code>). The default value is <code>0.9</code>.</p></td>
     </tr>
     <tr>
       <th>pie.graph</th>
@@ -220,6 +222,11 @@ It indicates if the vertices should be pies or not.</p></td>
       <th>pie.variable</th>
       <td><p>The variable needed to plot the pies when 
 <code>what="add"</code>, <code>type="graph"</code> and argument <code>pie.graph=TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>s.radius</th>
+      <td><p>The size of the pies to be plotted (maximum size when 
+<code>proportional=TRUE</code>) for <code>what="add"</code>, <code>type="graph"</code> and <code>pie.graph=TRUE</code>. The default value is <code>0.9</code>.</p></td>
     </tr>
     <tr>
       <th>view</th>
@@ -237,7 +244,7 @@ details).</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>See <code><a href='somRes.plotting.html'>somRes.plotting</a></code> for further details.</p>
+    <p>See <code><a href='somRes.plotting.html'>somRes.plotting</a></code> for further details and more examples.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -245,6 +252,15 @@ details).</p></td>
 <code>somRes</code> class object.</p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># run the SOM algorithm on the numerical data of 'iris' data set</span>
+<span class='no'>iris.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>nb.save</span><span class='kw'>=</span><span class='fl'>2</span>)
+<span class='co'># plots</span>
+<span class='co'># on energy</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span><span class='kw'>=</span><span class='st'>"energy"</span>)</div><div class='img'><img src='plot.somRes-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># on observations</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span><span class='kw'>=</span><span class='st'>"obs"</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"lines"</span>)</div><div class='img'><img src='plot.somRes-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># on prototypes</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span><span class='kw'>=</span><span class='st'>"prototypes"</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"3d"</span>, <span class='kw'>variable</span><span class='kw'>=</span><span class='st'>"Sepal.Length"</span>)</div><div class='img'><img src='plot.somRes-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># on an additional variable: the flower species</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span><span class='kw'>=</span><span class='st'>"add"</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"pie"</span>, <span class='kw'>variable</span><span class='kw'>=</span><span class='no'>iris</span>$<span class='no'>Species</span>)</div><div class='img'><img src='plot.somRes-4.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -254,10 +270,13 @@ details).</p></td>
       <li><a href="#details">Details</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
     <h2>Author</h2>
-    <p>Madalina Olteanu <a href='mailto:madalina.olteanu@univ-paris1.fr'>madalina.olteanu@univ-paris1.fr</a><br />
+    <p>Élise Maigné &lt;elise.maigne@inrae.fr&gt;<br />
+Madalina Olteanu <a href='mailto:madalina.olteanu@univ-paris1.fr'>madalina.olteanu@univ-paris1.fr</a><br />
 Nathalie Vialaneix <a href='mailto:nathalie.vialaneix@inrae.fr'>nathalie.vialaneix@inrae.fr</a></p>
   </div>
 </div>

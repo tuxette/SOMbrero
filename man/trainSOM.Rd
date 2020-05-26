@@ -114,6 +114,7 @@ pass to the trainSOM function to change its behavior and
 \code{\link{plot.somRes}} to plot the outputs of the algorithm.
 }
 \author{
+Élise Maigné <elise.maigne@inrae.fr>\cr
 Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr

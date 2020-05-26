@@ -63,10 +63,10 @@
       <a href="../articles/c-doc-numericSOM.html">Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</a>
     </li>
     <li>
-      <a href="../articles/d-doc-korrespSOM.html">Self-Organizing Map for contingency tables</a>
+      <a href="../articles/d-doc-korrespSOM.html">Using Self-Organizing Maps with SOMbrero for contingency tables</a>
     </li>
     <li>
-      <a href="../articles/e-doc-relationalSOM.html">Self-Organizing Map for dissimilarity matrices</a>
+      <a href="../articles/e-doc-relationalSOM.html">Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</a>
     </li>
   </ul>
 </li>
@@ -86,6 +86,7 @@
     <div class="page-header toc-ignore">
       <h1>A basic vignette on grids in SOMbrero</h1>
             
+            <h4 class="date">26 mai, 2020</h4>
       
       
       <div class="hidden name"><code>b-doc-grids.Rmd</code></div>
@@ -99,46 +100,39 @@
 %\VignetteIndexEntry{A basic vignette on grids in SOMbrero}
 %\VignettePackage{SOMbrero}
 -->
-<div id="laura-bendhaiba-madalina-olteanu-nathalie-vialaneix" class="section level4">
-<h4 class="hasAnchor">
-<a href="#laura-bendhaiba-madalina-olteanu-nathalie-vialaneix" class="anchor"></a>Laura Bendhaiba, Madalina Olteanu, Nathalie Vialaneix</h4>
-</div>
 <div id="definition-and-purpose-of-a-mygrid-class-object" class="section level2">
 <h2 class="hasAnchor">
-<a href="#definition-and-purpose-of-a-mygrid-class-object" class="anchor"></a>Definition and purpose of a myGrid class object</h2>
-<p>Objects of class myGrid are made to depict a grid. To be able to create such objects, you have to load the package <code>SOMbrero</code>.</p>
+<a href="#definition-and-purpose-of-a-mygrid-class-object" class="anchor"></a>Definition and purpose of a <code>myGrid</code> class object</h2>
+<p>Objects of class <code>myGrid</code> are made to display the SOM grid.</p>
 </div>
 <div id="basic-functions-on-a-mygrid-class-object" class="section level2">
 <h2 class="hasAnchor">
-<a href="#basic-functions-on-a-mygrid-class-object" class="anchor"></a>Basic functions on a myGrid class object</h2>
-<p>In this section, we will consider only the four basic functions that can be applied on a myGrid class object:</p>
+<a href="#basic-functions-on-a-mygrid-class-object" class="anchor"></a>Basic functions on a <code>myGrid</code> class object</h2>
+<p>In this section, we will consider only the four basic functions that can be applied on a <code>myGrid</code> class object:</p>
 <ul>
-<li>initGrid,</li>
-<li>print.myGrid,</li>
-<li>summary.myGrid,</li>
-<li>plot.myGrid.</li>
+<li><code>initGrid,</code></li>
+<li><code>print.myGrid</code></li>
+<li><code>summary.myGrid</code></li>
+<li><code>plot.myGrid</code></li>
 </ul>
 <div id="the-initgrid-function" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-initgrid-function" class="anchor"></a>The initGrid function</h3>
-<p>The initGrid function initializes a new myGrid object. It has 3 parameters:</p>
+<a href="#the-initgrid-function" class="anchor"></a>The <code>initGrid</code> function</h3>
+<p>The <code>initGrid</code> function initializes a new <code>myGrid</code> object. It has 3 arguments:</p>
 <ul>
-<li>
-<code>dimension</code>, which is a vector of two integers. The first one is the x dimension, the second one is the y dimension. The <strong>default dimensions</strong> are <strong>x=5</strong> and <strong>y=5</strong>,</li>
-<li>
-<code>topo</code>, which is the topology choosen. The value of this argument must be one of these: <code>square</code>. The__default value__ is <strong>square</strong>.</li>
-<li>
-<code>dist.type</code>, which is the distance type. The <strong>default value</strong> is <strong>euclidean</strong>.</li>
+<li><p><code>dimension</code>, which is a vector of two integers. The first one is the x dimension (number of neurons/units on the x axis) and the second one is the y dimension. The <strong>default dimensions</strong> are <strong>x=5</strong> and <strong>y=5</strong>,</p></li>
+<li><p><code>topo</code>, which is the chosen topology. The value of this argument must be one of <code>square</code> or <code>hexagonal</code>. The__default value__ is <strong>square</strong>.</p></li>
+<li><p><code>dist.type</code>, which is the distance type to compute the distance between two neurons of the grid. The <strong>default value</strong> is <strong>euclidean</strong> and the coordinates of the neurons on the grid are chosen so as the minimum Euclidean distance between two neurons is exactly 1. <code>hexagonal</code> topoology is only compatible with the Euclidean distance.</p></li>
 </ul>
-<p>The following <strong>R</strong> code initializes a new myGrid object of square topology, x dimension 5 and y dimension 6, and distance type <code>maximum</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">my.first.grid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/initGrid.html">initGrid</a></span>(<span class="dt">dimension=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">5</span>,<span class="dv">6</span>), <span class="dt">topo=</span><span class="st">"square"</span>, <span class="dt">dist.type=</span><span class="st">"maximum"</span>)</a></code></pre></div>
+<p>The following <strong>R</strong> code initializes a new <code>myGrid</code> object of square topology, x dimension 5 and y dimension 6, and distance type <code>maximum</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">first_grid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/initGrid.html">initGrid</a></span>(<span class="dt">dimension =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">5</span>,<span class="dv">6</span>), <span class="dt">topo =</span> <span class="st">"square"</span>, <span class="dt">dist.type =</span> <span class="st">"maximum"</span>)</a></code></pre></div>
 </div>
 <div id="the-print-mygrid-function" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-print-mygrid-function" class="anchor"></a>The print.myGrid function</h3>
-<p>The myGrid object print function prints in the console the main features of the chosen object. The only argument is the object to be printed.</p>
+<a href="#the-print-mygrid-function" class="anchor"></a>The <code>print.myGrid</code> function</h3>
+<p>The <code>myGrid</code> object <code>print</code> function prints the main features of the chosen object in the console. The only argument is the object to be printed.</p>
 <p>Considering the previously initialized grid, the print command is:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(my.first.grid)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(first_grid)</a></code></pre></div>
 <pre><code>## 
 ##       Self-Organizing Map structure
 ## 
@@ -150,9 +144,9 @@
 </div>
 <div id="the-summary-mygrid-function" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-summary-mygrid-function" class="anchor"></a>The summary.myGrid function</h3>
-<p>The myGrid object summary function is quite simple. It only prints the class of the object and then calls the print function previously described. The only argument is the object to be summarized.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(my.first.grid)</a></code></pre></div>
+<a href="#the-summary-mygrid-function" class="anchor"></a>The <code>summary.myGrid</code> function</h3>
+<p>The <code>myGrid</code> object <code>summary</code> function is quite simple. It only prints the class of the object and then calls the print function previously described. The only argument is the object to be summarized.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(first_grid)</a></code></pre></div>
 <pre><code>## 
 ## Summary
 ## 
@@ -168,19 +162,73 @@
 </div>
 <div id="the-plot-mygrid-function" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-plot-mygrid-function" class="anchor"></a>The plot.myGrid function</h3>
-<p>The myGrid object plot function draws the squared area corresponding to the object, in a new graphical window. It has 2 parameters:</p>
+<a href="#the-plot-mygrid-function" class="anchor"></a>The <code>plot.myGrid</code> function</h3>
+<p>The <code>myGrid</code> object <code>plot</code> function draws the squared area corresponding to the object, in a new graphical window. It has 3 parameters:</p>
 <ul>
-<li>the object to be plotted,</li>
-<li>the color(s) to be used to fill the areas on the graph. The <strong>default color</strong> is <strong>white</strong>. If only one color is given, all the neurons will be filled with this color. One can also give many colors: in this case, the number of colors must match the total number of squares. The map is filled from the bottom left corner, up the column and then likewise in the next column to the right.</li>
+<li><p>the object to be plotted,</p></li>
+<li><p><code>show.names</code>, boolean, indicating if the names of the neurons should be displayed on the graph (default to <code>TRUE</code>)</p></li>
+<li><p><code>names</code>, a vector, giving the names of the neurons if <code>show.names = TRUE</code>, default to the number of the neuron.</p></li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># plot without any color specification: squares are filled in white color</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.first.grid)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(first_grid)</a></code></pre></div>
 <p><img src="b-doc-grids_files/figure-html/plotRainbowGrid-1.png" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># generating colors from the rainbow() function</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">my.colors &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="dv">5</span><span class="op">*</span><span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.first.grid, <span class="dt">neuron.col=</span>my.colors)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(first_grid) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"white"</span>, <span class="dv">30</span>))</a></code></pre></div>
 <p><img src="b-doc-grids_files/figure-html/plotRainbowGrid-2.png" width="700"></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">my_palette &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"white"</span>, <span class="st">"pink"</span>, <span class="st">"purple"</span>))(<span class="dv">30</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(first_grid, <span class="dt">show.names =</span> <span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span>(<span class="dt">values =</span> my_palette)</a></code></pre></div>
+<p><img src="b-doc-grids_files/figure-html/plotRainbowGrid-3.png" width="700"></p>
+<p>Hexagonal grids can be displayed similarly:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">second_grid &lt;-<span class="st"> </span><span class="kw"><a href="../reference/initGrid.html">initGrid</a></span>(<span class="dt">dimension =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">4</span>, <span class="dv">5</span>), <span class="dt">topo =</span> <span class="st">"hexagonal"</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(second_grid, <span class="dt">names =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"N"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">20</span>)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Hexagonal SOM grid"</span>)</a></code></pre></div>
+<p><img src="b-doc-grids_files/figure-html/plotHexa-1.png" width="700"></p>
+</div>
+<div id="session-information" class="section level3">
+<h3 class="hasAnchor">
+<a href="#session-information" class="anchor"></a>Session information</h3>
+<p>This vignette has been computed with the following environment:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a></code></pre></div>
+<pre><code>## R version 3.6.3 (2020-02-29)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 18.04.4 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=fr_FR.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=fr_FR.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=fr_FR.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=fr_FR.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] SOMbrero_1.2-5 igraph_1.2.4.1
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.4.6         compiler_3.6.3       pillar_1.4.3        
+##  [4] tools_3.6.3          digest_0.6.20        lattice_0.20-41     
+##  [7] lubridate_1.7.4      checkmate_1.9.4      evaluate_0.14       
+## [10] memoise_1.1.0        lifecycle_0.2.0      tibble_2.1.3        
+## [13] gtable_0.3.0         png_0.1-7            pkgconfig_2.0.2     
+## [16] rlang_0.4.5          rstudioapi_0.10      yaml_2.2.0          
+## [19] hexbin_1.27.3        pkgdown_1.4.1        xfun_0.13           
+## [22] interp_1.0-33        metR_0.7.0           stringr_1.4.0       
+## [25] dplyr_0.8.3          knitr_1.23           desc_1.2.0          
+## [28] fs_1.3.1             scatterplot3d_0.3-41 rprojroot_1.3-2     
+## [31] grid_3.6.3           tidyselect_1.0.0     data.table_1.12.2   
+## [34] glue_1.4.0           R6_2.4.1             rmarkdown_1.14      
+## [37] farver_2.0.3         deldir_0.1-25        ggplot2_3.3.0       
+## [40] purrr_0.3.3          magrittr_1.5         backports_1.1.4     
+## [43] scales_1.1.0         htmltools_0.3.6      MASS_7.3-51.6       
+## [46] ggwordcloud_0.5.0    assertthat_0.2.1     colorspace_1.4-1    
+## [49] labeling_0.3         stringi_1.4.3        munsell_0.5.0       
+## [52] crayon_1.3.4</code></pre>
 </div>
 </div>
   </div>
@@ -190,8 +238,8 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#definition-and-purpose-of-a-mygrid-class-object">Definition and purpose of a myGrid class object</a></li>
-      <li><a href="#basic-functions-on-a-mygrid-class-object">Basic functions on a myGrid class object</a></li>
+<li><a href="#definition-and-purpose-of-a-mygrid-class-object">Definition and purpose of a <code>myGrid</code> class object</a></li>
+      <li><a href="#basic-functions-on-a-mygrid-class-object">Basic functions on a <code>myGrid</code> class object</a></li>
       </ul>
 </div>
       </div>

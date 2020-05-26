@@ -1,5 +1,12 @@
 ---
 title: "SOMbrero Package description"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document:
+    theme: journal
+    toc: yes
+    toc_float:
+      collapsed: no
 ---
 
 <!--
@@ -59,7 +66,7 @@ For those who have an **R** developer soul, and who want to help improve this
 package, the following picture provides an overview the current arborescence of
 the package:
 
-![dependencies](./dependencies.png)
+![](./dependencies.png)
 
 
 

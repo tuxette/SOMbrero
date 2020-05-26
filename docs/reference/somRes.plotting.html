@@ -36,10 +36,8 @@
 
 <meta property="og:description" content="Useful details on how to produce graphics to help interpreting a somRes
 object.
-Important: all these graphics are available when the algorithm's type is
-&quot;numeric&quot; ; those which are available for a korresp SOM are 
-marked by a * and those which are available for a relational SOM are 
-marked with a #." />
+Important: the graphics availables for the different types of SOM are marked with a N, a K or a R. 
+(N = numerical SOM, K = korresp SOM and R = relational SOM)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -103,10 +101,10 @@ marked with a #." />
       <a href="../articles/c-doc-numericSOM.html">Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</a>
     </li>
     <li>
-      <a href="../articles/d-doc-korrespSOM.html">Self-Organizing Map for contingency tables</a>
+      <a href="../articles/d-doc-korrespSOM.html">Using Self-Organizing Maps with SOMbrero for contingency tables</a>
     </li>
     <li>
-      <a href="../articles/e-doc-relationalSOM.html">Self-Organizing Map for dissimilarity matrices</a>
+      <a href="../articles/e-doc-relationalSOM.html">Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</a>
     </li>
   </ul>
 </li>
@@ -135,197 +133,236 @@ marked with a #." />
     <div class="ref-description">
     
     <p>Useful details on how to produce graphics to help interpreting a <code>somRes</code>
-object.
-Important: all these graphics are available when the algorithm's type is
-<code>"numeric"</code> ; those which are available for a <code>korresp</code> SOM are 
-marked by a * and those which are available for a <code>relational</code> SOM are 
-marked with a #.</p>
+object.<br /></p>
+<p>Important: the graphics availables for the different types of SOM are marked with a N, a K or a R. <br />
+(<b>N</b> = numerical SOM, <b>K</b> = korresp SOM and <b>R</b> = relational SOM).</p>
     
     </div>
 
         
-    <h2 class="hasAnchor" id="graphics-on-the-observations-what-obs-"><a class="anchor" href="#graphics-on-the-observations-what-obs-"></a>Graphics on the observations: <code>what="obs"</code></h2>
+    <h2 class="hasAnchor" id="graphics-on-the-observations-what-obs-"><a class="anchor" href="#graphics-on-the-observations-what-obs-"></a>Graphics on the observations: <code>what = "obs"</code></h2>
 
-    <p>The possible values for <code>type</code> are: <code>"hitmap"</code>(*, #), <code>"color"</code>,
-<code>"lines"</code>, <code>"barplot"</code>, <code>"names"</code>(*, #), <code>"boxplot"</code> and
-<code>"radar"</code>.</p>
-<p>For the cases <code>what="obs"</code> and <code>what="add"</code>, if a neuron is empty,
+    
+
+<p>For the cases <code>what = "obs"</code> and <code>what = "add"</code>, if a neuron is empty,
 nothing will be plotted at its location.</p>
-<ul>
-<li><p><code>"hitmap"</code> (*, #) plots proportional areas according to the number of
-observations per neuron. It is the default plot when <code>what="obs"</code>.</p></li>
-<li><p><code>"color"</code> can have two more arguments, <code>var</code>, the index of the  
-variable to be considered (default, <code>1</code>), and <code>my.palette</code> for the 
-colors to be used. Neurons are filled using the given colors according to the 
-average value level of the observations for the chosen variable.</p></li>
-<li><p><code>"lines"</code> plots, for each neuron, the average value level of the
-observations, with lines. One point represents a variable. All variables of the
-dataset used to train the algorithm are plotted.</p></li>
-<li><p><code>"barplot"</code> is similar to <code>"lines"</code> but using barplots. Then, 
-a bar represents a variable.</p></li>
-<li><p><code>"radar"</code> is similar to <code>"lines"</code> but using radars. Then, a 
-slice represents a variable. If needed, a legend can be added ; its location 
-has to be passed by the <code>key.loc</code> argument (see <code>stars</code>).</p></li>
-<li><p><code>"names"</code> (*, #) prints on the grid the element names (i.e., the
-names of the rows) in the neuron to which it belongs.</p></li>
-<li><p><code>"boxplot"</code> plots boxplots for several observations in every neuron.
-This case can handle 5 variables at most. The default behavior is to plot the
-boxplots forthe first 5 variables of the data set; if there is less than 5
-variables in the data set, they will all be plotted.</p></li>
-</ul>
 
-<p>When the algorithm's type is <code>korresp</code> or <code>relational</code>, only the types
-<code>"hitmap"</code> and <code>"names"</code> are available.</p>
+
+<p>The possible values for <b><code>type</code></b> are:</p><dl class='dl-horizontal'>
+<dt><code>"hitmap"</code> (K, R)</dt><dd><p>plots proportional areas according to the number of
+observations per neuron. It is the default plot when <code>what="obs"</code>.</p></dd>
+
+<dt><code>"color"</code> (N)</dt><dd><p>can have one more argument, <code>variable</code>, the name or 
+index of the variable to be considered (default, <code>1</code>, the first variable). 
+Neurons are filled using the given colors according to the average value level 
+of the observations for the chosen variable.</p></dd>
+
+<dt><code>"lines"</code> (N)</dt><dd><p>plots a line for each observation in every neuron, between 
+variables. A vector of variables (names or indexes) can be provided with the 
+argument <code>variable</code>.</p></dd>
+
+<dt><code>"meanline"</code> (N)</dt><dd><p>plots, for each neuron, the average value level of the
+observations, with lines and points. One point represents a variable. By 
+default, all variables of the dataset used to train the algorithm are plotted 
+but a vector of variables (names or indexes) can be provided with the argument 
+<code>variable</code>.</p></dd>
+
+<dt><code>"barplot"</code> (N)</dt><dd><p>is similar to <code>"meanline"</code> but using barplots. Then, 
+a bar represents a variable.</p></dd>
+
+<dt><code>"boxplot"</code> (N)</dt><dd><p>plots boxplots for the observations in every neuron, by 
+variable. Like <code>"lines"</code>, <code>"meanline"</code>  and <code>"barplot"</code> a vector of variables (names
+or indexes) can be provided with the argument <code>variable</code>.</p></dd>
+
+<dt><code>"names"</code> (N, K, R)</dt><dd><p>prints on the grid the element names (i.e., the
+row names or row and column names in the case of <code>korresp</code>) in the neuron
+to which it belongs.</p></dd>
+
+</dl>
+
     
-    <h2 class="hasAnchor" id="graphic-on-the-energy-what-energy-"><a class="anchor" href="#graphic-on-the-energy-what-energy-"></a>Graphic on the energy: <code>what="energy"</code> (*, #)</h2>
+    <h2 class="hasAnchor" id="graphic-on-the-energy-what-energy-n-k-r-"><a class="anchor" href="#graphic-on-the-energy-what-energy-n-k-r-"></a>Graphic on the energy: <code>what = "energy"</code> (N, K, R)</h2>
 
-    <p>This graphic is only available if some intermediate backups have been
-registered (i.e., <code>x$parameters$nb.save&gt;1</code>). Graphic plots the evolution of
-the level of the energy according to the registered steps.</p>
+    <p>This graphic is only available if some intermediate backups have been registered
+(i.e., with the argument <code>nb.save</code> of <code>trainSOM</code> or <code>initSOM</code> 
+resulting in <code>x$parameters$nb.save&gt;1</code>). Graphic plots the evolution of the 
+level of the energy according to the registered steps.</p>
     
-    <h2 class="hasAnchor" id="graphics-on-the-prototypes-what-prototypes-"><a class="anchor" href="#graphics-on-the-prototypes-what-prototypes-"></a>Graphics on the prototypes: <code>what="prototypes"</code></h2>
+    <h2 class="hasAnchor" id="graphics-on-the-prototypes-what-prototypes-"><a class="anchor" href="#graphics-on-the-prototypes-what-prototypes-"></a>Graphics on the prototypes: <code>what = "prototypes"</code></h2>
 
-    <p>The possible values for <code>type</code> are: <code>"3d"</code>(*), <code>"lines"</code>(*, #),
-<code>"barplot"</code>(*, #), <code>"radar"</code>(*, #), <code>"color"</code>(*), 
-<code>"smooth.dist"</code> (*, #), <code>"poly.dist"</code>(*, #), <code>"umatrix"</code>(*, #), 
-<code>"mds"</code>(*, #) and <code>"grid.dist"</code>(*, #).</p>
-<ul>
-<li><p><code>"lines"</code> (*, #) has the same behavior as the <code>"lines"</code> case 
-described in the observations section, but according to the prototypes level;</p></li>
-<li><p><code>"barplot"</code> (*, #) has the same behavior as the <code>"barplot"</code> case 
-described in the observations section, but according to the prototypes level;</p></li>
-<li><p><code>"radar"</code> (*, #) has the same behavior as the <code>"radar"</code> case 
-described in the observations section, but according to the prototypes level;</p></li>
-<li><p><code>"color"</code> (*) has the same behavior as the <code>"color"</code> case 
-described in the observations section, but according to the prototypes level;</p></li>
-<li><p><code>"3d"</code> case is similar to the <code>"color"</code> case, but in 3
+    
+
+<p>The possible values for <b><code>type</code></b> are:</p><dl class='dl-horizontal'>
+<dt><code>"lines"</code> (N, K, R)</dt><dd><p>has the same behavior as the <code>"lines"</code> case 
+described in the observations section, but according to the prototypes level.</p></dd>
+
+<dt><code>"barplot"</code> (N, K, R)</dt><dd><p>has the same behavior as the <code>"barplot"</code> case 
+described in the observations section, but according to the prototypes level.</p></dd>
+
+<dt><code>"color"</code> (N, K)</dt><dd><p>has the same behavior as the <code>"color"</code> case 
+described in the observations section, but according to the prototypes level.</p></dd>
+
+<dt><code>"3d"</code> (N)</dt><dd><p>case is similar to the <code>"color"</code> case, but in 3
 dimensions, with x and y the coordinates of the grid and z the value of the
-prototypes for the considered variable;</p></li>
-<li><p><code>"smooth.dist"</code> (*, #) depicts the average distance between a 
+prototypes for the considered variable. This function can take two more 
+arguments: <code>maxsize</code> (default to <code>2</code>) and <code>minsize</code> (default to 
+<code>0.5</code>) for the size of the points representing neurons.</p></dd>
+
+<dt><code>"smooth.dist"</code> (N, K, R)</dt><dd><p>depicts the average distance between a 
 prototypes and its neighbors on a map where x and y are the coordinates of the 
-prototypes on the grid;</p></li>
-<li><p><code>"poly.dist"</code> (*, #) also represents the distances between 
+prototypes on the grid.</p></dd>
+
+<dt><code>"poly.dist"</code> (N, K, R)</dt><dd><p>also represents the distances between 
 prototypes but with polygons plotted for each neuron. The closest from the 
 border the polygon point is, the closest the pairs of prototypes are. The color 
 used for filling the polygon shows the number of observations in each neuron. 
 A white polygon means that there is no observation. With the default colors, a 
-red polygon means a high number of observations;</p></li>
-<li><p><code>"umatrix"</code> (*, #) is another way of plotting distances between 
+red polygon means a high number of observations.</p></dd>
+
+<dt><code>"umatrix"</code> (N, K, R)</dt><dd><p>is another way of plotting distances between 
 prototypes. The grid is plotted and filled with <code>my.palette</code> colors 
 according to the mean distance between the current neuron and the neighboring 
-neurons. With the default colors, red indicates proximity.</p></li>
-<li><p><code>"mds"</code> (*, #) plots the number of the neuron on a map according to 
-a Multi Dimensional Scaling (MDS) projection on a two dimensional space.</p></li>
-<li><p><code>"grid.dist"</code> (*, #) plots on a 2 dimension map all distances. The 
-number of points on this picture is equal to: 
+neurons. With the default colors, red indicates proximity.</p></dd>
+
+<dt><code>"mds"</code> (N, K, R)</dt><dd><p>plots the number of the neuron on a map according to 
+a Multi Dimensional Scaling (MDS) projection on a two dimensional space.</p></dd>
+
+<dt><code>"grid.dist"</code> (N, K, R)</dt><dd><p>plots on a 2 dimension map all distances. The 
+number of points on this picture is equal to
 \(\frac{\textrm{number of neurons}\times(\textrm{number of neurons}-1)}{2}\). 
 On the x axis corresponds to the prototype distances whereas the y axis depicts 
-the grid distances.</p></li>
-</ul>
+the grid distances.</p></dd>
+
+</dl>
 
     
-    <h2 class="hasAnchor" id="graphics-on-an-additional-variable-what-add-"><a class="anchor" href="#graphics-on-an-additional-variable-what-add-"></a>Graphics on an additional variable: <code>what="add"</code> (#)</h2>
+    <h2 class="hasAnchor" id="graphics-on-an-additional-variable-what-add-"><a class="anchor" href="#graphics-on-an-additional-variable-what-add-"></a>Graphics on an additional variable: <code>what="add"</code></h2>
 
     <p>The case <code>what="add"</code> considers an additional variable, which has to be 
 given to the argument <code>variable</code>. Its length must match the number of
-observations in the original data. Then the possible values for <code>type</code> are:
-<code>"pie"</code>(#), <code>"color"</code>(#), <code>"lines"</code>(#), <code>"boxplot"</code>(#),
-<code>"barplot"</code>(#), <code>"radar"</code>(#), <code>"names"</code>(#), <code>"words"</code>(#) and
-<code>"graph"</code>(#).</p>
-<ul>
-<li><p><code>"color"</code> (#) has the same behavior as the <code>"color"</code> case 
+observations in the original data.</p>
+<p>When the algorithm's type is <code>korresp</code>, no graphic is available for
+<code>what = "add"</code>.</p>
+<p>The possible values for <code>type</code> are:</p>
+<dl class='dl-horizontal'>
+<dt><code>"color"</code> (N, R)</dt><dd><p>has the same behavior as the <code>"color"</code> case 
 described in the observations section. Then, the additional variable must be a 
-numerical vector;</p></li>
-<li><p><code>"lines"</code> (#) has the same behavior as the <code>"color"</code> case 
+numerical vector.</p></dd>
+
+<dt><code>"lines"</code> (N, R)</dt><dd><p>has the same behavior as the <code>"lines"</code> case 
 described in the observations section. Then, the additional variable must be a 
-numerical matrix or a data frame;</p></li>
-<li><p><code>"boxplot"</code> (#) has the same behavior as the <code>"color"</code> case 
+numerical matrix or a data frame.</p></dd>
+
+<dt><code>"boxplot"</code> (N, R)</dt><dd><p>has the same behavior as the <code>"boxplot"</code> case 
 described in the observations section. Then, the additional variable must be 
-either a numeric vector or a numeric matrix/data frame;</p></li>
-<li><p><code>"barplot"</code> (#) has the same behavior as the <code>"color"</code> case 
+either a numeric vector or a numeric matrix/data frame.</p></dd>
+
+<dt><code>"barplot"</code> (N, R)</dt><dd><p>has the same behavior as the <code>"barplot"</code> case 
 described in the observations section. Then, the additional variable must be 
-either a numeric vector or a numeric matrix/data frame;</p></li>
-<li><p><code>"radar"</code> (#) has the same behavior as the <code>"color"</code> case 
-described in the observations section. Then, the additional variable must be a 
-numerical matrix or data frame;</p></li>
-<li><p><code>"pie"</code> requires the argument <code>variable</code> to be a factor vector
-and plots one pie for each neuron according to this factor;</p></li>
-<li><p><code>"names"</code> (#) has the same behavior as the <code>"names"</code> case 
+either a numeric vector or a numeric matrix/data frame.</p></dd>
+
+<dt><code>"pie"</code> (N)</dt><dd><p>requires the argument <code>variable</code> to be a vector, which
+will be passed to the function <code>as.factor</code>, and plots one pie for each 
+neuron according to this factor. By default, the size of the pie is 
+proportional to the number of observations affected to its neuron but this can 
+be changed with the argument <code>proportional = FALSE</code>.</p></dd>
+
+<dt><code>"names"</code> (N, R)</dt><dd><p>has the same behavior as the <code>"names"</code> case 
 described in the observations section. Then, the names to be printed are the 
-elements of the variable given to the <code>variable</code> argument;</p></li>
-<li><p><code>"words"</code> (#) needs the argument <code>variable</code> be a contingency
-table: names of the columns will be used as words and the values express the 
-frequency of a given word in the observation. Then, for each neuron of the grid,
-the words will be printed with sizes proportional to their frequency in the
-neuron;</p></li>
-<li><p>Last option is <code>"graph"</code> (#). The argument <code>variable</code> must be an
-<code>igraph</code> object (see <code><a href='https://rdrr.io/r/base/library.html'>library(igraph)</a></code>. According to the existing
+elements of the variable given to the <code>variable</code> argument.
+This case can take one more argument: <code>size</code> (default to <code>4</code>) for the 
+size of the words.</p></dd>
+
+<dt><code>"words"</code> (N, R)</dt><dd><p>needs the argument <code>variable</code> be a numeric matrix 
+or a <code>data.frame</code>: names of the columns will be used as words and the 
+values express the frequency of a given word in the observation. Then, for each 
+neuron of the grid, the words will be printed with sizes proportional to the sum
+of their values in the neuron. If the <code>variable</code> given is a contingency 
+table, it will plot directly the frequency of the words in the neurons.</p></dd>
+
+<dt><code>"graph"</code> (N, R)</dt><dd><p>requires that the argument <code>variable</code> is an
+<code>igraph</code> object (see <code><a href='https://rdrr.io/r/base/library.html'>library("igraph")</a></code>. According to the existing
 edges in the graph and to the clustering obtained with the SOM algorithm, a 
 clustered graph will be produced where a vertex between two vertices represents
 a neuron and the width of an edge is proportional to the number of edges in the
-given graph between the vertices affected to the corresponding neurons. The
-option can handle two more arguments: <code>pie.graph</code> and <code>pie.variable</code>.
+given graph between the vertices affected to the corresponding neurons.
+The option can handle two more arguments: <code>pie.graph</code> and <code>pie.variable</code>.
 These are used to display the vertex as pie charts. For this case, 
 <code>pie.graph</code> must be set to <code>TRUE</code> and a factor vector is supplied by
-<code>pie.variable</code>.</p></li>
-</ul>
+<code>pie.variable</code>.</p></dd>
 
-<p>When the algorithm's type is <code>korresp</code>, no graphic is available for
-<code>what="add"</code>.</p>
-<p>All these graphics are available for a <code>relational</code> SOM.</p>
+</dl>
+
     
     <h2 class="hasAnchor" id="further-arguments-via-"><a class="anchor" href="#further-arguments-via-"></a>Further arguments via ...</h2>
 
     <p>Further arguments, their reference functions and the <code>plot.somRes</code> cases 
-are summarized in the following list:</p><ul>
-<li><p><code><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></code> is called by the cases:</p><ul>
-<li><p><code>what="energy"</code></p></li>
-<li><p><code>type="lines"</code></p></li>
-<li><p><code>what="prototypes"/type="mds"</code></p></li>
+are summarized in the following list:</p>
+<ul>
+<li><p><code><a href='https://rdrr.io/pkg/igraph/man/plot.igraph.html'>plot.igraph</a></code> is called by the cases:</p><ul>
+<li><p><code>what = "add"</code> / <code>type = "graph"</code></p></li>
+<li><p><code>what = "add"</code> / <code>type = "projgraph"</code> (for a superclass object)</p></li>
 </ul></li>
-<li><p><code><a href='myGrid.html'>plot.myGrid</a></code> is called by the cases:</p><ul>
-<li><p><code>what="obs"/type="hitmap"</code></p></li>
-<li><p><code>type="color"</code></p></li>
-<li><p><code>what="prototypes"/type="poly.dist"</code></p></li>
-<li><p><code>what="prototypes"/type="umatrix"</code></p></li>
-</ul></li>
-<li><p><code><a href='https://rdrr.io/pkg/igraph/man/plot.igraph.html'>plot.igraph</a></code> is called by the case 
-<code>what="add"/type="graph"</code></p></li>
-<li><p><code><a href='https://rdrr.io/r/graphics/pie.html'>pie</a></code> is called by the case <code>what="add"/type="pie"</code></p></li>
-<li><p><code><a href='https://rdrr.io/r/graphics/barplot.html'>barplot</a></code> is called by the cases <code>type="barplot"</code></p></li>
-<li><p><code><a href='https://rdrr.io/r/graphics/boxplot.html'>boxplot</a></code> is called by the cases <code>type="boxplot"</code></p></li>
-<li><p><code><a href='https://rdrr.io/r/graphics/stars.html'>stars</a></code> is called by the cases <code>type="radar"</code></p></li>
 <li><p><code><a href='https://rdrr.io/r/graphics/persp.html'>persp</a></code> is called by the case 
-<code>what="prototypes"/type="3d"</code></p></li>
-<li><p><code><a href='https://rdrr.io/pkg/wordcloud/man/wordcloud.html'>wordcloud</a></code> is called by the cases:</p><ul>
-<li><p><code>type="names"</code></p></li>
-<li><p><code>what="add"/type="words"</code></p></li>
+<code>what = "prototypes"</code> / <code>type = "3d"</code></p></li>
+<li><p><code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></code> is called in all the other cases.</p></li>
+</ul>
+
+<p>In complement to ggplot,</p><ul>
+<li><p><code><a href='https://rdrr.io/pkg/ggwordcloud/man/geom_text_wordcloud.html'>geom_text_wordcloud</a></code> is called by the cases:</p><ul>
+<li><p><code>type = "names"</code></p></li>
+<li><p><code>what = "add"</code> / <code>type = "words"</code></p></li>
 </ul></li>
+<li><p><code><a href='https://rdrr.io/pkg/metR/man/geom_contour_fill.html'>geom_contour_fill</a></code> is called by the case
+<code>what = "prototypes"</code> / <code>type = "smooth.dist"</code></p></li>
 </ul>
 
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># run the SOM algorithm on the numerical data of 'iris' data set</span>
-<span class='no'>iris.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>nb.save</span><span class='kw'>=</span><span class='fl'>2</span>)
+    <pre class="examples"><div class='input'><span class='co'>### Numerical SOM</span>
+<span class='co'># run the SOM algorithm on the numerical data of 'iris' data set</span>
+<span class='no'>iris.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>nb.save</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='co'># plots</span>
-<span class='co'># on energy</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span><span class='kw'>=</span><span class='st'>"energy"</span>) <span class='co'># energy</span></div><div class='img'><img src='somRes.plotting-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># on prototypes</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span><span class='kw'>=</span><span class='st'>"prototypes"</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"3d"</span>, <span class='kw'>variable</span><span class='kw'>=</span><span class='st'>"Sepal.Length"</span>)</div><div class='img'><img src='somRes.plotting-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># on an additional variable: the flower species</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span><span class='kw'>=</span><span class='st'>"add"</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"pie"</span>, <span class='kw'>variable</span><span class='kw'>=</span><span class='no'>iris</span>$<span class='no'>Species</span>)</div><div class='img'><img src='somRes.plotting-3.png' alt='' width='700' height='433' /></div></pre>
+<span class='co'>####### energy plot</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"energy"</span>) <span class='co'># energy</span></div><div class='img'><img src='somRes.plotting-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>####### plots on observations</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"hitmap"</span>)</div><div class='img'><img src='somRes.plotting-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"lines"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"barplot"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"boxplot"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"meanline"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"color"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"names"</span>)}
+
+<span class='co'>####### plots on prototypes</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"3d"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>)</div><div class='img'><img src='somRes.plotting-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"lines"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"barplot"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"umatrix"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"color"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"Petal.Length"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"smooth.dist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"poly.dist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid.dist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mds"</span>)}
+
+
+<span class='co'>####### plots on an additional variable: the flower species</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"pie"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)</div><div class='img'><img src='somRes.plotting-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"names"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"words"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>2</span>])}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#graphics-on-the-observations-what-obs-">Graphics on the observations: <code>what="obs"</code></a></li>
+      <li><a href="#graphics-on-the-observations-what-obs-">Graphics on the observations: <code>what = "obs"</code></a></li>
 
-      <li><a href="#graphic-on-the-energy-what-energy-">Graphic on the energy: <code>what="energy"</code> (*, #)</a></li>
+      <li><a href="#graphic-on-the-energy-what-energy-n-k-r-">Graphic on the energy: <code>what = "energy"</code> (N, K, R)</a></li>
 
-      <li><a href="#graphics-on-the-prototypes-what-prototypes-">Graphics on the prototypes: <code>what="prototypes"</code></a></li>
+      <li><a href="#graphics-on-the-prototypes-what-prototypes-">Graphics on the prototypes: <code>what = "prototypes"</code></a></li>
 
-      <li><a href="#graphics-on-an-additional-variable-what-add-">Graphics on an additional variable: <code>what="add"</code> (#)</a></li>
+      <li><a href="#graphics-on-an-additional-variable-what-add-">Graphics on an additional variable: <code>what="add"</code></a></li>
 
       <li><a href="#further-arguments-via-">Further arguments via ...</a></li>
       
@@ -333,7 +370,8 @@ are summarized in the following list:</p><ul>
     </ul>
 
     <h2>Author</h2>
-    <p>Madalina Olteanu <a href='mailto:madalina.olteanu@univ-paris1.fr'>madalina.olteanu@univ-paris1.fr</a><br />
+    <p>Élise Maigné <a href='mailto:elise.maigne@inrae.fr'>elise.maigne@inrae.fr</a><br />
+Madalina Olteanu <a href='mailto:madalina.olteanu@univ-paris1.fr'>madalina.olteanu@univ-paris1.fr</a><br />
 Nathalie Vialaneix <a href='mailto:nathalie.vialaneix@inra.fr'>nathalie.vialaneix@inra.fr</a></p>
   </div>
 </div>

@@ -100,10 +100,10 @@
       <a href="../articles/c-doc-numericSOM.html">Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</a>
     </li>
     <li>
-      <a href="../articles/d-doc-korrespSOM.html">Self-Organizing Map for contingency tables</a>
+      <a href="../articles/d-doc-korrespSOM.html">Using Self-Organizing Maps with SOMbrero for contingency tables</a>
     </li>
     <li>
-      <a href="../articles/e-doc-relationalSOM.html">Self-Organizing Map for dissimilarity matrices</a>
+      <a href="../articles/e-doc-relationalSOM.html">Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</a>
     </li>
   </ul>
 </li>
@@ -137,7 +137,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>protoDist</span>(<span class='no'>object</span>, <span class='no'>mode</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>protoDist</span>(<span class='no'>object</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"complete"</span>, <span class='st'>"neighbors"</span>), <span class='kw'>radius</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,7 +148,13 @@
     </tr>
     <tr>
       <th>mode</th>
-      <td><p>Specifies which distances should be computed.</p></td>
+      <td><p>Specifies which distances should be computed (default to 
+<code>"complete"</code>).</p></td>
+    </tr>
+    <tr>
+      <th>radius</th>
+      <td><p>Radius used to fetch the neighbors (default to 1). The distance
+used to compute the neighbors is the Euclidean distance.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -163,8 +169,10 @@ which dimensions are equal to the product of the grid dimensions.</p>
 <p>When <code>mode = "neighbors"</code>, the function returns a list which length is 
 equal to the product of the grid dimensions; the length of each item is equal
 to the number of neighbors. Neurons are considered to have 8 neighbors at 
-most (<em>i.e.</em>, two neurons are neighbors if they have a distance of type 
-'maximum' which is equal to 1).</p>
+most (<em>i.e.</em>, two neurons are neighbors if they have an Euclidean 
+distance smaller than <code>radius</code>. Natural choice for <code>radius</code> is
+1 for hexagonal topology and 1 or \(\sqrt{2}\) for square 
+topology (4 and 8 neighbors respectively).</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -181,7 +189,7 @@ of the prototypes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>2343</span>)
-<span class='no'>my.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>dimension</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>5</span>))
+<span class='no'>my.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>dimension</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>5</span>))
 <span class='fu'>protoDist</span>(<span class='no'>my.som</span>)</div><div class='output co'>#&gt;            1         2         3         4         5         6         7
 #&gt; 1  0.0000000 0.3178170 0.7408293 1.1873168 1.5535594 0.4242205 0.2704839
 #&gt; 2  0.3178170 0.0000000 0.4241642 0.8716052 1.2385739 0.6765640 0.3694890

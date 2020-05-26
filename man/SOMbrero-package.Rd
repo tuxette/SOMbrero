@@ -76,8 +76,11 @@ IEEE, Nancy, France.
 }
 \author{
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}\cr
+Élise Maigné <elise.maigne@inrae.fr>\cr
 Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
 Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
-Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr \cr
+Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr
+Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
+Julien Boelaert \email{julien.boelaert@gmail.com}\cr \cr
 Maintainer: Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

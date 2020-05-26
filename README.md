@@ -1,25 +1,51 @@
 SOMbrero
 ================
 
-SOMbrero implements the stochastic (also called on-line) Self-Organising Map (SOM) algorithm for numeric and relational data. Data are clustered into a 2-dimensional squared grid that can be initialized with `initGrid`. The main function is `trainSOM` that implements three types of algorithms:
+SOMbrero implements the stochastic (also called on-line) Self-Organising
+Map (SOM) algorithm for numeric and relational data. Data are clustered
+into a 2-dimensional squared grid that can be initialized with
+`initGrid`. The main function is `trainSOM` that implements three types
+of algorithms:
 
--   the standard numeric SOM as in \[Kohonen, 2001\]
+  - the standard numeric SOM as in \[Kohonen, 2001\]
 
--   the relational SOM designed to deal with datasets described by a dissimilarity as in \[Olteanu & Villa-Vialaneix, 2015\] and \[Mariette *et al.*, 2017\]
+  - the relational SOM designed to deal with datasets described by a
+    dissimilarity as in \[Olteanu & Villa-Vialaneix, 2015\] and
+    \[Mariette *et al.*, 2017\]
 
--   the KORRESP method that deals with contingency tables as in \[Cottrell *et al*, 2004\] and \[Cottrell *et al*, 2005\]
+  - the KORRESP method that deals with contingency tables as in
+    \[Cottrell *et al*, 2004\] and \[Cottrell *et al*, 2005\]
 
-Results can be displayed with the function `plot.somRes` and quality criteria are provided by `quality`. Finally, a super-clustering can be computed with `superClass`.
+Results can be displayed with the function `plot.somRes` and quality
+criteria are provided by `quality`. Finally, a super-clustering can be
+computed with `superClass`.
 
-References
-----------
+## References
 
-Kohonen T. (2001) *Self-Organizing Maps*. Berlin/Heidelberg: Springer-Verlag, 3rd edition.
+Kohonen T. (2001) *Self-Organizing Maps*. Berlin/Heidelberg:
+Springer-Verlag, 3rd edition.
 
-Cottrell M., Ibbou S., Letremy P. (2004) SOM-based algorithms for qualitative variables. *Neural Networks*, **17**, 1149-1167.
+Cottrell M., Ibbou S., Letremy P. (2004) SOM-based algorithms for
+qualitative variables. *Neural Networks*, **17**, 1149-1167.
 
-Cottrell M., Letremy P. (2005) How to use the Kohonen algorithm to simultaneously analyse individuals in a survey. *Neurocomputing*, **21**, 119-138.
+Cottrell M., Letremy P. (2005) How to use the Kohonen algorithm to
+simultaneously analyse individuals in a survey. *Neurocomputing*,
+**21**, 119-138.
 
-Mariette J., Rossi F., Olteanu M., Mariette J. (2017) Accelerating stochastic kernel SOM. In: M. Verleysen, *XXVth European Symposium on Artificial Neural Networks, Computational Intelligence and Machine Learning (ESANN 2017)*, i6doc, Bruges, Belgium, 269-274.
+Mariette J., Rossi F., Olteanu M., Mariette J. (2017) Accelerating
+stochastic kernel SOM. In: M. Verleysen, *XXVth European Symposium on
+Artificial Neural Networks, Computational Intelligence and Machine
+Learning (ESANN 2017)*, i6doc, Bruges, Belgium, 269-274.
 
-Olteanu M., Villa-Vialaneix N. (2015a) On-line relational and multiple relational SOM. *Neurocomputing*, **147**, 15-30.
+Olteanu M., Villa-Vialaneix N. (2015a) On-line relational and multiple
+relational SOM. *Neurocomputing*, **147**, 15-30.
+
+Olteanu M., Villa-Vialaneix N. (2015b) Using SOMbrero for clustering and
+visualizing graphs. *Journal de la Société Française de Statistique*,
+**156**, 95-119.
+
+Villa-Vialaneix N. (2017) Stochastic self-organizing map variants with
+the **R** package SOMbrero. In: J.C. Lamirel, M. Cottrell, M. Olteanu,
+*12th International Workshop on Self-Organizing Maps and Learning Vector
+Quantization, Clustering and Data Visualization (Proceedings of WSOM
+2017)*, IEEE, Nancy, France.

@@ -563,7 +563,8 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' 
 #' @details See \code{\link{somRes.plotting}} for further details and more examples.
 #' 
-#' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' @author Élise Maigné <elise.maigne@inrae.fr>\cr
+#' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @seealso \code{\link{trainSOM}} to run the SOM algorithm, that returns a 

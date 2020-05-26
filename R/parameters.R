@@ -84,7 +84,8 @@
 #' \code{initSOM} function, plus the default parameters for the ones not 
 #' specified by the user.
 #' 
-#' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' @author Élise Maigné <elise.maigne@inrae.fr>\cr
+#' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @references

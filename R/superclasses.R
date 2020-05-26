@@ -150,7 +150,8 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #'   clusters.
 #' }
 #' 
-#' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' @author Élise Maigné <elise.maigne@inrae.fr>\cr
+#' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @seealso \code{\link{hclust}}, \code{\link{cutree}}, \code{\link{trainSOM}}, 

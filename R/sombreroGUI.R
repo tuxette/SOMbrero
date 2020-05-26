@@ -12,7 +12,8 @@
 #' \url{http://www.mozilla.org/fr/firefox/new/}. In case Firefox is not your 
 #' default browser, copy/paste http://localhost:8100 into the URL bar.
 #' 
-#' @author Julien Boelaert \email{julien.boelaert@gmail.com}\cr
+#' @author Élise Maigné <elise.maigne@inrae.fr>\cr
+#' Julien Boelaert \email{julien.boelaert@gmail.com}\cr
 #' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
