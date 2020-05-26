@@ -533,16 +533,29 @@ trainSOM <- function (x.data, ...) {
   if(is.null(rownames(x.data))) rownames(x.data) <- 1:nrow(x.data)
   
   # Check inputs
-  notnum <- sapply(x.data, class) 
+  notnum <- apply(x.data,2, class) 
   notnum <- notnum[!(notnum %in% c("integer", "numeric"))]
   if (!is.null(param.args$type) && param.args$type=="korresp" &&
       length(notnum)>0)
-    stop("data do not match chosen SOM type ('korresp') : all colummns must be numerical\n", call.=TRUE)
+    stop("data do not match chosen SOM type ('korresp'): all colummns must be numerical\n", call.=TRUE)
   
-  # Check inputs
   if (!is.null(param.args$type) && param.args$type=="relational" && 
       (!identical(x.data, t(x.data)) || (sum(diag(x.data)!=0)>0)))
     stop("data do not match chosen SOM type ('relational')\n", call.=TRUE)
+  
+  #Check for constant variables 
+  # TODO : faire le if correctement
+  #if (!is.null(param.args$scaling) && param.args$scaling!="none") {
+    distinctvalues <- apply(x.data,2, function(x) length(unique(x))) 
+    if(length(distinctvalues[distinctvalues==1])>0){
+      constantvar <- which(distinctvalues==1)
+      nameconstant <- colnames(x.data)[constantvar]
+      print(nameconstant)
+      if(is.null(nameconstant)) nameconstant <- paste0("column ", constantvar)
+      warning(paste0("Removing constant variable: ", nameconstant), call. = TRUE, immediate. = TRUE)
+      x.data <- x.data[,-constantvar]
+    }
+  #}
   
   # Default dimension: nb.obs/10 with minimum equal to 5 and maximum to 10
   if (is.null(param.args$dimension)) {
