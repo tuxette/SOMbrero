@@ -99,10 +99,10 @@ super-clusters." />
       <a href="../articles/c-doc-numericSOM.html">Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</a>
     </li>
     <li>
-      <a href="../articles/d-doc-korrespSOM.html">Self-Organizing Map for contingency tables</a>
+      <a href="../articles/d-doc-korrespSOM.html">Using Self-Organizing Maps with SOMbrero for contingency tables</a>
     </li>
     <li>
-      <a href="../articles/e-doc-relationalSOM.html">Self-Organizing Map for dissimilarity matrices</a>
+      <a href="../articles/e-doc-relationalSOM.html">Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</a>
     </li>
   </ul>
 </li>
@@ -144,12 +144,16 @@ super-clusters.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for somSC</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dendrogram"</span>, <span class='st'>"grid"</span>, <span class='st'>"hitmap"</span>, <span class='st'>"lines"</span>,
-  <span class='st'>"barplot"</span>, <span class='st'>"boxplot"</span>, <span class='st'>"mds"</span>, <span class='st'>"color"</span>, <span class='st'>"poly.dist"</span>, <span class='st'>"pie"</span>, <span class='st'>"graph"</span>,
-  <span class='st'>"dendro3d"</span>, <span class='st'>"radar"</span>, <span class='st'>"projgraph"</span>), <span class='kw'>plot.var</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>plot.legend</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>add.type</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>print.title</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>the.titles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"Cluster"</span>, <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>som</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>)),
-  <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(
+  <span class='no'>x</span>,
+  <span class='kw'>what</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"obs"</span>, <span class='st'>"prototypes"</span>, <span class='st'>"add"</span>),
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dendrogram"</span>, <span class='st'>"grid"</span>, <span class='st'>"hitmap"</span>, <span class='st'>"lines"</span>, <span class='st'>"meanline"</span>, <span class='st'>"barplot"</span>, <span class='st'>"boxplot"</span>,
+    <span class='st'>"mds"</span>, <span class='st'>"color"</span>, <span class='st'>"poly.dist"</span>, <span class='st'>"pie"</span>, <span class='st'>"graph"</span>, <span class='st'>"dendro3d"</span>, <span class='st'>"projgraph"</span>),
+  <span class='kw'>plot.var</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>show.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>names</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>som</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>),
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for somSC</span>
 <span class='fu'><a href='projectIGraph.html'>projectIGraph</a></span>(<span class='no'>object</span>, <span class='no'>init.graph</span>, <span class='no'>...</span>)</pre>
@@ -195,6 +199,16 @@ the function <code><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></code
       <td><p>A <code>somSC</code> object.</p></td>
     </tr>
     <tr>
+      <th>what</th>
+      <td><p>What you want to plot for superClass object. Either the 
+observations (<code>obs</code>), the prototypes (<code>prototypes</code>) or an 
+additional variable (<code>add</code>), or <code>NULL</code> if not appropriate. 
+Automatically set for types "hitmap" (to <code>"obs"</code>), 'grid' 
+(to <code>"prototypes"</code>), default to "obs" otherwise.
+If <code>what='add'</code>, the function <code><a href='plot.somRes.html'>plot.somRes</a></code> will be called with
+the argument <code>what</code> set to <code>"add"</code>.</p></td>
+    </tr>
+    <tr>
       <th>type</th>
       <td><p>The type of plot to draw. Default value is <code>"dendrogram"</code>, 
 to plot the dendrogram of the clustering. Case <code>"grid"</code> plots the grid 
@@ -211,27 +225,14 @@ the explained variance should be plotted. This argument is only used when
 <code>type="dendrogram"</code>, its default value is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
-      <th>plot.legend</th>
-      <td><p>A boolean indicating whether a legend should be added to 
-the plot. This argument is only used when <code>type</code> is either <code>"grid"</code> 
-or <code>"hitmap"</code> or <code>"mds"</code>. Its default value is <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>add.type</th>
-      <td><p>A boolean, which default value is <code>FALSE</code>, indicating 
-whether you are giving an additional variable to the argument <code>variable</code>
-or not. If you do, the function <code><a href='plot.somRes.html'>plot.somRes</a></code> will be called with
-the argument <code>what</code> set to <code>"add"</code>.</p></td>
-    </tr>
-    <tr>
-      <th>print.title</th>
+      <th>show.names</th>
       <td><p>Whether the cluster titles must be printed in center of
 the grid or not for <code>type="grid"</code>. Default to <code>FALSE</code> (titles not 
 displayed).</p></td>
     </tr>
     <tr>
-      <th>the.titles</th>
-      <td><p>If <code>print.title = TRUE</code>, values of the title to 
+      <th>names</th>
+      <td><p>If <code>show.names = TRUE</code>, values of the title to 
 display for <code>type="grid"</code>. Default to "Cluster " followed by the cluster
 number.</p></td>
     </tr>
@@ -290,14 +291,16 @@ present version, a crude estimate of the p-value is used which is based on
 the Fisher distribution and not on a permutation test.</p>
 <p>On plots, the different super classes are identified in the following ways:</p><ul>
 <li><p>either with different color, when <code>type</code> is set among: 
-  <code>"grid"</code> (*, #), <code>"hitmap"</code> (*, #), <code>"lines"</code> (*, #), 
-  <code>"barplot"</code> (*, #), <code>"boxplot"</code>, <code>"mds"</code> (*, #), 
-  <code>"dendro3d"</code> (*, #), <code>"graph"</code> (*, #)</p></li>
-<li><p>or with title, when <code>type</code> is set among: <code>"color"</code> (*),
-  <code>"poly.dist"</code> (*, #), <code>"pie"</code> (#), <code>"radar"</code> (#)</p></li>
-</ul><p>In the list above, the charts available for a <code>korresp</code> SOM are marked 
-with a * whereas those available for a <code>relational</code> SOM are marked with 
-a #.</p>
+  <code>"grid"</code> (N, K, R), <code>"hitmap"</code> (N, K, R), <code>"lines"</code> (N, K, R), 
+  <code>"barplot"</code> (N, K, R), <code>"boxplot"</code>, <code>"poly.dist"</code> (N, K, R), 
+  <code>"mds"</code> (N, K, R), <code>"dendro3d"</code> (N, K, R), <code>"graph"</code> (R),
+  <code>"projgraph"</code> (R)</p></li>
+<li><p>or with title, when <code>type</code> is set among: <code>"color"</code> (N, K),
+  <code>"pie"</code> (N, R)</p></li>
+</ul>
+
+<p>In the list above, the charts available for a <code>numerical</code> SOM are maked
+with a N, with a K for a <code>korresp</code> SOM and with a R for <code>relational</code> SOM.</p>
 <p><code>projectIGraph.somSC</code> produces a projected graph from the 
 <a href='https://rdrr.io/pkg/igraph/man/aaa-igraph-package.html'>igraph</a> object passed to the argument <code>variable</code> as 
 described in (Olteanu and Villa-Vialaneix, 2015). The attributes of this 
@@ -326,11 +329,11 @@ visualizing graphs. <em>Journal de la Societe Francaise de Statistique</em>,
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>11051729</span>)
-<span class='no'>my.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>])
+<span class='no'>my.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>])
 <span class='co'># choose the number of super-clusters</span>
 <span class='no'>sc</span> <span class='kw'>&lt;-</span> <span class='fu'>superClass</span>(<span class='no'>my.som</span>)
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sc</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Impossible to plot the rectangles: no super clusters.</span></div><div class='img'><img src='superClass-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># cut the clustering</span>
-<span class='no'>sc</span> <span class='kw'>&lt;-</span> <span class='fu'>superClass</span>(<span class='no'>my.som</span>, <span class='kw'>k</span><span class='kw'>=</span><span class='fl'>4</span>)
+<span class='no'>sc</span> <span class='kw'>&lt;-</span> <span class='fu'>superClass</span>(<span class='no'>my.som</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>4</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>sc</span>)</div><div class='output co'>#&gt; 
 #&gt;    SOM Super Classes
 #&gt;      Initial number of clusters :  25 
@@ -355,7 +358,7 @@ visualizing graphs. <em>Journal de la Societe Francaise de Statistique</em>,
 #&gt; Sepal.Width   53.697      0             ***
 #&gt; Petal.Length 498.266      0             ***
 #&gt; Petal.Width  292.188      0             ***
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sc</span>)</div><div class='img'><img src='superClass-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sc</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"hitmap"</span>, <span class='kw'>plot.legend</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='img'><img src='superClass-3.png' alt='' width='700' height='433' /></div></pre>
+#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sc</span>)</div><div class='img'><img src='superClass-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sc</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid"</span>)</div><div class='img'><img src='superClass-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sc</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"hitmap"</span>)</div><div class='img'><img src='superClass-4.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -374,7 +377,8 @@ visualizing graphs. <em>Journal de la Societe Francaise de Statistique</em>,
     </ul>
 
     <h2>Author</h2>
-    <p>Madalina Olteanu <a href='mailto:madalina.olteanu@univ-paris1.fr'>madalina.olteanu@univ-paris1.fr</a><br />
+    <p>Élise Maigné &lt;elise.maigne@inrae.fr&gt;<br />
+Madalina Olteanu <a href='mailto:madalina.olteanu@univ-paris1.fr'>madalina.olteanu@univ-paris1.fr</a><br />
 Nathalie Vialaneix <a href='mailto:nathalie.vialaneix@inrae.fr'>nathalie.vialaneix@inrae.fr</a></p>
   </div>
 </div>

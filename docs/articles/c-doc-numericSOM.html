@@ -63,10 +63,10 @@
       <a href="../articles/c-doc-numericSOM.html">Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</a>
     </li>
     <li>
-      <a href="../articles/d-doc-korrespSOM.html">Self-Organizing Map for contingency tables</a>
+      <a href="../articles/d-doc-korrespSOM.html">Using Self-Organizing Maps with SOMbrero for contingency tables</a>
     </li>
     <li>
-      <a href="../articles/e-doc-relationalSOM.html">Self-Organizing Map for dissimilarity matrices</a>
+      <a href="../articles/e-doc-relationalSOM.html">Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</a>
     </li>
   </ul>
 </li>
@@ -86,6 +86,7 @@
     <div class="page-header toc-ignore">
       <h1>Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</h1>
             
+            <h4 class="date">26 mai, 2020</h4>
       
       
       <div class="hidden name"><code>c-doc-numericSOM.Rmd</code></div>
@@ -102,12 +103,12 @@
 <div id="basic-package-description" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-package-description" class="anchor"></a>Basic package description</h2>
-<p>To be able to run the SOM algorithm, you have to load the package called <code>SOMbrero</code>. The function used to run it is called <code><a href="../reference/trainSOM.html">trainSOM()</a></code> and is detailed below.</p>
+<p><code>SOMbrero</code> implements different variants of the Self-Organizing Map algorithm (also called Kohonen’s algorithm). To run the standard version of the algorithm, use the function <code><a href="../reference/trainSOM.html">trainSOM()</a></code> on a data frame or matrix with numerical columns. The standard numeric SOM and its use in <code>SOMbrero</code> are illustrated below.</p>
 <p><strong>This documentation only considers the case of numerical data.</strong></p>
 <div id="arguments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#arguments" class="anchor"></a>Arguments</h3>
-<p>The <code>trainSOM</code> function has several arguments, but only the first one is required. This argument is <code>x.data</code> which is the dataset used to train the SOM. In this documentation, it is passed to the function as a matrix or a data frame with numeric variables in columns and observations of these variables in rows.</p>
+<p>The <code>trainSOM</code> function has several arguments, but only the first one is required. This argument is <code>x.data</code> which is the dataset used to train the SOM. In this documentation, it is passed to the function as a matrix or a data frame with numerical variables in columns and observations of these variables in rows.</p>
 <p>The other arguments are the same as the arguments passed to the <code>initSOM</code> function (they are parameters defining the algorithm, see <code><a href="https://rdrr.io/r/utils/help.html">help(initSOM)</a></code> for further details).</p>
 </div>
 <div id="outputs" class="section level3">
@@ -120,208 +121,278 @@
 <a href="#graphics" class="anchor"></a>Graphics</h3>
 <p>The following table indicates which graphics are available for a numeric SOM.</p>
 <table class="table">
+<colgroup>
+<col width="15%">
+<col width="10%">
+<col width="6%">
+<col width="15%">
+<col width="6%">
+<col width="16%">
+<col width="6%">
+<col width="15%">
+<col width="6%">
+</colgroup>
 <thead><tr class="header">
-<th>Type</th>
-<th align="center">Energy</th>
-<th align="center">Obs</th>
-<th align="center">Prototypes</th>
-<th align="center">Add</th>
-<th align="center">Super Cluster</th>
+<th align="left">What <br><br> SOM or SC<br>Type</th>
+<th align="left">SOM<br>Energy <br><br><br>
+</th>
+<th align="left">Obs <br><br><br><br>
+</th>
+<th align="left">Prototypes <br><br><br><br>
+</th>
+<th align="left">Add <br><br><br><br>
+</th>
+<th align="left">SuperCluster<br>(no what) <br><br><br>
+</th>
+<th align="left">Obs <br><br><br><br>
+</th>
+<th align="left">Prototypes <br><br><br><br>
+</th>
+<th align="left">Add <br><br><br><br>
+</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>no type</td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left">(no type)</td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>hitmap</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
+<td align="left">hitmap</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>color</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
-<td align="center">x</td>
-<td align="center">x2</td>
+<td align="left">color</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>lines</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
-<td align="center">x</td>
-<td align="center">x2</td>
+<td align="left">lines</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left">x</td>
 </tr>
 <tr class="odd">
-<td>barplot</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
-<td align="center">x</td>
-<td align="center">x2</td>
+<td align="left">meanline</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
 </tr>
 <tr class="even">
-<td>radar</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
-<td align="center">x</td>
-<td align="center">x2</td>
+<td align="left">barplot</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left">x</td>
+<td align="left">x</td>
 </tr>
 <tr class="odd">
-<td>pie</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
+<td align="left">pie</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
 </tr>
 <tr class="even">
-<td>boxplot</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center">x2</td>
+<td align="left">boxplot</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
 </tr>
 <tr class="odd">
-<td>3d</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left">3d</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>poly.dist</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center">x</td>
+<td align="left">poly.dist</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>umatrix</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left">umatrix</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>smooth.dist</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left">smooth.dist</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>words</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
+<td align="left">mds</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>names</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
+<td align="left">grid.dist</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>graph</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center">x</td>
+<td align="left">words</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>mds</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center">x</td>
+<td align="left">names</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>grid.dist</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-<td align="center"></td>
-<td align="center"></td>
+<td align="left">grid</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
 </tr>
 <tr class="even">
-<td>grid</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
+<td align="left">dendrogram</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td>dendrogram</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
-</tr>
-<tr class="even">
-<td>dendro3d</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center">x</td>
+<td align="left">dendro3d</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">x</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
-<p>The plots marked by “x2”, in the “Super Cluster” column, are available for both data set variables and additional variables.</p>
 </div>
 </div>
 <div id="first-case-study-simulated-data-in-012" class="section level2">
 <h2 class="hasAnchor">
 <a href="#first-case-study-simulated-data-in-012" class="anchor"></a>First case study: simulated data in <span class="math inline">\([0,1]^2\)</span>
 </h2>
-<p>The first case study show the clustering of points randomly distributed in the square <span class="math inline">\([0,1]^2\)</span>. The data are generated by:</p>
+<p>The first case study shows the clustering of points randomly distributed in the square <span class="math inline">\([0,1]^2\)</span>. The data are generated by:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">4031719</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">the.data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="st">"x1"</span>=<span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">500</span>), <span class="st">"x2"</span>=<span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">500</span>))</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(the.data, <span class="dt">pch=</span><span class="dv">19</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2">the.data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="st">"x1"</span> =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">500</span>), <span class="st">"x2"</span> =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">500</span>))</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">ggplot</span>(the.data, <span class="kw">aes</span>(<span class="dt">x =</span> x1, <span class="dt">y =</span> x2)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme_bw</span>()</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/dataGeneration-1.png" width="700"></p>
 <div id="training-the-som" class="section level3">
 <h3 class="hasAnchor">
 <a href="#training-the-som" class="anchor"></a>Training the SOM</h3>
 <p>The numeric SOM algorithm is used to cluster the data:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">593</span>)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">1105</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># run the SOM algorithm with 10 intermediate backups and 2000 iterations</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">my.som &lt;-<span class="st"> </span><span class="kw"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="dt">x.data=</span>the.data, <span class="dt">dimension=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">5</span>,<span class="dv">5</span>), <span class="dt">nb.save=</span><span class="dv">10</span>, <span class="dt">maxit=</span><span class="dv">2000</span>, </a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">                   <span class="dt">scaling=</span><span class="st">"none"</span>, <span class="dt">radius.type=</span><span class="st">"letremy"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-4" data-line-number="4">                   <span class="dt">scaling=</span><span class="st">"none"</span>, <span class="dt">radius.type=</span><span class="st">"letremy"</span>, <span class="dt">topo=</span><span class="st">"square"</span>,</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">                   <span class="dt">dist.type =</span> <span class="st">"letremy"</span>)</a></code></pre></div>
 <p>The energy evolves as described in the following graphic:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"energy"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/energy-1.png" width="700"></p>
-<p>It is stabilized during the last 500 iterations.</p>
 </div>
 <div id="clustering" class="section level3">
 <h3 class="hasAnchor">
 <a href="#clustering" class="anchor"></a>Clustering</h3>
 <p>The resulting clustering distribution can be visualized by the hitmap:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"hitmap"</span>)</a></code></pre></div>
-<p><img src="c-doc-numericSOM_files/figure-html/hitmapObs-1.png" width="700"></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"hitmap"</span>)</a></code></pre></div>
+<p><img src="c-doc-numericSOM_files/figure-html/hitmapObs-1.png" width="576"></p>
 <p>The observations are almost uniformly distributed on the map.</p>
 <p>The clustering component allows us to plot the initial data according to the final clustering.</p>
 <p><img src="c-doc-numericSOM_files/figure-html/clusteredData-1.png" width="700"></p>
@@ -331,15 +402,17 @@
 <a href="#clustering-interpretation" class="anchor"></a>Clustering interpretation</h3>
 <p>The values of the prototypes can be represented with the plot function and help interpret the clusters:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">var=</span><span class="dv">1</span>, <span class="dt">main=</span><span class="st">"prototypes - x1"</span>)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">var=</span><span class="dv">2</span>, <span class="dt">main=</span><span class="st">"prototypes - x2"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">var=</span><span class="dv">1</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/colorProto-1.png" width="480"></p>
-<p>Here, the interpretation is simple enough: high values of the first variables x1 are located at the right side of the map and small values at the left side of the map. Large values of x2 are located at the top of the map, whereas, small values are located at the bottom of the map.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">var=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="c-doc-numericSOM_files/figure-html/colorProto-2.png" width="480"></p>
+<p>Here, the interpretation is simple enough: high values of the first variables x1 are located at the top of the map and small values at the bottom of the map. Large values of x2 are located at the right hand side of the map, whereas, small values are located at the left hand side.</p>
 <p>We obtain the same results with a similar plot on the observation mean values:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">var=</span><span class="dv">1</span>, <span class="dt">main=</span><span class="st">"obs mean values - x1"</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">var=</span><span class="dv">2</span>, <span class="dt">main=</span><span class="st">"obs mean values - x2"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">var=</span><span class="dv">1</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/colorObs-1.png" width="480"></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">var=</span><span class="dv">2</span>)</a></code></pre></div>
+<p><img src="c-doc-numericSOM_files/figure-html/colorObs-2.png" width="480"></p>
 <p>The prototypes coordinates are also registered for each intermediate backup so they can be displayed on different graphics to see the evolution in the prototypes organization. <img src="c-doc-numericSOM_files/figure-html/protoEvoluation-1.png" width="1440"></p>
 <p>At the begining of the algorithm, the prototypes are randomly distributed in [0,1]^2 and then, they organize as a regular rectangular grid in <span class="math inline">\([0,1]^2\)</span>.</p>
 </div>
@@ -351,10 +424,12 @@
 <div id="training-the-som-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#training-the-som-1" class="anchor"></a>Training the SOM</h3>
+<p><strong>NB: In the following analysis, variables are centered and scaled to unit variance, which is the default behavior of the algorithm.</strong></p>
 <p>The first four variables of the data set (that are the numeric variables) are used to map each flower on the SOM grid.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">255</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># run the SOM algorithm with verbose set to TRUE</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">iris.som &lt;-<span class="st"> </span><span class="kw"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="dt">x.data=</span>iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">verbose=</span><span class="ot">TRUE</span>, <span class="dt">nb.save=</span><span class="dv">5</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">255</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># run the SOM algorithm with verbose set to TRUE</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">iris.som &lt;-<span class="st"> </span><span class="kw"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="dt">x.data =</span> iris[,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>], <span class="dt">dimension =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">5</span>,<span class="dv">5</span>), <span class="dt">verbose =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">                     <span class="dt">nb.save =</span> <span class="dv">5</span>, <span class="dt">topo =</span> <span class="st">"hexagonal"</span>)</a></code></pre></div>
 <pre><code>## Self-Organizing Map algorithm...
 ## 
 ##   Parameters of the SOM
@@ -366,7 +441,7 @@
 ##       Self-Organizing Map structure
 ## 
 ##         Features   :
-##            topology     :  square 
+##            topology     :  hexagonal 
 ##            x dimension  :  5 
 ##            y dimension  :  5 
 ##            distance type:  euclidean 
@@ -388,14 +463,14 @@
 ## 80 % done
 ## 90 % done
 ## 100 % done</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">iris.som</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">iris.som</a></code></pre></div>
 <pre><code>##       Self-Organizing Map object...
 ##          online learning, type: numeric 
-##          5 x 5 grid with square topology
+##          5 x 5 grid with hexagonal topology
 ##          neighbourhood type: gaussian 
 ##          distance type: euclidean</code></pre>
 <p>As the energy is registered during the intermediate backups, we can have a look at its evolution.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"energy"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"energy"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/energyIris-1.png" width="700"></p>
 <p>Here the energy does not stabilize as in the case of <code>dist.type="letremy"</code> because the Gaussian annealing of the neighbourhood is continuous and not stepwise.</p>
 </div>
@@ -403,34 +478,34 @@
 <h3 class="hasAnchor">
 <a href="#resulting-clustering" class="anchor"></a>Resulting clustering</h3>
 <p>The clustering component contains the final classification of the dataset. It is a vector with length equal to the number of rows of the input dataset.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">iris.som<span class="op">$</span>clustering</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">iris.som<span class="op">$</span>clustering</a></code></pre></div>
 <pre><code>##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18 
 ##   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5 
 ##  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36 
-##   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5   5 
+##   5   5   5   5   5   5   5   4   5   5   5   5   5   5   5   5   5   5 
 ##  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54 
-##   5   5   5   5   5  15   5   5   5   5   5   5   5   5  11  11  16  25 
+##   5   5   5   5   5   2   5   5   5   5   5   5   5   5  23  23  21   6 
 ##  55  56  57  58  59  60  61  62  63  64  65  66  67  68  69  70  71  72 
-##  22  24  11  25  17  25  25  12  25  23  19  11  18  25  24  25  11  24 
+##  16   6  23   1  23   1   1  18   6  17   1  23  17   1  11   1  23  11 
 ##  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89  90 
-##  23  23  17  11  21  21  23  25  25  25  25  23  19   6  11  24  13  25 
+##  16  11  17  23  21  21  17   1   1   1   6  16  12  25  23  11  12   6 
 ##  91  92  93  94  95  96  97  98  99 100 101 102 103 104 105 106 107 108 
-##  25  12  25  25  25  13  19  18  25  25  21  23  21  21  21  21  25  21 
+##   6  18   6   1   6  12   6  17   1   6  21  16  21  21  21  21   6  21 
 ## 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 
-##  21  21  16  21  21  23  22  21  21  21  21  24  21  23  21  22  21  21 
+##  21  21  21  21  21  16  21  21  21  21  21  11  21  16  21  21  21  21 
 ## 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 
-##  22  16  21  21  21  21  21  22  23  21  16  21  17  21  21  21  23  21 
+##  16  22  21  21  21  21  21  16  16  21  21  21  22  21  21  21  16  21 
 ## 145 146 147 148 149 150 
-##  21  21  22  21  16  17</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(iris.som<span class="op">$</span>clustering)</a></code></pre></div>
+##  21  21  21  21  21  22</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(iris.som<span class="op">$</span>clustering)</a></code></pre></div>
 <pre><code>## 
-##  5  6 11 12 13 15 16 17 18 19 21 22 23 24 25 
-## 49  1  7  2  2  1  5  4  2  3 34  6 10  5 19</code></pre>
+##  1  2  4  5  6 11 12 16 17 18 21 22 23 25 
+## 11  1  1 48 11  5  3 10  5  2 41  3  8  1</code></pre>
 <p>which can also be visualized by a hitmap plot:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"hitmap"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"hitmap"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisHitmap-1.png" width="700"></p>
-<p>To access the relevance of each explanatory variable in the definition of the clusters, the function <code>summary</code> includes an ANOVA with the factor being the clustering, for each (numeric) input variable.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(iris.som)</a></code></pre></div>
+<p>To assess the relevance of each explanatory variable in the definition of the clusters, the function <code>summary</code> includes an ANOVA with the predictor being the clustering, for each (numeric) input variable.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(iris.som)</a></code></pre></div>
 <pre><code>## 
 ## Summary
 ## 
@@ -438,30 +513,30 @@
 ## 
 ##       Self-Organizing Map object...
 ##          online learning, type: numeric 
-##          5 x 5 grid with square topology
+##          5 x 5 grid with hexagonal topology
 ##          neighbourhood type: gaussian 
 ##          distance type: euclidean 
 ## 
-##       Final energy     : 0.8579335 
-##       Topographic error: 0 
+##       Final energy     : 1.091265 
+##       Topographic error: 0.1466667 
 ## 
 ##       ANOVA                : 
 ## 
-##         Degrees of freedom :  14 
+##         Degrees of freedom :  13 
 ## 
 ##                    F pvalue significativity
-## Sepal.Length  45.105      0             ***
-## Sepal.Width   17.499      0             ***
-## Petal.Length 280.104      0             ***
-## Petal.Width  132.230      0             ***</code></pre>
+## Sepal.Length  43.463      0             ***
+## Sepal.Width   17.240      0             ***
+## Petal.Length 298.228      0             ***
+## Petal.Width  173.062      0             ***</code></pre>
 <p>Here, all variables have significantly different means among the different clusters and can thus be considered to be relevant for the clustering definition.</p>
 <p>Another useful function is <code>predict.somRes</code>. This function predicts the neuron to which a new observation would be assigned. The first argument must be a <code>somRes</code> object and the second one the new observation. Let us have a try on the first observation of the iris data set:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># call predict.somRes</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(iris.som, iris[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># call predict.somRes</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(iris.som, iris[<span class="dv">1</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>])</a></code></pre></div>
 <pre><code>## 5 
 ## 5</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># check the result of the final clustering with the SOM algorithm</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2">iris.som<span class="op">$</span>clustering[<span class="dv">1</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co"># check the result of the final clustering with the SOM algorithm</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">iris.som<span class="op">$</span>clustering[<span class="dv">1</span>]</a></code></pre></div>
 <pre><code>## 1 
 ## 5</code></pre>
 </div>
@@ -471,93 +546,61 @@
 <div id="graphics-common-to-observations-and-prototypes" class="section level4">
 <h4 class="hasAnchor">
 <a href="#graphics-common-to-observations-and-prototypes" class="anchor"></a>Graphics common to observations and prototypes</h4>
-<p><strong>NB: in all the following graphics, data are scaled in the preprocessing stage.</strong></p>
-<p>Some graphics are shared between observations and prototypes. They allow you to plot the level values, either of the prototypes or of the observation means. In this example these common graphics are plotted for the mean observation values.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">variable=</span><span class="dv">1</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">     <span class="dt">main=</span><span class="st">"Sepal length"</span>)</a>
-<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">variable=</span><span class="dv">2</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb23-5" data-line-number="5">     <span class="dt">main=</span><span class="st">"Sepal width"</span>)</a>
-<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">variable=</span><span class="dv">3</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb23-7" data-line-number="7">     <span class="dt">main=</span><span class="st">"Petal length"</span>)</a>
-<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">variable=</span><span class="dv">4</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb23-9" data-line-number="9">     <span class="dt">main=</span><span class="st">"Petal width"</span>)</a></code></pre></div>
+<p>Some graphics are shared between observations and prototypes and can be used to display the prototypes’ or the observations’ values for the different variables in the neurons of the map. For observations, the mean values are sometimes displayed instead of the individual values.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisGraphOP-1.png" width="700"></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"lines"</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="dv">2</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisGraphOP-2.png" width="700"></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"barplot"</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="dv">3</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisGraphOP-3.png" width="700"></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"radar"</span>, <span class="dt">key.loc=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">0.5</span>,<span class="dv">5</span>), <span class="dt">mar=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">2</span>,<span class="dv">0</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="dv">4</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisGraphOP-4.png" width="700"></p>
-<p>Empty squares catch the attention: none of the observations are assigned to clusters 4, 9, 14 and 19.</p>
-<p>Let us analyse the results for cluster 5 more precisely. On the <code>"color"</code> plots, cluster 5 has the following results: high values for <code>Sepal.Width</code> and low values for all the other variables. These results are also noticeable in the other plots:</p>
-<ul>
-<li>on the <code>"lines"</code> plot, the second point shows a peak;</li>
-<li>on the <code>"barplot"</code> plot, this evolution is observed again;</li>
-<li>on the <code>"radar"</code> plot, the slice corresponding to <code>Sepal.Width</code> is very big whereas the two Petal slices are almost invisible.</li>
-</ul>
-<p>Flowers with a long sepal and all the other variables being small are classified in the top left corner of the map. Flowers with large sepals and petals (length and width) are classified in the bottom right corner of the map whereas flowers with small sepal length are classified in the top right corner of the map.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>, <span class="dt">show.names =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<p><img src="c-doc-numericSOM_files/figure-html/irisGraphOP-5.png" width="700"></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"barplot"</span>, <span class="dt">show.names =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<p><img src="c-doc-numericSOM_files/figure-html/irisGraphOP-6.png" width="700"></p>
+<p>Some neurons are empty (no observations affected to them): neurons 3, 7, 8, 9, 10, 13, 14, 15, 19, 20, 24. They are the illustration of a large difference between observations classified in clusters 4-5 with the rest of the observations (to some extend, the same can be said about observations in cluster 25).</p>
+<p>Clusters 4-5 are characterized by the following facts (visible on <code>"color"</code> plots): larger values for <code>Sepal.Width</code>, smaller values for <code>Petal.Length</code> and <code>Petal.Width</code> and average values for <code>Sepal.Length</code>. Similar conclusions are obtained from the <code>"lines"</code> and <code>"barplot"</code> plots. Please note that, for these two last plots, it is advised to display the neuron numbers (option <code>show.names = TRUE</code>) because the hexagonal display is not properly rendered in them.</p>
 </div>
 <div id="more-graphics-on-observations" class="section level4">
 <h4 class="hasAnchor">
 <a href="#more-graphics-on-observations" class="anchor"></a>More graphics on observations</h4>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"boxplot"</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<p>Individual information on observations in clustered can be obtained with the following plots:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"boxplot"</span>, <span class="dt">show.names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisObs-1.png" width="700"></p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(iris)</a></code></pre></div>
-<pre><code>##   [1] "1"   "2"   "3"   "4"   "5"   "6"   "7"   "8"   "9"   "10"  "11" 
-##  [12] "12"  "13"  "14"  "15"  "16"  "17"  "18"  "19"  "20"  "21"  "22" 
-##  [23] "23"  "24"  "25"  "26"  "27"  "28"  "29"  "30"  "31"  "32"  "33" 
-##  [34] "34"  "35"  "36"  "37"  "38"  "39"  "40"  "41"  "42"  "43"  "44" 
-##  [45] "45"  "46"  "47"  "48"  "49"  "50"  "51"  "52"  "53"  "54"  "55" 
-##  [56] "56"  "57"  "58"  "59"  "60"  "61"  "62"  "63"  "64"  "65"  "66" 
-##  [67] "67"  "68"  "69"  "70"  "71"  "72"  "73"  "74"  "75"  "76"  "77" 
-##  [78] "78"  "79"  "80"  "81"  "82"  "83"  "84"  "85"  "86"  "87"  "88" 
-##  [89] "89"  "90"  "91"  "92"  "93"  "94"  "95"  "96"  "97"  "98"  "99" 
-## [100] "100" "101" "102" "103" "104" "105" "106" "107" "108" "109" "110"
-## [111] "111" "112" "113" "114" "115" "116" "117" "118" "119" "120" "121"
-## [122] "122" "123" "124" "125" "126" "127" "128" "129" "130" "131" "132"
-## [133] "133" "134" "135" "136" "137" "138" "139" "140" "141" "142" "143"
-## [144] "144" "145" "146" "147" "148" "149" "150"</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"names"</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>, <span class="dt">scale=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.9</span>,<span class="fl">0.5</span>))</a></code></pre></div>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`1` = "#6A51A3", `10`
-## = "#6A51A3", : 24 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`1` = "#6A51A3", `10`
-## = "#6A51A3", : 23 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 148 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 117 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 106 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 110 could not be fit on page. It will not be plotted.</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>, <span class="dt">show.names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisObs-2.png" width="700"></p>
-<ul>
-<li>By default, the <code>"boxplot"</code> plot considers all numerical variables of the data set. As this example used the four numerical variables of the iris data set, four boxplots are plotted in each neuron.</li>
-<li>The <code>"names"</code> plot prints, for each neuron, the names of the observations which are assigned to its cluster. Here, the row names of iris data set are simply the row numbers.</li>
-</ul>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"names"</span>, <span class="dt">show.names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="c-doc-numericSOM_files/figure-html/irisObs-3.png" width="700"></p>
+<p>They display either the observation distribution within the cluster for all the variables in the dataset (for <code>"boxplot"</code> and <code>"lines"</code>) or the names (row numbers by default) of the observations classified within the cluster.</p>
 </div>
 <div id="more-graphics-on-prototypes" class="section level4">
 <h4 class="hasAnchor">
 <a href="#more-graphics-on-prototypes" class="anchor"></a>More graphics on prototypes</h4>
-<p>Some more graphics handling prototypes have been implemented.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"3d"</span>, <span class="dt">variable=</span><span class="dv">1</span>, <span class="dt">main=</span><span class="st">"Sepal length"</span>)</a>
-<a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"3d"</span>, <span class="dt">variable=</span><span class="dv">2</span>, <span class="dt">main=</span><span class="st">"Sepal width"</span>)</a>
-<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"3d"</span>, <span class="dt">variable=</span><span class="dv">3</span>, <span class="dt">main=</span><span class="st">"Petal length"</span>)</a>
-<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"3d"</span>, <span class="dt">variable=</span><span class="dv">4</span>, <span class="dt">main=</span><span class="st">"Petal width"</span>)</a></code></pre></div>
+<p>Some more graphics handling prototypes have been implemented:</p>
+<ul>
+<li>
+<code>"3d"</code> provides the same results as <code>"color"</code> but on a 3 dimensional plot: x is the x dimension of the grid, y is the y dimension of the grid and z is the value of the prototype for the variable <code>variable</code> (by name or number in the dataset) of the corresponding neuron. For the hexagonal topology, the plot is obtained using a linear interpolation on a regular square grid.</li>
+</ul>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mfrow=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"3d"</span>, <span class="dt">variable =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"3d"</span>, <span class="dt">variable =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"3d"</span>, <span class="dt">variable =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb34-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"3d"</span>, <span class="dt">variable =</span> <span class="dv">4</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisProto-1.png" width="700"></p>
-<p><code>"3d"</code> provides the same results as “color” but in a 3 dimensional graphic: x is the x dimension of the grid, y is the y dimension of the grid and z is the value of the prototype for the variable <code>variable</code> (by name or number in the dataset) of the corresponding neuron.</p>
 <p>Also, some graphics are provided to visualize the distance between prototypes on the grid:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"poly.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"poly.dist"</span>, <span class="dt">show.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisDistProto-1.png" width="700"></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"umatrix"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"umatrix"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisDistProto-2.png" width="700"></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"smooth.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"smooth.dist"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisDistProto-3.png" width="700"></p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"mds"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"mds"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisDistProto-4.png" width="700"></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"prototypes"</span>, <span class="dt">type=</span><span class="st">"grid.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"grid.dist"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisDistProto-5.png" width="700"></p>
 <ul>
 <li><p><code>"poly.dist"</code> represents the distances between neighboring prototypes with polygons plotted for each cell of the grid. The smaller the distance between a polygon’s vertex and a cell border, the closer the pair of prototypes. The colors indicates the number of observations in the neuron (white is used for empty neurons);</p></li>
@@ -566,101 +609,87 @@
 <li><p><code>mds</code> plots the number of the neuron on a map according to a Multi Dimensional Scaling (MDS) projection;</p></li>
 <li><p><code>grid.dist</code> plots a point for each pair of prototypes, with x coordinates representing the distance between the prototypes in the input space, and y coordinates representing the distance between the corresponding neurons on the grid.</p></li>
 </ul>
-<p>These graphics show that there is a big gap (large distances) in the diagonal that goes from the bottom left part of the map to its top right corner. Hence, for instance, the flowers classified in cluster 15 are rather different from those classified in cluster 20, even if these two clusters are adjacent on the map. This is also emphasized on the MDS plot where clusters 15 and 20 are not very close.</p>
+<p>These graphics show that there is a big gap (large distances) between the top left corner and the rest of the map and between the top right corner and the rest of the map (which is consistent with what was already observed in the previous plots). In addition, the bottom right corner of the maps has a few neurons (21, 22, 23) that are very closed to each others.</p>
 </div>
 <div id="graphics-showing-an-additional-variable" class="section level4">
 <h4 class="hasAnchor">
 <a href="#graphics-showing-an-additional-variable" class="anchor"></a>Graphics showing an additional variable</h4>
 <div id="additional-factor" class="section level5">
 <h5 class="hasAnchor">
-<a href="#additional-factor" class="anchor"></a>additional factor</h5>
-<p>Let us plot pies for all neurons according to the flower species of the observations.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(iris<span class="op">$</span>Species)</a></code></pre></div>
+<a href="#additional-factor" class="anchor"></a>Additional factor</h5>
+<p>The clustering can be analyzed together with an additional variable (here, the flower species) using <code>what = "add"</code>:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(iris<span class="op">$</span>Species)</a></code></pre></div>
 <pre><code>## [1] "factor"</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/levels.html">levels</a></span>(iris<span class="op">$</span>Species)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/levels.html">levels</a></span>(iris<span class="op">$</span>Species)</a></code></pre></div>
 <pre><code>## [1] "setosa"     "versicolor" "virginica"</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"add"</span>, <span class="dt">type=</span><span class="st">"pie"</span>, <span class="dt">variable=</span>iris<span class="op">$</span>Species)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"pie"</span>, <span class="dt">variable =</span> iris<span class="op">$</span>Species) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">type =</span> <span class="st">"qual"</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_legend</span>(<span class="dt">title =</span> <span class="st">"Species"</span>))</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisAdd1-1.png" width="700"></p>
-<p>This figure shows that the clustering produced by the SOM is indeed relevant to identify the three different species of iris: they are well separated on the map and almost all clusters only contain one species of iris.</p>
+<p>This plot shows that the clustering produced by the SOM is indeed relevant to identify the three different species of iris: they are well separated on the map and almost all clusters only contain one species of iris. The Setosa species is the most distinct from the other two, isolated in the top left corner of the map.</p>
 </div>
 <div id="additional-numerical-vector" class="section level5">
 <h5 class="hasAnchor">
-<a href="#additional-numerical-vector" class="anchor"></a>additional numerical vector</h5>
-<p>The <code>"color"</code> plot available for <code>"add"</code> is similar to the <code>"obs"</code> or <code>"prototypes"</code> cases. Here we choose as an additional variable the first variable of the iris data set, so we obtain the same graphic as above (see section <strong>Graphics common to observations and prototypes</strong>).</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"add"</span>, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">variable=</span>iris<span class="op">$</span>Sepal.Length)</a></code></pre></div>
+<a href="#additional-numerical-vector" class="anchor"></a>Additional numerical vector</h5>
+<p>The <code>"color"</code> plot available for <code>"add"</code> is similar to the <code>"obs"</code> or <code>"prototypes"</code> cases. Here we choose the first variable of the iris data set as an additional variable to illustrate its use. We thus obtain the same plot as above (see section <strong>Graphics common to observations and prototypes</strong>).</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> iris<span class="op">$</span>Sepal.Length, </a>
+<a class="sourceLine" id="cb45-2" data-line-number="2">     <span class="dt">show.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisAdd2-1.png" width="700"></p>
 </div>
 <div id="additional-numerical-matrix-or-data-frame" class="section level5">
 <h5 class="hasAnchor">
-<a href="#additional-numerical-matrix-or-data-frame" class="anchor"></a>additional numerical matrix or data frame</h5>
+<a href="#additional-numerical-matrix-or-data-frame" class="anchor"></a>Additional numerical matrix or data frame</h5>
 <p>The <code>"lines"</code>, <code>"barplot"</code>, <code>"radar"</code> and <code>"boxplot"</code> plots available for <code>"add"</code> are similar to the <code>"obs"</code> or <code>"prototypes"</code> cases.</p>
-<p><code>"words"</code> is only implemented for an additional variable. In this case, the additional variable must be a contingency matrix: the words used on the graph are the names of the colums and the presence or lack of the word is expressed by respectively 1 or 0. The size of the words on the grid depends on the rate of presence in the observations of the current neuron.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="co"># my.cont.mat is the contingency matrix corresponding to the variable </span></a>
-<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="co"># iris$Species - overview of the 5 first lines:</span></a>
-<a class="sourceLine" id="cb49-3" data-line-number="3">my.cont.mat[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,]</a></code></pre></div>
+<p><code>"words"</code> is only implemented for an additional variable. In this case, the additional variable must be a contingency matrix: the words used on the plot are the names of the columns and the presence or lack of the word is expressed by respectively 1 or 0. The size of the words on the grid depends on the rate of presence in the observations of the current neuron. To illustrate its use, we define a contingency table <code>my.cont.mat</code> that corresponds to the flower Species:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(my.cont.mat)</a></code></pre></div>
 <pre><code>##      setosa versicolor virginica
 ## [1,]      1          0         0
 ## [2,]      1          0         0
 ## [3,]      1          0         0
 ## [4,]      1          0         0
-## [5,]      1          0         0</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"add"</span>, <span class="dt">type=</span><span class="st">"words"</span>, <span class="dt">variable=</span>my.cont.mat)</a></code></pre></div>
+## [5,]      1          0         0
+## [6,]      1          0         0</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"words"</span>, <span class="dt">variable =</span> my.cont.mat, </a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">     <span class="dt">show.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisAdd4-1.png" width="700"></p>
 </div>
 <div id="additional-non-numerical-vector" class="section level5">
 <h5 class="hasAnchor">
-<a href="#additional-non-numerical-vector" class="anchor"></a>additional non-numerical vector</h5>
-<p><code>"names"</code> is similar to the <code>"names"</code> case implemented for <code>"obs"</code>. Here we choose to give the argument <code>variable</code> the row names of the iris data set: so we obtain the same graphic as above (see <strong>More graphics on observations</strong>).</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"add"</span>, <span class="dt">type=</span><span class="st">"names"</span>, <span class="dt">variable=</span><span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(iris),</a>
-<a class="sourceLine" id="cb52-2" data-line-number="2">     <span class="dt">scale=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.9</span>,<span class="fl">0.5</span>))</a></code></pre></div>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`1` = "#6A51A3", `10`
-## = "#6A51A3", : 16 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 132 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 112 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 133 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 142 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 110 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 148 could not be fit on page. It will not be plotted.</code></pre>
-<pre><code>## Warning in wordcloud(scale = c(0.9, 0.5), colors = c(`101` = "#6A51A3", :
-## 141 could not be fit on page. It will not be plotted.</code></pre>
+<a href="#additional-non-numerical-vector" class="anchor"></a>Additional non-numerical vector</h5>
+<p><code>"names"</code> is similar to the <code>"names"</code> case implemented for <code>"obs"</code>. Here we choose to give the argument <code>variable</code> the row names of the iris data set: so we obtain the same plot as above (see <strong>More graphics on observations</strong>).</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"names"</span>, <span class="dt">variable =</span> <span class="kw"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(iris)) </a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisAdd5-1.png" width="700"></p>
-<p>Then, we can try to call this plot again but on the variable <code>iris$Species</code>.</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what=</span><span class="st">"add"</span>, <span class="dt">type=</span><span class="st">"names"</span>, <span class="dt">variable=</span>iris<span class="op">$</span>Species)</a></code></pre></div>
+<p>Similarly, this plot can be used with the variable <code>iris$Species</code>:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(iris.som, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"names"</span>, <span class="dt">variable =</span> iris<span class="op">$</span>Species)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisAdd5bis-1.png" width="700"></p>
-<p>We obtain exactly the same plot as we obtained above for <code>"words"</code> with the contingency matrix corresponding to the variable <code>iris$Species</code>.</p>
+<p>which gives exactly the same plot as before for type <code>"words"</code> with the contingency matrix corresponding to the variable <code>iris$Species</code>.</p>
 </div>
 </div>
 </div>
 <div id="analyze-the-projection-quality" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyze-the-projection-quality" class="anchor"></a>Analyze the projection quality</h3>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw"><a href="../reference/quality.html">quality</a></span>(iris.som)</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw"><a href="../reference/quality.html">quality</a></span>(iris.som)</a></code></pre></div>
 <pre><code>## $topographic
-## [1] 0
+## [1] 0.1466667
 ## 
 ## $quantization
-## [1] 1.062325</code></pre>
+## [1] 1.22527</code></pre>
 <p>By default, the quality function calculates both quantization and topographic errors. It is also possible to specify which one you want using the argument <code>quality.type</code>.</p>
-<p>The topographic error value varies between 0 (good projection quality) and 1 (poor projection quality). Here, the topographic quality of the mapping is equal to 0.05 which means that all observations have a second best unit which is in the neighborhood of the best matching unit.</p>
-<p>The quantization error is an unbounded positive number. The closer it is from 0, the better the projection quality.</p>
+<p>The topographic error value varies between 0 (good projection quality) and 1 (poor projection quality). Here, the topographic quality of the mapping is equal to 0.15, which means that around 14.7% of the observations have a second best unit in the neighborhood of the best matching unit.</p>
+<p>The quantization error is an unbounded positive number. The closer it is to 0, the better the projection quality.</p>
 </div>
 <div id="building-super-classes-from-the-resulting-som" class="section level3">
 <h3 class="hasAnchor">
 <a href="#building-super-classes-from-the-resulting-som" class="anchor"></a>Building super classes from the resulting SOM</h3>
 <p>In the SOM algorithm, the number of clusters is necessarily close to the number of neurons on the grid (not necessarily equal as some neurons may have no observations assigned to them). This - quite large - number may not suit the original data for a clustering purpose.</p>
 <p>A usual way to address clustering with SOM is to perform a hierarchical clustering on the prototypes. This clustering is directly available in the package <code>SOMbrero</code> using the function <code>superClass</code>. To do so, you can first have a quick overview to decide on the number of super clusters which suits your data.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/superClass.html">superClass</a></span>(iris.som))</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/superClass.html">superClass</a></span>(iris.som))</a></code></pre></div>
 <pre><code>## Warning in plot.somSC(superClass(iris.som)): Impossible to plot the rectangles: no super clusters.</code></pre>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSC-1.png" width="700"></p>
 <p>By default, the function plots both a dendrogram and the evolution of the percentage of explained variance. Here, 3 super clusters seem to be the best choice. The output of <code>superClass</code> is a <code>somSC</code> class object. Basic functions have been defined for this class:</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">my.sc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/superClass.html">superClass</a></span>(iris.som, <span class="dt">k=</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(my.sc)</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">my.sc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/superClass.html">superClass</a></span>(iris.som, <span class="dt">k =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(my.sc)</a></code></pre></div>
 <pre><code>## 
 ##    SOM Super Classes
 ##      Initial number of clusters :  25 
@@ -668,12 +697,12 @@
 ## 
 ## 
 ##   Frequency table
-##  1  2  3 
-## 11  5  9 
+## 1 2 3 
+## 7 9 9 
 ## 
 ##   Clustering
 ##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 
-##  1  1  2  2  2  3  1  1  2  2  3  3  1  1  1  3  3  3  1  1  3  3  3  1  1 
+##  1  2  2  2  2  1  1  2  2  2  3  1  1  2  2  3  3  3  1  1  3  3  3  3  3 
 ## 
 ## 
 ##   ANOVA
@@ -681,42 +710,87 @@
 ##         Degrees of freedom :  2 
 ## 
 ##                    F pvalue significativity
-## Sepal.Length 164.054      0             ***
-## Sepal.Width   86.258      0             ***
-## Petal.Length 725.373      0             ***
-## Petal.Width  496.934      0             ***</code></pre>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">plot.var=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+## Sepal.Length 178.319      0             ***
+## Sepal.Width   60.416      0             ***
+## Petal.Length 847.100      0             ***
+## Petal.Width  505.974      0             ***</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">plot.var =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSC3-1.png" width="700"></p>
 <p>Like <code>plot.somRes</code>, the function <code>plot.somSC</code> has an argument <code>type</code> which offers many different plots and can thus be combined with most of the graphics produced by <code>plot.somSC</code>:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"grid"</span>, <span class="dt">plot.legend=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type =</span> <span class="st">"grid"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot-1.png" width="576"></p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"dendro3d"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type =</span> <span class="st">"dendro3d"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot3d-1.png" width="700"></p>
 <p>Case <code>"grid"</code> fills the grid with colors according to the super clustering (and can provide a legend). Case <code>"dendro3d"</code> plots a 3d dendrogram.</p>
 <p>A couple of plots from <code>plot.somRes</code> are also available for the super clustering. Some identify the super clusters with colors:</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"hitmap"</span>, <span class="dt">plot.legend=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"hitmap"</span>, <span class="dt">maxsize =</span> <span class="dv">20</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot2-1.png" width="576"></p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"lines"</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot2B-1.png" width="700"></p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"barplot"</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"barplot"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot2B-2.png" width="700"></p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"boxplot"</span>, <span class="dt">print.title=</span><span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="c-doc-numericSOM_files/figure-html/irisSCplot2B-3.png" width="700"></p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"mds"</span>, <span class="dt">plot.legend=</span><span class="ot">TRUE</span>, <span class="dt">cex =</span><span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"mds"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot2C-1.png" width="576"></p>
 <p>And some others identify the super clusters with titles:</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"color"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="st">"Sepal.Length"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot3-1.png" width="700"></p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"poly.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"poly.dist"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot3-2.png" width="700"></p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"pie"</span>, <span class="dt">variable=</span>iris<span class="op">$</span>Species)</a></code></pre></div>
-<p><img src="c-doc-numericSOM_files/figure-html/irisSCplot3-3.png" width="700"></p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"radar"</span>, <span class="dt">key.loc=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">0.5</span>,<span class="dv">5</span>), <span class="dt">mar=</span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">2</span>,<span class="dv">0</span>))</a></code></pre></div>
-<p><img src="c-doc-numericSOM_files/figure-html/irisSCplot3-4.png" width="700"></p>
-<p>It is also possible to consider an additional variable using the argument <code>add.variable</code>:</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type=</span><span class="st">"color"</span>, <span class="dt">add.type=</span><span class="ot">TRUE</span>, <span class="dt">variable=</span>iris<span class="op">$</span>Sepal.Length)</a></code></pre></div>
+<p>It is also possible to consider an additional variable using the argument <code>what='add'</code>:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"pie"</span>, <span class="dt">variable =</span> iris<span class="op">$</span>Species) <span class="op">+</span></a>
+<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="st">  </span><span class="kw">scale_fill_brewer</span>(<span class="dt">type =</span> <span class="st">"qual"</span>)</a></code></pre></div>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSCplot4-1.png" width="700"></p>
-<p>All these graphics help to see that super-cluster number 2 is found in the top right corner of the map and contains only flowers of the “setosa” species. Super cluster number 3, at the bottom right corner of the map, contains mostly flowers of the “virginica” species. The last super-cluster is located at the top right corner of the map and mostly contains flowers of the species “versicolor”.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> iris<span class="op">$</span>Sepal.Length)</a></code></pre></div>
+<p><img src="c-doc-numericSOM_files/figure-html/irisSCplot4-2.png" width="700"></p>
+<p>Super cluster number 2 is located at the top left hand corner of the map and associated with the Setosa species. SC 3 is in the opposite corner and associated mainly with Virginica whereas SC 1 is in the diagonal between these two corners and associated with Versicolor.</p>
+</div>
+<div id="session-information" class="section level3">
+<h3 class="hasAnchor">
+<a href="#session-information" class="anchor"></a>Session information</h3>
+<p>This vignette has been computed with the following environment:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a></code></pre></div>
+<pre><code>## R version 3.6.3 (2020-02-29)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 18.04.4 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=fr_FR.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=fr_FR.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=fr_FR.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=fr_FR.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] SOMbrero_1.2-5 igraph_1.2.4.1 ggplot2_3.3.0 
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.4.6         plyr_1.8.4           RColorBrewer_1.1-2  
+##  [4] compiler_3.6.3       pillar_1.4.3         tools_3.6.3         
+##  [7] digest_0.6.20        lattice_0.20-41      lubridate_1.7.4     
+## [10] checkmate_1.9.4      evaluate_0.14        memoise_1.1.0       
+## [13] lifecycle_0.2.0      tibble_2.1.3         gtable_0.3.0        
+## [16] png_0.1-7            pkgconfig_2.0.2      rlang_0.4.5         
+## [19] rstudioapi_0.10      yaml_2.2.0           hexbin_1.27.3       
+## [22] pkgdown_1.4.1        xfun_0.13            interp_1.0-33       
+## [25] metR_0.7.0           withr_2.1.2          stringr_1.4.0       
+## [28] dplyr_0.8.3          knitr_1.23           desc_1.2.0          
+## [31] fs_1.3.1             scatterplot3d_0.3-41 rprojroot_1.3-2     
+## [34] grid_3.6.3           tidyselect_1.0.0     data.table_1.12.2   
+## [37] glue_1.4.0           R6_2.4.1             rmarkdown_1.14      
+## [40] sp_1.3-1             farver_2.0.3         deldir_0.1-25       
+## [43] purrr_0.3.3          magrittr_1.5         backports_1.1.4     
+## [46] scales_1.1.0         htmltools_0.3.6      MASS_7.3-51.6       
+## [49] ggwordcloud_0.5.0    assertthat_0.2.1     colorspace_1.4-1    
+## [52] labeling_0.3         stringi_1.4.3        munsell_0.5.0       
+## [55] crayon_1.3.4</code></pre>
 </div>
 </div>
   </div>

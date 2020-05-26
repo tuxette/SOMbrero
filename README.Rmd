@@ -45,3 +45,11 @@ Bruges, Belgium, 269-274.
 Olteanu M., Villa-Vialaneix N. (2015a) On-line relational and multiple 
 relational SOM. *Neurocomputing*, **147**, 15-30. 
 
+Olteanu M., Villa-Vialaneix N. (2015b) Using SOMbrero for clustering and 
+visualizing graphs. *Journal de la Société Française de Statistique*, **156**, 
+95-119.
+
+Villa-Vialaneix N. (2017) Stochastic self-organizing map variants with the **R** 
+package SOMbrero. In: J.C. Lamirel, M. Cottrell, M. Olteanu, *12th International 
+Workshop on Self-Organizing Maps and Learning Vector Quantization, Clustering 
+and Data Visualization (Proceedings of WSOM 2017)*, IEEE, Nancy, France.

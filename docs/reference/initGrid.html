@@ -98,10 +98,10 @@
       <a href="../articles/c-doc-numericSOM.html">Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</a>
     </li>
     <li>
-      <a href="../articles/d-doc-korrespSOM.html">Self-Organizing Map for contingency tables</a>
+      <a href="../articles/d-doc-korrespSOM.html">Using Self-Organizing Maps with SOMbrero for contingency tables</a>
     </li>
     <li>
-      <a href="../articles/e-doc-relationalSOM.html">Self-Organizing Map for dissimilarity matrices</a>
+      <a href="../articles/e-doc-relationalSOM.html">Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</a>
     </li>
   </ul>
 </li>
@@ -133,9 +133,12 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>initGrid</span>(<span class='kw'>dimension</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>), <span class='kw'>topo</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"square"</span>, <span class='st'>"hexagonal"</span>),
-  <span class='kw'>dist.type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"euclidean"</span>, <span class='st'>"maximum"</span>, <span class='st'>"manhattan"</span>, <span class='st'>"canberra"</span>,
-  <span class='st'>"minkowski"</span>, <span class='st'>"letremy"</span>))</pre>
+    <pre class="usage"><span class='fu'>initGrid</span>(
+  <span class='kw'>dimension</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>),
+  <span class='kw'>topo</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"square"</span>, <span class='st'>"hexagonal"</span>),
+  <span class='kw'>dist.type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"euclidean"</span>, <span class='st'>"maximum"</span>, <span class='st'>"manhattan"</span>, <span class='st'>"canberra"</span>, <span class='st'>"minkowski"</span>,
+    <span class='st'>"letremy"</span>)
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,8 +150,7 @@ of the grid</p></td>
     </tr>
     <tr>
       <th>topo</th>
-      <td><p>topology of the grid. Only <code>"square"</code> is supported for the
-moment</p></td>
+      <td><p>topology of the grid. Accept values <code>"square"</code> (Default) or <code>"hexagonal"</code>.</p></td>
     </tr>
     <tr>
       <th>dist.type</th>
@@ -230,7 +232,8 @@ et dédiés à l'analyse des données. SAS/IML programs for 'korresp'.
     </ul>
 
     <h2>Author</h2>
-    <p>Madalina Olteanu &lt;madalina.olteanu@univ-paris1.fr&gt;<br />
+    <p>Élise Maigné &lt;elise.maigne@inrae.fr&gt;<br />
+Madalina Olteanu &lt;madalina.olteanu@univ-paris1.fr&gt;<br />
 Nathalie Vialaneix &lt;nathalie.vialaneix@inrae.fr&gt;</p>
   </div>
 </div>

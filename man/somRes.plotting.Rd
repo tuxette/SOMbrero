@@ -199,7 +199,6 @@ Nathalie Vialaneix \email{nathalie.vialaneix@inra.fr}
 }
 
 \examples{
-
 ### Numerical SOM
 # run the SOM algorithm on the numerical data of 'iris' data set
 iris.som <- trainSOM(x.data = iris[,1:4], nb.save = 2)
@@ -221,7 +220,7 @@ plot(iris.som, what = "obs", type = "names")}
 plot(iris.som, what = "prototypes", type = "3d", variable = "Sepal.Length")
 \dontrun{
 plot(iris.som, what = "prototypes", type = "lines")
-plot(iris.som, what = "prototypes", type = "barplot)
+plot(iris.som, what = "prototypes", type = "barplot")
 plot(iris.som, what = "prototypes", type = "umatrix")
 plot(iris.som, what = "prototypes", type = "color", variable = "Petal.Length")
 plot(iris.som, what = "prototypes", type = "smooth.dist")
