@@ -253,9 +253,9 @@ percentage of explained variance. Here, 3 super clusters seem to be a good
 choice. The output of ```superClass``` is a ```somSC``` class object.
 Basic functions have been defined for this class:
 ```{r presiSC2}
-my.sc <- superClass(korresp.som, k=3)
+my.sc <- superClass(korresp.som, k = 3)
 summary(my.sc)
-plot(my.sc, plot.var=FALSE)
+plot(my.sc, plot.var = FALSE)
 ```
 
 Like ```plot.somRes```, the function ```plot.somSC``` has an argument 
@@ -266,8 +266,8 @@ most of the graphics produced by ```plot.somSC```:
 (and can provide a legend).
 * Case ```"dendro3d"``` plots a 3d dendrogram.
 ```{r presiSC3}
-plot(my.sc, type="grid")
-plot(my.sc, type="dendro3d")
+plot(my.sc, type = "grid")
+plot(my.sc, type = "dendro3d")
 ```
 
 The three super-clusters correspond to most voted candidates (blue), less
