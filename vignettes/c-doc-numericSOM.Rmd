@@ -15,7 +15,7 @@ output:
 %\VignettePackage{SOMbrero}
 -->
 
-To limit this documentation size, most figures are not included in the version
+To limit this documentation size, most figures are not displayed in the version
 of the vignette included in the package. To see all figures, you can rerun
 the vignettes, changing the following option to `TRUE`:
 ```{r setup, include=FALSE}
