@@ -1,26 +1,32 @@
 SOMbrero 1.3
-Changes:
-  protoDist (for neighbors) => to document
-  print.titles => show.names
-  plots in ggplot2 => options are handled through ggplot2
-
-********************************************************************************
-SOMbrero 1.2-6
 Fixed bugs:
   eps0 parameter taken into account in shiny app
   correct use of "what" parameter for superclasses plot
 
 Improvements:
-  hexagonal topography
-  data from the environment can be loaded directly in the shiny application
-  titles and legends in plots
-  3 examples data sets are loaded by default in the shiny app
-  code used in the app is print to ease reproducibility
+  hexagonal topography is now available
+  
+  plots are now ggplot2 based and former plot arguments are no longer valid 
+  since ggplot2 syntax is now used
+  
+  the shiny app has been entirely remade
+  
+  data from the environment can be loaded directly in the shiny application and
+  3 examples datasets are loaded automatically in the shiny app
+  
+  titles and legends in plots have been improved
+
+  code used in the app is printed to ease reproducibility
+  
+  protoDist (for neighbors) has been improved by adding, for the case 
+  'neighbors' a radius argument. When this radius is passed the Euclidean 
+  distance between unit coordinates
+  
+  print.titles is deprecated and has been replaced by show.names
+  
   
 Misc:
-  most of the plots are now in ggplot2
-  more intuitive shiny application
-  Suppress radar plots
+  radar plots are no longer available
 
 ********************************************************************************
 SOMbrero 1.2-5
