@@ -87,7 +87,7 @@
 #' @importFrom graphics layout legend par plot rect text title points
 #' @importFrom stats aov as.dist chisq.test cmdscale cutree dist hclust pf
 #' @importFrom stats princomp quantile rect.hclust runif sd aggregate median
-#' @importFrom stats reshape
+#' @importFrom stats reshape var
 #' @importFrom scatterplot3d scatterplot3d
 #' @importFrom ggwordcloud geom_text_wordcloud
 #' @importFrom metR geom_contour_fill	

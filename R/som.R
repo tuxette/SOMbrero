@@ -44,14 +44,38 @@ cosinePreprocess <- function(diss.matrix, x.new= NULL, tolerance=10^(-10)) {
   return(scaled.diss)
 }
 
-# Preprocess data or prototypes
-preprocessData <- function(x.data, scaling) {
-  switch(scaling,
-         "unitvar"=scale(x.data, center=TRUE, scale=TRUE),
-         "center"=scale(x.data, center=TRUE, scale=FALSE),
-         "none"=as.matrix(x.data),
-         "chi2"=korrespPreprocess(x.data),
-         "cosine"=cosinePreprocess(x.data))
+# Korresp preprocessing
+korrespPreprocess <- function(cont.table) {
+  both.profiles <- matrix(0, nrow=nrow(cont.table)+ncol(cont.table),
+                          ncol=ncol(cont.table)+nrow(cont.table))
+  # row profiles
+  both.profiles[1:nrow(cont.table), 1:ncol(cont.table)] <-
+    cont.table/outer(sqrt(rowSums(cont.table)), 
+                     sqrt(colSums(cont.table)/sum(cont.table)))  
+  # column profiles
+  both.profiles[(nrow(cont.table)+1):(nrow(cont.table)+ncol(cont.table)),
+                (ncol(cont.table)+1):(ncol(cont.table)+nrow(cont.table))] <- 
+    t(cont.table)/outer(sqrt(colSums(cont.table)), 
+                        sqrt(rowSums(cont.table)/sum(cont.table)))
+  # Best column to complete row profiles
+  best.col <- apply(both.profiles[1:nrow(cont.table), 1:ncol(cont.table)],
+                    1,which.max)
+  both.profiles[1:nrow(cont.table), (ncol(cont.table)+1):ncol(both.profiles)] <- 
+    both.profiles[best.col+nrow(cont.table),
+                  (ncol(cont.table)+1):ncol(both.profiles)]
+  # Best row to complete col profiles
+  best.row <- apply(both.profiles[(nrow(cont.table)+1):
+                                    (nrow(cont.table)+ncol(cont.table)),
+                                  (ncol(cont.table)+1):
+                                    (ncol(cont.table)+nrow(cont.table))],
+                    1,which.max)
+  both.profiles[(nrow(cont.table)+1):(nrow(cont.table)+ncol(cont.table)),
+                1:ncol(cont.table)] <-
+    both.profiles[best.row, 1:ncol(cont.table)]
+  # Names
+  rownames(both.profiles) <- c(rownames(cont.table),colnames(cont.table))
+  colnames(both.profiles) <- c(colnames(cont.table),rownames(cont.table))
+  return(both.profiles)
 }
 
 preprocessProto <- function(prototypes, scaling, x.data) {
@@ -130,38 +154,34 @@ distRelationalProto <- function(proto1, proto2, x.data) {
 }
 
 ## Functions used during training of SOM
-# Step 2: Preprocess data ("korresp" case)
-korrespPreprocess <- function(cont.table) {
-  both.profiles <- matrix(0, nrow=nrow(cont.table)+ncol(cont.table),
-                          ncol=ncol(cont.table)+nrow(cont.table))
-  # row profiles
-  both.profiles[1:nrow(cont.table), 1:ncol(cont.table)] <-
-    cont.table/outer(sqrt(rowSums(cont.table)), 
-                     sqrt(colSums(cont.table)/sum(cont.table)))  
-  # column profiles
-  both.profiles[(nrow(cont.table)+1):(nrow(cont.table)+ncol(cont.table)),
-                (ncol(cont.table)+1):(ncol(cont.table)+nrow(cont.table))] <- 
-    t(cont.table)/outer(sqrt(colSums(cont.table)), 
-                        sqrt(rowSums(cont.table)/sum(cont.table)))
-  # Best column to complete row profiles
-  best.col <- apply(both.profiles[1:nrow(cont.table), 1:ncol(cont.table)],
-                    1,which.max)
-  both.profiles[1:nrow(cont.table), (ncol(cont.table)+1):ncol(both.profiles)] <- 
-    both.profiles[best.col+nrow(cont.table),
-                  (ncol(cont.table)+1):ncol(both.profiles)]
-  # Best row to complete col profiles
-  best.row <- apply(both.profiles[(nrow(cont.table)+1):
-                                    (nrow(cont.table)+ncol(cont.table)),
-                                  (ncol(cont.table)+1):
-                                    (ncol(cont.table)+nrow(cont.table))],
-                    1,which.max)
-  both.profiles[(nrow(cont.table)+1):(nrow(cont.table)+ncol(cont.table)),
-                1:ncol(cont.table)] <-
-    both.profiles[best.row, 1:ncol(cont.table)]
-  # Names
-  rownames(both.profiles) <- c(rownames(cont.table),colnames(cont.table))
-  colnames(both.profiles) <- c(colnames(cont.table),rownames(cont.table))
-  return(both.profiles)
+# Step 2: Preprocess data
+preprocessData <- function(x.data, scaling) {
+  if (scaling == "unitvar" & any(apply(x.data, 2, var) == 0)) {
+    to.remove <- which(apply(x.data, 2, var) == 0)
+    name.remove <- names(x.data)[to.remove]
+    warning(paste0("Removing constant variable(s) (required by unit variance scaling): column ",
+                   name.remove), 
+            call. = TRUE, immediate. = TRUE)
+    x.data <- x.data[,- to.remove]
+  }
+  
+  if (scaling == "cosine" & any(rowSums(abs(x.data)) == 0)) {
+    stop("One of the rows is 0. Cosine preprocessing can not be performed.",
+         call. = TRUE, immediate = TRUE)
+  }
+  
+  if (scaling == "korresp" &
+      (any(rowSums(abs(x.data)) == 0) | any(abs(colSums(x.data)) == 0))) {
+    stop("One of the rows or columns is 0. Korresp algorithm can not be performed.",
+         call. = TRUE, immediate = TRUE)
+  }
+  
+  switch(scaling,
+         "unitvar" = scale(x.data, center = TRUE, scale = TRUE),
+         "center"  = scale(x.data, center = TRUE, scale = FALSE),
+         "none"    = as.matrix(x.data),
+         "chi2"    = korrespPreprocess(x.data),
+         "cosine"  = cosinePreprocess(x.data))
 }
 
 # Step 3: Initialize prototypes
@@ -542,20 +562,6 @@ trainSOM <- function (x.data, ...) {
   if (!is.null(param.args$type) && param.args$type=="relational" && 
       (!identical(x.data, t(x.data)) || (sum(diag(x.data)!=0)>0)))
     stop("data do not match chosen SOM type ('relational')\n", call.=TRUE)
-  
-  #Check for constant variables 
-  # TODO : faire le if correctement
-  #if (!is.null(param.args$scaling) && param.args$scaling!="none") {
-    distinctvalues <- apply(x.data,2, function(x) length(unique(x))) 
-    if(length(distinctvalues[distinctvalues==1])>0){
-      constantvar <- which(distinctvalues==1)
-      nameconstant <- colnames(x.data)[constantvar]
-      print(nameconstant)
-      if(is.null(nameconstant)) nameconstant <- paste0("column ", constantvar)
-      warning(paste0("Removing constant variable: ", nameconstant), call. = TRUE, immediate. = TRUE)
-      x.data <- x.data[,-constantvar]
-    }
-  #}
   
   # Default dimension: nb.obs/10 with minimum equal to 5 and maximum to 10
   if (is.null(param.args$dimension)) {
