@@ -15,6 +15,17 @@ output:
 %\VignettePackage{SOMbrero}
 -->
 
+To limit this documentation size, most figures are not included in the version
+of the vignette included in the package. To see all figures, you can rerun
+the vignettes, changing the following option to `TRUE`:
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = FALSE)
+```
+
+Alternatively, this compilation is also available at:
+http://sombrero.nathalievialaneix.eu/articles/c-doc-numericSOM.html
+
+
 ## Basic package description
 
 `SOMbrero` implements different variants of the Self-Organizing Map algorithm
@@ -95,7 +106,7 @@ my.som <- trainSOM(x.data=the.data, dimension=c(5,5), nb.save=10, maxit=2000,
 ```
 
 The energy evolves as described in the following graphic:
-```{r energy}
+```{r energy, include=TRUE}
 plot(my.som, what="energy")
 ```
 
@@ -111,7 +122,7 @@ The observations are almost uniformly distributed on the map.
 The clustering component allows us to plot the initial data according to the 
 final clustering.
 
-```{r clusteredData, echo=FALSE, cache=TRUE}
+```{r clusteredData, include=TRUE, cache=TRUE}
 # prepare a vector of colors
 my.colors <- rainbow(prod(my.som$parameters$the.grid$dim))[my.som$clustering]
 
@@ -124,7 +135,7 @@ plot(my.som$data[,1], my.som$data[,2], col=my.colors, pch=19, xlab="x1",
 
 The values of the prototypes can be represented with the plot function and help
 interpret the clusters:
-```{r colorProto, fig.width=5, fig.height=2.5}
+```{r colorProto, fig.width=5, fig.height=2.5, include=TRUE}
 par(mfrow=c(1,2))
 plot(my.som, what="prototypes", type="color", var=1)
 plot(my.som, what="prototypes", type="color", var=2)
@@ -145,7 +156,7 @@ plot(my.som, what="obs", type="color", var=2)
 The prototypes coordinates are also registered for each intermediate backup so 
 they can be displayed on different graphics to see the evolution in the
 prototypes organization.
-```{r protoEvoluation, fig.width=15, fig.height=6, echo=FALSE}
+```{r protoEvoluation, fig.width=15, fig.height=6, include=TRUE, echo=FALSE}
 # Get the neighbours between prototypes
 values <- protoDist(my.som, "neighbors")
 tmp <- data.frame("prot1" = rep.int(1:prod(my.som$parameters$the.grid$dim), 
@@ -185,7 +196,7 @@ variance, which is the default behavior of the algorithm.__
 
 The first four variables of the data set (that are the numeric variables) are 
 used to map each flower on the SOM grid.
-```{r irisTrain, cache=TRUE}
+```{r irisTrain, cache=TRUE, include=TRUE}
 set.seed(255)
 # run the SOM algorithm with verbose set to TRUE
 iris.som <- trainSOM(x.data = iris[,1:4], dimension = c(5,5), verbose = TRUE, 
@@ -195,7 +206,7 @@ iris.som
 
 As the energy is registered during the intermediate backups, we can have a look
 at its evolution.
-```{r energyIris}
+```{r energyIris, include=TRUE}
 plot(iris.som, what="energy")
 ```
 
@@ -208,19 +219,19 @@ stepwise.
 
 The clustering component contains the final classification of the dataset. It is 
 a vector with length equal to the number of rows of the input dataset.
-```{r irisClusters}
+```{r irisClusters, include=TRUE}
 iris.som$clustering
 table(iris.som$clustering)
 ```
 which can also be visualized by a hitmap plot:
-```{r irisHitmap}
+```{r irisHitmap, include=TRUE}
 plot(iris.som, what="obs", type="hitmap")
 ```
 
 To assess the relevance of each explanatory variable in the definition of the 
 clusters, the function ```summary``` includes an ANOVA with the predictor being
 the clustering, for each (numeric) input variable.
-```{r irisSummary}
+```{r irisSummary, include=TRUE}
 summary(iris.som)
 ```
 Here, all variables have significantly different means among the different
@@ -231,7 +242,7 @@ Another useful function is ```predict.somRes```. This function predicts the
 neuron to which a new observation would be assigned. The first argument must be 
 a ```somRes``` object and the second one the new observation. Let us have a try 
 on the first observation of the iris data set:
-```{r irisPred1}
+```{r irisPred1, include=TRUE}
 # call predict.somRes
 predict(iris.som, iris[1,1:4])
 # check the result of the final clustering with the SOM algorithm
@@ -247,12 +258,15 @@ display the prototypes' or the observations' values for the different variables
 in the neurons of the map. For observations, the mean values are sometimes 
 displayed instead of the individual values.
 
-```{r irisGraphOP}
+```{r irisGraphOP, include=TRUE}
 par(mfrow = c(2,2))
 plot(iris.som, what = "obs", type = "color", variable = 1)
 plot(iris.som, what = "obs", type = "color", variable = 2)
 plot(iris.som, what = "obs", type = "color", variable = 3)
 plot(iris.som, what = "obs", type = "color", variable = 4)
+```
+
+```{r irisGraphOP2}
 plot(iris.som, what = "prototypes", type = "lines", show.names = TRUE) + 
   theme(axis.text.x = element_blank())
 plot(iris.som, what = "obs", type = "barplot", show.names = TRUE) + 
@@ -311,8 +325,11 @@ plot(iris.som, what = "prototypes", type = "3d", variable = 4)
 Also, some graphics are provided to visualize the distance between prototypes on
 the grid:
 
-```{r irisDistProto, warning = FALSE}
+```{r irisDistProto, warning=FALSE, include=TRUE}
 plot(iris.som, what = "prototypes", type = "poly.dist", show.names = FALSE)
+```
+
+```{r irisDistProto2, warning=FALSE}
 plot(iris.som, what = "prototypes", type = "umatrix")
 plot(iris.som, what = "prototypes", type = "smooth.dist")
 plot(iris.som, what = "prototypes", type = "mds")
@@ -352,7 +369,7 @@ neurons (21, 22, 23) that are very closed to each others.
 
 The clustering can be analyzed together with an additional variable (here, the
 flower species) using `what = "add"`:
-```{r irisAdd1}
+```{r irisAdd1, include=TRUE}
 class(iris$Species)
 levels(iris$Species)
 plot(iris.som, what = "add", type = "pie", variable = iris$Species) +
@@ -409,12 +426,12 @@ plot(iris.som, what = "add", type = "words", variable = my.cont.mat,
 Here we choose to give the argument ```variable``` the row names of the iris 
 data set: so we obtain the same plot as above (see 
 __More graphics on observations__).
-```{r irisAdd5, warning=F}
+```{r irisAdd5, warning=FALSE}
 plot(iris.som, what = "add", type = "names", variable = rownames(iris)) 
 ```
 
 Similarly, this plot can be used with the variable ```iris$Species```:
-```{r irisAdd5bis, warning=F}
+```{r irisAdd5bis, warning=FALSE}
 plot(iris.som, what = "add", type = "names", variable = iris$Species)
 ```
 
@@ -424,7 +441,7 @@ contingency matrix corresponding to the variable ```iris$Species```.
 
 ### Analyze the projection quality
 
-```{r irisQuality}
+```{r irisQuality, include=TRUE}
 quality(iris.som)
 ```
 
@@ -458,7 +475,7 @@ clustering on the prototypes. This clustering is directly available in the
 package ```SOMbrero``` using the function ```superClass```. To do so, you can
 first have a quick overview to decide on the number of super clusters which 
 suits your data.
-```{r irisSC}
+```{r irisSC, include=TRUE}
 plot(superClass(iris.som))
 ```
 
@@ -466,7 +483,7 @@ By default, the function plots both a dendrogram and the evolution of the
 percentage of explained variance. Here, 3 super clusters seem to be the best
 choice. The output of ```superClass``` is a ```somSC``` class object.
 Basic functions have been defined for this class:
-```{r irisSC3}
+```{r irisSC3, include=TRUE}
 my.sc <- superClass(iris.som, k = 3)
 summary(my.sc)
 plot(my.sc, plot.var = FALSE)
@@ -475,7 +492,7 @@ plot(my.sc, plot.var = FALSE)
 Like ```plot.somRes```, the function ```plot.somSC``` has an argument ```type```
 which offers many different plots and can thus be combined with most of the
 graphics produced by ```plot.somSC```:
-```{r irisSCplot, fig.width=6, fig.height=4}
+```{r irisSCplot, fig.width=6, fig.height=4, include=TRUE}
 plot(my.sc, type = "grid")
 ```
 ```{r irisSCplot3d}
@@ -502,7 +519,7 @@ plot(my.sc, what = "prototypes", type = "mds")
 ```
 
 And some others identify the super clusters with titles:
-```{r irisSCplot3}
+```{r irisSCplot3, include=TRUE}
 plot(my.sc, what = "prototypes", type = "color", variable = "Sepal.Length")
 plot(my.sc, what = "prototypes", type = "poly.dist")
 ```
@@ -524,6 +541,6 @@ two corners and associated with Versicolor.
 ### Session information
 
 This vignette has been computed with the following environment:
-```{r sessionInfo}
+```{r sessionInfo, include=TRUE}
 sessionInfo()
 ```
