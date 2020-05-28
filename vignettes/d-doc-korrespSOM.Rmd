@@ -15,6 +15,16 @@ output:
 %\VignettePackage{SOMbrero}
 -->
 
+To limit this documentation size, most figures are not displayed in the version
+of the vignette included in the package. To see all figures, you can rerun
+the vignettes, changing the following option to `TRUE`:
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = FALSE)
+```
+
+Alternatively, this compilation is also available at:
+http://sombrero.nathalievialaneix.eu/articles/d-doc-korrespSOM.html
+
 ## Basic package description
 
 `SOMbrero` implements different variants of the Self-Organizing Map algorithm
@@ -54,7 +64,7 @@ candidates in all of the 106 French administrative districts called
 "départements". Further details about this data set and the 2002 French 
 presidential election are given with ```help(presidentielles2002)```.
 
-```{r loadData}
+```{r loadData, include=TRUE}
 data(presidentielles2002)
 apply(presidentielles2002, 2, sum)
 ```
@@ -63,7 +73,7 @@ Chirac and the far-right candidate Jean-Marie Le Pen)
 
 ### Training the SOM
 
-```{r presiTrain, cache=TRUE}
+```{r presiTrain, cache=TRUE, include=TRUE}
 set.seed(01091407)
 korresp.som <- trainSOM(x.data = presidentielles2002, dimension = c(8,8),
                         type = "korresp", scaling = "chi2", nb.save = 10,
@@ -73,7 +83,7 @@ korresp.som
 
 As the energy is registered during the intermediate backups, we can take a look
 at its evolution
-```{r energyPresi}
+```{r energyPresi, include=TRUE}
 plot(korresp.som, what = "energy")
 ```
 
@@ -88,7 +98,7 @@ vector is equal to the sum of the number of rows and the number of columns.
 __NB: The clustering component shows first the column variables (here, the 
 candidates) and then the row variables (here, the départements).__
 
-```{r presiClusters}
+```{r presiClusters, include=TRUE}
 korresp.som$clustering
 ```
 
@@ -114,7 +124,7 @@ The following table indicates which graphics are available for a korresp SOM.
 
 The resulting distribution of the clustering on the map can also be visualized
 by a hitmap:
-```{r presiHitmap}
+```{r presiHitmap, include=TRUE}
 plot(korresp.som, what = "obs", type = "hitmap", show.names = FALSE)
 ```
 
@@ -122,7 +132,7 @@ For a more precise view, ```"names"``` plot is implemented: the names of the
 values assigned to every neuron is displayed in the corresponding cluster. In 
 `korresp` SOM, both row and column names are displayed.
 
-```{r presiGraphObs, warning=FALSE, fig.width=12, fig.height=12}
+```{r presiGraphObs, warning=FALSE, fig.width=12, fig.height=12, include=TRUE}
 plot(korresp.som, what="obs", type="names")
 ```
 
@@ -185,8 +195,11 @@ here drawn, as an example for the candidate "LE PEN" and for the departement
 * in color: one of the row or column variable (the variable is chosen with the 
 argument ```variable```) is represented on the map;
 * in 3d, which handling is similar to ```"color"```.
-```{r presiProtoC3d, fig.width=12, fig.height=6}
+```{r presiProtoC3d, fig.width=12, fig.height=6, include=TRUE}
 plot(korresp.som, what = "prototypes", type = "color", variable = "LE_PEN")
+```
+
+```{r presiProtoC3e, fig.width=12, fig.height=6}
 plot(korresp.som, what = "prototypes", type = "3d", variable = "la_reunion")
 ```
 
@@ -210,8 +223,11 @@ the map.
 
 These graphics are exactly the same as in the numerical case and provide various
 way to display the distance between prototypes on the grid.
-```{r presiGraphProto2}
+```{r presiGraphProto2, include=TRUE}
 plot(korresp.som, what = "prototypes", type = "poly.dist", show.names = FALSE)
+```
+
+```{r presiGraphProto3}
 plot(korresp.som, what = "prototypes", type = "umatrix")
 plot(korresp.som, what = "prototypes", type = "smooth.dist")
 plot(korresp.som, what = "prototypes", type = "mds")
@@ -227,7 +243,7 @@ map and the bottom right corner of the map.
 The quality of the projection is provided by the function `quality` that 
 outputs the same quality criteria than in the numeric case.
 
-```{r presiQuality}
+```{r presiQuality, include=TRUE}
 quality(korresp.som)
 ```
 
@@ -244,7 +260,7 @@ package ```SOMbrero``` using the function ```superClass```. To do so, you can
 first have a quick overview to decide on the number of super clusters which 
 suits your data.
 
-```{r presiSC1}
+```{r presiSC1, include=TRUE}
 plot(superClass(korresp.som))
 ```
 
@@ -252,7 +268,7 @@ By default, the function plots both a dendrogram and the evolution of the
 percentage of explained variance. Here, 3 super clusters seem to be a good
 choice. The output of ```superClass``` is a ```somSC``` class object.
 Basic functions have been defined for this class:
-```{r presiSC2}
+```{r presiSC2, include=TRUE}
 my.sc <- superClass(korresp.som, k = 3)
 summary(my.sc)
 plot(my.sc, plot.var = FALSE)
@@ -265,8 +281,11 @@ most of the graphics produced by ```plot.somSC```:
 * Case ```"grid"``` fills the grid with colors according to the super clustering 
 (and can provide a legend).
 * Case ```"dendro3d"``` plots a 3d dendrogram.
-```{r presiSC3}
+```{r presiSC3, include=TRUE}
 plot(my.sc, type = "grid")
+```
+
+```{r presiSC3b}
 plot(my.sc, type = "dendro3d")
 ```
 
@@ -295,6 +314,6 @@ plot(my.sc, what = "prototypes", type = "color", view = "c",
 ### Session information
 
 This vignette has been computed with the following environment:
-```{r sessionInfo}
+```{r sessionInfo, include=TRUE}
 sessionInfo()
 ```
