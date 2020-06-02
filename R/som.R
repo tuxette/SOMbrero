@@ -158,7 +158,7 @@ distRelationalProto <- function(proto1, proto2, x.data) {
 preprocessData <- function(x.data, scaling) {
   if (scaling == "unitvar" & any(apply(x.data, 2, var) == 0)) {
     to.remove <- which(apply(x.data, 2, var) == 0)
-    name.remove <- names(x.data)[to.remove]
+    name.remove <- colnames(x.data)[to.remove]
     warning(paste0("Removing constant variable(s) (required by unit variance scaling): column ",
                    name.remove), 
             call. = TRUE, immediate. = TRUE)
@@ -551,6 +551,7 @@ trainSOM <- function (x.data, ...) {
   ## Step 1: Parameters handling
   if (!is.matrix(x.data)) x.data <- as.matrix(x.data)
   if(is.null(rownames(x.data))) rownames(x.data) <- 1:nrow(x.data)
+  if(is.null(colnames(x.data))) colnames(x.data) <- paste0("X", 1:ncol(x.data))
   
   # Check inputs
   notnum <- apply(x.data,2, class) 
@@ -612,6 +613,7 @@ trainSOM <- function (x.data, ...) {
   ## Step 2: Preprocess the data
   # Scaling
   norm.x.data <- preprocessData(x.data, parameters$scaling)
+  x.data <- x.data[,colnames(norm.x.data)]
   
   ## Step 3: Initialize prototypes
   prototypes <- initProto(parameters, norm.x.data, x.data)
