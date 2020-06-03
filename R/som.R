@@ -170,7 +170,8 @@ preprocessData <- function(x.data, scaling) {
          call. = TRUE, immediate = TRUE)
   }
   
-  if (scaling == "korresp" &
+  # Korresp case
+  if (scaling == "chi2" &
       (any(rowSums(abs(x.data)) == 0) | any(abs(colSums(x.data)) == 0))) {
     stop("One of the rows or columns is 0. Korresp algorithm can not be performed.",
          call. = TRUE, immediate = TRUE)
