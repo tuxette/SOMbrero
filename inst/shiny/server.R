@@ -377,6 +377,8 @@ shinyServer(function(input, output, session) {
   # Plot the SOM
   output$somplot <- renderPlot({
     # Add validates to wait until the var inputs are updated
+    shiny::validate(need(is.null(dInput())==F, "No SOM trained (See 'Self Organize' tab)."))
+    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained (See 'Self Organize' tab)."))
     shiny::validate(need(input$somplottype %in% all.somplot.types[[input$somtype]][[input$somplotwhat]],
                          "wait..."))
     if(input$somplottype %in% c("boxplot", "barplot", "lines", "meanline"))
@@ -386,11 +388,6 @@ shinyServer(function(input, output, session) {
     if(input$somplottype %in% c("names"))
       shiny::validate(need(identical(varsomplot(), "row.names"), "wait..."))
     
-    if(is.null(dInput()))
-      return(NULL)
-    if(input$trainbutton ==0)
-      return(NULL)
-  
     p <- plot(x=RVserver.env$current.som, what=input$somplotwhat, type=input$somplottype,
                     variable=varsomplot(), show.names=input$somplottitle,
                     view=input$somplotrowcol, theta = input$theta, phi=input$phi)
@@ -493,8 +490,8 @@ shinyServer(function(input, output, session) {
   
   # Update SuperClass plot
   output$somplotscdendro <- renderPlot({
-    shiny::validate(need(is.null(dInput)==F, "First load data (cf 'Self-Organize' tab)"))
-    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained."))
+    shiny::validate(need(is.null(dInput)==F, "No SOM trained (See 'Self Organize' tab)."))
+    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained (See 'Self Organize' tab)."))
     plot(computeSuperclasses(), type="dendrogram")
   })
   
@@ -598,7 +595,7 @@ shinyServer(function(input, output, session) {
   
   # additional data preview table
   output$addview <- renderTable({
-    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained."))
+    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained (See 'Self Organize' tab)."))
     d.input <- dInputAdd()
     if (is.null(d.input)) 
       return(NULL)
@@ -664,7 +661,7 @@ shinyServer(function(input, output, session) {
   
   # function to render Additional data Plot
   output$addplot <- renderPlot({
-    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained."))
+    shiny::validate(need(is.null(RVserver.env$current.som)==F, "No SOM trained (See 'Self Organize' tab)."))
     dataAdd <- dInputAdd()
     if (is.null(dataAdd)) return(NULL)
     
