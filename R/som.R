@@ -614,7 +614,9 @@ trainSOM <- function (x.data, ...) {
   ## Step 2: Preprocess the data
   # Scaling
   norm.x.data <- preprocessData(x.data, parameters$scaling)
-  x.data <- x.data[,colnames(norm.x.data)]
+  if(parameters$type=="numeric" & ncol(norm.x.data)!=ncol(x.data)) {
+    x.data <- x.data[,colnames(norm.x.data)]
+  }
   
   ## Step 3: Initialize prototypes
   prototypes <- initProto(parameters, norm.x.data, x.data)
