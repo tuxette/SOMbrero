@@ -19,7 +19,7 @@ To limit this documentation size, most figures are not displayed in the version
 of the vignette included in the package. To see all figures, you can rerun
 the vignettes, changing the following option to `TRUE`:
 ```{r setup, include=TRUE}
-knitr::opts_chunk$set(include = TRUE)
+knitr::opts_chunk$set(include = FALSE)
 ```
 
 Alternatively, this compilation is also available at:

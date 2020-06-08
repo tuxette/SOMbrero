@@ -198,6 +198,7 @@ on the grid.
 ```{r lesmisProtoDist, include=TRUE}
 plot(mis.som, what = "prototypes", type = "poly.dist")
 ```
+
 ```{r lesmisProtoDistb}
 plot(mis.som, what = "prototypes", type = "smooth.dist")
 plot(mis.som, what = "prototypes", type = "umatrix")
