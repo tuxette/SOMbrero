@@ -18,7 +18,7 @@
 #' Package: \tab SOMbrero\cr
 #' Type: \tab Package\cr
 #' Version: \tab 1.3\cr
-#' Date: \tab 2020-05-28\cr
+#' Date: \tab 2020-06-08\cr
 #' License: \tab GPL (>= 2)
 #' }
 #' 

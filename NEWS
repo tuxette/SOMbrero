@@ -2,6 +2,7 @@ SOMbrero 1.3
 Fixed bugs:
   eps0 parameter taken into account in shiny app
   correct use of "what" parameter for superclasses plot
+  fixed a minor problem in Heskes' assignment when distance is Euclidean
 
 Improvements:
   hexagonal topography is now available
