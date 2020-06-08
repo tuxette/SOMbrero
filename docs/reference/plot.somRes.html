@@ -144,7 +144,7 @@
   <span class='kw'>is.scaled</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>type</span> <span class='kw'>==</span> <span class='st'>"numeric"</span>) <span class='fl'>TRUE</span> <span class='kw'>else</span> <span class='fl'>FALSE</span>,
   <span class='kw'>show.names</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>names</span> <span class='kw'>=</span> <span class='kw'>if</span> (<span class='no'>what</span> <span class='kw'>!=</span> <span class='st'>"energy"</span>) <span class='fu'><a href='https://rdrr.io/r/base/switch.html'>switch</a></span>(<span class='no'>type</span>, <span class='kw'>graph</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>),
-    <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>)),
+    <span class='fl'>1</span>:<span class='fu'><a href='https://rdrr.io/r/base/prod.html'>prod</a></span>(<span class='no'>x</span>$<span class='no'>parameters</span>$<span class='no'>the.grid</span>$<span class='no'>dim</span>)) <span class='kw'>else</span> <span class='kw'>NULL</span>,
   <span class='kw'>proportional</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>pie.graph</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>pie.variable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -197,10 +197,11 @@ and <code>FALSE</code> in the other cases.</p></td>
     <tr>
       <th>show.names</th>
       <td><p>Boolean used to indicate whether each neuron should have a
-title or not, if relevant. Default to <code>TRUE</code>. It is feasible on the following 
-cases: all <code>"color"</code>, <code>"lines"</code>, <code>"meanline"</code>, <code>"barplot"</code>,
-<code>"boxplot"</code>, <code>"names"</code> types, <code>"add"/"pie"</code>, <code>"prototypes"/"umatrix"</code>, 
-<code>"prototypes"/"poly.dist"</code> and <code>"add"/"words"</code>.</p></td>
+title or not, if relevant. Default to <code>TRUE</code>. It is feasible on the 
+following cases: all <code>"color"</code>, <code>"lines"</code>, <code>"meanline"</code>, 
+<code>"barplot"</code>, <code>"boxplot"</code>, <code>"names"</code> types, <code>"add"/"pie"</code>, 
+<code>"prototypes"/"umatrix"</code>, <code>"prototypes"/"poly.dist"</code> and 
+<code>"add"/"words"</code>.</p></td>
     </tr>
     <tr>
       <th>names</th>
@@ -226,7 +227,8 @@ It indicates if the vertices should be pies or not.</p></td>
     <tr>
       <th>s.radius</th>
       <td><p>The size of the pies to be plotted (maximum size when 
-<code>proportional=TRUE</code>) for <code>what="add"</code>, <code>type="graph"</code> and <code>pie.graph=TRUE</code>. The default value is <code>0.9</code>.</p></td>
+<code>proportional=TRUE</code>) for <code>what="add"</code>, <code>type="graph"</code> and 
+<code>pie.graph=TRUE</code>. The default value is <code>0.9</code>.</p></td>
     </tr>
     <tr>
       <th>view</th>
@@ -244,7 +246,8 @@ details).</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>See <code><a href='somRes.plotting.html'>somRes.plotting</a></code> for further details and more examples.</p>
+    <p>See <code><a href='somRes.plotting.html'>somRes.plotting</a></code> for further details and more 
+examples.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

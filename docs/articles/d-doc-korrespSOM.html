@@ -86,7 +86,7 @@
     <div class="page-header toc-ignore">
       <h1>Using Self-Organizing Maps with SOMbrero for contingency tables</h1>
             
-            <h4 class="date">28 mai, 2020</h4>
+            <h4 class="date">08 juin, 2020</h4>
       
       
       <div class="hidden name"><code>d-doc-korrespSOM.Rmd</code></div>
@@ -101,6 +101,7 @@
 %\VignettePackage{SOMbrero}
 -->
 <p>To limit this documentation size, most figures are not displayed in the version of the vignette included in the package. To see all figures, you can rerun the vignettes, changing the following option to <code>TRUE</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">include =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>Alternatively, this compilation is also available at: <a href="http://sombrero.nathalievialaneix.eu/articles/d-doc-korrespSOM.html" class="uri">http://sombrero.nathalievialaneix.eu/articles/d-doc-korrespSOM.html</a></p>
 <div id="basic-package-description" class="section level2">
 <h2 class="hasAnchor">
@@ -123,8 +124,8 @@
 <h2 class="hasAnchor">
 <a href="#case-study-the-presidentielles2002-data-set" class="anchor"></a>Case study: the <code>presidentielles2002</code> data set</h2>
 <p>The <code>presidentielles2002</code> data set provides the number of votes for the first round of the 2002 French presidential election for each of the 16 candidates in all of the 106 French administrative districts called “départements”. Further details about this data set and the 2002 French presidential election are given with <code><a href="https://rdrr.io/r/utils/help.html">help(presidentielles2002)</a></code>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(presidentielles2002)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(presidentielles2002, <span class="dv">2</span>, sum)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(presidentielles2002)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(presidentielles2002, <span class="dv">2</span>, sum)</a></code></pre></div>
 <pre><code>##      MEGRET      LEPAGE  GLUCKSTEIN      BAYROU      CHIRAC      LE_PEN 
 ##      667043      535875      132696     1949219     5666021     4804772 
 ##     TAUBIRA SAINT_JOSSE      MAMERE      JOSPIN      BOUTIN         HUE 
@@ -135,18 +136,18 @@
 <div id="training-the-som" class="section level3">
 <h3 class="hasAnchor">
 <a href="#training-the-som" class="anchor"></a>Training the SOM</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">01091407</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">korresp.som &lt;-<span class="st"> </span><span class="kw"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="dt">x.data =</span> presidentielles2002, <span class="dt">dimension =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">8</span>,<span class="dv">8</span>),</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">                        <span class="dt">type =</span> <span class="st">"korresp"</span>, <span class="dt">scaling =</span> <span class="st">"chi2"</span>, <span class="dt">nb.save =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">                        <span class="dt">topo =</span> <span class="st">"hexagonal"</span>, <span class="dt">maxit =</span> <span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">korresp.som</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">01091407</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">korresp.som &lt;-<span class="st"> </span><span class="kw"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="dt">x.data =</span> presidentielles2002, <span class="dt">dimension =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">8</span>,<span class="dv">8</span>),</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">                        <span class="dt">type =</span> <span class="st">"korresp"</span>, <span class="dt">scaling =</span> <span class="st">"chi2"</span>, <span class="dt">nb.save =</span> <span class="dv">10</span>,</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">                        <span class="dt">topo =</span> <span class="st">"hexagonal"</span>, <span class="dt">maxit =</span> <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">korresp.som</a></code></pre></div>
 <pre><code>##       Self-Organizing Map object...
 ##          online learning, type: korresp 
 ##          8 x 8 grid with hexagonal topology
 ##          neighbourhood type: gaussian 
 ##          distance type: euclidean</code></pre>
 <p>As the energy is registered during the intermediate backups, we can take a look at its evolution</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"energy"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"energy"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/energyPresi-1.png" width="700"></p>
 <p>which has approximatively stabilized at iteration 500.</p>
 </div>
@@ -155,7 +156,7 @@
 <a href="#resulting-clustering" class="anchor"></a>Resulting clustering</h3>
 <p>The clustering component contains the final classification of the dataset. As both row and column variables are classified, the length of the resulting vector is equal to the sum of the number of rows and the number of columns.</p>
 <p><strong>NB: The clustering component shows first the column variables (here, the candidates) and then the row variables (here, the départements).</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">korresp.som<span class="op">$</span>clustering</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">korresp.som<span class="op">$</span>clustering</a></code></pre></div>
 <pre><code>##                   MEGRET                   LEPAGE               GLUCKSTEIN 
 ##                        8                        8                        8 
 ##                   BAYROU                   CHIRAC                   LE_PEN 
@@ -439,10 +440,10 @@
 </tbody>
 </table>
 <p>The resulting distribution of the clustering on the map can also be visualized by a hitmap:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"hitmap"</span>, <span class="dt">show.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"hitmap"</span>, <span class="dt">show.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiHitmap-1.png" width="700"></p>
 <p>For a more precise view, <code>"names"</code> plot is implemented: the names of the values assigned to every neuron is displayed in the corresponding cluster. In <code>korresp</code> SOM, both row and column names are displayed.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"names"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what=</span><span class="st">"obs"</span>, <span class="dt">type=</span><span class="st">"names"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphObs-1.png" width="1152"></p>
 <p>The map is divided into two main parts: minor candidates are classified at its top left hand side whereas the first main candidates CHIRAC, LE PEN and JOSPIN are classified at the bottom right hand side of the map, in three different parts of this corner. Some strinking facts are:</p>
 <ul>
@@ -462,32 +463,32 @@
 <ul>
 <li>with lines: either all rows or all columns are displayed (<code>view</code> argument is used)</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># plot the line prototypes (106 French departements)</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>, <span class="dt">view =</span> <span class="st">"r"</span>, </a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">     <span class="dt">show.names =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st">    </span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">color =</span> <span class="kw">guide_legend</span>(<span class="dt">keyheight =</span> <span class="fl">0.5</span>, <span class="dt">ncol =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">                              <span class="dt">label.theme =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">4</span>))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(), <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
-<p><img src="d-doc-korrespSOM_files/figure-html/presiProtoL-1.png" width="700"></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># plot the column prototypes (16 candidates)</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>, <span class="dt">view =</span> <span class="st">"c"</span>, </a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">     <span class="dt">show.names =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">color =</span> <span class="kw">guide_legend</span>(<span class="dt">keyheight =</span> <span class="fl">0.5</span>, <span class="dt">ncol =</span> <span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">                              <span class="dt">label.theme =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">6</span>))) <span class="op">+</span><span class="st"> </span></a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># plot the line prototypes (106 French departements)</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>, <span class="dt">view =</span> <span class="st">"r"</span>, </a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">     <span class="dt">show.names =</span> <span class="ot">TRUE</span>) <span class="op">+</span><span class="st">    </span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">color =</span> <span class="kw">guide_legend</span>(<span class="dt">keyheight =</span> <span class="fl">0.5</span>, <span class="dt">ncol =</span> <span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">                              <span class="dt">label.theme =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">4</span>))) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(), <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<p><img src="d-doc-korrespSOM_files/figure-html/presiProtoL-1.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># plot the column prototypes (16 candidates)</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>, <span class="dt">view =</span> <span class="st">"c"</span>, </a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">     <span class="dt">show.names =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">color =</span> <span class="kw">guide_legend</span>(<span class="dt">keyheight =</span> <span class="fl">0.5</span>, <span class="dt">ncol =</span> <span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">                              <span class="dt">label.theme =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">6</span>))) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(), <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoL-2.png" width="700"></p>
 <p>The département profiles are much flater (and with low values) in the top left corner of the map than in the bottom right corner which shows more differences between département and globally higher number of votes.</p>
 <p>On the contrary, the candidate profiles are flater, with globally lower values in the bottom right corner of the map.</p>
 <p>A more precise individual view are given with the graphics “color” and “3d”, here drawn, as an example for the candidate “LE PEN” and for the departement “La Réunion”. * in color: one of the row or column variable (the variable is chosen with the argument <code>variable</code>) is represented on the map; * in 3d, which handling is similar to <code>"color"</code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="st">"LE_PEN"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="st">"LE_PEN"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoC3d-1.png" width="1152"></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"3d"</span>, <span class="dt">variable =</span> <span class="st">"la_reunion"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"3d"</span>, <span class="dt">variable =</span> <span class="st">"la_reunion"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoC3e-1.png" width="1152"></p>
 <p>The first graphic shows that LE_PEN obtained more votes in the departements located at the top left corner of the map. The second graphic shows that the candidates that obtained the highest scores in La Réunion are located at the bottom of the map (like Chirac).</p>
 <p>The graphics can also be drawn by giving the variable number and its type, either “r” or “c” (here, as an example, CHIRAC who is the 5th candidate, 5th column):</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="dv">5</span>, <span class="dt">view =</span> <span class="st">"c"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">variable =</span> <span class="dv">5</span>, <span class="dt">view =</span> <span class="st">"c"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoNumber-1.png" width="1152"></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"3d"</span>, <span class="dt">variable =</span> <span class="dv">5</span>, <span class="dt">view =</span> <span class="st">"c"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"3d"</span>, <span class="dt">variable =</span> <span class="dv">5</span>, <span class="dt">view =</span> <span class="st">"c"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoNumber-2.png" width="1152"></p>
 <p>Hence CHIRAC obtained more votes in departement located at the left hand side of the map.</p>
 </div>
@@ -495,17 +496,17 @@
 <h4 class="hasAnchor">
 <a href="#graphic-on-prototype-distances" class="anchor"></a>Graphic on prototype distances</h4>
 <p>These graphics are exactly the same as in the numerical case and provide various way to display the distance between prototypes on the grid.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"poly.dist"</span>, <span class="dt">show.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"poly.dist"</span>, <span class="dt">show.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto2-1.png" width="700"></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"umatrix"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"umatrix"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto3-1.png" width="700"></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"smooth.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"smooth.dist"</span>)</a></code></pre></div>
 <pre><code>## Warning in plotPrototypes(x, type, variable, my.palette, show.names, names, : Hexagonal topograpy: imputing missing values to make a full squared grid</code></pre>
 <pre><code>## Warning: imputing missing values</code></pre>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto3-2.png" width="700"></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"mds"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"mds"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto3-3.png" width="700"></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"grid.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(korresp.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"grid.dist"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto3-4.png" width="700"></p>
 <p>All these graphics show a clear separation between the top left corner of the map and the bottom right corner of the map.</p>
 </div>
@@ -514,7 +515,7 @@
 <h3 class="hasAnchor">
 <a href="#analyze-the-projection-quality" class="anchor"></a>Analyze the projection quality</h3>
 <p>The quality of the projection is provided by the function <code>quality</code> that outputs the same quality criteria than in the numeric case.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw"><a href="../reference/quality.html">quality</a></span>(korresp.som)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw"><a href="../reference/quality.html">quality</a></span>(korresp.som)</a></code></pre></div>
 <pre><code>## $topographic
 ## [1] 0.1603774
 ## 
@@ -526,12 +527,12 @@
 <a href="#building-super-classes-from-the-resulting-som" class="anchor"></a>Building super classes from the resulting SOM</h3>
 <p>In the SOM algorithm, the number of clusters is necessarily close to the number of neurons on the grid (not necessarily equal as some neurons may have no observations assigned to them). This - quite large - number may not suit the original data for a clustering purpose.</p>
 <p>A usual way to address clustering with SOM is to perform a hierarchical clustering on the prototypes. This clustering is directly available in the package <code>SOMbrero</code> using the function <code>superClass</code>. To do so, you can first have a quick overview to decide on the number of super clusters which suits your data.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/superClass.html">superClass</a></span>(korresp.som))</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/superClass.html">superClass</a></span>(korresp.som))</a></code></pre></div>
 <pre><code>## Warning in plot.somSC(superClass(korresp.som)): Impossible to plot the rectangles: no super clusters.</code></pre>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC1-1.png" width="700"></p>
 <p>By default, the function plots both a dendrogram and the evolution of the percentage of explained variance. Here, 3 super clusters seem to be a good choice. The output of <code>superClass</code> is a <code>somSC</code> class object. Basic functions have been defined for this class:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">my.sc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/superClass.html">superClass</a></span>(korresp.som, <span class="dt">k =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(my.sc)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">my.sc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/superClass.html">superClass</a></span>(korresp.som, <span class="dt">k =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(my.sc)</a></code></pre></div>
 <pre><code>## 
 ##    SOM Super Classes
 ##      Initial number of clusters :  64 
@@ -549,40 +550,40 @@
 ##  3  3  1  1  1  1  2  3  3  3  3  3  1  1  1  3  3  3  3  3  3  3  1  3  3 
 ## 51 52 53 54 55 56 57 58 59 60 61 62 63 64 
 ##  3  3  3  3  3  3  3  3  3  3  3  3  3  3</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">plot.var =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">plot.var =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC2-1.png" width="700"></p>
 <p>Like <code>plot.somRes</code>, the function <code>plot.somSC</code> has an argument <code>'type'</code> which offers many different plots and can thus be combined with most of the graphics produced by <code>plot.somSC</code>:</p>
 <ul>
 <li>Case <code>"grid"</code> fills the grid with colors according to the super clustering (and can provide a legend).</li>
 <li>Case <code>"dendro3d"</code> plots a 3d dendrogram.</li>
 </ul>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type =</span> <span class="st">"grid"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type =</span> <span class="st">"grid"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC3-1.png" width="700"></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type =</span> <span class="st">"dendro3d"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">type =</span> <span class="st">"dendro3d"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC3b-1.png" width="700"></p>
 <p>The three super-clusters correspond to most voted candidates (blue), less voted candidates (green) and, inbetween, départment with intermediate votes in which BAYROU (from one of the center party) is classified.</p>
 <p>A couple of plots from <code>plot.somRes</code> are also available for the super clustering. Some identify the super clusters with colors:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"hitmap"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"hitmap"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC4-1.png" width="700"></p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>, <span class="dt">show.names =</span> <span class="ot">TRUE</span>, <span class="dt">view =</span> <span class="st">"c"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>, <span class="dt">show.names =</span> <span class="ot">TRUE</span>, <span class="dt">view =</span> <span class="st">"c"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC4-2.png" width="700"></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"poly.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"poly.dist"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC4-3.png" width="700"></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"mds"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"mds"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC4-4.png" width="700"></p>
 <p>And some others identify the super clusters with titles:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">view =</span> <span class="st">"r"</span>, </a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">     <span class="dt">variable =</span> <span class="st">"correze"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">view =</span> <span class="st">"r"</span>, </a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">     <span class="dt">variable =</span> <span class="st">"correze"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC5-1.png" width="700"></p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">view =</span> <span class="st">"c"</span>, </a>
-<a class="sourceLine" id="cb37-2" data-line-number="2">     <span class="dt">variable =</span> <span class="st">"JOSPIN"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(my.sc, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"color"</span>, <span class="dt">view =</span> <span class="st">"c"</span>, </a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">     <span class="dt">variable =</span> <span class="st">"JOSPIN"</span>)</a></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC5-2.png" width="700"></p>
 </div>
 <div id="session-information" class="section level3">
 <h3 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h3>
 <p>This vignette has been computed with the following environment:</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a></code></pre></div>
 <pre><code>## R version 3.6.3 (2020-02-29)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 18.04.4 LTS
