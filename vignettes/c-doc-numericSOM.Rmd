@@ -18,7 +18,7 @@ output:
 To limit this documentation size, most figures are not displayed in the version
 of the vignette included in the package. To see all figures, you can rerun
 the vignettes, changing the following option to `TRUE`:
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(include = FALSE)
 ```
 
@@ -106,7 +106,7 @@ my.som <- trainSOM(x.data=the.data, dimension=c(5,5), nb.save=10, maxit=2000,
 ```
 
 The energy evolves as described in the following graphic:
-```{r energy, include=TRUE}
+```{r energy}
 plot(my.som, what="energy")
 ```
 
@@ -122,7 +122,7 @@ The observations are almost uniformly distributed on the map.
 The clustering component allows us to plot the initial data according to the 
 final clustering.
 
-```{r clusteredData, include=TRUE, cache=TRUE}
+```{r clusteredData, cache=TRUE}
 # prepare a vector of colors
 my.colors <- rainbow(prod(my.som$parameters$the.grid$dim))[my.som$clustering]
 
@@ -206,7 +206,7 @@ iris.som
 
 As the energy is registered during the intermediate backups, we can have a look
 at its evolution.
-```{r energyIris, include=TRUE}
+```{r energyIris}
 plot(iris.som, what="energy")
 ```
 
@@ -258,7 +258,7 @@ display the prototypes' or the observations' values for the different variables
 in the neurons of the map. For observations, the mean values are sometimes 
 displayed instead of the individual values.
 
-```{r irisGraphOP, include=TRUE}
+```{r irisGraphOP}
 par(mfrow = c(2,2))
 plot(iris.som, what = "obs", type = "color", variable = 1)
 plot(iris.som, what = "obs", type = "color", variable = 2)
@@ -475,7 +475,7 @@ clustering on the prototypes. This clustering is directly available in the
 package ```SOMbrero``` using the function ```superClass```. To do so, you can
 first have a quick overview to decide on the number of super clusters which 
 suits your data.
-```{r irisSC, include=TRUE}
+```{r irisSC}
 plot(superClass(iris.som))
 ```
 
@@ -519,7 +519,7 @@ plot(my.sc, what = "prototypes", type = "mds")
 ```
 
 And some others identify the super clusters with titles:
-```{r irisSCplot3, include=TRUE}
+```{r irisSCplot3}
 plot(my.sc, what = "prototypes", type = "color", variable = "Sepal.Length")
 plot(my.sc, what = "prototypes", type = "poly.dist")
 ```
