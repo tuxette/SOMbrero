@@ -15,7 +15,8 @@ initGrid(
 \item{dimension}{a 2-dimensional vector giving the dimensions (width, length)
 of the grid}
 
-\item{topo}{topology of the grid. Accept values \code{"square"} (Default) or \code{"hexagonal"}.}
+\item{topo}{topology of the grid. Accept values \code{"square"} (Default) or
+\code{"hexagonal"}.}
 
 \item{dist.type}{distance type that defines the topology of the grid (see
 'Details'). Default to \code{"euclidean"}}

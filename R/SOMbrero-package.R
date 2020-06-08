@@ -9,7 +9,7 @@
 #' @description This package implements the stochastic (also called on-line) 
 #' Self-Organizing Map (SOM) algorithms for numeric and relational data.
 #' 
-#' It is based on a grid (see \code{\link{initGrid}}) which is part of the 
+#' It is based on a grid (see \code{\link{initGrid}}), which is part of the 
 #' parameters given to the algorithm (see \code{\link{initSOM}} and 
 #' \code{\link{trainSOM}}). Many graphs can help you with the results (see 
 #' \code{\link{plot.somRes}}).

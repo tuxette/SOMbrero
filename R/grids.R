@@ -8,7 +8,8 @@
 #'
 #' @param dimension a 2-dimensional vector giving the dimensions (width, length)
 #' of the grid
-#' @param topo topology of the grid. Accept values \code{"square"} (Default) or \code{"hexagonal"}.
+#' @param topo topology of the grid. Accept values \code{"square"} (Default) or
+#' \code{"hexagonal"}.
 #' @param dist.type distance type that defines the topology of the grid (see
 #' 'Details'). Default to \code{"euclidean"}
 #'
@@ -55,13 +56,13 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
   dist.type <- match.arg(dist.type)
 
   # create coordinates for neurons
-    x <- 1:dimension[1]
-    y <- 1:dimension[2]
-    tmp <- as.matrix(expand.grid(x, y))
-    tmp <- tmp[order(tmp[,1]),]
-  if(topo == "hexagonal"){
-    tmp[, 1] <- tmp[, 1] + 0.5 * (tmp[, 2]%%2)
-    tmp[, 2] <- sqrt(3)/2 * tmp[, 2]
+  x <- 1:dimension[1]
+  y <- 1:dimension[2]
+  tmp <- as.matrix(expand.grid(x, y))
+  tmp <- tmp[order(tmp[,1]),]
+  if (topo == "hexagonal") {
+    tmp[, 1] <- tmp[, 1] + 0.5 * (tmp[, 2] %% 2)
+    tmp[, 2] <- sqrt(3)/2 * tmp[ ,2]
   }
   colnames(tmp) <- c("x", "y")
   result <- list("coord" = tmp, "topo" = topo, "dim" = dimension,
@@ -74,7 +75,6 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 ## Methods for objects of class 'myGrid'
 #' @title Methods for 'myGrid' objects.
 #' @name myGrid
-#' @exportClass myGrid
 #' @export
 #'
 #' @aliases summary.myGrid
@@ -122,7 +122,7 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' my.colors <- grDevices::rainbow(5*5)
 #' plot(a.grid) + ggplot2::scale_fill_manual(values = my.colors)
 
-print.myGrid <-function(x,...) {
+print.myGrid <- function(x, ...) {
   cat("\n      Self-Organizing Map structure\n\n")
   cat("        Features   :\n")
   cat("           topology     : ", x$topo, "\n")
@@ -135,7 +135,7 @@ print.myGrid <-function(x,...) {
 #' @method summary myGrid
 #' @export
 #' @rdname myGrid
-summary.myGrid <- function(object,...) {
+summary.myGrid <- function(object, ...) {
   cat("\nSummary\n\n")
   cat("      Class            : ", class(object), "\n")
   print(object)
@@ -149,11 +149,13 @@ plot.myGrid <- function(x, show.names = TRUE, names = 1:prod(x$dim), ...) {
   
   calls <- names(sapply(match.call(), deparse))[-1]
   if(any("print.title" %in% calls)) {
-    warning("'print.title' will be deprecated, please use 'show.names' instead", call. = F, immediate. = T)
+    warning("'print.title' will be deprecated, please use 'show.names' instead",
+            call. = TRUE, immediate. = TRUE)
     show.names <- args$print.title
   }
   if(any("the.titles" %in% calls)) {
-    warning("'the.titles' will be deprecated, please use 'names' instead", call. = F, immediate. = T)
+    warning("'the.titles' will be deprecated, please use 'names' instead",
+            call. = TRUE, immediate. = TRUE)
     names <- args$the.titles
   }
   

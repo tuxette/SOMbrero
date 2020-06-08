@@ -14,7 +14,7 @@
   is.scaled = if (x$parameters$type == "numeric") TRUE else FALSE,
   show.names = TRUE,
   names = if (what != "energy") switch(type, graph = 1:prod(x$parameters$the.grid$dim),
-    1:prod(x$parameters$the.grid$dim)),
+    1:prod(x$parameters$the.grid$dim)) else NULL,
   proportional = TRUE,
   pie.graph = FALSE,
   pie.variable = NULL,
@@ -51,10 +51,11 @@ to plotting or not. Default value is \code{TRUE} when \code{type="numeric"}
 and \code{FALSE} in the other cases.}
 
 \item{show.names}{Boolean used to indicate whether each neuron should have a
-title or not, if relevant. Default to \code{TRUE}. It is feasible on the following 
-cases: all \code{"color"}, \code{"lines"}, \code{"meanline"}, \code{"barplot"},
-\code{"boxplot"}, \code{"names"} types, \code{"add"/"pie"}, \code{"prototypes"/"umatrix"}, 
-\code{"prototypes"/"poly.dist"} and \code{"add"/"words"}.}
+title or not, if relevant. Default to \code{TRUE}. It is feasible on the 
+following cases: all \code{"color"}, \code{"lines"}, \code{"meanline"}, 
+\code{"barplot"}, \code{"boxplot"}, \code{"names"} types, \code{"add"/"pie"}, 
+\code{"prototypes"/"umatrix"}, \code{"prototypes"/"poly.dist"} and 
+\code{"add"/"words"}.}
 
 \item{names}{The names to be printed for each neuron if 
 \code{show.names=TRUE}. Default to a number which identifies the neuron.}
@@ -70,7 +71,8 @@ It indicates if the vertices should be pies or not.}
 \code{what="add"}, \code{type="graph"} and argument \code{pie.graph=TRUE}.}
 
 \item{s.radius}{The size of the pies to be plotted (maximum size when 
-\code{proportional=TRUE}) for \code{what="add"}, \code{type="graph"} and \code{pie.graph=TRUE}. The default value is \code{0.9}.}
+\code{proportional=TRUE}) for \code{what="add"}, \code{type="graph"} and 
+\code{pie.graph=TRUE}. The default value is \code{0.9}.}
 
 \item{view}{Used only when the algorithm's type is \code{"korresp"}. It
 indicates whether rows (\code{"r"}) or columns (\code{"c"}) must be drawn.}
@@ -84,7 +86,8 @@ details).}
 Produce graphics to help interpreting a \code{somRes} object.
 }
 \details{
-See \code{\link{somRes.plotting}} for further details and more examples.
+See \code{\link{somRes.plotting}} for further details and more 
+examples.
 }
 \examples{
 # run the SOM algorithm on the numerical data of 'iris' data set

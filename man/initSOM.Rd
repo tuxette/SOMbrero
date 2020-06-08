@@ -76,9 +76,9 @@ SOM algorithm process. Default value is \code{FALSE}.}
 \item{proto0}{The initial prototypes. Default value is \code{NULL}.}
 
 \item{init.proto}{The method to be used to initialize the prototypes, which
-may be \code{"random"} (randomization), \code{"obs"} (each prototype is assigned
-a random observation) or \code{"pca"}. In \code{pca} the prototypes are 
-initialized to the observations closest to a grid along the two first 
+may be \code{"random"} (randomization), \code{"obs"} (each prototype is 
+assigned a random observation) or \code{"pca"}. In \code{pca} the prototypes
+are initialized to the observations closest to a grid along the two first 
 principal components of the data (\code{numeric} case) or along a
 two-dimensional multidimensional scaling (\code{relational} case, equivalent
 to a \code{relational} PCA). Default value is \code{random} for the

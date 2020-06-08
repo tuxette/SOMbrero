@@ -3,7 +3,6 @@
 #' @title Initialize parameters for the SOM algorithm
 #' @export
 #' @name initSOM
-#' @exportClass paramSOM
 #' 
 #' @description 
 #' The \code{initSOM} function returns a \code{paramSOM} class object that
@@ -48,9 +47,9 @@
 #' SOM algorithm process. Default value is \code{FALSE}.
 #' @param proto0 The initial prototypes. Default value is \code{NULL}.
 #' @param init.proto The method to be used to initialize the prototypes, which
-#' may be \code{"random"} (randomization), \code{"obs"} (each prototype is assigned
-#' a random observation) or \code{"pca"}. In \code{pca} the prototypes are 
-#' initialized to the observations closest to a grid along the two first 
+#' may be \code{"random"} (randomization), \code{"obs"} (each prototype is 
+#' assigned a random observation) or \code{"pca"}. In \code{pca} the prototypes
+#'are initialized to the observations closest to a grid along the two first 
 #' principal components of the data (\code{numeric} case) or along a
 #' two-dimensional multidimensional scaling (\code{relational} case, equivalent
 #' to a \code{relational} PCA). Default value is \code{random} for the
@@ -114,22 +113,23 @@
 #' default.paramSOM <- initSOM()
 #' summary(default.paramSOM)
 
-initSOM <- function(dimension=c(5,5), topo=c("square", "hexagonal"),
-                    radius.type=c("gaussian", "letremy"),
-                    dist.type=switch(match.arg(radius.type), 
-                                     "letremy"="letremy", 
-                                     "gaussian"="euclidean"),
-                    type=c("numeric", "relational", "korresp"), 
-                    mode=c("online"), affectation=c("standard", "heskes"),
-                    maxit=500, nb.save=0, verbose=FALSE, proto0=NULL, 
-                    init.proto=switch(type,
-                                      "numeric"="random",
-                                      "relational"="obs",
-                                      "korresp"="random"),
-                    scaling=switch(type,
-                                   "numeric"="unitvar",
-                                   "relational"="none",
-                                   "korresp"="chi2"), eps0=1) {
+initSOM <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
+                    radius.type = c("gaussian", "letremy"),
+                    dist.type = switch(match.arg(radius.type), 
+                                       "letremy"="letremy", 
+                                       "gaussian"="euclidean"),
+                    type = c("numeric", "relational", "korresp"), 
+                    mode = c("online"), affectation = c("standard", "heskes"),
+                    maxit = 500, nb.save = 0, verbose = FALSE, proto0 = NULL, 
+                    init.proto = switch(type,
+                                        "numeric"="random",
+                                        "relational"="obs",
+                                        "korresp"="random"),
+                    scaling = switch(type,
+                                     "numeric"="unitvar",
+                                     "relational"="none",
+                                     "korresp"="chi2"), 
+                    eps0 = 1) {
   type <- match.arg(type)
   radius.type <- match.arg(radius.type)
   affectation <- match.arg(affectation)
@@ -139,70 +139,72 @@ initSOM <- function(dimension=c(5,5), topo=c("square", "hexagonal"),
   dist.type <- match.arg(dist.type, c("letremy", "maximum", "euclidean",
                                       "manhattan", "canberra", "minkowski"))
   
-  if(prod(dimension)<=1){
-    stop("wrong dimension argument : the product of x and y must be >1")
+  if (prod(dimension) <= 1) {
+    stop("wrong dimension argument : the product of x and y must be >1",
+         .call = TRUE, immediate. = TRUE)
   }
   
-  if (dist.type=="letremy" && radius.type=="gaussian") {
+  if (dist.type == "letremy" && radius.type == "gaussian") {
     dist.type <- "euclidean"
     warning("dist.type value replaced to 'euclidean' for Gaussian radius\n
             ('letremy' is not allowed)\n", 
-            call.=TRUE, immediate.=TRUE)
+            call. = TRUE, immediate. = TRUE)
   }
   
   if (topo == "hexagonal" & dist.type != "euclidean") {
     dist.type <- "euclidean"
     warning("'dist.type' value replaced to 'euclidean' for hexagonal topology\n
             (other values of 'dist.type' are not not allowed)\n", 
-            call.=TRUE, immediate.=TRUE)
+            call. = TRUE, immediate. = TRUE)
   }
   
   init.proto <- match.arg(init.proto, c("random", "obs", "pca"))
   
   # check scaling compatibility
-  if (type=="korresp" && scaling!="chi2") {
+  if (type == "korresp" && scaling != "chi2") {
     scaling <- "chi2"
     warning("scaling value replaced: must be 'chi2' for 'korresp' type\n", 
-            call.=TRUE, immediate.=TRUE)
+            call. = TRUE, immediate. = TRUE)
   }
   if (type=="relational" && ! scaling %in% c("none", "cosine")) {
     scaling <- "none"
-    warning("Wrong scaling for 'relational' SOM ; set to 'none'\n", call.=TRUE, 
-            immediate.=TRUE)
+    warning("Wrong scaling for 'relational' SOM ; set to 'none'\n", 
+            call. = TRUE, immediate. = TRUE)
   }
-  if (type=="numeric" && scaling %in% c("chi2", "cosine"))
+  if (type == "numeric" && scaling %in% c("chi2", "cosine"))
     stop(paste0("scaling='", scaling,
-                "' is only implemented for 'korresp' type\n"), call.=TRUE)
+                "' is only implemented for 'korresp' type\n"), 
+         call. = TRUE)
   
   # check init.proto compatibility
-  if (type=="korresp" && init.proto=="pca")
-    stop("'init.proto' cannot be 'pca' for 'korresp' type\n", call.= TRUE)
+  if (type == "korresp" && init.proto == "pca")
+    stop("'init.proto' cannot be 'pca' for 'korresp' type\n", call. = TRUE)
   
   # check proto0
   if (!is.null(proto0)) {
-    if (type=="relational") {
-      if (sum(proto0<0)>0)
+    if (type == "relational") {
+      if (sum(proto0<0) > 0)
         stop("initial prototypes given by user do not match chosen type.
-             Prototype values must be greater than 0.\n", call.=TRUE)
+             Prototype values must be greater than 0.\n", call. = TRUE)
       if (sum(rowSums(proto0)!=1)>0)
         stop("initial prototypes given by user do not match chosen type.
              Prototype row sums for 'relational' must be equal to 1\n", 
-             call.=TRUE)
+             call. = TRUE)
     }
     if (type=="korresp") {
-      if (min(proto0)<0 || max(proto0)>1)
+      if (min(proto0) < 0 || max(proto0) > 1)
         stop("initial prototypes given by user do not match chosen type.
                Prototypes for 'korresp' must have values between 0 and 1\n", 
-             call.=TRUE)
+             call. = TRUE)
     }
   }
   
-  params <- list("the.grid"=initGrid(dimension,match.arg(topo),
-                                     dist.type),
-                 type=type, mode=match.arg(mode), affectation=affectation,
-                 maxit=maxit, nb.save=nb.save, proto0=proto0,
-                 init.proto=init.proto, scaling=scaling, 
-                 radius.type=radius.type, verbose=verbose, eps0=eps0)
+  params <- list("the.grid" = initGrid(dimension,match.arg(topo),
+                                       dist.type),
+                 type = type, mode = match.arg(mode), affectation = affectation,
+                 maxit = maxit, nb.save = nb.save, proto0 = proto0,
+                 init.proto = init.proto, scaling = scaling, 
+                 radius.type = radius.type, verbose = verbose, eps0 = eps0)
   
   class(params) <- "paramSOM"
   
@@ -211,7 +213,7 @@ initSOM <- function(dimension=c(5,5), topo=c("square", "hexagonal"),
 
 #' @export
 #' @rdname initSOM
-print.paramSOM <- function(x,...){
+print.paramSOM <- function(x, ...) {
   cat("\n  Parameters of the SOM\n\n")
   cat("    SOM mode                       : ", x$mode, "\n")
   cat("    SOM type                       : ", x$type, "\n")
@@ -233,8 +235,8 @@ print.paramSOM <- function(x,...){
 #' @method summary paramSOM
 #' @export
 #' @rdname initSOM
-summary.paramSOM <- function(object,...){
+summary.paramSOM <- function(object, ...) {
   cat("\nSummary\n\n")
-  cat("  Class                            : ", class(object),"\n")
+  cat("  Class                            : ", class(object), "\n")
   print(object)
 }

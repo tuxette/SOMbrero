@@ -33,9 +33,10 @@ sombreroGUI <- function() {
           requireNamespace("shinyBS", quietly = TRUE), 
           requireNamespace("shinyjs", quietly = TRUE), 
           requireNamespace("shinyjqui", quietly = TRUE))) {
-    shiny::runApp(system.file('shiny', package='SOMbrero'))
+    shiny::runApp(system.file('shiny', package = 'SOMbrero'))
   } else {
-    stop("The packages 'shinycssloaders', 'shinyBS', 'shinyjs' and 'shinyjqui' are required to launch the graphical interface.", call. = TRUE)
+    stop("The packages 'shinycssloaders', 'shinyBS', 'shinyjs' and 'shinyjqui' are required to launch the graphical interface.",
+         call. = TRUE)
   }
   
 }

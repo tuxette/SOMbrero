@@ -3,15 +3,16 @@
 ############################### subfunctions ##################################
 dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
   ## TODO check (and probably fix) heights
-  if (tree$merge[ind,v.ind]<0) {
-    res <- coord[abs(tree$merge[ind,v.ind]),]
-    scatter$points3d(matrix(c(res,0,res,tree$height[ind]), 
-                            ncol=3, byrow=TRUE), type="l")
+  if (tree$merge[ind, v.ind] < 0) {
+    res <- coord[abs(tree$merge[ind, v.ind]), ]
+    scatter$points3d(matrix(c(res, 0, res,tree$height[ind]), ncol = 3, 
+                            byrow = TRUE),
+                     type = "l")
   } else {
-    res <- mat.moy[tree$merge[ind,v.ind],]
-    scatter$points3d(matrix(c(res,tree$height[tree$merge[ind,v.ind]],
-                              res,tree$height[ind]), ncol=3, 
-                            byrow=TRUE), type="l")
+    res <- mat.moy[tree$merge[ind, v.ind], ]
+    scatter$points3d(matrix(c(res, tree$height[tree$merge[ind, v.ind]],
+                              res, tree$height[ind]), ncol = 3, byrow = TRUE), 
+                     type = "l")
   }
   return(res)
 }
@@ -20,7 +21,6 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' @title Create super-clusters from SOM results
 #' @name superClass
 #' @export
-#' @exportClass somSC
 #' 
 #' @aliases superClass.somRes
 #' @aliases print.somSC
@@ -170,31 +170,32 @@ dendro3dProcess <- function(v.ind, ind, tree, coord, mat.moy, scatter) {
 #' plot(sc, type = "grid")
 #' plot(sc, what = "obs", type = "hitmap")
 
-superClass <- function(sommap, method, members, k, h,...) {
+superClass <- function(sommap, method, members, k, h, ...) {
   UseMethod("superClass")
 }
 
 #' @export
 
-superClass.somRes <- function(sommap, method="ward.D", members=NULL, k=NULL,
-                              h=NULL, ...) {
+superClass.somRes <- function(sommap, method = "ward.D", members = NULL, 
+                              k = NULL, h = NULL, ...) {
   if (method == "ward.D2") {
-    warning("'method=ward.D2' should not be used with this function because the current code implements the computation of squared distances.", call. = TRUE)
+    warning("'method=ward.D2' should not be used with this function because the current code implements the computation of squared distances.", 
+            call. = TRUE)
   }
   
-  if (sommap$parameters$type=="relational") {
+  if (sommap$parameters$type == "relational") {
     the.distances <- protoDist(sommap, "complete")
-    if (sum(the.distances<0)>0) {
-      stop("Impossible to make super clustering!", call.=TRUE)
+    if (sum(the.distances<0) > 0) {
+      stop("Impossible to make super clustering!", call. = TRUE)
     } else the.distances <- as.dist(the.distances)
   } else the.distances <- as.dist(protoDist(sommap, "complete")^2)
   
   hc <- hclust(the.distances, method, members)
   if (!is.null(k) || !is.null(h)) {
     sc <- cutree(hc, k, h)
-    res <- list("cluster"=as.numeric(sc), "tree"=hc, "som"=sommap)
+    res <- list("cluster" = as.numeric(sc), "tree" = hc, "som" = sommap)
   } else {
-    res <- list("tree"=hc, "som"=sommap)
+    res <- list("tree" = hc, "som" = sommap)
   }
   class(res) <- "somSC"
   return(res)
@@ -207,7 +208,7 @@ print.somSC <- function(x, ...) {
   cat("\n   SOM Super Classes\n")
   cat("     Initial number of clusters : ", prod(x$som$parameters$the.grid$dim),
       "\n")
-  if (length(x)>2) {
+  if (length(x) > 2) {
     cat("     Number of super clusters   : ", length(unique(x$cluster)), "\n\n")
   } else cat("     Number of super clusters not chosen yet.\n\n")
 }
@@ -217,7 +218,7 @@ print.somSC <- function(x, ...) {
 #' @rdname superClass
 summary.somSC <- function(object, ...) {
   print(object)
-  if (length(object)>2) {
+  if (length(object) > 2) {
     cat("\n  Frequency table")
     print(table(object$cluster))
     cat("\n  Clustering\n")
@@ -226,52 +227,53 @@ summary.somSC <- function(object, ...) {
     print(output.clustering)
     cat("\n")
     
-    if (object$som$parameters$type=="numeric") {
+    if (object$som$parameters$type == "numeric") {
       sc.clustering <- object$cluster[object$som$clustering]
       cat("\n  ANOVA\n")
       res.anova <- as.data.frame(t(sapply(1:ncol(object$som$data), function(ind) {
-        res.aov <- summary(aov(object$som$data[,ind]~as.factor(sc.clustering)))
-        c(round(res.aov[[1]][1,4],digits=3), round(res.aov[[1]][1,5],digits=8))
+        res.aov <- summary(aov(object$som$data[ ,ind] ~ as.factor(sc.clustering)))
+        c(round(res.aov[[1]][1,4], digits = 3), 
+          round(res.aov[[1]][1,5], digits = 8))
       })))
       names(res.anova) <- c("F", "pvalue")
-      res.anova$significativity <- rep("",ncol(object$som$data))
-      res.anova$significativity[res.anova$"pvalue"<0.05] <- "*"
-      res.anova$significativity[res.anova$"pvalue"<0.01] <- "**"
-      res.anova$significativity[res.anova$"pvalue"<0.001] <- "***"
+      res.anova$significativity <- rep("", ncol(object$som$data))
+      res.anova$significativity[res.anova$"pvalue" < 0.05] <- "*"
+      res.anova$significativity[res.anova$"pvalue" < 0.01] <- "**"
+      res.anova$significativity[res.anova$"pvalue" < 0.001] <- "***"
       rownames(res.anova) <- colnames(object$som$data)
       
       cat("\n        Degrees of freedom : ", 
-          summary(aov(object$som$data[,1]~as.factor(sc.clustering)))[[1]][1,1],
+          summary(aov(object$som$data[ ,1] ~ as.factor(sc.clustering)))[[1]][1,1],
           "\n\n")
       print(res.anova)
       cat("\n")
-    } else if (object$som$parameters$type=="relational") {
-      if (object$som$parameters$scaling=="cosine") {
+    } else if (object$som$parameters$type == "relational") {
+      if (object$som$parameters$scaling == "cosine") {
         norm.data <- preprocessData(object$som$data, object$parameters$scaling)
       } else norm.data <- object$som$data
-      sse.total <- sum(norm.data)/(2*nrow(norm.data))
+      sse.total <- sum(norm.data) / (2 * nrow(norm.data))
       
       sc.clustering <- object$cluster[object$som$clustering]
       
       sse.within <- sum(sapply(unique(sc.clustering), function(clust)
-        sum(norm.data[sc.clustering==clust,sc.clustering==clust])/
-          (2*sum(sc.clustering==clust))))
+        sum(norm.data[sc.clustering == clust,sc.clustering==clust]) /
+          (2 * sum(sc.clustering == clust))))
       
       n.clusters <- length(unique(sc.clustering))
-      F.stat <- ((sse.total-sse.within)/sse.within) * 
-        ((nrow(norm.data)-n.clusters)/(n.clusters-1))
+      F.stat <- ((sse.total - sse.within)/sse.within) * 
+        ((nrow(norm.data) - n.clusters) / (n.clusters - 1))
       
-      p.value <- 1-pf(F.stat, n.clusters-1, nrow(norm.data)-n.clusters)
+      p.value <- 1 - pf(F.stat, n.clusters - 1, nrow(norm.data) - n.clusters)
       sig <- ""
-      if (p.value<0.001) {
+      if (p.value < 0.001) {
         sig <- "***"
-      } else if (p.value<0.1) {
+      } else if (p.value < 0.1) {
         sig <- "**"
-      } else if (p.value<0.05) sig <- "*"
+      } else if (p.value < 0.05) sig <- "*"
       
       cat("\n  ANOVA\n")
       cat("         F                       : ", F.stat, "\n")
-      cat("         Degrees of freedom      : ", n.clusters-1, "\n")
+      cat("         Degrees of freedom      : ", n.clusters - 1, "\n")
       cat("         p-value                 : ", p.value, "\n")
       cat("                 significativity : ", sig, "\n")
     }
@@ -285,8 +287,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
                                 "meanline", "barplot", "boxplot", "mds", 
                                 "color", "poly.dist", "pie", "graph", 
                                 "dendro3d", "projgraph"),
-                       plot.var = TRUE, 
-                       show.names = TRUE, 
+                       plot.var = TRUE,  show.names = TRUE, 
                        names = 1:prod(x$som$parameters$the.grid$dim),
                        ...) {
   # TODO: add types "names" and "words"
@@ -374,11 +375,12 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
     args$x <- x$tree
     if (is.null(args$main)) args$main <- "Super-clusters dendrogram"
     if ((x$tree$method == "ward.D") & (plot.var)) {
-      layout(matrix(c(2,2,1),ncol=3))
-      Rsq <- cumsum(x$tree$height/sum(x$tree$height))
-      plot(length(x$tree$height):1, Rsq, type="b", pch="+",
-           xlab="Number of clusters", ylab="proportion of unexplained variance",
-           main="Proportion of variance\n not explained by\n super-clusters")
+      layout(matrix(c(2, 2, 1), ncol = 3))
+      Rsq <- cumsum(x$tree$height / sum(x$tree$height))
+      plot(length(x$tree$height):1, Rsq, type = "b", pch = "+",
+           xlab = "Number of clusters", 
+           ylab = "proportion of unexplained variance",
+           main = "Proportion of variance\n not explained by\n super-clusters")
       do.call("plot", args)
     } else  {
       do.call("plot", args)
@@ -389,7 +391,7 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
       legend("topright", col = clust.col.pal, pch = 19, 
              legend = paste("SC", 1:nbclust), cex = 1)
     } else warning("Impossible to plot the rectangles: no super clusters.\n",
-                   call.=TRUE, immediate.=TRUE)
+                   call. = TRUE, immediate. = TRUE)
     layout(1)
     
   } else if (type == "dendro3d") {
@@ -405,26 +407,30 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
     if (is.null(args$angle)) args$angle <- 40
     posleg <- "bottomright"
     if (args$angle > 80) posleg <- "topright"
-    spt <- scatterplot3d(x=x.y.coord[,1], y=x.y.coord[,2], 
-                         z=rep(0,prod(x$som$parameters$the.grid$dim)), 
-                         xlim=c(min(x.y.coord[,1])-0.5, max(x.y.coord[,1])+0.5), 
-                         ylim=c(min(x.y.coord[,2])-0.5, max(x.y.coord[,2])+0.5),
-                         zlim=c(0, z.max), 
-                         angle=args$angle,
-                         pch=19, color=clust.col, xlab="x", ylab="y",  
-                         zlab="", x.ticklabs="", y.ticklabs="")
+    spt <- scatterplot3d(x = x.y.coord[,1], y = x.y.coord[,2], 
+                         z = rep(0,prod(x$som$parameters$the.grid$dim)), 
+                         xlim = c(min(x.y.coord[ ,1]) - 0.5, 
+                                  max(x.y.coord[ ,1]) + 0.5), 
+                         ylim = c(min(x.y.coord[ ,2]) - 0.5, 
+                                  max(x.y.coord[ ,2]) + 0.5),
+                         zlim = c(0, z.max), angle = args$angle, pch = 19, 
+                         color = clust.col, xlab = "x", ylab = "y", zlab = "", 
+                         x.ticklabs = "", y.ticklabs = "")
     if (length(x) > 2) {
       legend(posleg, col = clust.col.pal, pch = 19, 
              legend = paste("SC", 1:nbclust), cex = 1)
     }
-    horiz.ticks <- matrix(NA, nrow=prod(x$som$parameters$the.grid$dim)-1, ncol=2)
-    for (neuron in 1:(prod(x$som$parameters$the.grid$dim)-1)) {
-      vert.ticks <- sapply(1:2, dendro3dProcess, ind=neuron, tree=x$tree, 
-                           coord=x.y.coord, mat.moy=horiz.ticks, scatter=spt)
-      horiz.ticks[neuron,] <- rowMeans(vert.ticks)
-      spt$points3d(matrix(c(vert.ticks[,1], x$tree$height[neuron],
-                            vert.ticks[,2], x$tree$height[neuron]), ncol=3,
-                          byrow=TRUE), type="l")
+    horiz.ticks <- matrix(NA, nrow = prod(x$som$parameters$the.grid$dim) - 1,
+                          ncol = 2)
+    for (neuron in 1:(prod(x$som$parameters$the.grid$dim) - 1)) {
+      vert.ticks <- sapply(1:2, dendro3dProcess, ind = neuron, tree = x$tree, 
+                           coord = x.y.coord, mat.moy = horiz.ticks, 
+                           scatter = spt)
+      horiz.ticks[neuron, ] <- rowMeans(vert.ticks)
+      spt$points3d(matrix(c(vert.ticks[ ,1], x$tree$height[neuron],
+                            vert.ticks[ ,2], x$tree$height[neuron]), ncol = 3,
+                          byrow = TRUE), 
+                   type = "l")
     }
   } else {
     if (length(x) < 3) {
@@ -432,18 +438,18 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
     } else {
       if (type == "grid") {
         args$sc <- max(x$cluster)
-        ggplotGrid("prototypes", type="grid", values=x$cluster, 
-                   clustering=as.numeric(as.character(rownames(x$som$prototypes))), 
-                   show.names=show.names, names=names, 
-                   the.grid=x$som$parameters$the.grid, args)
+        ggplotGrid("prototypes", type = "grid", values = x$cluster, 
+                   clustering = as.numeric(as.character(rownames(x$som$prototypes))), 
+                   show.names = show.names, names=names, 
+                   the.grid = x$som$parameters$the.grid, args)
         
       } else if (type=="hitmap") {
         args$sc <- max(x$cluster)
-        ggplotGrid("observations", type="hitmap", 
-                   values=x$cluster[x$som$clustering], 
-                   clustering=x$som$clustering, 
-                   show.names=show.names, names=names, 
-                   the.grid=x$som$parameters$the.grid, args)
+        ggplotGrid("observations", type = "hitmap",  
+                   values = x$cluster[x$som$clustering], 
+                   clustering = x$som$clustering, 
+                   show.names = show.names, names = names, 
+                   the.grid = x$som$parameters$the.grid, args)
         
       } else if (type %in% c("lines", "meanline", "barplot", "boxplot", "mds",
                              "color", "poly.dist", "pie", "graph")) {
@@ -546,19 +552,19 @@ plot.somSC <- function(x, what = c("obs", "prototypes", "add"),
 #' @rdname superClass
 projectIGraph.somSC <- function(object, init.graph, ...) {
   if (length(object) <= 2) 
-    stop("The number of clusters has not been chosen yet. Cannot project the graph on super-clusters.\n", 
-         call.=TRUE)
-  if (object$som$parameters$type=="korresp")
+    stop("The number of clusters has not been chosen yet. Cannot project the graph on super-clusters.\n",
+         call. = TRUE)
+  if (object$som$parameters$type == "korresp")
     stop("projectIGraph is not available for 'korresp' super classes\n", 
-         call.=TRUE)
+         call. = TRUE)
   # project the graph into the SOM grid
   proj.graph <- projectIGraph.somRes(object$som, init.graph)
   # clustering of the non empty clusters
   induced.clustering <- object$cluster[as.numeric(V(proj.graph)$name)]
   # search for the positions (center of gravity) of the superclusters
   original.positions <- object$som$parameters$the.grid$coord
-  positions <- cbind(tapply(original.positions[,1], object$cluster, mean),
-                     tapply(original.positions[,2], object$cluster, mean))
+  positions <- cbind(tapply(original.positions[ ,1], object$cluster, mean),
+                     tapply(original.positions[ ,2], object$cluster, mean))
   
   proj.graph.sc <- projectGraph(proj.graph, induced.clustering, positions)
   
