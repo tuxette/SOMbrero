@@ -78,6 +78,13 @@ korrespPreprocess <- function(cont.table) {
   return(both.profiles)
 }
 
+# mixKernel preprocessing
+mixKernelPreprocess <- function(x.data) {
+  dissim <- sweep(sweep(-2*x.data$kernel, 1, diag(x.data$kernel), "+"), 2, diag(x.data$kernel), "+")
+  dissim <- (t(dissim)+dissim)/2
+  return(dissim)
+}
+
 preprocessProto <- function(prototypes, scaling, x.data) {
   switch(scaling,
          "unitvar" = scale(prototypes, center = apply(x.data, 2, mean),
@@ -550,6 +557,8 @@ calculateEnergy <- function(x.data, clustering, prototypes, parameters, ind.t) {
 trainSOM <- function (x.data, ...) {
   param.args <- list(...)
   ## Step 1: Parameters handling
+  # Check if input is a mixKernel results
+  if (is(x.data, 'kernel')) x.data <- mixKernelPreprocess(x.data)
   if (!is.matrix(x.data)) x.data <- as.matrix(x.data)
   if (is.null(rownames(x.data))) rownames(x.data) <- 1:nrow(x.data)
   if (is.null(colnames(x.data))) colnames(x.data) <- paste0("X", 1:ncol(x.data))
