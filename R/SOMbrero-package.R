@@ -17,8 +17,8 @@
 #' @details \tabular{ll}{
 #' Package: \tab SOMbrero\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.3\cr
-#' Date: \tab 2020-06-08\cr
+#' Version: \tab 1.3-1\cr
+#' Date: \tab 2020-08-10\cr
 #' License: \tab GPL (>= 2)
 #' }
 #' 
