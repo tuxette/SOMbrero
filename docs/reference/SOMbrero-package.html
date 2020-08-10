@@ -8,23 +8,29 @@
 
 <title>Self Organizing Maps Bound to Realize Euclidean and Relational Outputs — SOMbrero-package • SOMbrero</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,15 +38,15 @@
 
 
 
-<meta property="og:title" content="Self Organizing Maps Bound to Realize Euclidean and Relational Outputs — SOMbrero-package" />
 
+<meta property="og:title" content="Self Organizing Maps Bound to Realize Euclidean and Relational Outputs — SOMbrero-package" />
 <meta property="og:description" content="This package implements the stochastic (also called on-line) 
 Self-Organizing Map (SOM) algorithms for numeric and relational data.
 It is based on a grid (see initGrid), which is part of the 
 parameters given to the algorithm (see initSOM and 
 trainSOM). Many graphs can help you with the results (see 
 plot.somRes)." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -57,7 +63,7 @@ plot.somRes)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -71,7 +77,7 @@ plot.somRes)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SOMbrero</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3-1</span>
       </span>
     </div>
 
@@ -111,9 +117,13 @@ plot.somRes)." />
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="http://github.com/tuxette/sombrero/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -128,30 +138,29 @@ plot.somRes)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Self Organizing Maps Bound to Realize Euclidean and Relational Outputs</h1>
-    
+    <small class="dont-index">Source: <a href='http://github.com/tuxette/sombrero/blob/master/R/SOMbrero-package.R'><code>R/SOMbrero-package.R</code></a></small>
     <div class="hidden name"><code>SOMbrero-package.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p>This package implements the stochastic (also called on-line) 
 Self-Organizing Map (SOM) algorithms for numeric and relational data.</p>
-<p>It is based on a grid (see <code><a href='initGrid.html'>initGrid</a></code>), which is part of the 
-parameters given to the algorithm (see <code><a href='initSOM.html'>initSOM</a></code> and 
-<code><a href='trainSOM.html'>trainSOM</a></code>). Many graphs can help you with the results (see 
-<code><a href='plot.somRes.html'>plot.somRes</a></code>).</p>
-    
+<p>It is based on a grid (see <code>initGrid</code>), which is part of the 
+parameters given to the algorithm (see <code>initSOM</code> and 
+<code>trainSOM</code>). Many graphs can help you with the results (see 
+<code>plot.somRes</code>).</p>
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
 <table class='table'>
 <tr><td>Package:</td><td>SOMbrero</td></tr>
 <tr><td>Type:</td><td>Package</td></tr>
-<tr><td>Version:</td><td>1.3</td></tr>
-<tr><td>Date:</td><td>2020-05-28</td></tr>
+<tr><td>Version:</td><td>1.3-1</td></tr>
+<tr><td>Date:</td><td>2020-08-10</td></tr>
 <tr><td>License:</td><td>GPL (&gt;= 2)</td></tr>
 </table>
 
@@ -165,7 +174,6 @@ Cottrell and Letremy, 2005) and <code>type="relational"</code> for dissimilarity
 data, as described in Olteanu and Villa-Vialaneix, 2015a with the fast 
 implementation of Mariette <em>et al.</em>, 2017. A special focus has been put 
 on representing graphs, as described in Olteanu and Villa-Vialaneix, 2015b.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Kohonen T. (2001) <em>Self-Organizing Maps</em>. Berlin/Heidelberg:
@@ -194,34 +202,16 @@ package SOMbrero. In: J.C. Lamirel, M. Cottrell, M. Olteanu, <em>12th
 International Workshop on Self-Organizing Maps and Learning Vector 
 Quantization, Clustering and Data Visualization (Proceedings of WSOM 2017)</em>, 
 IEEE, Nancy, France.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='initGrid.html'>initGrid</a></code>, <code><a href='trainSOM.html'>trainSOM</a></code>, 
-<code><a href='plot.somRes.html'>plot.somRes</a></code> and <code><a href='sombreroGUI.html'>sombreroGUI</a></code>.</p></div>
-    
+    <div class='dont-index'><p><code>initGrid</code>, <code>trainSOM</code>, 
+<code>plot.somRes</code> and <code>sombreroGUI</code>.</p></div>
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    <p>Nathalie Vialaneix <a href='mailto:nathalie.vialaneix@inrae.fr'>nathalie.vialaneix@inrae.fr</a><br />
-Élise Maigné &lt;elise.maigne@inrae.fr&gt;<br />
-Jérome Mariette <a href='mailto:jerome.mariette@inrae.fr'>jerome.mariette@inrae.fr</a><br />
-Madalina Olteanu <a href='mailto:madalina.olteanu@univ-paris1.fr'>madalina.olteanu@univ-paris1.fr</a><br />
-Fabrice Rossi <a href='mailto:fabrice.rossi@apiacoa.org'>fabrice.rossi@apiacoa.org</a><br />
-Laura Bendhaiba <a href='mailto:laurabendhaiba@gmail.com'>laurabendhaiba@gmail.com</a><br />
-Julien Boelaert <a href='mailto:julien.boelaert@gmail.com'>julien.boelaert@gmail.com</a><br /> <br />
-Maintainer: Nathalie Vialaneix <a href='mailto:nathalie.vialaneix@inrae.fr'>nathalie.vialaneix@inrae.fr</a></p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -232,7 +222,7 @@ Maintainer: Nathalie Vialaneix <a href='mailto:nathalie.vialaneix@inrae.fr'>nath
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

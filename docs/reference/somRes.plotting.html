@@ -8,23 +8,29 @@
 
 <title>Plotting <code>somRes</code> results — somRes.plotting • SOMbrero</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,13 +38,13 @@
 
 
 
-<meta property="og:title" content="Plotting <code>somRes</code> results — somRes.plotting" />
 
+<meta property="og:title" content="Plotting <code>somRes</code> results — somRes.plotting" />
 <meta property="og:description" content="Useful details on how to produce graphics to help interpreting a somRes
 object.
 Important: the graphics availables for the different types of SOM are marked with a N, a K or a R. 
 (N = numerical SOM, K = korresp SOM and R = relational SOM)." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -55,7 +61,7 @@ Important: the graphics availables for the different types of SOM are marked wit
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -69,7 +75,7 @@ Important: the graphics availables for the different types of SOM are marked wit
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SOMbrero</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3-1</span>
       </span>
     </div>
 
@@ -109,9 +115,13 @@ Important: the graphics availables for the different types of SOM are marked wit
   </ul>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="http://github.com/tuxette/sombrero/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -131,15 +141,14 @@ Important: the graphics availables for the different types of SOM are marked wit
     </div>
 
     <div class="ref-description">
-    
     <p>Useful details on how to produce graphics to help interpreting a <code>somRes</code>
 object.<br /></p>
 <p>Important: the graphics availables for the different types of SOM are marked with a N, a K or a R. <br />
 (<b>N</b> = numerical SOM, <b>K</b> = korresp SOM and <b>R</b> = relational SOM).</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="graphics-on-the-observations-what-obs-"><a class="anchor" href="#graphics-on-the-observations-what-obs-"></a>Graphics on the observations: <code>what = "obs"</code></h2>
 
     
@@ -148,7 +157,7 @@ object.<br /></p>
 nothing will be plotted at its location.</p>
 
 
-<p>The possible values for <b><code>type</code></b> are:</p><dl class='dl-horizontal'>
+<p>The possible values for <b><code>type</code></b> are:</p><dl'>
 <dt><code>"hitmap"</code> (K, R)</dt><dd><p>plots proportional areas according to the number of
 observations per neuron. It is the default plot when <code>what="obs"</code>.</p></dd>
 
@@ -180,19 +189,17 @@ to which it belongs.</p></dd>
 
 </dl>
 
-    
     <h2 class="hasAnchor" id="graphic-on-the-energy-what-energy-n-k-r-"><a class="anchor" href="#graphic-on-the-energy-what-energy-n-k-r-"></a>Graphic on the energy: <code>what = "energy"</code> (N, K, R)</h2>
 
     <p>This graphic is only available if some intermediate backups have been registered
 (i.e., with the argument <code>nb.save</code> of <code>trainSOM</code> or <code>initSOM</code> 
 resulting in <code>x$parameters$nb.save&gt;1</code>). Graphic plots the evolution of the 
 level of the energy according to the registered steps.</p>
-    
     <h2 class="hasAnchor" id="graphics-on-the-prototypes-what-prototypes-"><a class="anchor" href="#graphics-on-the-prototypes-what-prototypes-"></a>Graphics on the prototypes: <code>what = "prototypes"</code></h2>
 
     
 
-<p>The possible values for <b><code>type</code></b> are:</p><dl class='dl-horizontal'>
+<p>The possible values for <b><code>type</code></b> are:</p><dl'>
 <dt><code>"lines"</code> (N, K, R)</dt><dd><p>has the same behavior as the <code>"lines"</code> case 
 described in the observations section, but according to the prototypes level.</p></dd>
 
@@ -235,7 +242,6 @@ the grid distances.</p></dd>
 
 </dl>
 
-    
     <h2 class="hasAnchor" id="graphics-on-an-additional-variable-what-add-"><a class="anchor" href="#graphics-on-an-additional-variable-what-add-"></a>Graphics on an additional variable: <code>what="add"</code></h2>
 
     <p>The case <code>what="add"</code> considers an additional variable, which has to be 
@@ -244,7 +250,7 @@ observations in the original data.</p>
 <p>When the algorithm's type is <code>korresp</code>, no graphic is available for
 <code>what = "add"</code>.</p>
 <p>The possible values for <code>type</code> are:</p>
-<dl class='dl-horizontal'>
+<dl'>
 <dt><code>"color"</code> (N, R)</dt><dd><p>has the same behavior as the <code>"color"</code> case 
 described in the observations section. Then, the additional variable must be a 
 numerical vector.</p></dd>
@@ -281,7 +287,7 @@ of their values in the neuron. If the <code>variable</code> given is a contingen
 table, it will plot directly the frequency of the words in the neurons.</p></dd>
 
 <dt><code>"graph"</code> (N, R)</dt><dd><p>requires that the argument <code>variable</code> is an
-<code>igraph</code> object (see <code><a href='https://rdrr.io/r/base/library.html'>library("igraph")</a></code>. According to the existing
+<code>igraph</code> object (see <code><a href='https://rdrr.io/pkg/igraph/man'>library("igraph")</a></code>. According to the existing
 edges in the graph and to the clustering obtained with the SOM algorithm, a 
 clustered graph will be produced where a vertex between two vertices represents
 a neuron and the width of an edge is proportional to the number of edges in the
@@ -293,7 +299,6 @@ These are used to display the vertex as pie charts. For this case,
 
 </dl>
 
-    
     <h2 class="hasAnchor" id="further-arguments-via-"><a class="anchor" href="#further-arguments-via-"></a>Further arguments via ...</h2>
 
     <p>Further arguments, their reference functions and the <code>plot.somRes</code> cases 
@@ -317,62 +322,44 @@ are summarized in the following list:</p>
 <code>what = "prototypes"</code> / <code>type = "smooth.dist"</code></p></li>
 </ul>
 
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>### Numerical SOM</span>
 <span class='co'># run the SOM algorithm on the numerical data of 'iris' data set</span>
-<span class='no'>iris.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>nb.save</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='no'>iris.som</span> <span class='kw'>&lt;-</span> <span class='fu'>trainSOM</span>(<span class='kw'>x.data</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>nb.save</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
 <span class='co'>####### energy plot</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"energy"</span>) <span class='co'># energy</span></div><div class='img'><img src='somRes.plotting-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"energy"</span>) <span class='co'># energy</span></div><div class='img'><img src='somRes.plotting-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>####### plots on observations</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"hitmap"</span>)</div><div class='img'><img src='somRes.plotting-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"lines"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"barplot"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"boxplot"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"meanline"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"color"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"names"</span>)}
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"hitmap"</span>)</div><div class='img'><img src='somRes.plotting-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"lines"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"barplot"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"boxplot"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"meanline"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"color"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"obs"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"names"</span>)}
 
 <span class='co'>####### plots on prototypes</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"3d"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>)</div><div class='img'><img src='somRes.plotting-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"lines"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"barplot"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"umatrix"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"color"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"Petal.Length"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"smooth.dist"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"poly.dist"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid.dist"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mds"</span>)}
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"3d"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>)</div><div class='img'><img src='somRes.plotting-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"lines"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"barplot"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"umatrix"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"color"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='st'>"Petal.Length"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"smooth.dist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"poly.dist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid.dist"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"prototypes"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"mds"</span>)}
 
 
 <span class='co'>####### plots on an additional variable: the flower species</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"pie"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)</div><div class='img'><img src='somRes.plotting-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"names"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"words"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>2</span>])}</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"pie"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)</div><div class='img'><img src='somRes.plotting-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"names"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>$<span class='no'>Species</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span> <span class='kw'>=</span> <span class='st'>"add"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"words"</span>, <span class='kw'>variable</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>2</span>])}</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#graphics-on-the-observations-what-obs-">Graphics on the observations: <code>what = "obs"</code></a></li>
-
-      <li><a href="#graphic-on-the-energy-what-energy-n-k-r-">Graphic on the energy: <code>what = "energy"</code> (N, K, R)</a></li>
-
-      <li><a href="#graphics-on-the-prototypes-what-prototypes-">Graphics on the prototypes: <code>what = "prototypes"</code></a></li>
-
-      <li><a href="#graphics-on-an-additional-variable-what-add-">Graphics on an additional variable: <code>what="add"</code></a></li>
-
-      <li><a href="#further-arguments-via-">Further arguments via ...</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
-    <h2>Author</h2>
-    <p>Élise Maigné <a href='mailto:elise.maigne@inrae.fr'>elise.maigne@inrae.fr</a><br />
-Madalina Olteanu <a href='mailto:madalina.olteanu@univ-paris1.fr'>madalina.olteanu@univ-paris1.fr</a><br />
-Nathalie Vialaneix <a href='mailto:nathalie.vialaneix@inra.fr'>nathalie.vialaneix@inra.fr</a></p>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -383,7 +370,7 @@ Nathalie Vialaneix <a href='mailto:nathalie.vialaneix@inra.fr'>nathalie.vialanei
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

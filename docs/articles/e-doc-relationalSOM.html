@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Using Self-Organizing Maps with SOMbrero for dissimilarity matrices • SOMbrero</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Using Self-Organizing Maps with SOMbrero for dissimilarity matrices">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="SOMbrero">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SOMbrero</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3-1</span>
       </span>
     </div>
 
@@ -71,7 +71,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="http://github.com/tuxette/sombrero/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -81,14 +88,14 @@
 
       
 
-      </header><div class="row">
+      </header><script src="e-doc-relationalSOM_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</h1>
+      <h1 data-toc-skip>Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</h1>
             
-            <h4 class="date">08 juin, 2020</h4>
+            <h4 class="date">10 août, 2020</h4>
       
-      
+      <small class="dont-index">Source: <a href="http://github.com/tuxette/sombrero/blob/master/vignettes/e-doc-relationalSOM.Rmd"><code>vignettes/e-doc-relationalSOM.Rmd</code></a></small>
       <div class="hidden name"><code>e-doc-relationalSOM.Rmd</code></div>
 
     </div>
@@ -101,23 +108,23 @@
 %\VignettePackage{SOMbrero}
 -->
 <p>To limit this documentation size, most figures are not displayed in the version of the vignette included in the package. To see all figures, you can rerun the vignettes, changing the following option to <code>TRUE</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">include =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span>$<span class="fu">set</span>(<span class="kw">include</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <p>Alternatively, this compilation is also available at: <a href="http://sombrero.nathalievialaneix.eu/articles/e-doc-relationalSOM.html" class="uri">http://sombrero.nathalievialaneix.eu/articles/e-doc-relationalSOM.html</a></p>
 <div id="basic-package-description" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-package-description" class="anchor"></a>Basic package description</h2>
-<p><code>SOMbrero</code> implements different variants of the Self-Organizing Map algorithm (also called Kohonen’s algorithm). To process a given dataset with the SOM algorithm, you can use the function <code><a href="../reference/trainSOM.html">trainSOM()</a></code>.</p>
+<p><code>SOMbrero</code> implements different variants of the Self-Organizing Map algorithm (also called Kohonen’s algorithm). To process a given dataset with the SOM algorithm, you can use the function <code>trainSOM()</code>.</p>
 <p><strong>This documentation only considers the case of dissimilarity matrices.</strong></p>
 <div id="arguments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#arguments" class="anchor"></a>Arguments</h3>
 <p>The <code>trainSOM</code> function has several arguments, but only the first one is required. This argument is <code>x.data</code> which is the dataset used to train the SOM. In this documentation, it is passed to the function as a square matrix or data frame, which entries are dissimilarity measures between pairs of observations. The diagonal of this matrix must contain only zeros.</p>
-<p>The other arguments are the same as the arguments passed to the <code>initSOM</code> function (they are parameters defining the algorithm, see <code><a href="https://rdrr.io/r/utils/help.html">help(initSOM)</a></code> for further details).</p>
+<p>The other arguments are the same as the arguments passed to the <code>initSOM</code> function (they are parameters defining the algorithm, see <code>help(initSOM)</code> for further details).</p>
 </div>
 <div id="outputs" class="section level3">
 <h3 class="hasAnchor">
 <a href="#outputs" class="anchor"></a>Outputs</h3>
-<p>The <code>trainSOM</code> function returns an object of class <code>somRes</code> (see <code><a href="https://rdrr.io/r/utils/help.html">help(trainSOM)</a></code> for further details on this class).</p>
+<p>The <code>trainSOM</code> function returns an object of class <code>somRes</code> (see <code>help(trainSOM)</code> for further details on this class).</p>
 </div>
 <div id="graphics" class="section level3">
 <h3 class="hasAnchor">
@@ -384,9 +391,9 @@
 <a href="#case-study-the-lesmis-data-set" class="anchor"></a>Case study: the <code>lesmis</code> data set</h2>
 <p>The <code>lesmis</code> data set is based on the coappearance graph of the characters of the novel Les Miserables (Victor Hugo). Each vertex stands for a character whose name is given by the vertex label. One edge means that the corresponding two characters appear in a common chapter in the book. Each edge also has a value indicating the number of coappearances. The co-appearance network has been extracted by D.E. Knuth (1993).</p>
 <p>The <code>lesmis</code> data contain two objects: the first one,<code>lesmis</code>, is an <code>igraph</code> object (see <a href="http://igraph.sourceforge.net/">the igraph web page</a>), with 77 nodes and 254 edges.</p>
-<p>Further information on this data set is provided with <code><a href="https://rdrr.io/r/utils/help.html">help(lesmis)</a></code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(lesmis)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">lesmis</a></code></pre></div>
+<p>Further information on this data set is provided with <code>help(lesmis)</code>.</p>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">lesmis</span>)
+<span class="no">lesmis</span></pre></body></html></div>
 <pre><code>## IGRAPH 3babff7 U--- 77 254 -- 
 ## + attr: layout (g/n), id (v/n), label (v/c), value (e/n)
 ## + edges from 3babff7:
@@ -399,16 +406,16 @@
 ## [61] 25--28 27--28 12--29 28--29 24--30 28--30 12--30 24--31 31--32 12--32
 ## [71] 24--32 28--32 12--33 12--34 28--34 12--35 30--35 12--36 35--36 30--36
 ## + ... omitted several edges</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(lesmis, <span class="dt">vertex.size =</span> <span class="dv">0</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">lesmis</span>, <span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisDescr-1.png" width="1152"></p>
 <p>The <code>dissim.lesmis</code> object is a matrix with entries equal to the length of the shortest path between two characters (obtained with the function <code>shortest.paths</code> of package <code>igraph</code>). Note that its row and column names have been initialized with the characters’ names to ease the use of the graphical functions of <code>SOMbrero</code>.</p>
 <div id="training-the-som" class="section level3">
 <h3 class="hasAnchor">
 <a href="#training-the-som" class="anchor"></a>Training the SOM</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">622</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">mis.som &lt;-<span class="st"> </span><span class="kw"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="dt">x.data=</span>dissim.lesmis, <span class="dt">type =</span> <span class="st">"relational"</span>, <span class="dt">nb.save =</span> <span class="dv">10</span>,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">                   <span class="dt">init.proto =</span> <span class="st">"random"</span>, <span class="dt">radius.type =</span> <span class="st">"letremy"</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what=</span><span class="st">"energy"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">622</span>)
+<span class="no">mis.som</span> <span class="kw">&lt;-</span> <span class="fu">trainSOM</span>(<span class="kw">x.data</span><span class="kw">=</span><span class="no">dissim.lesmis</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"relational"</span>, <span class="kw">nb.save</span> <span class="kw">=</span> <span class="fl">10</span>,
+                   <span class="kw">init.proto</span> <span class="kw">=</span> <span class="st">"random"</span>, <span class="kw">radius.type</span> <span class="kw">=</span> <span class="st">"letremy"</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span><span class="kw">=</span><span class="st">"energy"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisTrain-1.png" width="700"></p>
 <p>The dissimilarity matrix <code>dissim.lesmis</code> is passed to the <code>trainSOM</code> function as input. As the SOM intermediate backups have been registered (<code>nb.save = 10</code>), the energy evolution can be plotted: it stabilized in the last 100 iterations.</p>
 </div>
@@ -416,7 +423,7 @@
 <h3 class="hasAnchor">
 <a href="#resulting-clustering" class="anchor"></a>Resulting clustering</h3>
 <p>The clustering component provides the classification of each of the 77 characters. The <code>table</code> function is a simple way to view data distribution on the map.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">mis.som<span class="op">$</span>clustering</a></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">mis.som</span>$<span class="no">clustering</span></pre></body></html></div>
 <pre><code>##           Myriel         Napoleon   MlleBaptistine      MmeMagloire 
 ##               25               25               19               19 
 ##     CountessDeLo         Geborand     Champtercier         Cravatte 
@@ -457,28 +464,28 @@
 ##               17               15               15                1 
 ##     MmeHucheloup 
 ##               10</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(mis.som<span class="op">$</span>clustering)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">mis.som</span>$<span class="no">clustering</span>)</pre></body></html></div>
 <pre><code>## 
 ##  1  2  3  4  5  6  7  8  9 10 11 13 15 16 17 18 19 21 22 23 25 
 ##  6  2  3  1  5  2  1  2  1  7  9  2  5  1  4  3  2  6  5  2  8</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisClustering-1.png" width="700"></p>
 <p>The clustering can be displayed using the <code>plot</code> function with <code>type = names</code>.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"obs"</span>, <span class="dt">type =</span> <span class="st">"names"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"obs"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"names"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisPseudoNamesPlot-1.png" width="1152"></p>
 <p>In this clustering, the main character, Valjean, is in a central position (in cluster 8) and some clusters are easily identified as sub-stories around Javert. For instance, clusters 10, 15 and 20 are related to the Thénardier family, with (for instance), cluster 20 being the cluster of Gavroche and his two brothers (named children 1 and 2).</p>
 <p>The original graph can also be superimposed on the map:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"graph"</span>, <span class="dt">var =</span> lesmis)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"add"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"graph"</span>, <span class="kw">var</span> <span class="kw">=</span> <span class="no">lesmis</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisProjGraph-1.png" width="700"></p>
 <p>In the latter plot (which is still messy at this stage of the analysis), nodes correspond to clusters and are positionned at the cluster location on the map. The size of the nodes is proportional to the number of characters classified in this cluster and edges between nodes have a width proportional to the total weight between any two characters from the two linked clusters.</p>
 <p>Clusters profile overviews can be plotted either with <em>e.g.</em>, lines or barplot, that both provide an information similar to that given by <code>"names"</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>)  <span class="op">+</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">color =</span> <span class="kw">guide_legend</span>(<span class="dt">keyheight =</span> <span class="fl">0.5</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">label.theme =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">6</span>))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(), <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"lines"</span>)  +
+  <span class="fu">guides</span>(<span class="kw">color</span> <span class="kw">=</span> <span class="fu">guide_legend</span>(<span class="kw">keyheight</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">label.theme</span> <span class="kw">=</span> <span class="fu">element_text</span>(<span class="kw">size</span> <span class="kw">=</span> <span class="fl">6</span>))) +
+  <span class="fu">theme</span>(<span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu">element_blank</span>(), <span class="kw">axis.ticks.x</span> <span class="kw">=</span> <span class="fu">element_blank</span>())</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisProtoProfiles-1.png" width="700"></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"barplot"</span>)  <span class="op">+</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_legend</span>(<span class="dt">keyheight =</span> <span class="fl">0.5</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">label.theme =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">6</span>))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(), <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>())</a></code></pre></div>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"barplot"</span>)  +
+  <span class="fu">guides</span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="fu">guide_legend</span>(<span class="kw">keyheight</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">label.theme</span> <span class="kw">=</span> <span class="fu">element_text</span>(<span class="kw">size</span> <span class="kw">=</span> <span class="fl">6</span>))) +
+  <span class="fu">theme</span>(<span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu">element_blank</span>(), <span class="kw">axis.ticks.x</span> <span class="kw">=</span> <span class="fu">element_blank</span>())</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisProtoProfiles-2.png" width="700"></p>
 <p>On these graphics, one variable is represented respectively with a point or a slice. It is therefore easy to see which variable affects which cluster.</p>
 <p>To see how different the clusters are, some graphics show the distances between prototypes. These graphics have exactly the same interpretation as for the other data types processed by <code>SOMbrero</code>.</p>
@@ -489,21 +496,21 @@
 <li><p><code>"mds"</code> plots the number of the neuron on a map according to a Multi-Dimensional Scaling (MDS) projection;</p></li>
 <li><p><code>"grid.dist"</code> plots a point for each pair of prototypes, with the <span class="math inline">\(x\)</span> coordinates representing the distance between the prototypes in the input space, and <span class="math inline">\(y\)</span> coordinates representing the distance between the corresponding neurons on the grid.</p></li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"poly.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"poly.dist"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisProtoDist-1.png" width="700"></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"smooth.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"smooth.dist"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisProtoDistb-1.png" width="700"></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"umatrix"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"umatrix"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisProtoDistb-2.png" width="700"></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"mds"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"mds"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisProtoDistb-3.png" width="700"></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mis.som, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"grid.dist"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"grid.dist"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisProtoDistb-4.png" width="700"></p>
 <p>Here we can see that the prototypes located in the top left and top right corners of the map (<em>e.g.</em>, clusters 5 and clusters 19-20 and 24-25) are further from the other neurons than in average.</p>
 <p>Finally, with a graphical overview of the clustering</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(lesmis, <span class="dt">vertex.label.color =</span> <span class="kw"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="dv">25</span>)[mis.som<span class="op">$</span>clustering], </a>
-<a class="sourceLine" id="cb20-2" data-line-number="2">     <span class="dt">vertex.size =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="dt">x =</span> <span class="st">"left"</span>, <span class="dt">legend =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">25</span>, <span class="dt">col =</span> <span class="kw"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="dv">25</span>), <span class="dt">pch =</span> <span class="dv">19</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">lesmis</span>, <span class="kw">vertex.label.color</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">25</span>)[<span class="no">mis.som</span>$<span class="no">clustering</span>],
+     <span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">0</span>)
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"left"</span>, <span class="kw">legend</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">25</span>), <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">19</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisColorOverview-1.png" width="1152"></p>
 <p>We can see that (for instance) cluster 25 is very relevant to the story: as the characters of this cluster appear only in the sub-story of the Bishop <code>Myriel</code>, he is the only connection for all other characters of cluster 25. The same kind of conclusion holds for cluster 20 (with Gavroche), among others. Most of the other clusters have a small number of observations: it thus seems relevant to compute super clusters.</p>
 </div>
@@ -511,12 +518,12 @@
 <h3 class="hasAnchor">
 <a href="#compute-super-clusters" class="anchor"></a>Compute super clusters</h3>
 <p>As the number of clusters is rather large with the SOM algorithm, it is possible to perform a hierarchical clustering on top of SOM results. First, let us have an overview of the dendrogram:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/superClass.html">superClass</a></span>(mis.som))</a></code></pre></div>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu">superClass</span>(<span class="no">mis.som</span>))</pre></body></html></div>
 <pre><code>## Warning in plot.somSC(superClass(mis.som)): Impossible to plot the rectangles: no super clusters.</code></pre>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSCOverview-1.png" width="700"></p>
 <p>According to the proportion of variance explained by super clusters, 5 groups seem to be a good choice (4 groups would have been relevant also. The clustering with 5 groups creates a group with only one cluster in it).</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">sc.mis &lt;-<span class="st"> </span><span class="kw"><a href="../reference/superClass.html">superClass</a></span>(mis.som, <span class="dt">k =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(sc.mis)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">sc.mis</span> <span class="kw">&lt;-</span> <span class="fu">superClass</span>(<span class="no">mis.som</span>, <span class="kw">k</span> <span class="kw">=</span> <span class="fl">5</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">sc.mis</span>)</pre></body></html></div>
 <pre><code>## 
 ##    SOM Super Classes
 ##      Initial number of clusters :  25 
@@ -537,23 +544,23 @@
 ##          Degrees of freedom      :  4 
 ##          p-value                 :  5.00329e-06 
 ##                  significativity :  ***</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(sc.mis<span class="op">$</span>cluster)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">sc.mis</span>$<span class="no">cluster</span>)</pre></body></html></div>
 <pre><code>## 
 ## 1 2 3 4 5 
 ## 3 6 6 6 4</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(sc.mis)</a></code></pre></div>
+<div class="sourceCode" id="cb27"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sc.mis</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSC-1.png" width="700"></p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(sc.mis, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"grid"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sc.mis</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"grid"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSC2-1.png" width="700"></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(sc.mis, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"lines"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sc.mis</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"lines"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSC2-2.png" width="700"></p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(sc.mis, <span class="dt">what =</span> <span class="st">"prototypes"</span>, <span class="dt">type =</span> <span class="st">"mds"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sc.mis</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"mds"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSC2-3.png" width="700"></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(sc.mis, <span class="dt">type =</span> <span class="st">"dendro3d"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sc.mis</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"dendro3d"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSC2-4.png" width="700"></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(lesmis, <span class="dt">vertex.size =</span> <span class="dv">0</span>, </a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">     <span class="dt">vertex.label.color =</span> <span class="kw"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="dv">5</span>)[sc.mis<span class="op">$</span>cluster[mis.som<span class="op">$</span>clustering]])</a>
-<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="dt">x =</span> <span class="st">"left"</span>, <span class="dt">legend =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"SC"</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="dt">col =</span> <span class="kw"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="dv">5</span>), <span class="dt">pch =</span> <span class="dv">19</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">lesmis</span>, <span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">0</span>,
+     <span class="kw">vertex.label.color</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">5</span>)[<span class="no">sc.mis</span>$<span class="no">cluster</span>[<span class="no">mis.som</span>$<span class="no">clustering</span>]])
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"left"</span>, <span class="kw">legend</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"SC"</span>, <span class="fl">1</span>:<span class="fl">5</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">5</span>), <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">19</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSCColorOverview-1.png" width="1152"></p>
 <ul>
 <li><p>cluster 1 contains <code>Myriel</code> and the characters involved in his sub-story;</p></li>
@@ -563,13 +570,13 @@
 <li><p>cluster 5 is a bit harder to interpret, with secondary characters related to <code>Thenardier</code> and to the main characters of the novel.</p></li>
 </ul>
 <p>SOMbrero also contains functions to compute a projected graph based on the super-clusters and to display it:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw"><a href="../reference/projectIGraph.html">projectIGraph</a></span>(sc.mis, lesmis)</a></code></pre></div>
-<pre><code>## IGRAPH 278d2f7 UNW- 5 7 -- 
+<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="fu">projectIGraph</span>(<span class="no">sc.mis</span>, <span class="no">lesmis</span>)</pre></body></html></div>
+<pre><code>## IGRAPH 8a55d4e UNW- 5 7 -- 
 ## + attr: layout (g/n), name (v/c), size (v/n), weight (e/n)
-## + edges from 278d2f7 (vertex names):
+## + edges from 8a55d4e (vertex names):
 ## [1] 1--2 1--3 1--4 2--3 2--4 3--4 4--5</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="dt">mar =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">0</span>,<span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(sc.mis, <span class="dt">what =</span> <span class="st">"add"</span>, <span class="dt">type =</span> <span class="st">"projgraph"</span>, <span class="dt">variable =</span> lesmis, <span class="dt">s.radius =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mar</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0</span>,<span class="fl">4</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sc.mis</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"add"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"projgraph"</span>, <span class="kw">variable</span> <span class="kw">=</span> <span class="no">lesmis</span>, <span class="kw">s.radius</span> <span class="kw">=</span> <span class="fl">2</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSCProjGraph-1.png" width="700"></p>
 <p>This representation provides a simplified and interpretable display of the graph where the super clusters are represented by nodes with sizes proportional to the number of characters classified in them. The nodes are positionned at the center of gravity of the map clusters included in each super cluster. They are linked to each other with edges with width proportional to the total number of links between two characters of the correspondind super clusters. Here, the central brown/green node is the one of Valjean and the other main characters (super cluster 2), which appears to be strongly related to super cluster 4 in blue, with Gavroche’s neighbors.</p>
 </div>
@@ -577,14 +584,14 @@
 <h3 class="hasAnchor">
 <a href="#session-information" class="anchor"></a>Session information</h3>
 <p>This vignette has been computed with the following environment:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a></code></pre></div>
-<pre><code>## R version 3.6.3 (2020-02-29)
+<div class="sourceCode" id="cb36"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</pre></body></html></div>
+<pre><code>## R version 4.0.2 (2020-06-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 18.04.4 LTS
+## Running under: Ubuntu 20.04.1 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
 ## 
 ## locale:
 ##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -598,42 +605,36 @@
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] SOMbrero_1.3   igraph_1.2.4.1 ggplot2_3.3.0 
+## [1] SOMbrero_1.3-1 igraph_1.2.5   ggplot2_3.3.2 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.4.6         plyr_1.8.4           RColorBrewer_1.1-2  
-##  [4] compiler_3.6.3       pillar_1.4.3         tools_3.6.3         
-##  [7] digest_0.6.20        lattice_0.20-41      lubridate_1.7.4     
-## [10] checkmate_1.9.4      evaluate_0.14        memoise_1.1.0       
-## [13] lifecycle_0.2.0      tibble_2.1.3         gtable_0.3.0        
-## [16] png_0.1-7            pkgconfig_2.0.2      rlang_0.4.5         
-## [19] rstudioapi_0.10      yaml_2.2.0           pkgdown_1.4.1       
-## [22] xfun_0.13            interp_1.0-33        metR_0.7.0          
-## [25] withr_2.1.2          stringr_1.4.0        dplyr_0.8.3         
-## [28] knitr_1.23           desc_1.2.0           fs_1.3.1            
-## [31] scatterplot3d_0.3-41 rprojroot_1.3-2      grid_3.6.3          
-## [34] tidyselect_1.0.0     data.table_1.12.2    glue_1.4.0          
-## [37] R6_2.4.1             rmarkdown_1.14       sp_1.3-1            
-## [40] farver_2.0.3         deldir_0.1-25        purrr_0.3.3         
-## [43] magrittr_1.5         codetools_0.2-16     backports_1.1.4     
-## [46] scales_1.1.0         htmltools_0.3.6      MASS_7.3-51.6       
-## [49] ggwordcloud_0.5.0    assertthat_0.2.1     colorspace_1.4-1    
-## [52] labeling_0.3         stringi_1.4.3        munsell_0.5.0       
-## [55] crayon_1.3.4</code></pre>
+##  [1] Rcpp_1.0.5           plyr_1.8.6           RColorBrewer_1.1-2  
+##  [4] compiler_4.0.2       pillar_1.4.6         tools_4.0.2         
+##  [7] digest_0.6.25        lattice_0.20-41      lubridate_1.7.9     
+## [10] checkmate_2.0.0      evaluate_0.14        memoise_1.1.0       
+## [13] lifecycle_0.2.0      tibble_3.0.3         gtable_0.3.0        
+## [16] pkgconfig_2.0.3      png_0.1-7            rlang_0.4.7         
+## [19] rstudioapi_0.11      yaml_2.2.1           pkgdown_1.5.1       
+## [22] xfun_0.16            interp_1.0-33        metR_0.7.0          
+## [25] withr_2.2.0          stringr_1.4.0        knitr_1.29          
+## [28] generics_0.0.2       desc_1.2.0           fs_1.5.0            
+## [31] vctrs_0.3.2          scatterplot3d_0.3-41 rprojroot_1.3-2     
+## [34] grid_4.0.2           data.table_1.13.0    glue_1.4.1          
+## [37] R6_2.4.1             rmarkdown_2.3        sp_1.4-2            
+## [40] farver_2.0.3         deldir_0.1-28        magrittr_1.5        
+## [43] backports_1.1.8      scales_1.1.1         htmltools_0.5.0     
+## [46] ellipsis_0.3.1       MASS_7.3-51.6        ggwordcloud_0.5.0   
+## [49] assertthat_0.2.1     colorspace_1.4-1     labeling_0.3        
+## [52] stringi_1.4.6        munsell_0.5.0        crayon_1.3.4</code></pre>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#basic-package-description">Basic package description</a></li>
-      <li><a href="#case-study-the-lesmis-data-set">Case study: the <code>lesmis</code> data set</a></li>
-      </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -644,7 +645,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

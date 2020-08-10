@@ -12,13 +12,13 @@ SOMbrero implements the stochastic (also called on-line) Self-Organising Map
 2-dimensional squared grid that can be initialized with ```initGrid```. The 
 main function is ```trainSOM``` that implements three types of algorithms:
 
-* the standard numeric SOM as in [Kohonen, 2001]
+* the standard numeric SOM as in (Kohonen, 2001)
 
 * the relational SOM designed to deal with datasets described by a dissimilarity
-as in [Olteanu & Villa-Vialaneix, 2015] and [Mariette *et al.*, 2017]
+as in (Olteanu & Villa-Vialaneix, 2015) and (Mariette *et al.*, 2017)
 
 * the KORRESP method that deals with contingency tables as in 
-[Cottrell *et al*, 2004] and [Cottrell *et al*, 2005]
+(Cottrell *et al*, 2004) and (Cottrell *et al*, 2005)
 
 Results can be displayed with the function ```plot.somRes``` and quality 
 criteria are provided by ```quality```. Finally, a super-clustering can be 
