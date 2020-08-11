@@ -64,8 +64,8 @@ NULL
 #' 
 #' @source The data are provided by the French ministry "Ministère de 
 #' l'Intérieur". The original data can be downloaded at
-#' \url{http://www.interieur.gouv.fr/Elections/Les-resultats/Presidentielles} 
-#' (2002 elections and "Résultats par départements")/
+#' \url{https://www.interieur.gouv.fr/Elections/Les-resultats/Presidentielles} 
+#' (2002 elections and "Résultats par départements").
 #' 
 #' @references The 2002 French presidential election consisted of two rounds. 
 #' The second round attracted a greater than usual amount of international 
@@ -76,8 +76,7 @@ NULL
 #' on the second round.
 #' 
 #' Further comments at
-#' \url{http://en.wikipedia.org/wiki/French_presidential_election,_2002} or at
-#' \url{https://bit.ly/2pQ6Igi} (in French).
+#' \url{http://en.wikipedia.org/wiki/French_presidential_election,_2002}.
 #' 
 #' @examples 
 #' data(presidentielles2002)

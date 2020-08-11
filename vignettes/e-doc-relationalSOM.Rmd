@@ -93,7 +93,7 @@ value indicating the number of coappearances. The co-appearance network has been
 extracted by D.E. Knuth (1993).
 
 The ```lesmis``` data contain two objects: the first one,```lesmis```, is an 
-```igraph``` object (see [the igraph web page](http://igraph.sourceforge.net/)),
+```igraph``` object (see [the igraph web page](https://igraph.org/)),
 with `r data(lesmis); vcount(lesmis)` nodes and `r ecount(lesmis)` edges.
 
 Further information on this data set is provided with ```help(lesmis)```.

@@ -12,8 +12,8 @@ candidates).
 \source{
 The data are provided by the French ministry "Ministère de 
 l'Intérieur". The original data can be downloaded at
-\url{http://www.interieur.gouv.fr/Elections/Les-resultats/Presidentielles} 
-(2002 elections and "Résultats par départements")/
+\url{https://www.interieur.gouv.fr/Elections/Les-resultats/Presidentielles} 
+(2002 elections and "Résultats par départements").
 }
 \description{
 This data set provides the number of votes at the first round of
@@ -34,6 +34,5 @@ hand, because the polls had failed to predict that Jean-Marie Le Pen would be
 on the second round.
 
 Further comments at
-\url{http://en.wikipedia.org/wiki/French_presidential_election,_2002} or at
-\url{https://bit.ly/2pQ6Igi} (in French).
+\url{http://en.wikipedia.org/wiki/French_presidential_election,_2002}.
 }
