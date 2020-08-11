@@ -114,7 +114,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/tuxette/sombrero/">
+  <a href="https://github.com/tuxette/sombrero/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -133,7 +133,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot a <code>somRes</code> class object</h1>
-    <small class="dont-index">Source: <a href='http://github.com/tuxette/sombrero/blob/master/R/plots.R'><code>R/plots.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tuxette/sombrero/blob/master/R/plots.R'><code>R/plots.R</code></a></small>
     <div class="hidden name"><code>plot.somRes.Rd</code></div>
     </div>
 
@@ -188,7 +188,7 @@ section ``Details'' below for further details.</p></td>
 index of the variable of the data set to consider. For <code>type="boxplot"</code>, 
 the default value is the sequence from 1 to the minimum between 5 and the 
 number of columns of the data set. In all other cases, default value is 1. 
-See <code>somRes.plotting</code> for further details.</p></td>
+See <code><a href='somRes.plotting.html'>somRes.plotting</a></code> for further details.</p></td>
     </tr>
     <tr>
       <th>my.palette</th>
@@ -247,23 +247,23 @@ indicates whether rows (<code>"r"</code>) or columns (<code>"c"</code>) must be 
       <th>...</th>
       <td><p>Further arguments to be passed to the underlined plot function
 (which can be <code><a href='https://rdrr.io/r/base/plot.html'>plot</a></code>, <code><a href='https://rdrr.io/r/graphics/barplot.html'>barplot</a></code>, <code><a href='https://rdrr.io/r/graphics/pie.html'>pie</a></code>...
-depending on <code>type</code>; see <code>somRes.plotting</code> for further
+depending on <code>type</code>; see <code><a href='somRes.plotting.html'>somRes.plotting</a></code> for further
 details).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>See <code>somRes.plotting</code> for further details and more 
+    <p>See <code><a href='somRes.plotting.html'>somRes.plotting</a></code> for further details and more 
 examples.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>trainSOM</code> to run the SOM algorithm, that returns a 
+    <div class='dont-index'><p><code><a href='trainSOM.html'>trainSOM</a></code> to run the SOM algorithm, that returns a 
 <code>somRes</code> class object.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># run the SOM algorithm on the numerical data of 'iris' data set</span>
-<span class='no'>iris.som</span> <span class='kw'>&lt;-</span> <span class='fu'>trainSOM</span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>nb.save</span><span class='kw'>=</span><span class='fl'>2</span>)
+<span class='no'>iris.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>nb.save</span><span class='kw'>=</span><span class='fl'>2</span>)
 <span class='co'># plots</span>
 <span class='co'># on energy</span>
 <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>iris.som</span>, <span class='kw'>what</span><span class='kw'>=</span><span class='st'>"energy"</span>)</div><div class='img'><img src='plot.somRes-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># on observations</span>

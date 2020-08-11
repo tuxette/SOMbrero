@@ -116,7 +116,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/tuxette/sombrero/">
+  <a href="https://github.com/tuxette/sombrero/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -135,7 +135,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compute distances between prototypes</h1>
-    <small class="dont-index">Source: <a href='http://github.com/tuxette/sombrero/blob/master/R/som.R'><code>R/som.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tuxette/sombrero/blob/master/R/som.R'><code>R/som.R</code></a></small>
     <div class="hidden name"><code>protoDist.Rd</code></div>
     </div>
 
@@ -190,11 +190,11 @@ SOM training procedure, the distances are computed on the normalized values
 of the prototypes.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>trainSOM</code></p></div>
+    <div class='dont-index'><p><code><a href='trainSOM.html'>trainSOM</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>2343</span>)
-<span class='no'>my.som</span> <span class='kw'>&lt;-</span> <span class='fu'>trainSOM</span>(<span class='kw'>x.data</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>dimension</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>5</span>))
+<span class='no'>my.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span> <span class='kw'>=</span> <span class='no'>iris</span>[,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>dimension</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>5</span>))
 <span class='fu'>protoDist</span>(<span class='no'>my.som</span>)</div><div class='output co'>#&gt;            1         2         3         4         5         6         7
 #&gt; 1  0.0000000 0.3178170 0.7408293 1.1873168 1.5535594 0.4242205 0.2704839
 #&gt; 2  0.3178170 0.0000000 0.4241642 0.8716052 1.2385739 0.6765640 0.3694890

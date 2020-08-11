@@ -73,7 +73,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="http://github.com/tuxette/sombrero/">
+  <a href="https://github.com/tuxette/sombrero/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -93,9 +93,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using Self-Organizing Maps with SOMbrero to cluster a numeric dataset</h1>
             
-            <h4 class="date">10 août, 2020</h4>
+            <h4 class="date">11 août, 2020</h4>
       
-      <small class="dont-index">Source: <a href="http://github.com/tuxette/sombrero/blob/master/vignettes/c-doc-numericSOM.Rmd"><code>vignettes/c-doc-numericSOM.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tuxette/sombrero/blob/master/vignettes/c-doc-numericSOM.Rmd"><code>vignettes/c-doc-numericSOM.Rmd</code></a></small>
       <div class="hidden name"><code>c-doc-numericSOM.Rmd</code></div>
 
     </div>
@@ -113,18 +113,18 @@
 <div id="basic-package-description" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-package-description" class="anchor"></a>Basic package description</h2>
-<p><code>SOMbrero</code> implements different variants of the Self-Organizing Map algorithm (also called Kohonen’s algorithm). To run the standard version of the algorithm, use the function <code>trainSOM()</code> on a data frame or matrix with numerical columns. The standard numeric SOM and its use in <code>SOMbrero</code> are illustrated below.</p>
+<p><code>SOMbrero</code> implements different variants of the Self-Organizing Map algorithm (also called Kohonen’s algorithm). To run the standard version of the algorithm, use the function <code><a href="../reference/trainSOM.html">trainSOM()</a></code> on a data frame or matrix with numerical columns. The standard numeric SOM and its use in <code>SOMbrero</code> are illustrated below.</p>
 <p><strong>This documentation only considers the case of numerical data.</strong></p>
 <div id="arguments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#arguments" class="anchor"></a>Arguments</h3>
 <p>The <code>trainSOM</code> function has several arguments, but only the first one is required. This argument is <code>x.data</code> which is the dataset used to train the SOM. In this documentation, it is passed to the function as a matrix or a data frame with numerical variables in columns and observations of these variables in rows.</p>
-<p>The other arguments are the same as the arguments passed to the <code>initSOM</code> function (they are parameters defining the algorithm, see <code>help(initSOM)</code> for further details).</p>
+<p>The other arguments are the same as the arguments passed to the <code>initSOM</code> function (they are parameters defining the algorithm, see <code><a href="../reference/initSOM.html">help(initSOM)</a></code> for further details).</p>
 </div>
 <div id="outputs" class="section level3">
 <h3 class="hasAnchor">
 <a href="#outputs" class="anchor"></a>Outputs</h3>
-<p>The <code>trainSOM</code> function returns an object of class <code>somRes</code> (see <code>help(trainSOM)</code> for further details on this class).</p>
+<p>The <code>trainSOM</code> function returns an object of class <code>somRes</code> (see <code><a href="../reference/trainSOM.html">help(trainSOM)</a></code> for further details on this class).</p>
 </div>
 <div id="graphics" class="section level3">
 <h3 class="hasAnchor">
@@ -390,7 +390,7 @@
 <p>The numeric SOM algorithm is used to cluster the data:</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1105</span>)
 <span class="co"># run the SOM algorithm with 10 intermediate backups and 2000 iterations</span>
-<span class="no">my.som</span> <span class="kw">&lt;-</span> <span class="fu">trainSOM</span>(<span class="kw">x.data</span><span class="kw">=</span><span class="no">the.data</span>, <span class="kw">dimension</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>,<span class="fl">5</span>), <span class="kw">nb.save</span><span class="kw">=</span><span class="fl">10</span>, <span class="kw">maxit</span><span class="kw">=</span><span class="fl">2000</span>,
+<span class="no">my.som</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="kw">x.data</span><span class="kw">=</span><span class="no">the.data</span>, <span class="kw">dimension</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>,<span class="fl">5</span>), <span class="kw">nb.save</span><span class="kw">=</span><span class="fl">10</span>, <span class="kw">maxit</span><span class="kw">=</span><span class="fl">2000</span>,
                    <span class="kw">scaling</span><span class="kw">=</span><span class="st">"none"</span>, <span class="kw">radius.type</span><span class="kw">=</span><span class="st">"letremy"</span>, <span class="kw">topo</span><span class="kw">=</span><span class="st">"square"</span>,
                    <span class="kw">dist.type</span> <span class="kw">=</span> <span class="st">"letremy"</span>)</pre></body></html></div>
 <p>The energy evolves as described in the following graphic:</p>
@@ -444,7 +444,7 @@
 <p>The first four variables of the data set (that are the numeric variables) are used to map each flower on the SOM grid.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">255</span>)
 <span class="co"># run the SOM algorithm with verbose set to TRUE</span>
-<span class="no">iris.som</span> <span class="kw">&lt;-</span> <span class="fu">trainSOM</span>(<span class="kw">x.data</span> <span class="kw">=</span> <span class="no">iris</span>[,<span class="fl">1</span>:<span class="fl">4</span>], <span class="kw">dimension</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>,<span class="fl">5</span>), <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
+<span class="no">iris.som</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="kw">x.data</span> <span class="kw">=</span> <span class="no">iris</span>[,<span class="fl">1</span>:<span class="fl">4</span>], <span class="kw">dimension</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">5</span>,<span class="fl">5</span>), <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
                      <span class="kw">nb.save</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">topo</span> <span class="kw">=</span> <span class="st">"hexagonal"</span>)</pre></body></html></div>
 <pre><code>## Self-Organizing Map algorithm...
 ## 
@@ -683,7 +683,7 @@
 <div id="analyze-the-projection-quality" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyze-the-projection-quality" class="anchor"></a>Analyze the projection quality</h3>
-<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="fu">quality</span>(<span class="no">iris.som</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="fu"><a href="../reference/quality.html">quality</a></span>(<span class="no">iris.som</span>)</pre></body></html></div>
 <pre><code>## $topographic
 ## [1] 0.1466667
 ## 
@@ -698,11 +698,11 @@
 <a href="#building-super-classes-from-the-resulting-som" class="anchor"></a>Building super classes from the resulting SOM</h3>
 <p>In the SOM algorithm, the number of clusters is necessarily close to the number of neurons on the grid (not necessarily equal as some neurons may have no observations assigned to them). This - quite large - number may not suit the original data for a clustering purpose.</p>
 <p>A usual way to address clustering with SOM is to perform a hierarchical clustering on the prototypes. This clustering is directly available in the package <code>SOMbrero</code> using the function <code>superClass</code>. To do so, you can first have a quick overview to decide on the number of super clusters which suits your data.</p>
-<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu">superClass</span>(<span class="no">iris.som</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="../reference/superClass.html">superClass</a></span>(<span class="no">iris.som</span>))</pre></body></html></div>
 <pre><code>## Warning in plot.somSC(superClass(iris.som)): Impossible to plot the rectangles: no super clusters.</code></pre>
 <p><img src="c-doc-numericSOM_files/figure-html/irisSC-1.png" width="700"></p>
 <p>By default, the function plots both a dendrogram and the evolution of the percentage of explained variance. Here, 3 super clusters seem to be the best choice. The output of <code>superClass</code> is a <code>somSC</code> class object. Basic functions have been defined for this class:</p>
-<div class="sourceCode" id="cb57"><html><body><pre class="r"><span class="no">my.sc</span> <span class="kw">&lt;-</span> <span class="fu">superClass</span>(<span class="no">iris.som</span>, <span class="kw">k</span> <span class="kw">=</span> <span class="fl">3</span>)
+<div class="sourceCode" id="cb57"><html><body><pre class="r"><span class="no">my.sc</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/superClass.html">superClass</a></span>(<span class="no">iris.som</span>, <span class="kw">k</span> <span class="kw">=</span> <span class="fl">3</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">my.sc</span>)</pre></body></html></div>
 <pre><code>## 
 ##    SOM Super Classes
@@ -783,28 +783,28 @@
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] SOMbrero_1.3-1 igraph_1.2.5   ggplot2_3.3.2 
+## [1] SOMbrero_1.3-1 markdown_1.1   igraph_1.2.5   ggplot2_3.3.2 
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.5           plyr_1.8.6           RColorBrewer_1.1-2  
-##  [4] compiler_4.0.2       pillar_1.4.6         tools_4.0.2         
-##  [7] digest_0.6.25        lattice_0.20-41      lubridate_1.7.9     
-## [10] checkmate_2.0.0      evaluate_0.14        memoise_1.1.0       
-## [13] lifecycle_0.2.0      tibble_3.0.3         gtable_0.3.0        
-## [16] pkgconfig_2.0.3      png_0.1-7            rlang_0.4.7         
-## [19] rstudioapi_0.11      yaml_2.2.1           hexbin_1.28.1       
-## [22] pkgdown_1.5.1        xfun_0.16            interp_1.0-33       
-## [25] metR_0.7.0           withr_2.2.0          stringr_1.4.0       
-## [28] knitr_1.29           generics_0.0.2       desc_1.2.0          
-## [31] fs_1.5.0             vctrs_0.3.2          scatterplot3d_0.3-41
-## [34] rprojroot_1.3-2      grid_4.0.2           data.table_1.13.0   
-## [37] glue_1.4.1           R6_2.4.1             rmarkdown_2.3       
-## [40] sp_1.4-2             farver_2.0.3         deldir_0.1-28       
-## [43] magrittr_1.5         backports_1.1.8      scales_1.1.1        
-## [46] htmltools_0.5.0      ellipsis_0.3.1       MASS_7.3-51.6       
-## [49] ggwordcloud_0.5.0    assertthat_0.2.1     colorspace_1.4-1    
-## [52] labeling_0.3         stringi_1.4.6        munsell_0.5.0       
-## [55] crayon_1.3.4</code></pre>
+##  [1] xfun_0.16            lattice_0.20-41      colorspace_1.4-1    
+##  [4] vctrs_0.3.2          generics_0.0.2       htmltools_0.5.0     
+##  [7] yaml_2.2.1           rlang_0.4.7          pkgdown_1.5.1       
+## [10] hexbin_1.28.1        pillar_1.4.6         glue_1.4.1          
+## [13] withr_2.2.0          sp_1.4-2             RColorBrewer_1.1-2  
+## [16] lifecycle_0.2.0      plyr_1.8.6           stringr_1.4.0       
+## [19] metR_0.7.0           munsell_0.5.0        gtable_0.3.0        
+## [22] codetools_0.2-16     memoise_1.1.0        evaluate_0.14       
+## [25] labeling_0.3         ggwordcloud_0.5.0    knitr_1.29          
+## [28] Rcpp_1.0.5           scales_1.1.1         backports_1.1.8     
+## [31] checkmate_2.0.0      desc_1.2.0           scatterplot3d_0.3-41
+## [34] deldir_0.1-28        farver_2.0.3         fs_1.5.0            
+## [37] interp_1.0-33        png_0.1-7            digest_0.6.25       
+## [40] stringi_1.4.6        grid_4.0.2           rprojroot_1.3-2     
+## [43] tools_4.0.2          magrittr_1.5         tibble_3.0.3        
+## [46] crayon_1.3.4         pkgconfig_2.0.3      MASS_7.3-51.6       
+## [49] ellipsis_0.3.1       data.table_1.13.0    lubridate_1.7.9     
+## [52] assertthat_0.2.1     rmarkdown_2.3        rstudioapi_0.11     
+## [55] R6_2.4.1             compiler_4.0.2</code></pre>
 </div>
 </div>
   </div>

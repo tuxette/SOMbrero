@@ -115,7 +115,7 @@ igraph object, on the grid of the somRes object." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/tuxette/sombrero/">
+  <a href="https://github.com/tuxette/sombrero/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -134,7 +134,7 @@ igraph object, on the grid of the somRes object." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compute the projection of a graph on a grid</h1>
-    <small class="dont-index">Source: <a href='http://github.com/tuxette/sombrero/blob/master/R/som.R'><code>R/som.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tuxette/sombrero/blob/master/R/som.R'><code>R/som.R</code></a></small>
     <div class="hidden name"><code>projectIGraph.Rd</code></div>
     </div>
 
@@ -189,15 +189,15 @@ visualizing graphs. <em>Journal de la Société Française de Statistique</em>,
 <strong>156</strong>, 95-119.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>projectIGraph.somSC</code> which uses the results of a 
-super-clustering to obtain another projected graph. <code>plot.somRes</code> 
-with the option <code>type="graph"</code> or <code>plot.somSC</code> with the 
+    <div class='dont-index'><p><code><a href='superClass.html'>projectIGraph.somSC</a></code> which uses the results of a 
+super-clustering to obtain another projected graph. <code><a href='plot.somRes.html'>plot.somRes</a></code> 
+with the option <code>type="graph"</code> or <code><a href='superClass.html'>plot.somSC</a></code> with the 
 option <code>type="projgraph"</code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>lesmis</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>7383</span>)
-<span class='no'>mis.som</span> <span class='kw'>&lt;-</span> <span class='fu'>trainSOM</span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>dissim.lesmis</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"relational"</span>, <span class='kw'>nb.save</span><span class='kw'>=</span><span class='fl'>10</span>)
+<span class='no'>mis.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>dissim.lesmis</span>, <span class='kw'>type</span><span class='kw'>=</span><span class='st'>"relational"</span>, <span class='kw'>nb.save</span><span class='kw'>=</span><span class='fl'>10</span>)
 <span class='no'>proj.lesmis</span> <span class='kw'>&lt;-</span> <span class='fu'>projectIGraph</span>(<span class='no'>mis.som</span>, <span class='no'>lesmis</span>)
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>proj.lesmis</span>)</div></pre>
   </div>

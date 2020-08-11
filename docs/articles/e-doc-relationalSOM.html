@@ -73,7 +73,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="http://github.com/tuxette/sombrero/">
+  <a href="https://github.com/tuxette/sombrero/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -93,9 +93,9 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using Self-Organizing Maps with SOMbrero for dissimilarity matrices</h1>
             
-            <h4 class="date">10 août, 2020</h4>
+            <h4 class="date">11 août, 2020</h4>
       
-      <small class="dont-index">Source: <a href="http://github.com/tuxette/sombrero/blob/master/vignettes/e-doc-relationalSOM.Rmd"><code>vignettes/e-doc-relationalSOM.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tuxette/sombrero/blob/master/vignettes/e-doc-relationalSOM.Rmd"><code>vignettes/e-doc-relationalSOM.Rmd</code></a></small>
       <div class="hidden name"><code>e-doc-relationalSOM.Rmd</code></div>
 
     </div>
@@ -113,18 +113,18 @@
 <div id="basic-package-description" class="section level2">
 <h2 class="hasAnchor">
 <a href="#basic-package-description" class="anchor"></a>Basic package description</h2>
-<p><code>SOMbrero</code> implements different variants of the Self-Organizing Map algorithm (also called Kohonen’s algorithm). To process a given dataset with the SOM algorithm, you can use the function <code>trainSOM()</code>.</p>
+<p><code>SOMbrero</code> implements different variants of the Self-Organizing Map algorithm (also called Kohonen’s algorithm). To process a given dataset with the SOM algorithm, you can use the function <code><a href="../reference/trainSOM.html">trainSOM()</a></code>.</p>
 <p><strong>This documentation only considers the case of dissimilarity matrices.</strong></p>
 <div id="arguments" class="section level3">
 <h3 class="hasAnchor">
 <a href="#arguments" class="anchor"></a>Arguments</h3>
 <p>The <code>trainSOM</code> function has several arguments, but only the first one is required. This argument is <code>x.data</code> which is the dataset used to train the SOM. In this documentation, it is passed to the function as a square matrix or data frame, which entries are dissimilarity measures between pairs of observations. The diagonal of this matrix must contain only zeros.</p>
-<p>The other arguments are the same as the arguments passed to the <code>initSOM</code> function (they are parameters defining the algorithm, see <code>help(initSOM)</code> for further details).</p>
+<p>The other arguments are the same as the arguments passed to the <code>initSOM</code> function (they are parameters defining the algorithm, see <code><a href="../reference/initSOM.html">help(initSOM)</a></code> for further details).</p>
 </div>
 <div id="outputs" class="section level3">
 <h3 class="hasAnchor">
 <a href="#outputs" class="anchor"></a>Outputs</h3>
-<p>The <code>trainSOM</code> function returns an object of class <code>somRes</code> (see <code>help(trainSOM)</code> for further details on this class).</p>
+<p>The <code>trainSOM</code> function returns an object of class <code>somRes</code> (see <code><a href="../reference/trainSOM.html">help(trainSOM)</a></code> for further details on this class).</p>
 </div>
 <div id="graphics" class="section level3">
 <h3 class="hasAnchor">
@@ -390,8 +390,8 @@
 <h2 class="hasAnchor">
 <a href="#case-study-the-lesmis-data-set" class="anchor"></a>Case study: the <code>lesmis</code> data set</h2>
 <p>The <code>lesmis</code> data set is based on the coappearance graph of the characters of the novel Les Miserables (Victor Hugo). Each vertex stands for a character whose name is given by the vertex label. One edge means that the corresponding two characters appear in a common chapter in the book. Each edge also has a value indicating the number of coappearances. The co-appearance network has been extracted by D.E. Knuth (1993).</p>
-<p>The <code>lesmis</code> data contain two objects: the first one,<code>lesmis</code>, is an <code>igraph</code> object (see <a href="http://igraph.sourceforge.net/">the igraph web page</a>), with 77 nodes and 254 edges.</p>
-<p>Further information on this data set is provided with <code>help(lesmis)</code>.</p>
+<p>The <code>lesmis</code> data contain two objects: the first one,<code>lesmis</code>, is an <code>igraph</code> object (see <a href="https://igraph.org/">the igraph web page</a>), with 77 nodes and 254 edges.</p>
+<p>Further information on this data set is provided with <code><a href="../reference/lesmis.html">help(lesmis)</a></code>.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">lesmis</span>)
 <span class="no">lesmis</span></pre></body></html></div>
 <pre><code>## IGRAPH 3babff7 U--- 77 254 -- 
@@ -413,7 +413,7 @@
 <h3 class="hasAnchor">
 <a href="#training-the-som" class="anchor"></a>Training the SOM</h3>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">622</span>)
-<span class="no">mis.som</span> <span class="kw">&lt;-</span> <span class="fu">trainSOM</span>(<span class="kw">x.data</span><span class="kw">=</span><span class="no">dissim.lesmis</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"relational"</span>, <span class="kw">nb.save</span> <span class="kw">=</span> <span class="fl">10</span>,
+<span class="no">mis.som</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="kw">x.data</span><span class="kw">=</span><span class="no">dissim.lesmis</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"relational"</span>, <span class="kw">nb.save</span> <span class="kw">=</span> <span class="fl">10</span>,
                    <span class="kw">init.proto</span> <span class="kw">=</span> <span class="st">"random"</span>, <span class="kw">radius.type</span> <span class="kw">=</span> <span class="st">"letremy"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">mis.som</span>, <span class="kw">what</span><span class="kw">=</span><span class="st">"energy"</span>)</pre></body></html></div>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisTrain-1.png" width="700"></p>
@@ -518,11 +518,11 @@
 <h3 class="hasAnchor">
 <a href="#compute-super-clusters" class="anchor"></a>Compute super clusters</h3>
 <p>As the number of clusters is rather large with the SOM algorithm, it is possible to perform a hierarchical clustering on top of SOM results. First, let us have an overview of the dendrogram:</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu">superClass</span>(<span class="no">mis.som</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="../reference/superClass.html">superClass</a></span>(<span class="no">mis.som</span>))</pre></body></html></div>
 <pre><code>## Warning in plot.somSC(superClass(mis.som)): Impossible to plot the rectangles: no super clusters.</code></pre>
 <p><img src="e-doc-relationalSOM_files/figure-html/lesmisSCOverview-1.png" width="700"></p>
 <p>According to the proportion of variance explained by super clusters, 5 groups seem to be a good choice (4 groups would have been relevant also. The clustering with 5 groups creates a group with only one cluster in it).</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">sc.mis</span> <span class="kw">&lt;-</span> <span class="fu">superClass</span>(<span class="no">mis.som</span>, <span class="kw">k</span> <span class="kw">=</span> <span class="fl">5</span>)
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">sc.mis</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/superClass.html">superClass</a></span>(<span class="no">mis.som</span>, <span class="kw">k</span> <span class="kw">=</span> <span class="fl">5</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">sc.mis</span>)</pre></body></html></div>
 <pre><code>## 
 ##    SOM Super Classes
@@ -570,10 +570,10 @@
 <li><p>cluster 5 is a bit harder to interpret, with secondary characters related to <code>Thenardier</code> and to the main characters of the novel.</p></li>
 </ul>
 <p>SOMbrero also contains functions to compute a projected graph based on the super-clusters and to display it:</p>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="fu">projectIGraph</span>(<span class="no">sc.mis</span>, <span class="no">lesmis</span>)</pre></body></html></div>
-<pre><code>## IGRAPH 8a55d4e UNW- 5 7 -- 
+<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="fu"><a href="../reference/projectIGraph.html">projectIGraph</a></span>(<span class="no">sc.mis</span>, <span class="no">lesmis</span>)</pre></body></html></div>
+<pre><code>## IGRAPH 2a56368 UNW- 5 7 -- 
 ## + attr: layout (g/n), name (v/c), size (v/n), weight (e/n)
-## + edges from 8a55d4e (vertex names):
+## + edges from 2a56368 (vertex names):
 ## [1] 1--2 1--3 1--4 2--3 2--4 3--4 4--5</code></pre>
 <div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mar</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0</span>,<span class="fl">4</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">sc.mis</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"add"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"projgraph"</span>, <span class="kw">variable</span> <span class="kw">=</span> <span class="no">lesmis</span>, <span class="kw">s.radius</span> <span class="kw">=</span> <span class="fl">2</span>)</pre></body></html></div>
@@ -605,7 +605,7 @@
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] SOMbrero_1.3-1 igraph_1.2.5   ggplot2_3.3.2 
+## [1] SOMbrero_1.3-1 markdown_1.1   igraph_1.2.5   ggplot2_3.3.2 
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.5           plyr_1.8.6           RColorBrewer_1.1-2  
@@ -613,7 +613,7 @@
 ##  [7] digest_0.6.25        lattice_0.20-41      lubridate_1.7.9     
 ## [10] checkmate_2.0.0      evaluate_0.14        memoise_1.1.0       
 ## [13] lifecycle_0.2.0      tibble_3.0.3         gtable_0.3.0        
-## [16] pkgconfig_2.0.3      png_0.1-7            rlang_0.4.7         
+## [16] png_0.1-7            pkgconfig_2.0.3      rlang_0.4.7         
 ## [19] rstudioapi_0.11      yaml_2.2.1           pkgdown_1.5.1       
 ## [22] xfun_0.16            interp_1.0-33        metR_0.7.0          
 ## [25] withr_2.2.0          stringr_1.4.0        knitr_1.29          
@@ -622,10 +622,11 @@
 ## [34] grid_4.0.2           data.table_1.13.0    glue_1.4.1          
 ## [37] R6_2.4.1             rmarkdown_2.3        sp_1.4-2            
 ## [40] farver_2.0.3         deldir_0.1-28        magrittr_1.5        
-## [43] backports_1.1.8      scales_1.1.1         htmltools_0.5.0     
-## [46] ellipsis_0.3.1       MASS_7.3-51.6        ggwordcloud_0.5.0   
-## [49] assertthat_0.2.1     colorspace_1.4-1     labeling_0.3        
-## [52] stringi_1.4.6        munsell_0.5.0        crayon_1.3.4</code></pre>
+## [43] codetools_0.2-16     backports_1.1.8      scales_1.1.1        
+## [46] htmltools_0.5.0      ellipsis_0.3.1       MASS_7.3-51.6       
+## [49] ggwordcloud_0.5.0    assertthat_0.2.1     colorspace_1.4-1    
+## [52] labeling_0.3         stringi_1.4.6        munsell_0.5.0       
+## [55] crayon_1.3.4</code></pre>
 </div>
 </div>
   </div>

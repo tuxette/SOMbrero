@@ -114,7 +114,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/tuxette/sombrero/">
+  <a href="https://github.com/tuxette/sombrero/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -133,7 +133,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Predict the classification of a new observation</h1>
-    <small class="dont-index">Source: <a href='http://github.com/tuxette/sombrero/blob/master/R/som.R'><code>R/som.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tuxette/sombrero/blob/master/R/som.R'><code>R/som.R</code></a></small>
     <div class="hidden name"><code>predict.somRes.Rd</code></div>
     </div>
 
@@ -163,7 +163,7 @@ corresponds to performing prediction on the training dataset.</p></td>
     <tr>
       <th>radius</th>
       <td><p>current radius used to perform soft affectation (when 
-<code>affectation="heskes"</code>, see <code>initSOM</code> for further details
+<code>affectation="heskes"</code>, see <code><a href='initSOM.html'>initSOM</a></code> for further details
 about Heskes's soft affectation). Default value is <span class="option">0</span>, 
 which corresponds to a hard affectation.</p></td>
     </tr>
@@ -184,14 +184,14 @@ original contingency table passed to the algorithm.</p>
 
     <p>The number of columns of the new observations (or its length if only 
 one observation is provided) must match the number of colums of the data set
-given to the SOM algorithm (see <code>trainSOM</code>).</p>
+given to the SOM algorithm (see <code><a href='trainSOM.html'>trainSOM</a></code>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code>trainSOM</code></p></div>
+    <div class='dont-index'><p><code><a href='trainSOM.html'>trainSOM</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>2343</span>)
-<span class='no'>my.som</span> <span class='kw'>&lt;-</span> <span class='fu'>trainSOM</span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>iris</span>[-<span class='fl'>100</span>,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>dimension</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>5</span>))
+<span class='no'>my.som</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='trainSOM.html'>trainSOM</a></span>(<span class='kw'>x.data</span><span class='kw'>=</span><span class='no'>iris</span>[-<span class='fl'>100</span>,<span class='fl'>1</span>:<span class='fl'>4</span>], <span class='kw'>dimension</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>5</span>))
 <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='no'>my.som</span>, <span class='no'>iris</span>[<span class='fl'>100</span>,<span class='fl'>1</span>:<span class='fl'>4</span>])</div><div class='output co'>#&gt; 2 
 #&gt; 2 </div></pre>
   </div>
