@@ -20,7 +20,7 @@ Description: The stochastic (also called on-line) version of the Self-Organising
              plotting features (to help the user interpret the results) and a
              graphical user interface based on 'shiny'.
 BugReports: https://github.com/tuxette/sombrero/issues
-Depends: R (>= 3.1.0), igraph (>= 1.0)
+Depends: R (>= 3.1.0), igraph (>= 1.0), markdown
 Imports: scatterplot3d, shiny, grDevices, graphics, stats, ggplot2, ggwordcloud, metR, interp
 Suggests: testthat, rmarkdown, knitr, hexbin, shinycssloaders, shinyBS, shinyjs, shinyjqui
 License: GPL (>= 2)

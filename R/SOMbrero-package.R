@@ -83,6 +83,7 @@
 #' 
 #' @import igraph
 #' @import ggplot2
+#' @import markdown
 #' @importFrom grDevices trans3d hcl
 #' @importFrom graphics layout legend par plot rect text title points
 #' @importFrom stats aov as.dist chisq.test cmdscale cutree dist hclust pf
