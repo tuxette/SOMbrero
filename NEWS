@@ -1,3 +1,29 @@
+SOMbrero 1.4
+
+New features:
+  numeric SOM can now handle missing data
+
+Fixed bugs:
+  proto0 was incorrectly used for 'numeric' (see bug report #4 on Github)
+  
+  dist.type was improperly handled for types other than 'euclidean' and 
+  'letremy' when radius.type was letremy
+  
+  minor bug in computation of tolerance for numerical approximations with 
+  Gaussian radius
+  
+  removed 'tolerance' from the prediction (not used any more)
+  
+  fixed minor issues in OO for trainSOM
+  
+Improvements:
+  Heskes' affectation now account for total neighbord weight in order to not 
+  favor too much the borders of the map
+  
+Misc: 
+  refactorization of most of the code
+
+********************************************************************************
 SOMbrero 1.3-1
 
 Improvements:

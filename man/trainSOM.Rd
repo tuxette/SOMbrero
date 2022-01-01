@@ -37,14 +37,16 @@ calculated according to the SOM type if the user does not set them:
 The \code{trainSOM} function returns an object of class \code{somRes}
 which contains the following components:
 \itemize{
-  \item{clustering}{the final classification of the data.}
-  \item{prototypes}{the final coordinates of the prototypes.}
-  \item{energy}{the final energy of the map.}
-  \item{backup}{a list containing some intermediate backups of the prototypes
-  coordinates, clustering, energy and the indexes of the recorded backups, if
-  \code{nb.save} is set to a value larger than 1.}
-  \item{data}{the original dataset used to train the algorithm.}
-  \item{parameters}{a list of the map's parameters, which is an object of 
+  \item{clustering}{ the final classification of the data.}
+  \item{prototypes}{ the final coordinates of the prototypes.}
+  \item{energy}{ the final energy of the map. For the numeric case, energy 
+  with data having missing entries is based on data imputation as described
+  in Cottrell and Letremy (2005b).}
+  \item{backup}{ a list containing some intermediate backups of the 
+  prototypes coordinates, clustering, energy and the indexes of the recorded 
+  backups, if \code{nb.save} is set to a value larger than 1.}
+  \item{data}{ the original dataset used to train the algorithm.}
+  \item{parameters}{ a list of the map's parameters, which is an object of 
   class \code{paramSOM} as produced by the function \code{\link{initSOM}}.}
 }
 The function \code{summary.somRes} also provides an ANOVA (ANalysis Of 
@@ -61,23 +63,29 @@ stochastic version.
 
 Several variants able to handle non-vectorial data are also implemented in 
 their stochastic versions: \code{type="korresp"} for contingency tables, as
-described in Cottrell et al., 2004 (with weights as in Cottrel and Letremy, 
-2005); \code{type="relational"} for dissimilarity matrices, as described in
-Olteanu et al., 2015, with the fast implementation introduced in Mariette
-\emph{et al.}, 2017.
+described in Cottrell et al. (2004) (with weights as in Cottrell and Letremy, 
+2005a); \code{type = "relational"} for dissimilarity matrices, as described 
+in Olteanu et al. (2015), with the fast implementation introduced in Mariette
+\emph{et al.} (2017).
 
-\code{summary} produces a complete summary of the results that displays the 
-parameters of the SOM, quality criteria and ANOVA. For \code{type="numeric"}
-the ANOVA is performed for each input variable and test the difference of 
-this variable accross the clsuters of the map. For \code{type="relational"} a
-dissimilarity ANOVA is performed (see (Anderson, 2001), except that in the 
-present version, a crude estimate of the p-value is used which is based on 
-the Fisher distribution and not on a permutation test.
+Missing values are handled as described in Cottrell et al. (2005b), not using
+missing entries of the selected observation during winner computation or 
+prototype updates. This allows to proceed with the imputation of missing
+entries with the corresponding entries of the cluster prototype (with 
+\code{\link{impute}}).
+
+\code{\link{summary}} produces a complete summary of the results that 
+displays the parameters of the SOM, quality criteria and ANOVA. For 
+\code{type = "numeric"} the ANOVA is performed for each input variable and 
+test the difference of this variable across the clusters of the map. For 
+\code{type = "relational"} a dissimilarity ANOVA is performed (Anderson, 
+2001), except that in the present version, a crude estimate of the p-value is
+used which is based on the Fisher distribution and not on a permutation test.
 }
 \note{
 Warning! Recording intermediate backups with the argument 
 \code{nb.save} can strongly increase the computational time since calculating
-the entire clustering and the energy is time consumming. Use this option with
+the entire clustering and the energy is time consuming. Use this option with
 care and only when it is strictly necessary.
 }
 \examples{
@@ -96,20 +104,24 @@ Springer-Verlag, 3rd edition.
 Cottrell M., Ibbou S., Letremy P. (2004) SOM-based algorithms for qualitative
 variables. \emph{Neural Networks}, \strong{17}, 1149-1167.
 
-Cottrell M., Letremy P. (2005) How to use the Kohonen algorithm to 
+Cottrell M., Letremy P. (2005a) How to use the Kohonen algorithm to 
 simultaneously analyse individuals in a survey. \emph{Neurocomputing}, 
 \strong{21}, 119-138.
+
+Cottrell M., Letremy P. (2005b) Missing values: processing with the Kohonen 
+algorithm. \emph{Proceedings of Applied Stochastic Models and Data Analysis
+(ASMDA 2005)}, 489-496.
 
 Olteanu M., Villa-Vialaneix N. (2015) On-line relational and multiple
 relational SOM. \emph{Neurocomputing}, \strong{147}, 15-30. 
 
 Mariette J., Rossi F., Olteanu M., Mariette J. (2017) Accelerating stochastic 
 kernel SOM. In: M. Verleysen, \emph{XXVth European Symposium on Artificial 
-Neural Networks, Computational Intelligence and Machine Learning 
-(ESANN 2017)}, i6doc, Bruges, Belgium, 269-274.
+Neural Networks, Computational Intelligence and Machine Learning (ESANN 
+2017)}, i6doc, Bruges, Belgium, 269-274.
 }
 \seealso{
-See \code{\link{initSOM}} for a description of the paramaters to 
+See \code{\link{initSOM}} for a description of the parameters to 
 pass to the trainSOM function to change its behavior and 
 \code{\link{plot.somRes}} to plot the outputs of the algorithm.
 }

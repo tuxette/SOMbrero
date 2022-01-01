@@ -136,6 +136,7 @@ initSOM <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
   topo <- match.arg(topo)
   scaling <- match.arg(scaling,
                        c("unitvar", "none", "center", "chi2", "cosine"))
+  ## TODO: remove irrelevant distance types
   dist.type <- match.arg(dist.type, c("letremy", "maximum", "euclidean",
                                       "manhattan", "canberra", "minkowski"))
   

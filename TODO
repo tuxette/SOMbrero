@@ -1,3 +1,18 @@
+* run tests
+  [X] euclidean vs relational
+  [ ] prediction (3/18 fails)
+* check ressemblance with previous results on tests
+----> commit
+* rerun vignettes
+* check plots for the case where missing values exist
+* change Madalina's email
+* add tests on OO and on missing values
+* add a vignette on missing values
+
+
+
+
+###############################################################################
 * other features (easy)
 ** MC : ficelle -> check all features (especially 3D plots)
 ** MC : for lines, display all observations and not the mean

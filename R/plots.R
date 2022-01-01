@@ -12,8 +12,8 @@ orderIndexes <- function(the.grid, type) {
 
 # Produce default colors for non ggplot plots (dendro, dendro3d and igraph.pie)
 gg_color <- function(n) {
-  hues = seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100)[1:n]
+  hues <- seq(15, 375, length = n + 1)
+  return(hcl(h = hues, l = 65, c = 100)[1:n])
 }
 
 # Handle title for plots
@@ -215,7 +215,7 @@ plotPrototypes <- function(sommap, type, variable, my.palette, show.names,
     args$varname <- tmp.var
 
     if (type == "color") {
-      ggplotGrid("prototypes", "color", sommap$prototypes[ ,tmp.var], 
+      ggplotGrid("prototypes", "color", sommap$prototypes[, tmp.var], 
                  as.numeric(rownames(sommap$prototypes)), show.names, 
                  names, sommap$parameters$the.grid, args)
 
@@ -353,8 +353,12 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
   
   # Switching between plot types
   if (type %in% c("lines", "barplot", "boxplot", "names", "meanline")) {
+    # handling missing values
+    if (any(is.na(sommap$data[, tmp.var])) && type == "lines") 
+      sommap$data <- impute(sommap)
+    
     if (type %in% c("lines", "barplot", "boxplot", "meanline")) {
-      values <- sommap$data[ ,tmp.var]
+      values <- sommap$data[, tmp.var]
     } else if (type == "names") {
       if (sommap$parameters$type %in% c("relational", "korresp")) {
         tmp.var <- "names"
@@ -365,7 +369,7 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
         if (tmp.var == "row.names"){
             values <- names(sommap$clustering)
         } else {
-          values <- sommap$data[ ,tmp.var]
+          values <- sommap$data[, tmp.var]
         }
       }
     }
@@ -375,7 +379,7 @@ plotObs <- function(sommap, type, variable, my.palette, show.names, names,
   } else if (type %in% c("color", "hitmap")) {
       if (type == "color") {
         args$varname <- tmp.var
-        values <- sommap$data[,tmp.var]
+        values <- sommap$data[, tmp.var]
       } else if (type == "hitmap") {
         values <- sommap$clustering
       }
@@ -420,7 +424,7 @@ plotProjGraph <- function(proj.graph, show.names = FALSE, names = NULL,
       args$vertex.frame.color <- gg_color(1)
   }
 
-  par(bg="white")
+  par(bg = "white")
   do.call("plot.igraph", args)
 }
 
@@ -429,15 +433,18 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
                     pie.variable, args) {
   
   # korresp control
-  if (sommap$parameters$type=="korresp") 
-    stop("graphics of type 'add' do not exist for 'korresp'\n", call.=TRUE)
+  if (sommap$parameters$type == "korresp") 
+    stop("graphics of type 'add' do not exist for 'korresp'\n", call. = TRUE)
   
   authorizedtypes <- list("numeric" = c("pie", "color", "lines", "meanline", 
                                         "barplot", "words", "boxplot", "names", 
                                         "graph"),
                           "relational" = c("pie", "color", "lines", "meanline", 
                                            "barplot", "words", "boxplot", 
-                                           "names", "graph")) 
+                                           "names", "graph"))
+  # handling missing values
+  if (any(is.na(variable)) && type %in% c("lines", "graph"))
+    stop("Cannot display 'lines' or 'graph' with missing entries.")
   
   if (!is.element(type, authorizedtypes[[sommap$parameters$type]])) {
     stop(paste0("Incorrect type. For ", sommap$parameters$type, 
@@ -586,16 +593,16 @@ plotAdd <- function(sommap, type, variable, proportional, my.palette,
 #' 
 #' @examples
 #' # run the SOM algorithm on the numerical data of 'iris' data set
-#' iris.som <- trainSOM(x.data=iris[,1:4], nb.save=2)
+#' iris.som <- trainSOM(x.data = iris[, 1:4], nb.save = 2)
 #' # plots
 #' # on energy
-#' plot(iris.som, what="energy") 
+#' plot(iris.som, what = "energy") 
 #' # on observations
-#' plot(iris.som, what="obs", type="lines")
+#' plot(iris.som, what = "obs", type = "lines")
 #' # on prototypes
-#' plot(iris.som, what="prototypes", type="3d", variable="Sepal.Length")
+#' plot(iris.som, what = "prototypes", type = "3d", variable = "Sepal.Length")
 #' # on an additional variable: the flower species
-#' plot(iris.som, what="add", type="pie", variable=iris$Species)
+#' plot(iris.som, what = "add", type = "pie", variable = iris$Species)
 
 plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"), 
                         type=switch(what,
@@ -653,9 +660,9 @@ plot.somRes <- function(x, what=c("obs", "prototypes", "energy", "add"),
 
   # Names control
   if (length(names) != prod(x$parameters$the.grid$dim) & what != "energy") {
-    names=switch(type,
-                 "graph" = 1:prod(x$parameters$the.grid$dim),
-                 1:prod(x$parameters$the.grid$dim))
+    names <- switch(type,
+                    "graph" = 1:prod(x$parameters$the.grid$dim),
+                    1:prod(x$parameters$the.grid$dim))
     warning("unadequate length for 'names'; replaced by default",
             call. = TRUE, immediate. = TRUE)
   }
