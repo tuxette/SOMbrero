@@ -18,7 +18,7 @@ parameters given to the algorithm (see \code{\link{initSOM}} and
 \tabular{ll}{
 Package: \tab SOMbrero\cr
 Type: \tab Package\cr
-Version: \tab 1.4\cr
+Version: \tab 1.4-1\cr
 Date: \tab 2022-01-03\cr
 License: \tab GPL (>= 2)
 }

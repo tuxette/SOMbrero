@@ -1,6 +1,6 @@
 Package: SOMbrero
 Title: SOM Bound to Realize Euclidean and Relational Outputs
-Version: 1.4
+Version: 1.4-1
 Date: 2022-01-03
 Authors@R: c(person("Nathalie", "Vialaneix", role = c("aut", "cre"), email="nathalie.vialaneix@inrae.fr"),
              person("Elise", "Maigne", role = "aut", email="elise.maigne@inrae.fr"),

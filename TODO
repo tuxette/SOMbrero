@@ -1,16 +1,7 @@
-* run tests
-  [X] euclidean vs relational
-  [X] prediction
-* [X] check ressemblance with previous results on tests
-* [X] rerun vignettes
-* [X] update dependencies
-* [X] check plots for the case where missing values exist
-* [X] change Madalina's email
-* [X] add tests on missing values
 * [] add a vignette on missing values
 * [] make evaluation of missing values management
 * [] code improvement (check TODOs)
-* [] CRAN check, submit (with new date) and merge + double push
+* [] add more tests
 
 
 ###############################################################################
