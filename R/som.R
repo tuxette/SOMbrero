@@ -457,14 +457,14 @@ run.trainSOM <- function (x.data, ...) {
     stop("data do not match chosen SOM type ('relational')\n", call. = TRUE)
   
   # Default dimension: nb.obs/10 with minimum equal to 5 and maximum to 10
-  if (is.null(param.args$dimension)) {
+  if (is.null(param.args$dim)) {
     if (!is.null(param.args$type) && param.args$type=="korresp")
-      param.args$dimension <- 
+      param.args$dim <- 
         c(max(5, min(10, ceiling(sqrt((nrow(x.data) + ncol(x.data)) / 10)))), 
           max(5, min(10, ceiling(sqrt((nrow(x.data) + ncol(x.data)) / 10)))))
     else
-      param.args$dimension <- c(max(5, min(10, ceiling(sqrt(nrow(x.data) / 10)))), 
-                                max(5, min(10, ceiling(sqrt(nrow(x.data) / 10)))))
+      param.args$dim <- c(max(5, min(10, ceiling(sqrt(nrow(x.data) / 10)))), 
+                          max(5, min(10, ceiling(sqrt(nrow(x.data) / 10)))))
   }
   
   # Default maxit: nb.obs*5
@@ -507,7 +507,7 @@ run.trainSOM <- function (x.data, ...) {
                     as.integer(c(nb.proto, ncol(x.data) + nrow(x.data)))))) {
       stop("initial prototypes dimensions do not match SOM parameters:
            in the current SOM, prototypes must have ", 
-           prod(parameters$the.grid$dimension), " rows and ", 
+           prod(parameters$the.grid$dim), " rows and ", 
            ncol(x.data) + nrow(x.data), " columns\n", call. = TRUE)
     } else if (!identical(dim(parameters$proto0),
                           as.integer(c(nb.proto, ncol(x.data))))) {
