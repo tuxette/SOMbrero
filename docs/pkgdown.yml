@@ -1,5 +1,5 @@
-pandoc: 2.7.3
-pkgdown: 1.5.1
+pandoc: 2.14.0.3
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   a-doc-SOMbrero-package: a-doc-SOMbrero-package.html
@@ -7,5 +7,5 @@ articles:
   c-doc-numericSOM: c-doc-numericSOM.html
   d-doc-korrespSOM: d-doc-korrespSOM.html
   e-doc-relationalSOM: e-doc-relationalSOM.html
-last_built: 2020-08-11T07:10Z
+last_built: 2022-01-03T20:32Z
 

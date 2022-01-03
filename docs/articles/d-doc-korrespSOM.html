@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">SOMbrero</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.3-1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4-1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -73,8 +69,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/tuxette/sombrero/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/tuxette/sombrero/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -88,14 +84,14 @@
 
       
 
-      </header><script src="d-doc-korrespSOM_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using Self-Organizing Maps with SOMbrero for contingency tables</h1>
             
-            <h4 class="date">11 août, 2020</h4>
+            <h4 data-toc-skip class="date">03 janvier, 2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/tuxette/sombrero/blob/master/vignettes/d-doc-korrespSOM.Rmd"><code>vignettes/d-doc-korrespSOM.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tuxette/sombrero/blob/HEAD/vignettes/d-doc-korrespSOM.Rmd" class="external-link"><code>vignettes/d-doc-korrespSOM.Rmd</code></a></small>
       <div class="hidden name"><code>d-doc-korrespSOM.Rmd</code></div>
 
     </div>
@@ -108,146 +104,151 @@
 %\VignettePackage{SOMbrero}
 -->
 <p>To limit this documentation size, most figures are not displayed in the version of the vignette included in the package. To see all figures, you can rerun the vignettes, changing the following option to <code>TRUE</code>:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span>$<span class="fu">set</span>(<span class="kw">include</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<p>Alternatively, this compilation is also available at: <a href="http://sombrero.nathalievialaneix.eu/articles/d-doc-korrespSOM.html" class="uri">http://sombrero.nathalievialaneix.eu/articles/d-doc-korrespSOM.html</a></p>
-<div id="basic-package-description" class="section level2">
-<h2 class="hasAnchor">
-<a href="#basic-package-description" class="anchor"></a>Basic package description</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html" class="external-link">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>include <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>Alternatively, this compilation is also available at: <a href="http://sombrero.nathalievialaneix.eu/articles/d-doc-korrespSOM.html" class="external-link uri">http://sombrero.nathalievialaneix.eu/articles/d-doc-korrespSOM.html</a></p>
+<div class="section level2">
+<h2 id="basic-package-description">Basic package description<a class="anchor" aria-label="anchor" href="#basic-package-description"></a>
+</h2>
 <p><code>SOMbrero</code> implements different variants of the Self-Organizing Map algorithm (also called Kohonen’s algorithm). To process a given dataset with the SOM algorithm, you can use the function <code><a href="../reference/trainSOM.html">trainSOM()</a></code>.</p>
 <p><strong>This documentation only considers the case of contingency tables.</strong></p>
-<div id="arguments" class="section level3">
-<h3 class="hasAnchor">
-<a href="#arguments" class="anchor"></a>Arguments</h3>
+<div class="section level3">
+<h3 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a>
+</h3>
 <p>The <code>trainSOM</code> function has several arguments, but only the first one is required. This argument is <code>x.data</code> which is the dataset used to train the SOM. In this documentation, it is passed to the function as a matrix or a data frame and encodes a contingency tables (the entries are the frequencies of joint observations for two factors). Column and row names must be supplied to ease the interpretation.</p>
 <p>The function handles over options, which are the same as the ones passed to <code>initSOM</code> (they are parameters defining the algorithm, see <code><a href="../reference/initSOM.html">help(initSOM)</a></code> for further details).</p>
 </div>
-<div id="outputs" class="section level3">
-<h3 class="hasAnchor">
-<a href="#outputs" class="anchor"></a>Outputs</h3>
+<div class="section level3">
+<h3 id="outputs">Outputs<a class="anchor" aria-label="anchor" href="#outputs"></a>
+</h3>
 <p>The <code>trainSOM</code> function returns an object of class <code>somRes</code> (see <code><a href="../reference/trainSOM.html">help(trainSOM)</a></code> for further details on this class).</p>
 </div>
 </div>
-<div id="case-study-the-presidentielles2002-data-set" class="section level2">
-<h2 class="hasAnchor">
-<a href="#case-study-the-presidentielles2002-data-set" class="anchor"></a>Case study: the <code>presidentielles2002</code> data set</h2>
+<div class="section level2">
+<h2 id="case-study-the-presidentielles2002-data-set">Case study: the <code>presidentielles2002</code> data set<a class="anchor" aria-label="anchor" href="#case-study-the-presidentielles2002-data-set"></a>
+</h2>
 <p>The <code>presidentielles2002</code> data set provides the number of votes for the first round of the 2002 French presidential election for each of the 16 candidates in all of the 106 French administrative districts called “départements”. Further details about this data set and the 2002 French presidential election are given with <code><a href="../reference/presidentielles2002.html">help(presidentielles2002)</a></code>.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">presidentielles2002</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="no">presidentielles2002</span>, <span class="fl">2</span>, <span class="no">sum</span>)</pre></body></html></div>
-<pre><code>##      MEGRET      LEPAGE  GLUCKSTEIN      BAYROU      CHIRAC      LE_PEN 
-##      667043      535875      132696     1949219     5666021     4804772 
-##     TAUBIRA SAINT_JOSSE      MAMERE      JOSPIN      BOUTIN         HUE 
-##      660515     1204801     1495774     4610267      339157      960548 
-## CHEVENEMENT     MADELIN   LAGUILLER  BESANCENOT 
-##     1518568     1113551     1630118     1210562</code></pre>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">presidentielles2002</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">presidentielles2002</span>, <span class="fl">2</span>, <span class="va">sum</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##      MEGRET      LEPAGE  GLUCKSTEIN      BAYROU      CHIRAC      LE_PEN </span>
+<span class="co">##      667043      535875      132696     1949219     5666021     4804772 </span>
+<span class="co">##     TAUBIRA SAINT_JOSSE      MAMERE      JOSPIN      BOUTIN         HUE </span>
+<span class="co">##      660515     1204801     1495774     4610267      339157      960548 </span>
+<span class="co">## CHEVENEMENT     MADELIN   LAGUILLER  BESANCENOT </span>
+<span class="co">##     1518568     1113551     1630118     1210562</span></code></pre>
 <p>(the two candidates that ran the second round of the election were Jacques Chirac and the far-right candidate Jean-Marie Le Pen)</p>
-<div id="training-the-som" class="section level3">
-<h3 class="hasAnchor">
-<a href="#training-the-som" class="anchor"></a>Training the SOM</h3>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">01091407</span>)
-<span class="no">korresp.som</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/trainSOM.html">trainSOM</a></span>(<span class="kw">x.data</span> <span class="kw">=</span> <span class="no">presidentielles2002</span>, <span class="kw">dimension</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>,<span class="fl">8</span>),
-                        <span class="kw">type</span> <span class="kw">=</span> <span class="st">"korresp"</span>, <span class="kw">scaling</span> <span class="kw">=</span> <span class="st">"chi2"</span>, <span class="kw">nb.save</span> <span class="kw">=</span> <span class="fl">10</span>,
-                        <span class="kw">topo</span> <span class="kw">=</span> <span class="st">"hexagonal"</span>, <span class="kw">maxit</span> <span class="kw">=</span> <span class="fl">500</span>)
-<span class="no">korresp.som</span></pre></body></html></div>
-<pre><code>##       Self-Organizing Map object...
-##          online learning, type: korresp 
-##          8 x 8 grid with hexagonal topology
-##          neighbourhood type: gaussian 
-##          distance type: euclidean</code></pre>
+<div class="section level3">
+<h3 id="training-the-som">Training the SOM<a class="anchor" aria-label="anchor" href="#training-the-som"></a>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">01091407</span><span class="op">)</span>
+<span class="va">korresp.som</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/trainSOM.html">trainSOM</a></span><span class="op">(</span>x.data <span class="op">=</span> <span class="va">presidentielles2002</span>, dimension <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>,<span class="fl">8</span><span class="op">)</span>,
+                        type <span class="op">=</span> <span class="st">"korresp"</span>, scaling <span class="op">=</span> <span class="st">"chi2"</span>, nb.save <span class="op">=</span> <span class="fl">10</span>,
+                        topo <span class="op">=</span> <span class="st">"hexagonal"</span>, maxit <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
+<span class="va">korresp.som</span></code></pre></div>
+<pre><code><span class="co">##       Self-Organizing Map object...</span>
+<span class="co">##          online learning, type: korresp </span>
+<span class="co">##          8 x 8 grid with hexagonal topology</span>
+<span class="co">##          neighbourhood type: gaussian </span>
+<span class="co">##          distance type: euclidean</span></code></pre>
 <p>As the energy is registered during the intermediate backups, we can take a look at its evolution</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"energy"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"energy"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/energyPresi-1.png" width="700"></p>
-<p>which has approximatively stabilized at iteration 500.</p>
+<p>which has approximately stabilized at iteration 500.</p>
 </div>
-<div id="resulting-clustering" class="section level3">
-<h3 class="hasAnchor">
-<a href="#resulting-clustering" class="anchor"></a>Resulting clustering</h3>
+<div class="section level3">
+<h3 id="resulting-clustering">Resulting clustering<a class="anchor" aria-label="anchor" href="#resulting-clustering"></a>
+</h3>
 <p>The clustering component contains the final classification of the dataset. As both row and column variables are classified, the length of the resulting vector is equal to the sum of the number of rows and the number of columns.</p>
 <p><strong>NB: The clustering component shows first the column variables (here, the candidates) and then the row variables (here, the départements).</strong></p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">korresp.som</span>$<span class="no">clustering</span></pre></body></html></div>
-<pre><code>##                   MEGRET                   LEPAGE               GLUCKSTEIN 
-##                        8                        8                        8 
-##                   BAYROU                   CHIRAC                   LE_PEN 
-##                       40                       33                       61 
-##                  TAUBIRA              SAINT_JOSSE                   MAMERE 
-##                        8                        4                       32 
-##                   JOSPIN                   BOUTIN                      HUE 
-##                       25                        8                        6 
-##              CHEVENEMENT                  MADELIN                LAGUILLER 
-##                       32                       24                        4 
-##               BESANCENOT                      ain                    aisne 
-##                        5                       61                       61 
-##                   allier  alpes_de_haute_provence             hautes_alpes 
-##                       59                       57                       57 
-##          alpes_maritimes                  ardeche                 ardennes 
-##                       64                       59                       57 
-##                   ariege                     aube                     aude 
-##                       57                       57                       59 
-##                  aveyron         bouches_du_rhone                 calvados 
-##                       57                        4                       53 
-##                   cantal                 charente        charente_maritime 
-##                       57                       57                       43 
-##                     cher                  correze                corse_sud 
-##                       57                       57                       57 
-##              haute_corse                cote_d'or            cotes_d'armor 
-##                       57                       61                       25 
-##                   creuse                 dordogne                    doubs 
-##                       57                       59                       61 
-##                    drome                     eure             eure_et_loir 
-##                       60                       61                       59 
-##                finistere                     gard            haute_garonne 
-##                       17                       62                        9 
-##                     gers                  gironde                  herault 
-##                       57                        1                       55 
-##          ille_et_vilaine                    indre          indre_et_loire_ 
-##                       17                       57                       61 
-##                    isere                     jura                   landes 
-##                       56                       57                       57 
-##             loir_et_cher                    loire              haute_loire 
-##                       59                       63                       57 
-##         loire_atlantique                   loiret                      lot 
-##                       10                       61                       57 
-##          lot_et_garonne_                   lozere          maine_et_loire_ 
-##                       59                       57                       45 
-##                   manche                    marne              haute_marne 
-##                       60                       61                       57 
-##                  mayenne       meurthe_et_moselle                    meuse 
-##                       57                       62                       57 
-##                 morbihan                  moselle                   nievre 
-##                       26                       64                       57 
-##                     nord                     oise                     orne 
-##                        6                       63                       57 
-##            pas_de_calais              puy_de_dome     pyrenees_atlantiques 
-##                        2                       53                       25 
-##          hautes_pyrenees      pyrenees_orientales                 bas_rhin 
-##                       57                       59                       56 
-##                haut_rhin                    rhone              haute_saone 
-##                       63                       40                       57 
-##          saone_et_loire_                   sarthe                   savoie 
-##                       61                       52                       59 
-##             haute_savoie                    paris          seine_maritime_ 
-##                       63                       24                        1 
-##          seine_et_marne_                 yvelines              deux_sevres 
-##                       56                       48                       49 
-##                    somme                     tarn          tarn_et_garonne 
-##                       61                       59                       57 
-##                      var                 vaucluse                   vendee 
-##                       64                       61                       25 
-##                   vienne             haute_vienne                   vosges 
-##                       58                       49                       59 
-##                    yonne    territoire_de_belfort                  essonne 
-##                       59                       57                       46 
-##          hauts_de_seine_        seine_saint-denis             val_de_marne 
-##                       40                       37                       46 
-##               val_d'oise               guadeloupe               martinique 
-##                       55                       57                       57 
-##                   guyane               la_reunion                  mayotte 
-##                       57                       33                       57 
-##       nouvelle_caledonie      polynesie_francaise saint_pierre_et_miquelon 
-##                       57                       57                       57 
-##         wallis_et_futuna   francais_de_l'etranger 
-##                       57                       49</code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">korresp.som</span><span class="op">$</span><span class="va">clustering</span></code></pre></div>
+<pre><code><span class="co">##                   MEGRET                   LEPAGE               GLUCKSTEIN </span>
+<span class="co">##                        8                        8                        8 </span>
+<span class="co">##                   BAYROU                   CHIRAC                   LE_PEN </span>
+<span class="co">##                       40                       33                       61 </span>
+<span class="co">##                  TAUBIRA              SAINT_JOSSE                   MAMERE </span>
+<span class="co">##                        8                        4                       32 </span>
+<span class="co">##                   JOSPIN                   BOUTIN                      HUE </span>
+<span class="co">##                       25                        8                        6 </span>
+<span class="co">##              CHEVENEMENT                  MADELIN                LAGUILLER </span>
+<span class="co">##                       32                       24                        4 </span>
+<span class="co">##               BESANCENOT                      ain                    aisne </span>
+<span class="co">##                        5                       61                       61 </span>
+<span class="co">##                   allier  alpes_de_haute_provence             hautes_alpes </span>
+<span class="co">##                       59                       57                       57 </span>
+<span class="co">##          alpes_maritimes                  ardeche                 ardennes </span>
+<span class="co">##                       64                       59                       57 </span>
+<span class="co">##                   ariege                     aube                     aude </span>
+<span class="co">##                       57                       57                       59 </span>
+<span class="co">##                  aveyron         bouches_du_rhone                 calvados </span>
+<span class="co">##                       57                        4                       53 </span>
+<span class="co">##                   cantal                 charente        charente_maritime </span>
+<span class="co">##                       57                       57                       43 </span>
+<span class="co">##                     cher                  correze                corse_sud </span>
+<span class="co">##                       57                       57                       57 </span>
+<span class="co">##              haute_corse                cote_d'or            cotes_d'armor </span>
+<span class="co">##                       57                       61                       25 </span>
+<span class="co">##                   creuse                 dordogne                    doubs </span>
+<span class="co">##                       57                       59                       61 </span>
+<span class="co">##                    drome                     eure             eure_et_loir </span>
+<span class="co">##                       60                       61                       59 </span>
+<span class="co">##                finistere                     gard            haute_garonne </span>
+<span class="co">##                       17                       62                        9 </span>
+<span class="co">##                     gers                  gironde                  herault </span>
+<span class="co">##                       57                        1                       55 </span>
+<span class="co">##          ille_et_vilaine                    indre          indre_et_loire_ </span>
+<span class="co">##                       17                       57                       61 </span>
+<span class="co">##                    isere                     jura                   landes </span>
+<span class="co">##                       56                       57                       57 </span>
+<span class="co">##             loir_et_cher                    loire              haute_loire </span>
+<span class="co">##                       59                       63                       57 </span>
+<span class="co">##         loire_atlantique                   loiret                      lot </span>
+<span class="co">##                       10                       61                       57 </span>
+<span class="co">##          lot_et_garonne_                   lozere          maine_et_loire_ </span>
+<span class="co">##                       59                       57                       45 </span>
+<span class="co">##                   manche                    marne              haute_marne </span>
+<span class="co">##                       60                       61                       57 </span>
+<span class="co">##                  mayenne       meurthe_et_moselle                    meuse </span>
+<span class="co">##                       57                       62                       57 </span>
+<span class="co">##                 morbihan                  moselle                   nievre </span>
+<span class="co">##                       26                       64                       57 </span>
+<span class="co">##                     nord                     oise                     orne </span>
+<span class="co">##                        6                       63                       57 </span>
+<span class="co">##            pas_de_calais              puy_de_dome     pyrenees_atlantiques </span>
+<span class="co">##                        2                       53                       25 </span>
+<span class="co">##          hautes_pyrenees      pyrenees_orientales                 bas_rhin </span>
+<span class="co">##                       57                       59                       56 </span>
+<span class="co">##                haut_rhin                    rhone              haute_saone </span>
+<span class="co">##                       63                       40                       57 </span>
+<span class="co">##          saone_et_loire_                   sarthe                   savoie </span>
+<span class="co">##                       61                       52                       59 </span>
+<span class="co">##             haute_savoie                    paris          seine_maritime_ </span>
+<span class="co">##                       63                       24                        1 </span>
+<span class="co">##          seine_et_marne_                 yvelines              deux_sevres </span>
+<span class="co">##                       56                       48                       49 </span>
+<span class="co">##                    somme                     tarn          tarn_et_garonne </span>
+<span class="co">##                       61                       59                       57 </span>
+<span class="co">##                      var                 vaucluse                   vendee </span>
+<span class="co">##                       64                       61                       25 </span>
+<span class="co">##                   vienne             haute_vienne                   vosges </span>
+<span class="co">##                       58                       49                       59 </span>
+<span class="co">##                    yonne    territoire_de_belfort                  essonne </span>
+<span class="co">##                       59                       57                       46 </span>
+<span class="co">##          hauts_de_seine_        seine_saint-denis             val_de_marne </span>
+<span class="co">##                       40                       37                       46 </span>
+<span class="co">##               val_d'oise               guadeloupe               martinique </span>
+<span class="co">##                       55                       57                       57 </span>
+<span class="co">##                   guyane               la_reunion                  mayotte </span>
+<span class="co">##                       57                       33                       57 </span>
+<span class="co">##       nouvelle_caledonie      polynesie_francaise saint_pierre_et_miquelon </span>
+<span class="co">##                       57                       57                       57 </span>
+<span class="co">##         wallis_et_futuna   francais_de_l'etranger </span>
+<span class="co">##                       57                       49</span></code></pre>
 <p>The following table indicates which graphics are available for a korresp SOM.</p>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
 <col width="15%">
 <col width="10%">
@@ -447,192 +448,223 @@
 </tbody>
 </table>
 <p>The resulting distribution of the clustering on the map can also be visualized by a hitmap:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"obs"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"hitmap"</span>, <span class="kw">show.names</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"obs"</span>, type <span class="op">=</span> <span class="st">"hitmap"</span>, show.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiHitmap-1.png" width="700"></p>
 <p>For a more precise view, <code>"names"</code> plot is implemented: the names of the values assigned to every neuron is displayed in the corresponding cluster. In <code>korresp</code> SOM, both row and column names are displayed.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span><span class="kw">=</span><span class="st">"obs"</span>, <span class="kw">type</span><span class="kw">=</span><span class="st">"names"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what<span class="op">=</span><span class="st">"obs"</span>, type<span class="op">=</span><span class="st">"names"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphObs-1.png" width="1152"></p>
-<p>The map is divided into two main parts: minor candidates are classified at its top left hand side whereas the first main candidates CHIRAC, LE PEN and JOSPIN are classified at the bottom right hand side of the map, in three different parts of this corner. Some strinking facts are:</p>
+<p>The map is divided into two main parts: minor candidates are classified at its top left hand side whereas the first main candidates CHIRAC, LE PEN and JOSPIN are classified at the bottom right hand side of the map, in three different parts of this corner. Some striking facts are:</p>
 <ul>
 <li><p>most of rural départements (Corrèze, Creuse, Jura, Cantal, Ariège, …) are classified in the bottom right corner, in between CHIRAC and LE PEN, who have high number of votes (compared to the other candidates) in these département;</p></li>
 <li><p>CHIRAC is characterized by higher votes for La Réunion (oversee département) whereas LE PEN has higher votes for Indre Et Loire, Aisne, Loiret, Côte d’Or;</p></li>
 <li><p>some well known associations, like HUE (communist party) in the Nord, are also visible on the map.</p></li>
 </ul>
 </div>
-<div id="clustering-interpretation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#clustering-interpretation" class="anchor"></a>Clustering interpretation</h3>
+<div class="section level3">
+<h3 id="clustering-interpretation">Clustering interpretation<a class="anchor" aria-label="anchor" href="#clustering-interpretation"></a>
+</h3>
 <p>Some graphics from the numeric SOM algorithm are still available in the korresp case. They are detailed below. As the resulting clustering provides the classification for both rows and columns, a new argument <code>view</code> is used to specify which one should be considered. Its possible values are either <code>"r"</code> for row variables (the default value) or <code>"c"</code> for column variables.</p>
-<div id="graphics-on-prototype-values" class="section level4">
-<h4 class="hasAnchor">
-<a href="#graphics-on-prototype-values" class="anchor"></a>Graphics on prototype values</h4>
+<div class="section level4">
+<h4 id="graphics-on-prototype-values">Graphics on prototype values<a class="anchor" aria-label="anchor" href="#graphics-on-prototype-values"></a>
+</h4>
 <p>Three representations are available:</p>
 <ul>
 <li>with lines: either all rows or all columns are displayed (<code>view</code> argument is used)</li>
 </ul>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># plot the line prototypes (106 French departements)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"lines"</span>, <span class="kw">view</span> <span class="kw">=</span> <span class="st">"r"</span>,
-     <span class="kw">show.names</span> <span class="kw">=</span> <span class="fl">TRUE</span>) +
-  <span class="fu">guides</span>(<span class="kw">color</span> <span class="kw">=</span> <span class="fu">guide_legend</span>(<span class="kw">keyheight</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">2</span>,
-                              <span class="kw">label.theme</span> <span class="kw">=</span> <span class="fu">element_text</span>(<span class="kw">size</span> <span class="kw">=</span> <span class="fl">4</span>))) +
-  <span class="fu">theme</span>(<span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu">element_blank</span>(), <span class="kw">axis.ticks.x</span> <span class="kw">=</span> <span class="fu">element_blank</span>())</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># plot the line prototypes (106 French departements)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"lines"</span>, view <span class="op">=</span> <span class="st">"r"</span>, 
+     show.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>    
+  <span class="fu">guides</span><span class="op">(</span>color <span class="op">=</span> <span class="fu">guide_legend</span><span class="op">(</span>keyheight <span class="op">=</span> <span class="fl">0.5</span>, ncol <span class="op">=</span> <span class="fl">2</span>,
+                              label.theme <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, axis.ticks.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoL-1.png" width="700"></p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co"># plot the column prototypes (16 candidates)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"lines"</span>, <span class="kw">view</span> <span class="kw">=</span> <span class="st">"c"</span>,
-     <span class="kw">show.names</span> <span class="kw">=</span> <span class="fl">TRUE</span>) +
-  <span class="fu">guides</span>(<span class="kw">color</span> <span class="kw">=</span> <span class="fu">guide_legend</span>(<span class="kw">keyheight</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">1</span>,
-                              <span class="kw">label.theme</span> <span class="kw">=</span> <span class="fu">element_text</span>(<span class="kw">size</span> <span class="kw">=</span> <span class="fl">6</span>))) +
-  <span class="fu">theme</span>(<span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu">element_blank</span>(), <span class="kw">axis.ticks.x</span> <span class="kw">=</span> <span class="fu">element_blank</span>())</pre></body></html></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># plot the column prototypes (16 candidates)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"lines"</span>, view <span class="op">=</span> <span class="st">"c"</span>, 
+     show.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">guides</span><span class="op">(</span>color <span class="op">=</span> <span class="fu">guide_legend</span><span class="op">(</span>keyheight <span class="op">=</span> <span class="fl">0.5</span>, ncol <span class="op">=</span> <span class="fl">1</span>, 
+                              label.theme <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span>, axis.ticks.x <span class="op">=</span> <span class="fu">element_blank</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoL-2.png" width="700"></p>
-<p>The département profiles are much flater (and with low values) in the top left corner of the map than in the bottom right corner which shows more differences between département and globally higher number of votes.</p>
-<p>On the contrary, the candidate profiles are flater, with globally lower values in the bottom right corner of the map.</p>
-<p>A more precise individual view are given with the graphics “color” and “3d”, here drawn, as an example for the candidate “LE PEN” and for the departement “La Réunion”. * in color: one of the row or column variable (the variable is chosen with the argument <code>variable</code>) is represented on the map; * in 3d, which handling is similar to <code>"color"</code>.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"color"</span>, <span class="kw">variable</span> <span class="kw">=</span> <span class="st">"LE_PEN"</span>)</pre></body></html></div>
+<p>The département profiles are much flatter (and with low values) in the top left corner of the map than in the bottom right corner which shows more differences between département and globally higher number of votes.</p>
+<p>On the contrary, the candidate profiles are flatter, with globally lower values in the bottom right corner of the map.</p>
+<p>A more precise individual view are given with the graphics “color” and “3d”, here drawn, as an example for the candidate “LE PEN” and for the département “La Réunion”. * in color: one of the row or column variable (the variable is chosen with the argument <code>variable</code>) is represented on the map; * in 3d, which handling is similar to <code>"color"</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"color"</span>, variable <span class="op">=</span> <span class="st">"LE_PEN"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoC3d-1.png" width="1152"></p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"3d"</span>, <span class="kw">variable</span> <span class="kw">=</span> <span class="st">"la_reunion"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"3d"</span>, variable <span class="op">=</span> <span class="st">"la_reunion"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoC3e-1.png" width="1152"></p>
 <p>The first graphic shows that LE_PEN obtained more votes in the departements located at the top left corner of the map. The second graphic shows that the candidates that obtained the highest scores in La Réunion are located at the bottom of the map (like Chirac).</p>
 <p>The graphics can also be drawn by giving the variable number and its type, either “r” or “c” (here, as an example, CHIRAC who is the 5th candidate, 5th column):</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"color"</span>, <span class="kw">variable</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">view</span> <span class="kw">=</span> <span class="st">"c"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"color"</span>, variable <span class="op">=</span> <span class="fl">5</span>, view <span class="op">=</span> <span class="st">"c"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoNumber-1.png" width="1152"></p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"3d"</span>, <span class="kw">variable</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="kw">view</span> <span class="kw">=</span> <span class="st">"c"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"3d"</span>, variable <span class="op">=</span> <span class="fl">5</span>, view <span class="op">=</span> <span class="st">"c"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiProtoNumber-2.png" width="1152"></p>
 <p>Hence CHIRAC obtained more votes in departement located at the left hand side of the map.</p>
 </div>
-<div id="graphic-on-prototype-distances" class="section level4">
-<h4 class="hasAnchor">
-<a href="#graphic-on-prototype-distances" class="anchor"></a>Graphic on prototype distances</h4>
+<div class="section level4">
+<h4 id="graphic-on-prototype-distances">Graphic on prototype distances<a class="anchor" aria-label="anchor" href="#graphic-on-prototype-distances"></a>
+</h4>
 <p>These graphics are exactly the same as in the numerical case and provide various way to display the distance between prototypes on the grid.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"poly.dist"</span>, <span class="kw">show.names</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"poly.dist"</span>, show.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto2-1.png" width="700"></p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"umatrix"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"umatrix"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto3-1.png" width="700"></p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"smooth.dist"</span>)</pre></body></html></div>
-<pre><code>## Warning in plotPrototypes(x, type, variable, my.palette, show.names, names, : Hexagonal topograpy: imputing missing values to make a full squared grid</code></pre>
-<pre><code>## Warning: imputing missing values</code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"smooth.dist"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in plotPrototypes(x, type, variable, my.palette, show.names, names, : Hexagonal topograpy: imputing missing values to make a full squared grid</span></code></pre>
+<pre><code><span class="co">## Warning: Imputing missing values.</span></code></pre>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto3-2.png" width="700"></p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"mds"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"mds"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto3-3.png" width="700"></p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">korresp.som</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"grid.dist"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">korresp.som</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"grid.dist"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiGraphProto3-4.png" width="700"></p>
 <p>All these graphics show a clear separation between the top left corner of the map and the bottom right corner of the map.</p>
 </div>
 </div>
-<div id="analyze-the-projection-quality" class="section level3">
-<h3 class="hasAnchor">
-<a href="#analyze-the-projection-quality" class="anchor"></a>Analyze the projection quality</h3>
+<div class="section level3">
+<h3 id="analyze-the-projection-quality">Analyze the projection quality<a class="anchor" aria-label="anchor" href="#analyze-the-projection-quality"></a>
+</h3>
 <p>The quality of the projection is provided by the function <code>quality</code> that outputs the same quality criteria than in the numeric case.</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="../reference/quality.html">quality</a></span>(<span class="no">korresp.som</span>)</pre></body></html></div>
-<pre><code>## $topographic
-## [1] 0.1603774
-## 
-## $quantization
-## [1] 60033.83</code></pre>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/quality.html">quality</a></span><span class="op">(</span><span class="va">korresp.som</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## $topographic</span>
+<span class="co">## [1] 0.1603774</span>
+<span class="co">## </span>
+<span class="co">## $quantization</span>
+<span class="co">## [1] 60033.83</span></code></pre>
 </div>
-<div id="building-super-classes-from-the-resulting-som" class="section level3">
-<h3 class="hasAnchor">
-<a href="#building-super-classes-from-the-resulting-som" class="anchor"></a>Building super classes from the resulting SOM</h3>
+<div class="section level3">
+<h3 id="building-super-classes-from-the-resulting-som">Building super classes from the resulting SOM<a class="anchor" aria-label="anchor" href="#building-super-classes-from-the-resulting-som"></a>
+</h3>
 <p>In the SOM algorithm, the number of clusters is necessarily close to the number of neurons on the grid (not necessarily equal as some neurons may have no observations assigned to them). This - quite large - number may not suit the original data for a clustering purpose.</p>
 <p>A usual way to address clustering with SOM is to perform a hierarchical clustering on the prototypes. This clustering is directly available in the package <code>SOMbrero</code> using the function <code>superClass</code>. To do so, you can first have a quick overview to decide on the number of super clusters which suits your data.</p>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="../reference/superClass.html">superClass</a></span>(<span class="no">korresp.som</span>))</pre></body></html></div>
-<pre><code>## Warning in plot.somSC(superClass(korresp.som)): Impossible to plot the rectangles: no super clusters.</code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="../reference/superClass.html">superClass</a></span><span class="op">(</span><span class="va">korresp.som</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in plot.somSC(superClass(korresp.som)): Impossible to plot the rectangles: no super clusters.</span></code></pre>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC1-1.png" width="700"></p>
 <p>By default, the function plots both a dendrogram and the evolution of the percentage of explained variance. Here, 3 super clusters seem to be a good choice. The output of <code>superClass</code> is a <code>somSC</code> class object. Basic functions have been defined for this class:</p>
-<div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="no">my.sc</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/superClass.html">superClass</a></span>(<span class="no">korresp.som</span>, <span class="kw">k</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">my.sc</span>)</pre></body></html></div>
-<pre><code>## 
-##    SOM Super Classes
-##      Initial number of clusters :  64 
-##      Number of super clusters   :  3 
-## 
-## 
-##   Frequency table
-##  1  2  3 
-## 18 14 32 
-## 
-##   Clustering
-##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 
-##  1  1  1  2  2  2  2  2  1  1  1  2  2  2  2  2  3  1  1  1  1  2  2  2  3  3 
-## 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 
-##  3  1  1  1  1  2  3  3  3  3  3  1  1  1  3  3  3  3  3  3  3  1  3  3  3  3 
-## 53 54 55 56 57 58 59 60 61 62 63 64 
-##  3  3  3  3  3  3  3  3  3  3  3  3</code></pre>
-<div class="sourceCode" id="cb30"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">plot.var</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my.sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/superClass.html">superClass</a></span><span class="op">(</span><span class="va">korresp.som</span>, k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">my.sc</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">##    SOM Super Classes</span>
+<span class="co">##      Initial number of clusters :  64 </span>
+<span class="co">##      Number of super clusters   :  3 </span>
+<span class="co">## </span>
+<span class="co">## </span>
+<span class="co">##   Frequency table</span>
+<span class="co">##  1  2  3 </span>
+<span class="co">## 18 14 32 </span>
+<span class="co">## </span>
+<span class="co">##   Clustering</span>
+<span class="co">##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 </span>
+<span class="co">##  1  1  1  2  2  2  2  2  1  1  1  2  2  2  2  2  3  1  1  1  1  2  2  2  3  3 </span>
+<span class="co">## 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 </span>
+<span class="co">##  3  1  1  1  1  2  3  3  3  3  3  1  1  1  3  3  3  3  3  3  3  1  3  3  3  3 </span>
+<span class="co">## 53 54 55 56 57 58 59 60 61 62 63 64 </span>
+<span class="co">##  3  3  3  3  3  3  3  3  3  3  3  3</span></code></pre>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, plot.var <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC2-1.png" width="700"></p>
 <p>Like <code>plot.somRes</code>, the function <code>plot.somSC</code> has an argument <code>'type'</code> which offers many different plots and can thus be combined with most of the graphics produced by <code>plot.somSC</code>:</p>
 <ul>
 <li>Case <code>"grid"</code> fills the grid with colors according to the super clustering (and can provide a legend).</li>
 <li>Case <code>"dendro3d"</code> plots a 3d dendrogram.</li>
 </ul>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"grid"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, type <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC3-1.png" width="700"></p>
-<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"dendro3d"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, type <span class="op">=</span> <span class="st">"dendro3d"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC3b-1.png" width="700"></p>
-<p>The three super-clusters correspond to most voted candidates (blue), less voted candidates (green) and, inbetween, départment with intermediate votes in which BAYROU (from one of the center party) is classified.</p>
+<p>The three super-clusters correspond to most voted candidates (blue), less voted candidates (green) and, in between, départments with intermediate votes in which BAYROU (from one of the center party) are classified.</p>
 <p>A couple of plots from <code>plot.somRes</code> are also available for the super clustering. Some identify the super clusters with colors:</p>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"obs"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"hitmap"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, what <span class="op">=</span> <span class="st">"obs"</span>, type <span class="op">=</span> <span class="st">"hitmap"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC4-1.png" width="700"></p>
-<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"lines"</span>, <span class="kw">show.names</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">view</span> <span class="kw">=</span> <span class="st">"c"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"lines"</span>, show.names <span class="op">=</span> <span class="cn">TRUE</span>, view <span class="op">=</span> <span class="st">"c"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC4-2.png" width="700"></p>
-<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"poly.dist"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"poly.dist"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC4-3.png" width="700"></p>
-<div class="sourceCode" id="cb36"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"mds"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"mds"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC4-4.png" width="700"></p>
 <p>And some others identify the super clusters with titles:</p>
-<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"color"</span>, <span class="kw">view</span> <span class="kw">=</span> <span class="st">"r"</span>,
-     <span class="kw">variable</span> <span class="kw">=</span> <span class="st">"correze"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"color"</span>, view <span class="op">=</span> <span class="st">"r"</span>, 
+     variable <span class="op">=</span> <span class="st">"correze"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC5-1.png" width="700"></p>
-<div class="sourceCode" id="cb38"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">my.sc</span>, <span class="kw">what</span> <span class="kw">=</span> <span class="st">"prototypes"</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"color"</span>, <span class="kw">view</span> <span class="kw">=</span> <span class="st">"c"</span>,
-     <span class="kw">variable</span> <span class="kw">=</span> <span class="st">"JOSPIN"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my.sc</span>, what <span class="op">=</span> <span class="st">"prototypes"</span>, type <span class="op">=</span> <span class="st">"color"</span>, view <span class="op">=</span> <span class="st">"c"</span>, 
+     variable <span class="op">=</span> <span class="st">"JOSPIN"</span><span class="op">)</span></code></pre></div>
 <p><img src="d-doc-korrespSOM_files/figure-html/presiSC5-2.png" width="700"></p>
 </div>
-<div id="session-information" class="section level3">
-<h3 class="hasAnchor">
-<a href="#session-information" class="anchor"></a>Session information</h3>
+<div class="section level3">
+<h3 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+</h3>
 <p>This vignette has been computed with the following environment:</p>
-<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</pre></body></html></div>
-<pre><code>## R version 4.0.2 (2020-06-22)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.1 LTS
-## 
-## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
-## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
-## 
-## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=fr_FR.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=fr_FR.UTF-8    LC_MESSAGES=en_US.UTF-8   
-##  [7] LC_PAPER=fr_FR.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=fr_FR.UTF-8 LC_IDENTIFICATION=C       
-## 
-## attached base packages:
-## [1] stats     graphics  grDevices utils     datasets  methods   base     
-## 
-## other attached packages:
-## [1] SOMbrero_1.3-1 markdown_1.1   igraph_1.2.5   ggplot2_3.3.2 
-## 
-## loaded via a namespace (and not attached):
-##  [1] xfun_0.16            lattice_0.20-41      colorspace_1.4-1    
-##  [4] vctrs_0.3.2          generics_0.0.2       htmltools_0.5.0     
-##  [7] yaml_2.2.1           rlang_0.4.7          pkgdown_1.5.1       
-## [10] hexbin_1.28.1        pillar_1.4.6         glue_1.4.1          
-## [13] withr_2.2.0          sp_1.4-2             RColorBrewer_1.1-2  
-## [16] lifecycle_0.2.0      plyr_1.8.6           stringr_1.4.0       
-## [19] metR_0.7.0           munsell_0.5.0        gtable_0.3.0        
-## [22] codetools_0.2-16     memoise_1.1.0        evaluate_0.14       
-## [25] labeling_0.3         ggwordcloud_0.5.0    knitr_1.29          
-## [28] Rcpp_1.0.5           scales_1.1.1         backports_1.1.8     
-## [31] checkmate_2.0.0      desc_1.2.0           scatterplot3d_0.3-41
-## [34] deldir_0.1-28        farver_2.0.3         fs_1.5.0            
-## [37] interp_1.0-33        png_0.1-7            digest_0.6.25       
-## [40] stringi_1.4.6        grid_4.0.2           rprojroot_1.3-2     
-## [43] tools_4.0.2          magrittr_1.5         tibble_3.0.3        
-## [46] crayon_1.3.4         pkgconfig_2.0.3      MASS_7.3-51.6       
-## [49] ellipsis_0.3.1       data.table_1.13.0    lubridate_1.7.9     
-## [52] assertthat_0.2.1     rmarkdown_2.3        rstudioapi_0.11     
-## [55] R6_2.4.1             compiler_4.0.2</code></pre>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## R version 4.1.2 (2021-11-01)</span>
+<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
+<span class="co">## </span>
+<span class="co">## Matrix products: default</span>
+<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span>
+<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span>
+<span class="co">## </span>
+<span class="co">## locale:</span>
+<span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">##  [3] LC_TIME=fr_FR.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">##  [5] LC_MONETARY=fr_FR.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
+<span class="co">##  [7] LC_PAPER=fr_FR.UTF-8       LC_NAME=C                 </span>
+<span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">## [11] LC_MEASUREMENT=fr_FR.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">## </span>
+<span class="co">## attached base packages:</span>
+<span class="co">## [1] stats     graphics  grDevices utils     datasets  methods   base     </span>
+<span class="co">## </span>
+<span class="co">## other attached packages:</span>
+<span class="co">## [1] SOMbrero_1.4-1 markdown_1.1   igraph_1.2.10  ggplot2_3.3.5 </span>
+<span class="co">## </span>
+<span class="co">## loaded via a namespace (and not attached):</span>
+<span class="co">##  [1] Rcpp_1.0.7           lubridate_1.7.10     lattice_0.20-45     </span>
+<span class="co">##  [4] deldir_1.0-6         png_0.1-7            assertthat_0.2.1    </span>
+<span class="co">##  [7] rprojroot_2.0.2      digest_0.6.27        ggwordcloud_0.5.0   </span>
+<span class="co">## [10] utf8_1.2.2           plyr_1.8.6           R6_2.5.1            </span>
+<span class="co">## [13] backports_1.2.1      evaluate_0.14        highr_0.9           </span>
+<span class="co">## [16] pillar_1.6.2         rlang_0.4.11         data.table_1.14.0   </span>
+<span class="co">## [19] jquerylib_0.1.4      hexbin_1.28.2        checkmate_2.0.0     </span>
+<span class="co">## [22] rmarkdown_2.10       pkgdown_2.0.1        textshaping_0.3.6   </span>
+<span class="co">## [25] desc_1.4.0           labeling_0.4.2       stringr_1.4.0       </span>
+<span class="co">## [28] munsell_0.5.0        compiler_4.1.2       metR_0.11.0         </span>
+<span class="co">## [31] xfun_0.24            pkgconfig_2.0.3      systemfonts_1.0.3   </span>
+<span class="co">## [34] htmltools_0.5.2      tidyselect_1.1.1     tibble_3.1.3        </span>
+<span class="co">## [37] codetools_0.2-18     fansi_0.5.0          crayon_1.4.1        </span>
+<span class="co">## [40] dplyr_1.0.7          withr_2.4.2          grid_4.1.2          </span>
+<span class="co">## [43] jsonlite_1.7.2       gtable_0.3.0         lifecycle_1.0.0     </span>
+<span class="co">## [46] DBI_1.1.1            magrittr_2.0.1       scales_1.1.1        </span>
+<span class="co">## [49] stringi_1.6.2        cachem_1.0.6         farver_2.1.0        </span>
+<span class="co">## [52] fs_1.5.0             scatterplot3d_0.3-41 bslib_0.3.1         </span>
+<span class="co">## [55] ellipsis_0.3.2       ragg_1.2.1           generics_0.1.0      </span>
+<span class="co">## [58] vctrs_0.3.8          RColorBrewer_1.1-2   tools_4.1.2         </span>
+<span class="co">## [61] interp_1.0-33        glue_1.4.2           purrr_0.3.4         </span>
+<span class="co">## [64] fastmap_1.1.0        yaml_2.2.1           colorspace_2.0-2    </span>
+<span class="co">## [67] isoband_0.2.5        memoise_2.0.1        knitr_1.33          </span>
+<span class="co">## [70] sass_0.4.0</span></code></pre>
 </div>
 </div>
   </div>
@@ -648,11 +680,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Nathalie Vialaneix, Elise Maigne, Jerome Mariette, Madalina Olteanu, Fabrice Rossi.</p>
+  <p></p>
+<p>Developed by Nathalie Vialaneix, Elise Maigne, Jerome Mariette, Madalina Olteanu, Fabrice Rossi.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -660,6 +694,8 @@
 
   
 
+
+  
 
   </body>
 </html>
