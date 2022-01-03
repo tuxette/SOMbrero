@@ -26,7 +26,7 @@
 #' original contingency table passed to the algorithm.
 #' 
 #' @author Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
-#' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 #' Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 

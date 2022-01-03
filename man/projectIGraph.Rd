@@ -57,6 +57,6 @@ with the option \code{type="graph"} or \code{\link{plot.somSC}} with the
 option \code{type="projgraph"}.
 }
 \author{
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

@@ -1,15 +1,17 @@
 * run tests
   [X] euclidean vs relational
-  [ ] prediction (3/18 fails)
+  [X] prediction
 * check ressemblance with previous results on tests
-----> commit
-* rerun vignettes
-* check plots for the case where missing values exist
-* change Madalina's email
-* add tests on OO and on missing values
-* add a vignette on missing values
-
-
+  [] (still to do for relational: error in vignette; OK for the other two)
+* [] rerun vignettes
+* [] update dependencies
+* [X] check plots for the case where missing values exist
+* [X] change Madalina's email
+* [X] add tests on missing values
+* [] add a vignette on missing values
+* [] make evaluation of missing values management
+* [] code improvement (check TODOs)
+* [] CRAN check, submit (with new date) and merge + double push
 
 
 ###############################################################################

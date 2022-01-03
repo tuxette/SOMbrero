@@ -100,7 +100,7 @@ quantizationError <- function(sommap) {
 #' it calculates the ratio of sample vectors for which the second best matching 
 #' unit is not in the direct neighborhood of the best matching unit.
 #' 
-#' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' @author Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @references
@@ -112,9 +112,9 @@ quantizationError <- function(sommap) {
 #' @seealso \code{\link{trainSOM}}, \code{\link{plot.somRes}}
 #' 
 #' @examples 
-#' my.som <- trainSOM(x.data=iris[,1:4])
-#' quality(my.som, quality.type="all")
-#' quality(my.som, quality.type="topographic")
+#' my.som <- trainSOM(x.data = iris[,1:4])
+#' quality(my.som, quality.type = "all")
+#' quality(my.som, quality.type = "topographic")
 
 quality <- function(sommap, quality.type, ...) {
   UseMethod("quality")

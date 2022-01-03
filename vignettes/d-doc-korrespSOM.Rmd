@@ -87,7 +87,7 @@ at its evolution
 plot(korresp.som, what = "energy")
 ```
 
-which has approximatively stabilized at iteration 500.
+which has approximately stabilized at iteration 500.
 
 ### Resulting clustering
 
@@ -139,7 +139,7 @@ plot(korresp.som, what="obs", type="names")
 The map is divided into two main parts: minor candidates are classified at its 
 top left hand side whereas the first main candidates CHIRAC, LE PEN and JOSPIN
 are classified at the bottom right hand side of the map, in three different 
-parts of this corner. Some strinking facts are:
+parts of this corner. Some striking facts are:
 
 * most of rural départements (Corrèze, Creuse, Jura, Cantal, Ariège, ...) are
 classified in the bottom right corner, in between CHIRAC and LE PEN, who have
@@ -182,15 +182,15 @@ plot(korresp.som, what = "prototypes", type = "lines", view = "c",
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 ```
 
-The département profiles are much flater (and with low values) in the top left 
+The département profiles are much flatter (and with low values) in the top left 
 corner of the map than in the bottom right corner which shows more differences 
 between département and globally higher number of votes.
 
-On the contrary, the candidate profiles are flater, with globally lower values
+On the contrary, the candidate profiles are flatter, with globally lower values
 in the bottom right corner of the map. 
 
 A more precise individual view are given with the graphics "color" and "3d",
-here drawn, as an example for the candidate "LE PEN" and for the departement
+here drawn, as an example for the candidate "LE PEN" and for the département
 "La Réunion".
 * in color: one of the row or column variable (the variable is chosen with the 
 argument ```variable```) is represented on the map;
@@ -290,8 +290,8 @@ plot(my.sc, type = "dendro3d")
 ```
 
 The three super-clusters correspond to most voted candidates (blue), less
-voted candidates (green) and, inbetween, départment with intermediate votes in 
-which BAYROU (from one of the center party) is classified.
+voted candidates (green) and, in between, départments with intermediate votes in 
+which BAYROU (from one of the center party) are classified.
 
 A couple of plots from ```plot.somRes``` are also available for the super 
 clustering. Some identify the super clusters with colors:

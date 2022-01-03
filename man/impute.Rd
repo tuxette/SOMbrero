@@ -11,7 +11,7 @@ impute(object, ...)
 \item{object}{a \code{somRes} object.}
 }
 \value{
-Imputed matrix as in [Cottrell and Letremy, 2005]
+Imputed matrix as in [Cottrell and Letrémy, 2005]
 }
 \description{
 Impute values by replacing missing entries with the 
@@ -29,7 +29,7 @@ iris.som
 impute(iris.som)
 }
 \references{
-Cottrell M., Letremy P. (2005) Missing values: processing with the Kohonen 
+Cottrell M., Letrémy P. (2005) Missing values: processing with the Kohonen 
 algorithm. \emph{Proceedings of Applied Stochastic Models and Data Analysis
 (ASMDA 2005)}, 489-496.
 }

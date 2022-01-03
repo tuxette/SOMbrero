@@ -85,11 +85,11 @@ The following table indicates which graphics are available for a relational SOM.
 
 ## Case study: the ```lesmis``` data set
 
-The ```lesmis``` data set is based on the coappearance graph of the characters 
-of the novel Les Miserables (Victor Hugo). Each vertex stands for a character 
+The ```lesmis``` data set is based on the co-appearance graph of the characters 
+of the novel Les Misérables (Victor Hugo). Each vertex stands for a character 
 whose name is given by the vertex label. One edge means that the corresponding 
 two characters appear in a common chapter in the book. Each edge also has a 
-value indicating the number of coappearances. The co-appearance network has been
+value indicating the number of co-appearances. The co-appearance network has been
 extracted by D.E. Knuth (1993).
 
 The ```lesmis``` data contain two objects: the first one,```lesmis```, is an 
@@ -153,7 +153,7 @@ plot(mis.som, what = "add", type = "graph", var = lesmis)
 ```
 
 In the latter plot (which is still messy at this stage of the analysis), nodes
-correspond to clusters and are positionned at the cluster location on the map. 
+correspond to clusters and are positioned at the cluster location on the map. 
 The size of the nodes is proportional to the number of characters classified in
 this cluster and edges between nodes have a width proportional to the total 
 weight between any two characters from the two linked clusters.
@@ -259,14 +259,14 @@ legend(x = "left", legend = paste("SC", 1:5), col = rainbow(5), pch = 19)
 * cluster 1 contains ```Myriel``` and the characters involved in his 
 sub-story;
 
-* cluster 2 constains ```Valjean``` which has a central position in the graph
+* cluster 2 contains ```Valjean``` which has a central position in the graph
 visualization, and most of the important character of the novel (including
 Javert, Fantine and Cosette);
 
-* cluster 3 countains people almost only connected to ```Fantine``` who links
+* cluster 3 contains people almost only connected to ```Fantine``` who links
 them to the rest of the novel;
 
-* cluster 4 contains ```Gavroche```, the abandonned child of the
+* cluster 4 contains ```Gavroche```, the abandoned child of the
 ```Thenardier```, and the characters of his sub-story (including Mr Thénardier
 and Gavroche's two brothers and his sister, `Eponine`);
 
@@ -284,16 +284,16 @@ plot(sc.mis, what = "add", type = "projgraph", variable = lesmis, s.radius = 2)
 
 This representation provides a simplified and interpretable display of the graph
 where the super clusters are represented by nodes with sizes proportional to the
-number of characters classified in them. The nodes are positionned at the center
+number of characters classified in them. The nodes are positioned at the center
 of gravity of the map clusters included in each super cluster. They are linked
 to each other with edges with width proportional to the total number of links 
-between two characters of the correspondind super clusters. Here, the central
+between two characters of the corresponding super clusters. Here, the central
 brown/green node is the one of Valjean and the other main characters (super
 cluster 2), which appears to be strongly related to super cluster 4 in blue, 
 with Gavroche's neighbors.
 
 
-### Session information
+## Session information
 
 This vignette has been computed with the following environment:
 ```{r sessionInfo, include=TRUE}

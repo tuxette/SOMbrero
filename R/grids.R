@@ -14,7 +14,7 @@
 #' 'Details'). Default to \code{"euclidean"}
 #'
 #' @author Élise Maigné <elise.maigne@inrae.fr>\cr
-#' Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
+#' Madalina Olteanu <olteanu@ceremade.dauphine.fr>\cr
 #' Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>
 #'
 #' @details The units (neurons) of the grid are positionned at coordinates 
@@ -24,7 +24,7 @@
 #' \code{"canberra"}, \code{"minkowski"}, \code{"letremy"}, where the first 5 
 #' ones correspond to distance methods implemented in \code{\link{dist}} and 
 #' \code{"letremy"} is the distance of the original implementation by Patrick 
-#' Letremy that switches between \code{"maximum"} and \code{"euclidean"} during
+#' Letrémy that switches between \code{"maximum"} and \code{"euclidean"} during
 #' the training.
 #'
 #' @seealso \code{\link{plot.myGrid}} for plotting the grid
@@ -93,7 +93,7 @@ initGrid <- function(dimension = c(5,5), topo = c("square", "hexagonal"),
 #' @param \dots Further arguments to the \code{\link{plot}} function.
 #' 
 #' @author Élise Maigné <elise.maigne@inrae.fr>\cr
-#' Madalina Olteanu, \email{madalina.olteanu@univ-paris1.fr}\cr
+#' Madalina Olteanu, \email{olteanu@ceremade.dauphine.fr}\cr
 #' Nathalie Vialaneix, \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @details The \code{myGrid} class has the following entries:

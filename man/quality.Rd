@@ -35,9 +35,9 @@ The \code{quality} function computes several quality criteria
 for the result of a SOM algorithm.
 }
 \examples{
-my.som <- trainSOM(x.data=iris[,1:4])
-quality(my.som, quality.type="all")
-quality(my.som, quality.type="topographic")
+my.som <- trainSOM(x.data = iris[,1:4])
+quality(my.som, quality.type = "all")
+quality(my.som, quality.type = "topographic")
 }
 \references{
 Polzlbauer G. (2004) Survey and comparison of quality measures for
@@ -49,6 +49,6 @@ dom, Vysoke Tatry, Slovakia: Elfa Academic Press, 67-82.
 \code{\link{trainSOM}}, \code{\link{plot.somRes}}
 }
 \author{
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

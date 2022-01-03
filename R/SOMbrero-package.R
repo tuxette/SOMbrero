@@ -26,19 +26,19 @@
 #' stochastic version.
 #' 
 #' Several variants able to handle non-vectorial data are also implemented in 
-#' their stochastic versions: \code{type="korresp"} for contingency tables, as 
-#' described in Cottrell et al., 2004 (with the observation weights defined in 
-#' Cottrell and Letremy, 2005) and \code{type="relational"} for dissimilarity 
-#' data, as described in Olteanu and Villa-Vialaneix, 2015a with the fast 
-#' implementation of Mariette \emph{et al.}, 2017. A special focus has been put 
-#' on representing graphs, as described in Olteanu and Villa-Vialaneix, 2015b.
+#' their stochastic versions: \code{type = "korresp"} for contingency tables, as 
+#' described in Cottrell et al. (2004) (with the observation weights defined in 
+#' Cottrell and Letrémy, 2005) and \code{type = "relational"} for dissimilarity 
+#' data, as described in Olteanu and Villa-Vialaneix (2015a) with the fast 
+#' implementation of Mariette \emph{et al.} (2017). A special focus has been put 
+#' on representing graphs, as described in Olteanu and Villa-Vialaneix (2015b).
 #' 
 #' @author Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}\cr
 #' Élise Maigné <elise.maigne@inrae.fr>\cr
 #' Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
-#' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 #' Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr
-#' Laura Bendhaiba \email{laurabendhaiba@gmail.com}\cr
+#' Laura Bendhaïba \email{laurabendhaiba@gmail.com}\cr
 #' Julien Boelaert \email{julien.boelaert@gmail.com}\cr \cr
 #' Maintainer: Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 

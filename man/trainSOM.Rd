@@ -41,7 +41,7 @@ which contains the following components:
   \item{prototypes}{ the final coordinates of the prototypes.}
   \item{energy}{ the final energy of the map. For the numeric case, energy 
   with data having missing entries is based on data imputation as described
-  in Cottrell and Letremy (2005b).}
+  in Cottrell and Letrémy (2005b).}
   \item{backup}{ a list containing some intermediate backups of the 
   prototypes coordinates, clustering, energy and the indexes of the recorded 
   backups, if \code{nb.save} is set to a value larger than 1.}
@@ -63,7 +63,7 @@ stochastic version.
 
 Several variants able to handle non-vectorial data are also implemented in 
 their stochastic versions: \code{type="korresp"} for contingency tables, as
-described in Cottrell et al. (2004) (with weights as in Cottrell and Letremy, 
+described in Cottrell et al. (2004) (with weights as in Cottrell and Letrémy, 
 2005a); \code{type = "relational"} for dissimilarity matrices, as described 
 in Olteanu et al. (2015), with the fast implementation introduced in Mariette
 \emph{et al.} (2017).
@@ -101,14 +101,14 @@ of variance. \emph{Austral Ecology}, \strong{26}, 32-46.
 Kohonen T. (2001) \emph{Self-Organizing Maps}. Berlin/Heidelberg: 
 Springer-Verlag, 3rd edition.
 
-Cottrell M., Ibbou S., Letremy P. (2004) SOM-based algorithms for qualitative
+Cottrell M., Ibbou S., Letrémy P. (2004) SOM-based algorithms for qualitative
 variables. \emph{Neural Networks}, \strong{17}, 1149-1167.
 
-Cottrell M., Letremy P. (2005a) How to use the Kohonen algorithm to 
+Cottrell M., Letrémy P. (2005a) How to use the Kohonen algorithm to 
 simultaneously analyse individuals in a survey. \emph{Neurocomputing}, 
 \strong{21}, 119-138.
 
-Cottrell M., Letremy P. (2005b) Missing values: processing with the Kohonen 
+Cottrell M., Letrémy P. (2005b) Missing values: processing with the Kohonen 
 algorithm. \emph{Proceedings of Applied Stochastic Models and Data Analysis
 (ASMDA 2005)}, 489-496.
 
@@ -128,7 +128,7 @@ pass to the trainSOM function to change its behavior and
 \author{
 Élise Maigné <elise.maigne@inrae.fr>\cr
 Jérome Mariette \email{jerome.mariette@inrae.fr}\cr
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 Fabrice Rossi \email{fabrice.rossi@apiacoa.org}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

@@ -18,20 +18,21 @@
 #' \code{trainSOM}.
 #' @param topo The topology to be used to build the grid of the \code{myGrid} 
 #' class object. Accept values \code{"square"} (Default) or \code{"hexagonal"}.
-#' @param radius.type The neighbourhood type. Default value is 
-#' \code{"gaussian"}, which corresponds to a Gaussian neighbourhood. The 
-#' annealing of the neighbourhood during the training step is similar to the one
+#' @param radius.type The neighborhood type. Default value is 
+#' \code{"gaussian"}, which corresponds to a Gaussian neighborhood. The 
+#' annealing of the neighborhood during the training step is similar to the one
 #' implemented in \href{https://github.com/fabrice-rossi/yasomi}{yasomi}. The 
-#' alternative value corresponds to an piecewise linear neighbourhood as 
-#' implementated by Patrick Letremy in his SAS scripts.
+#' alternative value corresponds to an piecewise linear neighborhood as 
+#' implemented by Patrick Letrémy in his SAS scripts.
 #' @param dist.type The neighborhood relationship on the grid. One of 
 #' \code{c("letremy", "euclidean", "maximum", "manhattan", "canberra", "minkowski")}. 
-#' When \code{radius.type} is \code{letremy}, default value is \code{letremy} which 
-#' is the original implementation by Patrick Letremy. When \code{radius.type} is
-#' \code{gaussian}, default value is \code{euclidean}. The other possible values
-#' are passed to \code{method} in function \code{\link[stats]{dist}}. 
-#' \code{dist.type="letremy"} is not permitted with \code{radius.type="gaussian"}. 
-#' Only \code{euclidian} is allowed with hexagonal topology.
+#' When \code{radius.type} is \code{letremy}, default value is \code{letremy} 
+#' which is the original implementation by Patrick Letrémy. When 
+#' \code{radius.type} is \code{gaussian}, default value is \code{euclidean}. The
+#' other possible values are passed to \code{method} in function 
+#' \code{\link[stats]{dist}}. \code{dist.type = "letremy"} is not permitted with 
+#' \code{radius.type = "gaussian"}. Only \code{euclidian} is allowed with 
+#' hexagonal topology.
 #' @param type The SOM algorithm type. Possible values are: \code{numeric} 
 #' (default value), \code{korresp} and \code{relational}.
 #' @param mode The SOM algorithm mode. Default value is \code{online}.
@@ -84,7 +85,7 @@
 #' specified by the user.
 #' 
 #' @author Élise Maigné <elise.maigne@inrae.fr>\cr
-#' Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @references

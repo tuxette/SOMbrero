@@ -28,6 +28,6 @@ version 0.7.0. \url{https://cran.r-project.org/package=shiny}
 \author{
 Élise Maigné <elise.maigne@inrae.fr>\cr
 Julien Boelaert \email{julien.boelaert@gmail.com}\cr
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

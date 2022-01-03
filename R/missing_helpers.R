@@ -10,13 +10,13 @@
 #' 
 #' @param object a \code{somRes} object.
 #' 
-#' @return Imputed matrix as in [Cottrell and Letremy, 2005]
+#' @return Imputed matrix as in [Cottrell and Letrémy, 2005]
 #' 
 #' @author 
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @references 
-#' Cottrell M., Letremy P. (2005) Missing values: processing with the Kohonen 
+#' Cottrell M., Letrémy P. (2005) Missing values: processing with the Kohonen 
 #' algorithm. \emph{Proceedings of Applied Stochastic Models and Data Analysis
 #' (ASMDA 2005)}, 489-496.
 #' 

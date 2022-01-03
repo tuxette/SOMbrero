@@ -51,6 +51,6 @@ protoDist(my.som)
 \code{\link{trainSOM}}
 }
 \author{
-Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 }

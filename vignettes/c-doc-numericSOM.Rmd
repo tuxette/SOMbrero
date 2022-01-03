@@ -155,7 +155,7 @@ plot(my.som, what="obs", type="color", var=2)
 
 The prototypes coordinates are also registered for each intermediate backup so 
 they can be displayed on different graphics to see the evolution in the
-prototypes organization.
+prototype organization.
 ```{r protoEvoluation, fig.width=15, fig.height=6, include=TRUE, echo=FALSE}
 # Get the neighbours between prototypes
 values <- protoDist(my.som, "neighbors")
@@ -179,7 +179,7 @@ invisible(sapply(1:my.som$parameters$nb.save, function(ind){
 }))
 ```
 
-At the begining of the algorithm, the prototypes are randomly distributed in
+At the beginning of the algorithm, the prototypes are randomly distributed in
 [0,1]^2 and then, they organize as a regular rectangular grid in $[0,1]^2$.
 
 ## Second case study: the iris dataset
@@ -211,7 +211,7 @@ plot(iris.som, what="energy")
 ```
 
 Here the energy does not stabilize as in the case of ```dist.type="letremy"```
-because the Gaussian annealing of the neighbourhood is continuous and not 
+because the Gaussian annealing of the neighborhood is continuous and not 
 stepwise.
 
 
@@ -538,7 +538,7 @@ associated mainly with Virginica whereas SC 1 is in the diagonal between these
 two corners and associated with Versicolor.
 
 
-### Session information
+## Session information
 
 This vignette has been computed with the following environment:
 ```{r sessionInfo, include=TRUE}

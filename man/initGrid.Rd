@@ -44,7 +44,7 @@ that can be one of \code{"euclidean"}, \code{"maximum"}, \code{"manhattan"},
 \code{"canberra"}, \code{"minkowski"}, \code{"letremy"}, where the first 5 
 ones correspond to distance methods implemented in \code{\link{dist}} and 
 \code{"letremy"} is the distance of the original implementation by Patrick 
-Letremy that switches between \code{"maximum"} and \code{"euclidean"} during
+Letrémy that switches between \code{"maximum"} and \code{"euclidean"} during
 the training.
 }
 \examples{
@@ -62,6 +62,6 @@ et dédiés à l'analyse des données. SAS/IML programs for 'korresp'.
 }
 \author{
 Élise Maigné <elise.maigne@inrae.fr>\cr
-Madalina Olteanu <madalina.olteanu@univ-paris1.fr>\cr
+Madalina Olteanu <olteanu@ceremade.dauphine.fr>\cr
 Nathalie Vialaneix <nathalie.vialaneix@inrae.fr>
 }

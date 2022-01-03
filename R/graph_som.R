@@ -31,7 +31,7 @@
 #'   clusters.
 #' }
 #' 
-#' @author Madalina Olteanu \email{madalina.olteanu@univ-paris1.fr}\cr
+#' @author Madalina Olteanu \email{olteanu@ceremade.dauphine.fr}\cr
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}
 #' 
 #' @references 
