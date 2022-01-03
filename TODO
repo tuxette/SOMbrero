@@ -1,10 +1,9 @@
 * run tests
   [X] euclidean vs relational
   [X] prediction
-* check ressemblance with previous results on tests
-  [] (still to do for relational: error in vignette; OK for the other two)
-* [] rerun vignettes
-* [] update dependencies
+* [X] check ressemblance with previous results on tests
+* [X] rerun vignettes
+* [X] update dependencies
 * [X] check plots for the case where missing values exist
 * [X] change Madalina's email
 * [X] add tests on missing values

@@ -9,8 +9,9 @@
 #' corresponding assigned prototype entries
 #' 
 #' @param object a \code{somRes} object.
+#' @param ... unused.
 #' 
-#' @return Imputed matrix as in [Cottrell and Letrémy, 2005]
+#' @return Imputed matrix as in Cottrell and Letrémy, (2005)
 #' 
 #' @author 
 #' Nathalie Vialaneix \email{nathalie.vialaneix@inrae.fr}

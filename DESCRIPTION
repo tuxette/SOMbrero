@@ -1,7 +1,7 @@
 Package: SOMbrero
 Title: SOM Bound to Realize Euclidean and Relational Outputs
 Version: 1.4
-Date: 2022-01-02
+Date: 2022-01-03
 Authors@R: c(person("Nathalie", "Vialaneix", role = c("aut", "cre"), email="nathalie.vialaneix@inrae.fr"),
              person("Elise", "Maigne", role = "aut", email="elise.maigne@inrae.fr"),
              person("Jerome", "Mariette", role= "aut", email="jerome.mariette@inrae.fr"),
@@ -17,7 +17,8 @@ Description: The stochastic (also called on-line) version of the Self-Organising
              <isbn:3-540-67921-9>, Olteanu & Villa-Vialaneix (2005)
              <doi:10.1016/j.neucom.2013.11.047> and Cottrell et al (2004)
              <doi:10.1016/j.neunet.2004.07.010>. The package also contains many
-             plotting features (to help the user interpret the results) and a
+             plotting features (to help the user interpret the results), can 
+             handle (and impute) missing values and is delivered with a 
              graphical user interface based on 'shiny'.
 BugReports: https://github.com/tuxette/sombrero/issues
 Depends: R (>= 3.1.0), igraph (>= 1.0), markdown

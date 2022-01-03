@@ -6,14 +6,14 @@
 \title{2002 French presidential election data set}
 \format{
 \code{presidentielles2002} is a data frame of 106 rows (the French
-administrative districts called "Departements") and 16 columns (the 
+administrative districts called "Départements") and 16 columns (the 
 candidates).
 }
 \source{
 The data are provided by the French ministry "Ministère de 
 l'Intérieur". The original data can be downloaded at
 \url{https://www.interieur.gouv.fr/Elections/Les-resultats/Presidentielles} 
-(2002 elections and "Résultats par départements").
+(2002 élections and "Résultats par départements").
 }
 \description{
 This data set provides the number of votes at the first round of
@@ -22,7 +22,7 @@ administrative districts called "Départements".
 }
 \examples{
 data(presidentielles2002)
-apply(presidentielles2002,2,sum)
+apply(presidentielles2002, 2, sum)
 }
 \references{
 The 2002 French presidential election consisted of two rounds. 
@@ -34,5 +34,5 @@ hand, because the polls had failed to predict that Jean-Marie Le Pen would be
 on the second round.
 
 Further comments at
-\url{http://en.wikipedia.org/wiki/French_presidential_election,_2002}.
+\url{https://en.wikipedia.org/wiki/2002_French_presidential_election}.
 }

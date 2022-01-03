@@ -59,13 +59,13 @@ NULL
 #' @docType data
 #' 
 #' @format \code{presidentielles2002} is a data frame of 106 rows (the French
-#' administrative districts called "Departements") and 16 columns (the 
+#' administrative districts called "Départements") and 16 columns (the 
 #' candidates).
 #' 
 #' @source The data are provided by the French ministry "Ministère de 
 #' l'Intérieur". The original data can be downloaded at
 #' \url{https://www.interieur.gouv.fr/Elections/Les-resultats/Presidentielles} 
-#' (2002 elections and "Résultats par départements").
+#' (2002 élections and "Résultats par départements").
 #' 
 #' @references The 2002 French presidential election consisted of two rounds. 
 #' The second round attracted a greater than usual amount of international 
@@ -76,10 +76,10 @@ NULL
 #' on the second round.
 #' 
 #' Further comments at
-#' \url{http://en.wikipedia.org/wiki/French_presidential_election,_2002}.
+#' \url{https://en.wikipedia.org/wiki/2002_French_presidential_election}.
 #' 
 #' @examples 
 #' data(presidentielles2002)
-#' apply(presidentielles2002,2,sum)
+#' apply(presidentielles2002, 2, sum)
 
 NULL

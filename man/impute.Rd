@@ -9,9 +9,11 @@ impute(object, ...)
 }
 \arguments{
 \item{object}{a \code{somRes} object.}
+
+\item{...}{unused.}
 }
 \value{
-Imputed matrix as in [Cottrell and Letrémy, 2005]
+Imputed matrix as in Cottrell and Letrémy, (2005)
 }
 \description{
 Impute values by replacing missing entries with the 

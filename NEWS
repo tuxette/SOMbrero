@@ -1,7 +1,8 @@
 SOMbrero 1.4 (major release)
 
 New features:
-  numeric SOM can now handle missing data
+  numeric SOM can now handle missing data: training is done without accounting
+  for missing entries and resulting SOM can be used to impute missing entries
 
 Fixed bugs:
   proto0 was incorrectly used for 'numeric' (see bug report #4 on Github)
